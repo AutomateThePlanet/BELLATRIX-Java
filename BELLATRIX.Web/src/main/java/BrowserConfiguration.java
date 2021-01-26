@@ -11,28 +11,62 @@
  * limitations under the License.
  */
 
+import java.util.HashMap;
+import java.util.Objects;
+
 public class BrowserConfiguration {
     private Browser browser;
     private Lifecycle browserBehavior;
+    private ExecutionType executionType;
+    private int height;
+    private int width;
+    private Boolean shouldCaptureHttpTraffic;
+    HashMap<String, String> driverOptions;
+
+    public HashMap<String, String> getDriverOptions() {
+        return driverOptions;
+    }
 
     public BrowserConfiguration(Browser browser, Lifecycle browserBehavior) {
         this.browser = browser;
         this.browserBehavior = browserBehavior;
+        driverOptions = new HashMap<>();
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public Boolean getShouldCaptureHttpTraffic() {
+        return shouldCaptureHttpTraffic;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public ExecutionType getExecutionType() {
+        return executionType;
     }
 
     public Lifecycle getBrowserBehavior() {
         return browserBehavior;
     }
 
-    public void setBrowserBehavior(Lifecycle _browserBehavior) {
-        this.browserBehavior = _browserBehavior;
-    }
-
     public Browser getBrowser() {
         return browser;
     }
 
-    public void setBrowser(Browser _browser) {
-        this.browser = _browser;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        var that = (BrowserConfiguration) o;
+        return height == that.height && width == that.width && browser == that.browser && browserBehavior == that.browserBehavior && executionType == that.executionType && shouldCaptureHttpTraffic.equals(that.shouldCaptureHttpTraffic);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(browser, browserBehavior, executionType, height, width, shouldCaptureHttpTraffic);
     }
 }

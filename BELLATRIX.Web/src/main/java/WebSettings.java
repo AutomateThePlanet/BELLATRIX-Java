@@ -16,9 +16,6 @@ public class WebSettings {
     private  BrowserSettings chrome;
     private  BrowserSettings firefox;
     private  BrowserSettings edge;
-    private  BrowserSettings opera;
-    private  BrowserSettings internetExplorer;
-    private  BrowserSettings safari;
     private  int elementWaitTimeout;
 
     public String getBaseUrl() {
@@ -37,18 +34,6 @@ public class WebSettings {
         return edge;
     }
 
-    public BrowserSettings getOpera() {
-        return opera;
-    }
-
-    public BrowserSettings getInternetExplorer() {
-        return internetExplorer;
-    }
-
-    public BrowserSettings getSafari() {
-        return safari;
-    }
-
     public int getElementWaitTimeout() {
         return elementWaitTimeout;
     }
@@ -60,9 +45,6 @@ public class WebSettings {
                 ", chrome=" + chrome +
                 ", firefox=" + firefox +
                 ", edge=" + edge +
-                ", opera=" + opera +
-                ", internetExplorer=" + internetExplorer +
-                ", safari=" + safari +
                 ", elementWaitTimeout=" + elementWaitTimeout +
                 '}';
     }

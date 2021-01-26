@@ -11,14 +11,10 @@
  * limitations under the License.
  */
 
-public enum Browser {
-    CHROME,
-    CHROME_HEADLESS,
-    FIREFOX,
-    FIREFOX_HEADLESS,
-    EDGE,
-    EDGE_HEADLESS,
-    OPERA,
-    SAFARI,
-    INTERNET_EXPLORER
+public enum ExecutionType {
+    REGULAR,
+    GRID,
+    SAUCE_LABS,
+    BROWSER_STACK,
+    CROSS_BROWSER_TESTING,
 }

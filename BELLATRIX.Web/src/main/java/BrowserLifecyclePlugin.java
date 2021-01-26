@@ -61,7 +61,7 @@ public class BrowserLifecyclePlugin extends Plugin {
         }
 
         Boolean shouldRestartBrowser =
-                browserConfiguration.getBrowserBehavior() == Lifecycle.RESTART_EVERY_TIME || browserConfiguration.getBrowser() == Browser.NOT_SET;
+                browserConfiguration.getBrowserBehavior() == Lifecycle.RESTART_EVERY_TIME;
 
         return shouldRestartBrowser;
     }
