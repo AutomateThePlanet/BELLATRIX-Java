@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright 2021 Automate The Planet Ltd.
+  ~ Author: Anton Angelov
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ You may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>solutions.bellatrix</groupId>
+    <artifactId>BELLATRIX</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0-SNAPSHOT</version>
+    <modules>
+        <module>Chapter 2- Stabilize the Tests</module>
+        <module>Chapter 3- Optimize the Tests</module>
+        <module>Chapter 4- Tests Readability</module>
+        <module>Chapter 5- Tests Maintainability</module>
+        <module>Chapter 6- API Usability</module>
+        <module>Chapter 7- Building Extensibility</module>
+        <module>Chapter 8- Assessment System</module>
+        <module>Chapter 10- Test Data Preparation</module>
+        <module>Chapter 9- Benchmarking</module>
+        <module>test-spring</module>
+        <module>BELLATRIX.Configuration</module>
+        <module>BELLATRIX.TestNG</module>
+        <module>BELLATRIX.TestWorkflowPlugins</module>
+        <module>BELLATRIX.Logging</module>
+        <module>BELLATRIX.Data</module>
+        <module>BELLATRIX.TestWorkflowPlugins</module>
+        <module>BELLATRIX.VideoRecording</module>
+        <module>BELLATRIX.TestExecutionExtensions.Video</module>
+        <module>BELLATRIX.TestExecutionExtensions.Screenshots</module>
+        <module>BELLATRIX.Layout.Assertions</module>
+        <module>BELLATRIX.Utilities</module>
+        <module>BELLATRIX.Web</module>
+        <module>BELLATRIX.Desktop</module>
+        <module>BELLATRIX.Mobile</module>
+        <module>BELLATRIX.API</module>
+    </modules>
+
+    <properties>
+        <maven.compiler.source>1.11</maven.compiler.source>
+        <maven.compiler.target>1.11</maven.compiler.target>
+        <kotlin.version>1.4.20-RC</kotlin.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>5.3.3</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>7.3.0</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-support</artifactId>
+            <version>3.141.59</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-firefox-driver</artifactId>
+            <version>3.141.59</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-chrome-driver</artifactId>
+            <version>3.141.59</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>25.0-jre</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.github.bonigarcia</groupId>
+            <artifactId>webdrivermanager</artifactId>
+            <version>4.2.2</version>
+        </dependency>
+    </dependencies>
+
+</project>
