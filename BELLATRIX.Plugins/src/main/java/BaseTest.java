@@ -11,25 +11,19 @@
  * limitations under the License.
  */
 
-package reusebrowsercleansession.browserinfrastructure;
-
 import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
-import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeMethod;
-import reusebrowsercleansession.Driver;
-import reusebrowsercleansession.LoggingDriver;
-import reusebrowsercleansession.WebCoreDriver;
 
 public class BaseTest {
-    private static final TestExecutionSubject CURRENT_TEST_EXECUTION_SUBJECT;
-    private static final Driver DRIVER;
+    private static final PluginExecutionEngine CURRENT_TEST_EXECUTION_SUBJECT;
+//    private static final Driver DRIVER;
     private ITestResult result;
 
     static {
-        CURRENT_TEST_EXECUTION_SUBJECT = new ExecutionSubject();
-        DRIVER = new LoggingDriver(new WebCoreDriver());
-        new BrowserLaunchTestBehaviorObserver(CURRENT_TEST_EXECUTION_SUBJECT, DRIVER);
+        CURRENT_TEST_EXECUTION_SUBJECT = new PluginExecutionEngine();
+//        DRIVER = new LoggingDriver(new WebCoreDriver());
+//        new BrowserLaunchTestBehaviorObserver(CURRENT_TEST_EXECUTION_SUBJECT, DRIVER);
     }
 
     public String getTestName() {
@@ -43,17 +37,17 @@ public class BaseTest {
     public ITestResult getTestResult() {
         return result;
     }
-
-    public Driver getDriver() {
-        return DRIVER;
-    }
-
-    @AfterSuite
-    public void afterSuite() {
-        if (DRIVER != null) {
-            DRIVER.quit();
-        }
-    }
+//
+//    public Driver getDriver() {
+//        return DRIVER;
+//    }
+//
+//    @AfterSuite
+//    public void afterSuite() {
+//        if (DRIVER != null) {
+//            DRIVER.quit();
+//        }
+//    }
 
     @BeforeMethod
     public void beforeMethod(ITestResult result) throws NoSuchMethodException, ClassNotFoundException {

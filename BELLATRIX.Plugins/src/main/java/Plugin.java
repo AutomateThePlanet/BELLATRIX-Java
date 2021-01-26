@@ -11,16 +11,27 @@
  * limitations under the License.
  */
 
-package reusebrowsercleansession.browserinfrastructure;
-
 import org.testng.ITestResult;
 
 import java.lang.reflect.Method;
 
-public interface TestBehaviorObserver {
-    void preTestInit(ITestResult testResult, Method memberInfo);
-    void postTestInit(ITestResult testResult, Method memberInfo);
-    void preTestCleanup(ITestResult testResult, Method memberInfo);
-    void postTestCleanup(ITestResult testResult, Method memberInfo);
-    void testInstantiated(Method memberInfo);
+public class Plugin {
+    public Plugin(PluginExecutionEngine testExecutionSubject) {
+        testExecutionSubject.addPlugin(this);
+    }
+
+    public void preTestInit(ITestResult testResult, Method memberInfo) {
+    }
+
+    public void postTestInit(ITestResult testResult, Method memberInfo) {
+    }
+
+    public void preTestCleanup(ITestResult testResult, Method memberInfo) {
+    }
+
+    public void postTestCleanup(ITestResult testResult, Method memberInfo) {
+    }
+
+    public void testInstantiated(Method memberInfo) {
+    }
 }
