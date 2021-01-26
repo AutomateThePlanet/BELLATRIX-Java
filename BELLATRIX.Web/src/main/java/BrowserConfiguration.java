@@ -11,24 +11,20 @@
  * limitations under the License.
  */
 
-package reusebrowser.browserinfrastructure;
-
-import reusebrowser.Browser;
-
 public class BrowserConfiguration {
     private Browser browser;
-    private BrowserBehavior browserBehavior;
+    private Lifecycle browserBehavior;
 
-    public BrowserConfiguration(Browser browser, BrowserBehavior browserBehavior) {
+    public BrowserConfiguration(Browser browser, Lifecycle browserBehavior) {
         this.browser = browser;
         this.browserBehavior = browserBehavior;
     }
 
-    public BrowserBehavior getBrowserBehavior() {
+    public Lifecycle getBrowserBehavior() {
         return browserBehavior;
     }
 
-    public void setBrowserBehavior(BrowserBehavior _browserBehavior) {
+    public void setBrowserBehavior(Lifecycle _browserBehavior) {
         this.browserBehavior = _browserBehavior;
     }
 

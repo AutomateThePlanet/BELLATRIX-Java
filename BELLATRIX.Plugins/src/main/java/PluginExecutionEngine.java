@@ -17,46 +17,46 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PluginExecutionEngine {
-    private final List<Plugin> plugins;
+public final class PluginExecutionEngine {
+    private final static List<Plugin> plugins;
 
-    public PluginExecutionEngine() {
+    static {
         plugins = new ArrayList<>();
     }
 
-    public void addPlugin(Plugin plugin) {
+    public static void addPlugin(Plugin plugin) {
         plugins.add(plugin);
     }
 
-    public void removePlugin(Plugin plugin) {
+    public static void removePlugin(Plugin plugin) {
         plugins.remove(plugin);
     }
 
-    public void preTestInit(ITestResult result, Method memberInfo) {
+    public static void preTestInit(ITestResult result, Method memberInfo) {
         for (var currentObserver: plugins) {
             currentObserver.preTestInit(result, memberInfo);
         }
     }
 
-    public void postTestInit(ITestResult result, Method memberInfo) {
+    public static void postTestInit(ITestResult result, Method memberInfo) {
         for (var currentObserver: plugins) {
             currentObserver.postTestInit(result, memberInfo);
         }
     }
 
-    public void preTestCleanup(ITestResult result, Method memberInfo) {
+    public static void preTestCleanup(ITestResult result, Method memberInfo) {
         for (var currentObserver: plugins) {
             currentObserver.preTestCleanup(result, memberInfo);
         }
     }
 
-    public void postTestCleanup(ITestResult result, Method memberInfo) {
+    public static void postTestCleanup(ITestResult result, Method memberInfo) {
         for (var currentObserver: plugins) {
             currentObserver.postTestCleanup(result, memberInfo);
         }
     }
 
-    public void testInstantiated(Method memberInfo) {
+    public static void testInstantiated(Method memberInfo) {
         for (var currentObserver: plugins) {
             currentObserver.testInstantiated(memberInfo);
         }

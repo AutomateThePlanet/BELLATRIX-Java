@@ -16,15 +16,7 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 
 public class BaseTest {
-    private static final PluginExecutionEngine CURRENT_TEST_EXECUTION_SUBJECT;
-//    private static final Driver DRIVER;
     private ITestResult result;
-
-    static {
-        CURRENT_TEST_EXECUTION_SUBJECT = new PluginExecutionEngine();
-//        DRIVER = new LoggingDriver(new WebCoreDriver());
-//        new BrowserLaunchTestBehaviorObserver(CURRENT_TEST_EXECUTION_SUBJECT, DRIVER);
-    }
 
     public String getTestName() {
         return getTestResult().getTestName();
@@ -37,35 +29,25 @@ public class BaseTest {
     public ITestResult getTestResult() {
         return result;
     }
-//
-//    public Driver getDriver() {
-//        return DRIVER;
-//    }
-//
-//    @AfterSuite
-//    public void afterSuite() {
-//        if (DRIVER != null) {
-//            DRIVER.quit();
-//        }
-//    }
 
+    // TODO: extend for before, after class, etc.
     @BeforeMethod
     public void beforeMethod(ITestResult result) throws NoSuchMethodException, ClassNotFoundException {
         setTestResult(result);
         var testClass = this.getClass();
         var methodInfo = testClass.getMethod(getTestResult().getMethod().getMethodName());
-        CURRENT_TEST_EXECUTION_SUBJECT.preTestInit(getTestResult(), methodInfo);
+        PluginExecutionEngine.preTestInit(getTestResult(), methodInfo);
         testInit();
-        CURRENT_TEST_EXECUTION_SUBJECT.postTestInit(getTestResult(), methodInfo);
+        PluginExecutionEngine.postTestInit(getTestResult(), methodInfo);
     }
 
     @AfterMethod
     public void afterMethod() throws NoSuchMethodException {
         var testClass = this.getClass();
         var methodInfo = testClass.getMethod(getTestResult().getMethod().getMethodName());
-        CURRENT_TEST_EXECUTION_SUBJECT.preTestCleanup(getTestResult(), methodInfo);
+        PluginExecutionEngine.preTestCleanup(getTestResult(), methodInfo);
         testCleanup();
-        CURRENT_TEST_EXECUTION_SUBJECT.postTestCleanup(getTestResult(), methodInfo);
+        PluginExecutionEngine.postTestCleanup(getTestResult(), methodInfo);
     }
 
     protected void testInit()

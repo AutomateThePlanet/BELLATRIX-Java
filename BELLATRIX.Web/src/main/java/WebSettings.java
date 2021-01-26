@@ -11,11 +11,6 @@
  * limitations under the License.
  */
 
-package configuration;
-
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-
 public class WebSettings {
     private  String baseUrl;
     private  BrowserSettings chrome;

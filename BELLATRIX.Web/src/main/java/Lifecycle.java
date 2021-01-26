@@ -11,27 +11,9 @@
  * limitations under the License.
  */
 
-import org.testng.ITestResult;
-
-import java.lang.reflect.Method;
-
-public class Plugin {
-    public Plugin() {
-        PluginExecutionEngine.addPlugin(this);
-    }
-
-    public void preTestInit(ITestResult testResult, Method memberInfo) {
-    }
-
-    public void postTestInit(ITestResult testResult, Method memberInfo) {
-    }
-
-    public void preTestCleanup(ITestResult testResult, Method memberInfo) {
-    }
-
-    public void postTestCleanup(ITestResult testResult, Method memberInfo) {
-    }
-
-    public void testInstantiated(Method memberInfo) {
-    }
+public enum Lifecycle {
+    NOT_SET,
+    REUSE_IF_STARTED,
+    RESTART_EVERY_TIME,
+    RESTART_ON_FAIL
 }

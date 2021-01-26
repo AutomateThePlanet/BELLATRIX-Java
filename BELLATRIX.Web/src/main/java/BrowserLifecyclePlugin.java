@@ -11,23 +11,18 @@
  * limitations under the License.
  */
 
-package reusebrowser.browserinfrastructure;
-
 import org.testng.ITestResult;
-import reusebrowser.Browser;
-import reusebrowser.Driver;
 
 import java.lang.reflect.Method;
 
-public class BrowserLaunchTestBehaviorObserver extends BaseTestBehaviorObserver {
-    private final Driver driver;
+public class BrowserLifecyclePlugin extends Plugin {
+//    private final Driver driver;
     private BrowserConfiguration currentBrowserConfiguration;
     private BrowserConfiguration previousBrowserConfiguration;
 
-    public BrowserLaunchTestBehaviorObserver(TestExecutionSubject testExecutionSubject, Driver driver) {
-        super(testExecutionSubject);
-        this.driver = driver;
-    }
+//    public BrowserLaunchTestBehaviorObserver(Driver driver) {
+//        this.driver = driver;
+//    }
 
     @Override
     public void preTestInit(ITestResult testResult, Method memberInfo) {
@@ -46,7 +41,7 @@ public class BrowserLaunchTestBehaviorObserver extends BaseTestBehaviorObserver 
     @Override
     public void postTestCleanup(ITestResult testResult, Method memberInfo) {
         if (currentBrowserConfiguration.getBrowserBehavior() ==
-                BrowserBehavior.RESTART_ON_FAIL && testResult.getStatus() == ITestResult.FAILURE)
+                Lifecycle.RESTART_ON_FAIL && testResult.getStatus() == ITestResult.FAILURE)
         {
             restartBrowser();
         }
@@ -54,8 +49,8 @@ public class BrowserLaunchTestBehaviorObserver extends BaseTestBehaviorObserver 
 
     private void restartBrowser()
     {
-        driver.quit();
-        driver.start(currentBrowserConfiguration.getBrowser());
+//        driver.quit();
+//        driver.start(currentBrowserConfiguration.getBrowser());
     }
 
     private Boolean shouldRestartBrowser(BrowserConfiguration browserConfiguration)
@@ -66,7 +61,7 @@ public class BrowserLaunchTestBehaviorObserver extends BaseTestBehaviorObserver 
         }
 
         Boolean shouldRestartBrowser =
-                browserConfiguration.getBrowserBehavior() == BrowserBehavior.RESTART_EVERY_TIME || browserConfiguration.getBrowser() == Browser.NOT_SET;
+                browserConfiguration.getBrowserBehavior() == Lifecycle.RESTART_EVERY_TIME || browserConfiguration.getBrowser() == Browser.NOT_SET;
 
         return shouldRestartBrowser;
     }

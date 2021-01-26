@@ -13,7 +13,6 @@
         <module name="Chapter 9- Benchmarking" />
         <module name="chapter9-benchmarking" />
         <module name="BELLATRIX.API" />
-        <module name="BELLATRIX.Plugins.Screenshots" />
         <module name="BELLATRIX.Web" />
         <module name="Chapter 3- Optimize the Tests" />
         <module name="chapter7-building-extensibility-tests" />
@@ -22,7 +21,6 @@
         <module name="Chapter 4- Tests Readability" />
         <module name="BELLATRIX.Data" />
         <module name="BELLATRIX.Utilities" />
-        <module name="BELLATRIX.Plugins.Video" />
         <module name="test-spring" />
         <module name="Chapter 7- Building Extensibility" />
         <module name="BELLATRIX.Mobile" />
@@ -37,7 +35,24 @@
         <module name="Chapter 10- Test Data Preparation" />
         <module name="BELLATRIX.Configuration" />
         <module name="chapter2-stabilize-the-tests" />
+      </profile>
+      <profile name="Annotation profile for BELLATRIX.Layout" enabled="true">
+        <sourceOutputDir name="../BELLATRIX.Layout.Assertions/target/generated-sources/annotations" />
+        <sourceTestOutputDir name="../BELLATRIX.Layout.Assertions/target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
         <module name="BELLATRIX.Layout" />
+      </profile>
+      <profile name="Annotation profile for BELLATRIX.Plugins.Video" enabled="true">
+        <sourceOutputDir name="../BELLATRIX.TestExecutionExtensions.Video/target/generated-sources/annotations" />
+        <sourceTestOutputDir name="../BELLATRIX.TestExecutionExtensions.Video/target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="BELLATRIX.Plugins.Video" />
+      </profile>
+      <profile name="Annotation profile for BELLATRIX" enabled="true">
+        <sourceOutputDir name="../BELLATRIX.TestExecutionExtensions.Screenshots/target/generated-sources/annotations" />
+        <sourceTestOutputDir name="../BELLATRIX.TestExecutionExtensions.Screenshots/target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="BELLATRIX.Plugins.Screenshots" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="15">

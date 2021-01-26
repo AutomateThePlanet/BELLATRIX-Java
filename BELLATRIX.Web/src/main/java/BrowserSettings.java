@@ -11,8 +11,6 @@
  * limitations under the License.
  */
 
-package configuration;
-
 public class BrowserSettings {
     private int pageLoadTimeout;
     private int scriptTimeout;

@@ -11,9 +11,6 @@
  * limitations under the License.
  */
 
-package reusebrowser.browserinfrastructure;
-
-import reusebrowser.Browser;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -23,5 +20,5 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ExecutionBrowser {
     Browser browser() default Browser.CHROME;
-    BrowserBehavior browserBehavior() default BrowserBehavior.RESTART_EVERY_TIME;
+    Lifecycle browserBehavior() default Lifecycle.RESTART_EVERY_TIME;
 }

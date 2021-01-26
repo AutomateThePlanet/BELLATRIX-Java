@@ -11,27 +11,11 @@
  * limitations under the License.
  */
 
-import org.testng.ITestResult;
+import org.testng.annotations.BeforeSuite;
 
-import java.lang.reflect.Method;
-
-public class Plugin {
-    public Plugin() {
-        PluginExecutionEngine.addPlugin(this);
-    }
-
-    public void preTestInit(ITestResult testResult, Method memberInfo) {
-    }
-
-    public void postTestInit(ITestResult testResult, Method memberInfo) {
-    }
-
-    public void preTestCleanup(ITestResult testResult, Method memberInfo) {
-    }
-
-    public void postTestCleanup(ITestResult testResult, Method memberInfo) {
-    }
-
-    public void testInstantiated(Method memberInfo) {
+public class WebTest extends BaseTest {
+    @BeforeSuite
+    public void beforeSuite() {
+        PluginExecutionEngine.addPlugin(new BrowserLifecyclePlugin());
     }
 }

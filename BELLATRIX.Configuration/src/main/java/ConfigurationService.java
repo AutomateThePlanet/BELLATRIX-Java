@@ -11,8 +11,6 @@
  * limitations under the License.
  */
 
-package configuration;
-
 import com.google.gson.Gson;
 import com.google.gson.JsonParser;
 import org.apache.commons.io.IOUtils;

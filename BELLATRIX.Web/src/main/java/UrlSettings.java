@@ -11,8 +11,6 @@
  * limitations under the License.
  */
 
-package configuration;
-
 public class UrlSettings {
     private String shopUrl;
     private String accountUrl;
