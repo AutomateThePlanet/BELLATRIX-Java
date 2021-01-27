@@ -16,6 +16,7 @@ import org.openqa.selenium.SearchContext;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import solutions.bellatrix.infrastructure.DriverService;
 
 import java.util.function.Function;
 
@@ -36,11 +37,11 @@ public abstract class WaitStrategy {
         return sleepIntervalSeconds;
     }
 
-    public abstract void waitUntil(SearchContext searchContext, WebDriver driver, By by);
+    public abstract void waitUntil(SearchContext searchContext, By by);
 
-    protected void waitUntil(Function<SearchContext, Boolean> waitCondition, WebDriver driver)
+    protected void waitUntil(Function<SearchContext, Boolean> waitCondition)
     {
-        var webDriverWait = new WebDriverWait(driver, timeoutIntervalSeconds, sleepIntervalSeconds);
+        var webDriverWait = new WebDriverWait(DriverService.getWrappedDriver(), timeoutIntervalSeconds, sleepIntervalSeconds);
         webDriverWait.until(waitCondition);
     }
 

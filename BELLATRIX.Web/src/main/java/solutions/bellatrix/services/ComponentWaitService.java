@@ -13,9 +13,16 @@
 
 package solutions.bellatrix.services;
 
-import core.Element;
+import solutions.bellatrix.components.WebComponent;
+import solutions.bellatrix.infrastructure.DriverService;
 import solutions.bellatrix.waitstrategies.WaitStrategy;
 
-public interface ElementWaitService {
-    void wait(Element element, WaitStrategy waitStrategy);
+public class ComponentWaitService extends WebService {
+    public void wait(WebComponent component, WaitStrategy waitStrategy) {
+        if (component.getParentWrappedElement() == null) {
+            waitStrategy.waitUntil(DriverService.getWrappedDriver(), component.getFindStrategy().convert());
+        } else {
+            waitStrategy.waitUntil(component.getParentWrappedElement(), component.getFindStrategy().convert());
+        }
+    }
 }

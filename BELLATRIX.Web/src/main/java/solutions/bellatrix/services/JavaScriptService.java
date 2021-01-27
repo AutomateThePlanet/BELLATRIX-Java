@@ -13,5 +13,56 @@
 
 package solutions.bellatrix.services;
 
-public class JavaScriptService  extends WebService {
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebElement;
+
+public class JavaScriptService extends WebService {
+    private final JavascriptExecutor javascriptExecutor;
+
+    protected JavaScriptService() {
+        super();
+        javascriptExecutor = (JavascriptExecutor) getWrappedDriver();
+    }
+
+    public Object execute(String script) {
+        try {
+            var result = (String)javascriptExecutor.executeScript(script);
+            return result;
+        } catch (Exception ex) {
+            System.out.print(ex);
+            return "";
+        }
+    }
+
+    public String execute(String frameName, String script) {
+        getWrappedDriver().switchTo().frame(frameName);
+        var result = (String)execute(script);
+        getWrappedDriver().switchTo().defaultContent();
+        return result;
+    }
+
+    public String execute(String script, Object... args) {
+        try {
+            var result = (String)execute(script, args);
+            return result ;
+        } catch (Exception ex) {
+            System.out.print(ex);
+            return "";
+        }
+    }
+
+//    public <TElement extends Element> String Execute(String script, TElement element) {
+//        var result = execute(script, element.getWrappedElement());
+//        return result;
+//    }
+
+    public String execute(String script, WebElement nativeElement) {
+        try {
+            var result = (String)javascriptExecutor.executeScript(script, nativeElement);
+            return result;
+        } catch (Exception ex) {
+            System.out.print(ex);
+            return "";
+        }
+    }
 }

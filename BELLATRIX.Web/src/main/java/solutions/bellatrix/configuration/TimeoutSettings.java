@@ -18,6 +18,8 @@ import lombok.Setter;
 
 public class TimeoutSettings {
     @Getter @Setter private int waitForAjaxTimeout;
+    @Getter @Setter private int waitUntilReadyTimeout;
+    @Getter @Setter private int waitForJavaScriptAnimationsTimeout;
     @Getter @Setter private int waitForAngularTimeout;
     @Getter @Setter private int waitForPartialUrl;
     @Getter @Setter private int sleepInterval;

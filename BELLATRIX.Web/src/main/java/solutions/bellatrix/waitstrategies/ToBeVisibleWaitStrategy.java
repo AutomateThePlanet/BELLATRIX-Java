@@ -19,8 +19,8 @@ public class ToBeVisibleWaitStrategy extends WaitStrategy{
     }
 
     @Override
-    public void waitUntil(SearchContext searchContext, WebDriver driver, By by) {
-        waitUntil((x) -> elementIsVisible(searchContext, by), driver);
+    public void waitUntil(SearchContext searchContext, By by) {
+        waitUntil((x) -> elementIsVisible(searchContext, by));
     }
 
     private Boolean elementIsVisible(SearchContext searchContext, By by)

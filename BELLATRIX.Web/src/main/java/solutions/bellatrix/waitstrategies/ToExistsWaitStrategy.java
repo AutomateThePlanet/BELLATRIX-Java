@@ -19,8 +19,8 @@ public class ToExistsWaitStrategy extends WaitStrategy {
     }
 
     @Override
-    public void waitUntil(SearchContext searchContext, WebDriver driver, By by) {
-        waitUntil((x) -> elementExists(searchContext, by), driver);
+    public void waitUntil(SearchContext searchContext, By by) {
+        waitUntil((x) -> elementExists(searchContext, by));
     }
 
     private Boolean elementExists(SearchContext searchContext, By by)

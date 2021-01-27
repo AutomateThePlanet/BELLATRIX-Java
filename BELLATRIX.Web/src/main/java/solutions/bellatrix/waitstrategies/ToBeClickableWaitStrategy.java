@@ -19,8 +19,8 @@ public class ToBeClickableWaitStrategy extends WaitStrategy {
     }
 
     @Override
-    public void waitUntil(SearchContext searchContext, WebDriver driver, By by) {
-        waitUntil((x) -> elementIsClickable(searchContext, by), driver);
+    public void waitUntil(SearchContext searchContext, By by) {
+        waitUntil((x) -> elementIsClickable(searchContext, by));
     }
 
     private Boolean elementIsClickable(SearchContext searchContext, By by)

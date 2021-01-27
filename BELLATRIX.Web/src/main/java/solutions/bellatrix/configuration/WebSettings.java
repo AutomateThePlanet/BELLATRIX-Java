@@ -24,41 +24,17 @@ package solutions.bellatrix.configuration;/*
  * limitations under the License.
  */
 
+import lombok.Getter;
+import lombok.Setter;
+
 public class WebSettings {
-    private  String baseUrl;
-    private BrowserSettings chrome;
-    private BrowserSettings firefox;
-    private BrowserSettings edge;
-    private  int elementWaitTimeout;
-
-    public String getBaseUrl() {
-        return baseUrl;
-    }
-
-    public BrowserSettings getChrome() {
-        return chrome;
-    }
-
-    public BrowserSettings getFirefox() {
-        return firefox;
-    }
-
-    public BrowserSettings getEdge() {
-        return edge;
-    }
-
-    public int getElementWaitTimeout() {
-        return elementWaitTimeout;
-    }
-
-    @Override
-    public String toString() {
-        return "solutions.bellatrix.configuration.WebSettings{" +
-                "baseUrl='" + baseUrl + '\'' +
-                ", chrome=" + chrome +
-                ", firefox=" + firefox +
-                ", edge=" + edge +
-                ", elementWaitTimeout=" + elementWaitTimeout +
-                '}';
-    }
+    private @Getter @Setter String baseUrl;
+    private @Getter @Setter BrowserSettings chrome;
+    private @Getter @Setter BrowserSettings firefox;
+    private @Getter @Setter BrowserSettings edge;
+    private @Getter @Setter int elementWaitTimeout;
+    private @Getter @Setter Boolean automaticallyScrollToVisible;
+    private @Getter @Setter Boolean waitUntilReadyOnElementFound;
+    private @Getter @Setter Boolean waitForAngular;
+    private @Getter @Setter int artificialDelayBeforeAction;
 }
