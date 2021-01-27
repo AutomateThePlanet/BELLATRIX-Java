@@ -11,16 +11,22 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.infrastructure;
+package solutions.bellatrix.services;
 
-public enum Browser {
-    CHROME,
-    CHROME_HEADLESS,
-    FIREFOX,
-    FIREFOX_HEADLESS,
-    EDGE,
-    EDGE_HEADLESS,
-    OPERA,
-    SAFARI,
-    INTERNET_EXPLORER
+import org.openqa.selenium.Alert;
+
+import java.util.function.Function;
+
+public class DialogService extends WebService {
+    public void handle(Function<Object, Alert> function, DialogButton dialogButton) {
+        var alert = getWrappedDriver().switchTo().alert();
+        function.apply(alert);
+        if (dialogButton == DialogButton.OK) {
+            alert.accept();
+            getWrappedDriver().switchTo().defaultContent();
+        } else {
+            alert.dismiss();
+            getWrappedDriver().switchTo().defaultContent();
+        }
+    }
 }

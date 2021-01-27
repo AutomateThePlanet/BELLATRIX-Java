@@ -11,16 +11,23 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.infrastructure;
+package solutions.bellatrix.findstrategies;
 
-public enum Browser {
-    CHROME,
-    CHROME_HEADLESS,
-    FIREFOX,
-    FIREFOX_HEADLESS,
-    EDGE,
-    EDGE_HEADLESS,
-    OPERA,
-    SAFARI,
-    INTERNET_EXPLORER
+import org.openqa.selenium.By;
+
+public class XPathFindStrategy extends FindStrategy {
+    public XPathFindStrategy(String value)
+    {
+        super(value);
+    }
+
+    @Override
+    public By convert() {
+        return By.xpath(getValue());
+    }
+
+    @Override
+    public String toString() {
+        return String.format("xpath = %s", getValue());
+    }
 }

@@ -11,16 +11,8 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.infrastructure;
-
-public enum Browser {
-    CHROME,
-    CHROME_HEADLESS,
-    FIREFOX,
-    FIREFOX_HEADLESS,
-    EDGE,
-    EDGE_HEADLESS,
-    OPERA,
-    SAFARI,
-    INTERNET_EXPLORER
+package solutions.bellatrix.waitstrategies;public class Wait {
+    public static WaitStrategyFactory to() {
+        return new WaitStrategyFactory();
+    }
 }

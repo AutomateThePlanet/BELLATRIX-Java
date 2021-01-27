@@ -37,8 +37,8 @@ public class DriverService {
         disposed.set(false);
     }
 
-    public static ThreadLocal<WebDriver> getWrappedDriver() {
-        return wrappedDriver;
+    public static WebDriver getWrappedDriver() {
+        return wrappedDriver.get();
     }
 
     public static BrowserConfiguration getBrowserConfiguration() {

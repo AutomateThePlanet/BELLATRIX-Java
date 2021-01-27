@@ -11,16 +11,19 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.infrastructure;
+package solutions.bellatrix.services;
 
-public enum Browser {
-    CHROME,
-    CHROME_HEADLESS,
-    FIREFOX,
-    FIREFOX_HEADLESS,
-    EDGE,
-    EDGE_HEADLESS,
-    OPERA,
-    SAFARI,
-    INTERNET_EXPLORER
+import org.openqa.selenium.WebDriver;
+import solutions.bellatrix.infrastructure.DriverService;
+
+public abstract class WebService {
+    private final WebDriver wrappedDriver;
+
+    public WebDriver getWrappedDriver() {
+        return wrappedDriver;
+    }
+
+    protected WebService() {
+        this.wrappedDriver = DriverService.getWrappedDriver();
+    }
 }

@@ -11,16 +11,18 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.infrastructure;
+package solutions.bellatrix.findstrategies;
 
-public enum Browser {
-    CHROME,
-    CHROME_HEADLESS,
-    FIREFOX,
-    FIREFOX_HEADLESS,
-    EDGE,
-    EDGE_HEADLESS,
-    OPERA,
-    SAFARI,
-    INTERNET_EXPLORER
+import org.openqa.selenium.By;
+
+public class TagFindStrategy extends FindStrategy {
+    public TagFindStrategy(String value)
+    {
+        super(value);
+    }
+
+    @Override
+    public By convert() {
+        return By.tagName(getValue());
+    }
 }

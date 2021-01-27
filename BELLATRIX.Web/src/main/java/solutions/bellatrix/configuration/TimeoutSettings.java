@@ -13,23 +13,18 @@
 
 package solutions.bellatrix.configuration;
 
-public class BrowserSettings {
-    private int pageLoadTimeout;
-    private int scriptTimeout;
+import lombok.Getter;
+import lombok.Setter;
 
-    public int getPageLoadTimeout() {
-        return pageLoadTimeout;
-    }
-
-    public int getScriptTimeout() {
-        return scriptTimeout;
-    }
-
-    @Override
-    public String toString() {
-        return "solutions.bellatrix.configuration.BrowserSettings{" +
-                "pageLoadTimeout=" + pageLoadTimeout +
-                ", scriptTimeout=" + scriptTimeout +
-                '}';
-    }
+public class TimeoutSettings {
+    @Getter @Setter private int waitForAjaxTimeout;
+    @Getter @Setter private int waitForAngularTimeout;
+    @Getter @Setter private int waitForPartialUrl;
+    @Getter @Setter private int sleepInterval;
+    @Getter @Setter private int elementToBeVisibleTimeout;
+    @Getter @Setter private int elementToExistTimeout;
+    @Getter @Setter private int elementToNotExistTimeout;
+    @Getter @Setter private int elementToBeClickableTimeout;
+    @Getter @Setter private int elementNotToBeVisibleTimeout;
+    @Getter @Setter private int elementToHaveContentTimeout;
 }
