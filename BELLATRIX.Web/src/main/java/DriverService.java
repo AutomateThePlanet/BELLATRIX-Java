@@ -22,12 +22,16 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import java.util.concurrent.TimeUnit;
 
-public class DriverService implements AutoCloseable {
-    private Boolean disposed = false;
+public class DriverService {
+    private static ThreadLocal<Boolean> disposed;
     //    private static ProxyService proxyService;
     private static BrowserSettings browserSettings;
     private static ThreadLocal<BrowserConfiguration> browserConfiguration;
     private static ThreadLocal<WebDriver> wrappedDriver;
+
+    static {
+        disposed.set(false);
+    }
 
     public static ThreadLocal<WebDriver> getWrappedDriver() {
         return wrappedDriver;
@@ -41,7 +45,7 @@ public class DriverService implements AutoCloseable {
         return browserSettings;
     }
 
-    public static WebDriver Create(BrowserConfiguration configuration) {
+    public static WebDriver start(BrowserConfiguration configuration) {
         browserConfiguration.set(configuration);
         WebDriver driver = null;
         // configure proxy
@@ -166,9 +170,8 @@ public class DriverService implements AutoCloseable {
         } catch (Exception ignored) {}
     }
 
-    @Override
-    public void close() throws Exception {
-        if (disposed) {
+    public static void close() {
+        if (disposed.get()) {
             return;
         }
 
@@ -176,6 +179,6 @@ public class DriverService implements AutoCloseable {
             wrappedDriver.get().close();
         }
 
-        disposed = true;
+        disposed.set(true);
     }
 }

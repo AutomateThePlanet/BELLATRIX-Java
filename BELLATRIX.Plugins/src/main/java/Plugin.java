@@ -20,18 +20,39 @@ public class Plugin {
         PluginExecutionEngine.addPlugin(this);
     }
 
-    public void preTestInit(ITestResult testResult, Method memberInfo) {
+    public void preBeforeClass(Class type) {
     }
 
-    public void postTestInit(ITestResult testResult, Method memberInfo) {
+    public void postBeforeClass(Class type) {
     }
 
-    public void preTestCleanup(ITestResult testResult, Method memberInfo) {
+    public void beforeClassFailed(Exception e) {
     }
 
-    public void postTestCleanup(ITestResult testResult, Method memberInfo) {
+    public void preBeforeTest(ITestResult testResult, Method memberInfo) {
     }
 
-    public void testInstantiated(Method memberInfo) {
+    public void postBeforeTest(ITestResult testResult, Method memberInfo) {
+    }
+
+    public void beforeTestFailed(Exception e) {
+    }
+
+    public void preAfterTest(ITestResult testResult, Method memberInfo) {
+    }
+
+    public void postAfterTest(ITestResult testResult, Method memberInfo) {
+    }
+
+    public void afterTestFailed(Exception e) {
+    }
+
+    public void preAfterClass(Class type) {
+    }
+
+    public void postAfterClass(Class type) {
+    }
+
+    public void afterClassFailed(Exception e) {
     }
 }

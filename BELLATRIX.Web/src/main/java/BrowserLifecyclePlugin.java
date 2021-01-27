@@ -16,19 +16,15 @@ import org.testng.ITestResult;
 import java.lang.reflect.Method;
 
 public class BrowserLifecyclePlugin extends Plugin {
-//    private final Driver driver;
-    private BrowserConfiguration currentBrowserConfiguration;
-    private BrowserConfiguration previousBrowserConfiguration;
-
-//    public BrowserLaunchTestBehaviorObserver(Driver driver) {
-//        this.driver = driver;
-//    }
+    private ThreadLocal<BrowserConfiguration> currentBrowserConfiguration;
+    private ThreadLocal<BrowserConfiguration> previousBrowserConfiguration;
+    private ThreadLocal<Boolean> isBrowserStartedDuringPreTestsArrange;
 
     @Override
-    public void preTestInit(ITestResult testResult, Method memberInfo) {
-        currentBrowserConfiguration = getBrowserConfiguration(memberInfo);
+    public void preBeforeTest(ITestResult testResult, Method memberInfo) {
+        currentBrowserConfiguration.set(getBrowserConfiguration(memberInfo));
 
-        Boolean shouldRestartBrowser = shouldRestartBrowser(currentBrowserConfiguration);
+        Boolean shouldRestartBrowser = shouldRestartBrowser(currentBrowserConfiguration.get());
 
         if (shouldRestartBrowser)
         {
@@ -39,8 +35,8 @@ public class BrowserLifecyclePlugin extends Plugin {
     }
 
     @Override
-    public void postTestCleanup(ITestResult testResult, Method memberInfo) {
-        if (currentBrowserConfiguration.getBrowserBehavior() ==
+    public void postAfterTest(ITestResult testResult, Method memberInfo) {
+        if (currentBrowserConfiguration.get().getBrowserBehavior() ==
                 Lifecycle.RESTART_ON_FAIL && testResult.getStatus() == ITestResult.FAILURE)
         {
             restartBrowser();
@@ -49,8 +45,8 @@ public class BrowserLifecyclePlugin extends Plugin {
 
     private void restartBrowser()
     {
-//        driver.quit();
-//        driver.start(currentBrowserConfiguration.getBrowser());
+        DriverService.close();
+        DriverService.start(currentBrowserConfiguration.get());
     }
 
     private Boolean shouldRestartBrowser(BrowserConfiguration browserConfiguration)

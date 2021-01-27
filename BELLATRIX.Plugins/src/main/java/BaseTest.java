@@ -12,7 +12,9 @@
  */
 
 import org.testng.ITestResult;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 
 public class BaseTest {
@@ -30,31 +32,70 @@ public class BaseTest {
         return result;
     }
 
-    // TODO: extend for before, after class, etc.
+    @BeforeClass
+    public void beforeClassCore() {
+        try {
+            var testClass = this.getClass();
+            PluginExecutionEngine.preBeforeClass(testClass);
+            beforeClass();
+            PluginExecutionEngine.postBeforeClass(testClass);
+        } catch (Exception e) {
+            PluginExecutionEngine.beforeClassFailed(e);
+        }
+    }
+
     @BeforeMethod
-    public void beforeMethod(ITestResult result) throws NoSuchMethodException, ClassNotFoundException {
-        setTestResult(result);
-        var testClass = this.getClass();
-        var methodInfo = testClass.getMethod(getTestResult().getMethod().getMethodName());
-        PluginExecutionEngine.preTestInit(getTestResult(), methodInfo);
-        testInit();
-        PluginExecutionEngine.postTestInit(getTestResult(), methodInfo);
+    public void beforeMethodCore(ITestResult result) {
+        try {
+            setTestResult(result);
+            var testClass = this.getClass();
+            var methodInfo = testClass.getMethod(getTestResult().getMethod().getMethodName());
+            PluginExecutionEngine.preBeforeTest(getTestResult(), methodInfo);
+            beforeMethod();
+            PluginExecutionEngine.postBeforeTest(getTestResult(), methodInfo);
+        } catch (Exception e) {
+            PluginExecutionEngine.beforeTestFailed(e);
+        }
     }
 
     @AfterMethod
-    public void afterMethod() throws NoSuchMethodException {
-        var testClass = this.getClass();
-        var methodInfo = testClass.getMethod(getTestResult().getMethod().getMethodName());
-        PluginExecutionEngine.preTestCleanup(getTestResult(), methodInfo);
-        testCleanup();
-        PluginExecutionEngine.postTestCleanup(getTestResult(), methodInfo);
+    public void afterMethodCore() {
+        try {
+            var testClass = this.getClass();
+            var methodInfo = testClass.getMethod(getTestResult().getMethod().getMethodName());
+            PluginExecutionEngine.preAfterTest(getTestResult(), methodInfo);
+            afterMethod();
+            PluginExecutionEngine.postAfterTest(getTestResult(), methodInfo);
+        } catch (Exception e) {
+            PluginExecutionEngine.afterTestFailed(e);
+        }
     }
 
-    protected void testInit()
+    @AfterClass
+    public void afterClassCore() {
+        try {
+            var testClass = this.getClass();
+            PluginExecutionEngine.preAfterClass(testClass);
+            afterClass();
+            PluginExecutionEngine.postAfterClass(testClass);
+        } catch (Exception e) {
+            PluginExecutionEngine.afterClassFailed(e);
+        }
+    }
+
+    protected void beforeClass()
     {
     }
 
-    protected void testCleanup()
+    protected void afterClass()
+    {
+    }
+
+    protected void beforeMethod()
+    {
+    }
+
+    protected void afterMethod()
     {
     }
 }

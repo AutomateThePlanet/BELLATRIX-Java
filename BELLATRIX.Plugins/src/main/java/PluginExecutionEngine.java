@@ -32,33 +32,81 @@ public final class PluginExecutionEngine {
         plugins.remove(plugin);
     }
 
-    public static void preTestInit(ITestResult result, Method memberInfo) {
+    public static void preBeforeClass(Class type) {
         for (var currentObserver: plugins) {
-            currentObserver.preTestInit(result, memberInfo);
+            currentObserver.preBeforeClass(type);
         }
     }
 
-    public static void postTestInit(ITestResult result, Method memberInfo) {
+    public static void postBeforeClass(Class type) {
         for (var currentObserver: plugins) {
-            currentObserver.postTestInit(result, memberInfo);
+            currentObserver.postBeforeClass(type);
         }
     }
 
-    public static void preTestCleanup(ITestResult result, Method memberInfo) {
+    public static void beforeClassFailed(Exception e) {
         for (var currentObserver: plugins) {
-            currentObserver.preTestCleanup(result, memberInfo);
+            currentObserver.beforeClassFailed(e);
         }
     }
 
-    public static void postTestCleanup(ITestResult result, Method memberInfo) {
+    public static void preBeforeTest(ITestResult result, Method memberInfo) {
         for (var currentObserver: plugins) {
-            currentObserver.postTestCleanup(result, memberInfo);
+            currentObserver.preBeforeTest(result, memberInfo);
         }
     }
 
-    public static void testInstantiated(Method memberInfo) {
+    public static void postBeforeTest(ITestResult result, Method memberInfo) {
         for (var currentObserver: plugins) {
-            currentObserver.testInstantiated(memberInfo);
+            currentObserver.postBeforeTest(result, memberInfo);
         }
     }
+
+    public static void beforeTestFailed(Exception e) {
+        for (var currentObserver: plugins) {
+            currentObserver.beforeTestFailed(e);
+        }
+    }
+
+    public static void preAfterTest(ITestResult result, Method memberInfo) {
+        for (var currentObserver: plugins) {
+            currentObserver.preAfterTest(result, memberInfo);
+        }
+    }
+
+    public static void postAfterTest(ITestResult result, Method memberInfo) {
+        for (var currentObserver: plugins) {
+            currentObserver.postAfterTest(result, memberInfo);
+        }
+    }
+
+    public static void afterTestFailed(Exception e) {
+        for (var currentObserver: plugins) {
+            currentObserver.afterTestFailed(e);
+        }
+    }
+
+    public static void preAfterClass(Class type) {
+        for (var currentObserver: plugins) {
+            currentObserver.preAfterClass(type);
+        }
+    }
+
+    public static void postAfterClass(Class type) {
+        for (var currentObserver: plugins) {
+            currentObserver.postAfterClass(type);
+        }
+    }
+
+    public static void afterClassFailed(Exception e) {
+        for (var currentObserver: plugins) {
+            currentObserver.afterClassFailed(e);
+        }
+    }
+
+//    public static void testInstantiated(Method memberInfo) {
+//        for (var currentObserver: plugins) {
+//            currentObserver.testInstantiated(memberInfo);
+//        }
+//    }
 }

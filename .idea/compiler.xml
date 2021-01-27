@@ -28,7 +28,6 @@
         <module name="BELLATRIX.Logging" />
         <module name="BELLATRIX.Plugins" />
         <module name="chapter4-tests-readability" />
-        <module name="Chapter 7- Building Extensibility in Your Test Library" />
         <module name="Chapter 2- Stabilize the Tests" />
         <module name="Chapter 5- Tests Maintainability" />
         <module name="Chapter 8- Assessment System" />
