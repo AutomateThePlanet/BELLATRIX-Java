@@ -11,26 +11,23 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.components;
+package solutions.bellatrix.utilities;
 
-import solutions.bellatrix.components.contracts.ComponentHref;
-import solutions.bellatrix.plugins.EventListener;
+import java.lang.reflect.InvocationTargetException;
 
-public class Anchor extends WebComponent implements ComponentHref {
-    private static EventListener<ComponentActionEventArgs> CLICKING;
-    private static EventListener<ComponentActionEventArgs> CLICKED;
+public class InstanceFactory {
+    public static <T> T create(Class<T> classOf) {
+        T obj = null;
+        try {
+            obj = (T)classOf.getConstructors()[0].newInstance();
+        } catch (InstantiationException e) {
+           // ignore
+        } catch (IllegalAccessException e) {
+            // ignore
+        } catch (InvocationTargetException e) {
+            // ignore
+        }
 
-    @Override
-    public Class<?> getComponentClass() {
-        return getClass();
-    }
-
-    @Override
-    public String getHref() {
-        return null;
-    }
-
-    public void click() {
-        click(CLICKING, CLICKED);
+        return obj;
     }
 }

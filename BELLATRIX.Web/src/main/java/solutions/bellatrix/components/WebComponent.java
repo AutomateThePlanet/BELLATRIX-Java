@@ -37,9 +37,9 @@ import java.util.List;
 public class WebComponent implements Component {
     private WebSettings webSettings;
     @Getter  private WebElement wrappedElement;
-    @Getter @Setter(AccessLevel.MODULE) private WebElement parentWrappedElement;
-    @Getter @Setter(AccessLevel.MODULE) private int elementIndex;
-    @Getter @Setter(AccessLevel.MODULE) private FindStrategy findStrategy;
+    @Getter @Setter private WebElement parentWrappedElement;
+    @Getter @Setter private int elementIndex;
+    @Getter @Setter private FindStrategy findStrategy;
     @Getter private WebDriver wrappedDriver;
 
     // TODO: set elementName and pageName
@@ -57,17 +57,17 @@ public class WebComponent implements Component {
         webSettings = ConfigurationService.get(WebSettings.class);
     }
 
-    public WebComponent(FindStrategy findStrategy) {
-        this(findStrategy, 0, null);
-    }
-
-    public WebComponent(FindStrategy by, int elementIndex, WebElement parentWrappedElement) {
-        this.parentWrappedElement = parentWrappedElement;
-        this.elementIndex = elementIndex;
-        this.findStrategy = findStrategy;
-        this.waitStrategies = new ArrayList<>();
-        webSettings = ConfigurationService.get(WebSettings.class);
-    }
+//    public WebComponent(FindStrategy findStrategy) {
+//        this(findStrategy, 0, null);
+//    }
+//
+//    public WebComponent(FindStrategy by, int elementIndex, WebElement parentWrappedElement) {
+//        this.parentWrappedElement = parentWrappedElement;
+//        this.elementIndex = elementIndex;
+//        this.findStrategy = findStrategy;
+//        this.waitStrategies = new ArrayList<>();
+//        webSettings = ConfigurationService.get(WebSettings.class);
+//    }
 
     public void waitToBe() {
         findElement();
