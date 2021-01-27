@@ -11,9 +11,11 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.waitstrategies;import org.openqa.selenium.By;
+package solutions.bellatrix.waitstrategies;
+
+import lombok.Getter;
+import org.openqa.selenium.By;
 import org.openqa.selenium.SearchContext;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import solutions.bellatrix.infrastructure.DriverService;
@@ -21,27 +23,22 @@ import solutions.bellatrix.infrastructure.DriverService;
 import java.util.function.Function;
 
 public abstract class WaitStrategy {
-    private final int timeoutIntervalSeconds;
-    private final int sleepIntervalSeconds;
+    @Getter protected int timeoutInterval;
+    @Getter protected int sleepInterval;
 
-    public WaitStrategy(int timeoutIntervalSeconds, int sleepIntervalSeconds) {
-        this.timeoutIntervalSeconds = timeoutIntervalSeconds;
-        this.sleepIntervalSeconds = sleepIntervalSeconds;
+    public WaitStrategy() {
     }
 
-    public int getTimeoutIntervalSeconds() {
-        return timeoutIntervalSeconds;
-    }
-
-    public int getSleepIntervalSeconds() {
-        return sleepIntervalSeconds;
+    public WaitStrategy(int timeoutInterval, int sleepInterval) {
+        this.timeoutInterval = timeoutInterval;
+        this.sleepInterval = sleepInterval;
     }
 
     public abstract void waitUntil(SearchContext searchContext, By by);
 
     protected void waitUntil(Function<SearchContext, Boolean> waitCondition)
     {
-        var webDriverWait = new WebDriverWait(DriverService.getWrappedDriver(), timeoutIntervalSeconds, sleepIntervalSeconds);
+        var webDriverWait = new WebDriverWait(DriverService.getWrappedDriver(), timeoutInterval, sleepInterval);
         webDriverWait.until(waitCondition);
     }
 

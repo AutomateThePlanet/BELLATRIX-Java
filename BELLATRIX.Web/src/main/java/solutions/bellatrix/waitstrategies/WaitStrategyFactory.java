@@ -11,7 +11,9 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.waitstrategies;public class WaitStrategyFactory {
+package solutions.bellatrix.waitstrategies;
+
+public class WaitStrategyFactory {
     public ToExistsWaitStrategy exists() {
         return new ToExistsWaitStrategy(30, 2);
     }

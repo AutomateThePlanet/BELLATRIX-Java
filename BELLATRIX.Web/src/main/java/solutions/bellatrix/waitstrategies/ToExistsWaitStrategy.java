@@ -12,8 +12,15 @@
  */
 
 package solutions.bellatrix.waitstrategies;import org.openqa.selenium.*;
+import solutions.bellatrix.configuration.ConfigurationService;
+import solutions.bellatrix.configuration.TimeoutSettings;
 
 public class ToExistsWaitStrategy extends WaitStrategy {
+    public ToExistsWaitStrategy() {
+        timeoutInterval = ConfigurationService.get(TimeoutSettings.class).getElementToExistTimeout();
+        sleepInterval = ConfigurationService.get(TimeoutSettings.class).getSleepInterval();
+    }
+
     public ToExistsWaitStrategy(int timeoutIntervalSeconds, int sleepIntervalSeconds) {
        super(timeoutIntervalSeconds, sleepIntervalSeconds);
     }
