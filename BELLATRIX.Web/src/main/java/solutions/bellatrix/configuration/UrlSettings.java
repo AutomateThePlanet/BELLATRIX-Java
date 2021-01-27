@@ -11,7 +11,7 @@
  * limitations under the License.
  */
 
-public class UrlSettings {
+package solutions.bellatrix.configuration;public class UrlSettings {
     private String shopUrl;
     private String accountUrl;
 
@@ -25,7 +25,7 @@ public class UrlSettings {
 
     @Override
     public String toString() {
-        return "UrlSettings{" +
+        return "solutions.bellatrix.configuration.UrlSettings{" +
                 "shopUrl='" + shopUrl + '\'' +
                 ", accountUrl='" + accountUrl + '\'' +
                 '}';

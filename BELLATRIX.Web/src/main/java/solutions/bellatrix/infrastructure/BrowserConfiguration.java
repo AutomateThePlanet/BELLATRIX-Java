@@ -11,12 +11,12 @@
  * limitations under the License.
  */
 
-import java.util.HashMap;
+package solutions.bellatrix.infrastructure;import java.util.HashMap;
 import java.util.Objects;
 
 public class BrowserConfiguration {
     private Browser browser;
-    private Lifecycle browserBehavior;
+    private Lifecycle lifecycle;
     private ExecutionType executionType;
     private int height;
     private int width;
@@ -29,7 +29,7 @@ public class BrowserConfiguration {
 
     public BrowserConfiguration(Browser browser, Lifecycle browserBehavior) {
         this.browser = browser;
-        this.browserBehavior = browserBehavior;
+        this.lifecycle = browserBehavior;
         driverOptions = new HashMap<>();
     }
 
@@ -49,8 +49,8 @@ public class BrowserConfiguration {
         return executionType;
     }
 
-    public Lifecycle getBrowserBehavior() {
-        return browserBehavior;
+    public Lifecycle getLifecycle() {
+        return lifecycle;
     }
 
     public Browser getBrowser() {
@@ -62,11 +62,11 @@ public class BrowserConfiguration {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         var that = (BrowserConfiguration) o;
-        return height == that.height && width == that.width && browser == that.browser && browserBehavior == that.browserBehavior && executionType == that.executionType && shouldCaptureHttpTraffic.equals(that.shouldCaptureHttpTraffic);
+        return height == that.height && width == that.width && browser == that.browser && lifecycle == that.lifecycle && executionType == that.executionType && shouldCaptureHttpTraffic.equals(that.shouldCaptureHttpTraffic);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(browser, browserBehavior, executionType, height, width, shouldCaptureHttpTraffic);
+        return Objects.hash(browser, lifecycle, executionType, height, width, shouldCaptureHttpTraffic);
     }
 }

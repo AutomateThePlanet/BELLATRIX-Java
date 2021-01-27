@@ -11,14 +11,14 @@
  * limitations under the License.
  */
 
-public enum Browser {
-    CHROME,
-    CHROME_HEADLESS,
-    FIREFOX,
-    FIREFOX_HEADLESS,
-    EDGE,
-    EDGE_HEADLESS,
-    OPERA,
-    SAFARI,
-    INTERNET_EXPLORER
+package solutions.bellatrix.infrastructure;
+import org.testng.annotations.BeforeSuite;
+import solutions.bellatrix.plugins.BaseTest;
+import solutions.bellatrix.plugins.PluginExecutionEngine;
+
+public class WebTest extends BaseTest {
+    @BeforeSuite
+    public void beforeSuite() {
+        PluginExecutionEngine.addPlugin(new BrowserLifecyclePlugin());
+    }
 }

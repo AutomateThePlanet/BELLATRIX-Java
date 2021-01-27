@@ -11,23 +11,14 @@
  * limitations under the License.
  */
 
-public class BrowserSettings {
-    private int pageLoadTimeout;
-    private int scriptTimeout;
+package solutions.bellatrix.infrastructure;import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-    public int getPageLoadTimeout() {
-        return pageLoadTimeout;
-    }
-
-    public int getScriptTimeout() {
-        return scriptTimeout;
-    }
-
-    @Override
-    public String toString() {
-        return "BrowserSettings{" +
-                "pageLoadTimeout=" + pageLoadTimeout +
-                ", scriptTimeout=" + scriptTimeout +
-                '}';
-    }
+@Target( { ElementType.TYPE, ElementType.METHOD } )
+@Retention(RetentionPolicy.RUNTIME)
+public @interface ExecutionBrowser {
+    Browser browser() default Browser.CHROME;
+    Lifecycle browserBehavior() default Lifecycle.RESTART_EVERY_TIME;
 }

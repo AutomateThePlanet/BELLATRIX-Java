@@ -11,11 +11,10 @@
  * limitations under the License.
  */
 
-import org.testng.annotations.BeforeSuite;
-
-public class WebTest extends BaseTest {
-    @BeforeSuite
-    public void beforeSuite() {
-        PluginExecutionEngine.addPlugin(new BrowserLifecyclePlugin());
-    }
+package solutions.bellatrix.infrastructure;public enum ExecutionType {
+    REGULAR,
+    GRID,
+    SAUCE_LABS,
+    BROWSER_STACK,
+    CROSS_BROWSER_TESTING,
 }

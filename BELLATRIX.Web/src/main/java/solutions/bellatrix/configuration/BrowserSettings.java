@@ -11,10 +11,23 @@
  * limitations under the License.
  */
 
-public enum ExecutionType {
-    REGULAR,
-    GRID,
-    SAUCE_LABS,
-    BROWSER_STACK,
-    CROSS_BROWSER_TESTING,
+package solutions.bellatrix.configuration;public class BrowserSettings {
+    private int pageLoadTimeout;
+    private int scriptTimeout;
+
+    public int getPageLoadTimeout() {
+        return pageLoadTimeout;
+    }
+
+    public int getScriptTimeout() {
+        return scriptTimeout;
+    }
+
+    @Override
+    public String toString() {
+        return "solutions.bellatrix.configuration.BrowserSettings{" +
+                "pageLoadTimeout=" + pageLoadTimeout +
+                ", scriptTimeout=" + scriptTimeout +
+                '}';
+    }
 }

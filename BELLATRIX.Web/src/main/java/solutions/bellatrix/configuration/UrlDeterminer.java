@@ -11,6 +11,7 @@
  * limitations under the License.
  */
 
+package solutions.bellatrix.configuration;
 import org.apache.hc.core5.net.URIBuilder;
 
 import java.net.URI;

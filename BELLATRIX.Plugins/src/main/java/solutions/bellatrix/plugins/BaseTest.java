@@ -11,7 +11,7 @@
  * limitations under the License.
  */
 
-import org.testng.ITestResult;
+package solutions.bellatrix.plugins;import org.testng.ITestResult;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
