@@ -32,7 +32,7 @@ import static java.util.stream.Collectors.toList;
 public class NavigationService extends WebService {
     // TODO: UrlNotNavigatedEvent
 
-    public void open(String url) {
+    public void to(String url) {
         getWrappedDriver().navigate().to(url);
     }
 

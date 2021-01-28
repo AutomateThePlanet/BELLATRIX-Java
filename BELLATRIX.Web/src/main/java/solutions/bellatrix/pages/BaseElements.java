@@ -17,9 +17,7 @@ import lombok.Getter;
 import solutions.bellatrix.services.ComponentCreationService;
 
 public abstract class BaseElements {
-    @Getter protected final ComponentCreationService componentCreationService;
-
-    public BaseElements() {
-        this.componentCreationService = new ComponentCreationService();
+    public ComponentCreationService create() {
+        return new ComponentCreationService();
     }
 }

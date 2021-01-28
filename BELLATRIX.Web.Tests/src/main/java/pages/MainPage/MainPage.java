@@ -11,23 +11,26 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.pages;
+package pages.MainPage;
 
-import lombok.Getter;
-import solutions.bellatrix.services.NavigationService;
 
-public abstract class NavigatableAssertableWebPage<ElementsT extends BaseElements, AssertionsT extends BaseAssertions<ElementsT>> extends AssertableWebPage<ElementsT, AssertionsT> {
-    public NavigationService navigate() {
-        return new NavigationService();
+import solutions.bellatrix.pages.NavigatableAssertableWebPage;
+
+public class MainPage extends NavigatableAssertableWebPage<MainPageElements, MainPageAssertions> {
+
+    @Override
+    protected String getUrl() {
+        return "http://demos.bellatrix.solutions/";
     }
 
-    protected abstract String getUrl();
-
-    public void open() {
-        navigate().to(getUrl());
-        waitForPageLoad();
-    }
-
+    @Override
     protected void waitForPageLoad() {
+        elements().addToCartFalcon9().waitToExists();
+    }
+
+    public void addRocketToShoppingCart() {
+        open();
+        elements().addToCartFalcon9().click();
+        elements().viewCartButton().click();
     }
 }

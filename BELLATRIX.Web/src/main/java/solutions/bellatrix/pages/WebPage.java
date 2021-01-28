@@ -20,12 +20,12 @@ import solutions.bellatrix.services.ComponentCreationService;
 import java.lang.reflect.ParameterizedType;
 
 public abstract class WebPage<ElementsT extends BaseElements> {
-    @Getter protected final BrowserService browserService;
-    @Getter protected final ComponentCreationService componentCreationService;
+    public BrowserService browser() {
+        return new BrowserService();
+    }
 
-    public WebPage() {
-        this.browserService = new BrowserService();
-        this.componentCreationService = new ComponentCreationService();
+    public ComponentCreationService create() {
+        return new ComponentCreationService();
     }
 
     protected ElementsT elements() {

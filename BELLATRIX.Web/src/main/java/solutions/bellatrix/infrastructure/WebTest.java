@@ -20,11 +20,9 @@ import solutions.bellatrix.plugins.BaseTest;
 import solutions.bellatrix.services.App;
 
 public class WebTest extends BaseTest {
-    @Getter private final App app;
 
-    public WebTest() {
-        System.out.println("WebTest ctor");
-        app = new App();
+    public App app() {
+        return new App();
     }
 
     @BeforeSuite

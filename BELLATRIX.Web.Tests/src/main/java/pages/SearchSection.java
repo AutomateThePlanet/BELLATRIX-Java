@@ -11,23 +11,22 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.pages;
+package pages;
 
-import lombok.Getter;
-import solutions.bellatrix.services.NavigationService;
+import org.openqa.selenium.By;
+import solutions.bellatrix.pages.WebSection;
 
-public abstract class NavigatableAssertableWebPage<ElementsT extends BaseElements, AssertionsT extends BaseAssertions<ElementsT>> extends AssertableWebPage<ElementsT, AssertionsT> {
-    public NavigationService navigate() {
-        return new NavigationService();
+public class SearchSection extends WebSection {
+
+    public SearchSection(Driver driver) {
+        this.driver = driver;
     }
 
-    protected abstract String getUrl();
-
-    public void open() {
-        navigate().to(getUrl());
-        waitForPageLoad();
+    private Element searchField() {
+        return driver.findElement(By.id("woocommerce-product-search-field-0"));
     }
 
-    protected void waitForPageLoad() {
+    public void searchForItem(String searchText) throws InterruptedException {
+        searchField().typeText(searchText);
     }
 }

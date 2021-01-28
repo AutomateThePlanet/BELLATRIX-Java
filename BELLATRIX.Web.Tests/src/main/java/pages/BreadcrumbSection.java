@@ -11,23 +11,19 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.pages;
+package pages;
 
-import lombok.Getter;
-import solutions.bellatrix.services.NavigationService;
+import solutions.bellatrix.components.WebComponent;
+import solutions.bellatrix.pages.WebSection;
 
-public abstract class NavigatableAssertableWebPage<ElementsT extends BaseElements, AssertionsT extends BaseAssertions<ElementsT>> extends AssertableWebPage<ElementsT, AssertionsT> {
-    public NavigationService navigate() {
-        return new NavigationService();
+public class BreadcrumbSection extends WebSection {
+
+    private WebComponent breadcrumb() {
+        return create().byCss(WebComponent.class, "woocommerce-breadcrumb");
     }
 
-    protected abstract String getUrl();
-
-    public void open() {
-        navigate().to(getUrl());
-        waitForPageLoad();
-    }
-
-    protected void waitForPageLoad() {
+    // TODO: add create methods to component
+    public void openBreadcrumbItem(String itemToOpen) {
+        breadcrumb().findElement(By.linkText(itemToOpen)).click();
     }
 }

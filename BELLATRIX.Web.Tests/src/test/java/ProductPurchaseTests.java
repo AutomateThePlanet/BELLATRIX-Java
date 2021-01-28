@@ -22,15 +22,15 @@ import solutions.bellatrix.infrastructure.WebTest;
 public class ProductPurchaseTests extends WebTest {
     @Test
     public void completePurchaseSuccessfully_first() {
-        getApp().getNavigationService().open("http://demos.bellatrix.solutions/");
-        var addToCartFalcon9 = getApp().getComponentCreationService().createByCss(Anchor.class,"[data-product_id*='28']");
+        app().navigate().to("http://demos.bellatrix.solutions/");
+        var addToCartFalcon9 = app().create().byCss(Anchor.class,"[data-product_id*='28']");
         addToCartFalcon9.click();
     }
 
     @Test
     public void completePurchaseSuccessfully_second() {
-        getApp().getNavigationService().open("http://demos.bellatrix.solutions/");
-        var addToCartFalcon9 = getApp().getComponentCreationService().createByCss(Anchor.class,"[data-product_id*='28']");
+        app().navigate().to("http://demos.bellatrix.solutions/");
+        var addToCartFalcon9 = app().create().byCss(Anchor.class,"[data-product_id*='28']");
         addToCartFalcon9.click();
     }
 }

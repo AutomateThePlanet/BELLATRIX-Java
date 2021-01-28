@@ -11,23 +11,9 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.pages;
+package pages.CartPage;
 
-import lombok.Getter;
-import solutions.bellatrix.services.NavigationService;
+import solutions.bellatrix.pages.BaseAssertions;
 
-public abstract class NavigatableAssertableWebPage<ElementsT extends BaseElements, AssertionsT extends BaseAssertions<ElementsT>> extends AssertableWebPage<ElementsT, AssertionsT> {
-    public NavigationService navigate() {
-        return new NavigationService();
-    }
-
-    protected abstract String getUrl();
-
-    public void open() {
-        navigate().to(getUrl());
-        waitForPageLoad();
-    }
-
-    protected void waitForPageLoad() {
-    }
+public class CartPageAssertions extends BaseAssertions<CartPageElements> {
 }

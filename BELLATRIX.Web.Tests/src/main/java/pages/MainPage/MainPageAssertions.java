@@ -11,23 +11,15 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.pages;
+package pages.MainPage;
 
-import lombok.Getter;
-import solutions.bellatrix.services.NavigationService;
+import org.testng.Assert;
+import pages.v11.multifilepageobjectnavibasepagegeneric.BaseAssertions;
+import solutions.bellatrix.pages.BaseAssertions;
 
-public abstract class NavigatableAssertableWebPage<ElementsT extends BaseElements, AssertionsT extends BaseAssertions<ElementsT>> extends AssertableWebPage<ElementsT, AssertionsT> {
-    public NavigationService navigate() {
-        return new NavigationService();
-    }
-
-    protected abstract String getUrl();
-
-    public void open() {
-        navigate().to(getUrl());
-        waitForPageLoad();
-    }
-
-    protected void waitForPageLoad() {
+public class MainPageAssertions extends BaseAssertions<MainPageElements> {
+    public void assertProductBoxLink(String name, String expectedLink) {
+        var actualLink = elements().getProductBoxByName(name).getAttribute("href");
+        Assert.assertEquals(actualLink, expectedLink);
     }
 }

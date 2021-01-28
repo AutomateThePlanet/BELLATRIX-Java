@@ -11,23 +11,22 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.pages;
+package pages.MainPage;
 
-import lombok.Getter;
-import solutions.bellatrix.services.NavigationService;
+import org.openqa.selenium.By;
+import solutions.bellatrix.pages.BaseElements;
 
-public abstract class NavigatableAssertableWebPage<ElementsT extends BaseElements, AssertionsT extends BaseAssertions<ElementsT>> extends AssertableWebPage<ElementsT, AssertionsT> {
-    public NavigationService navigate() {
-        return new NavigationService();
+public class MainPageElements extends BaseElements {
+
+    public Element addToCartFalcon9() {
+        return driver.findElement(By.cssSelector("[data-product_id*='28']"));
     }
 
-    protected abstract String getUrl();
-
-    public void open() {
-        navigate().to(getUrl());
-        waitForPageLoad();
+    public Element viewCartButton() {
+        return driver.findElement(By.cssSelector("[class*='added_to_cart wc-forward']"));
     }
 
-    protected void waitForPageLoad() {
+    public Element getProductBoxByName(String name) {
+        return driver.findElement(By.xpath(String.format("//h2[text()='%s']/parent::a[1]", name)));
     }
 }

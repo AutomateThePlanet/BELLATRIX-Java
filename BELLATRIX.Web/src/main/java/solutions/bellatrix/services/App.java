@@ -21,35 +21,35 @@ import solutions.bellatrix.utilities.SingletonFactory;
 public class App implements AutoCloseable {
     private Boolean disposed = false;
 
-    public NavigationService getNavigationService() {
+    public NavigationService navigate() {
         return SingletonFactory.getInstance(NavigationService.class);
     }
 
-    public BrowserService getBrowserService() {
+    public BrowserService browser() {
         return SingletonFactory.getInstance(BrowserService.class);
     }
 
-    public CookiesService getCookiesService() {
+    public CookiesService cookies() {
         return SingletonFactory.getInstance(CookiesService.class);
     }
 
-    public DialogService getDialogService() {
+    public DialogService dialogs() {
         return SingletonFactory.getInstance(DialogService.class);
     }
 
-    public JavaScriptService getJavaScriptService() {
+    public JavaScriptService javaScript() {
         return SingletonFactory.getInstance(JavaScriptService.class);
     }
 
-    public ComponentCreationService getComponentCreationService() {
+    public ComponentCreationService create() {
         return SingletonFactory.getInstance(ComponentCreationService.class);
     }
 
-    public ComponentWaitService getComponentWaitService() {
+    public ComponentWaitService waitComponent() {
         return SingletonFactory.getInstance(ComponentWaitService.class);
     }
 
-    public <TPage extends NavigatableWebPage> TPage goTo(Class<TPage> pageOf, Object... args)
+    public <TPage extends NavigatableWebPage> TPage pageGoTo(Class<TPage> pageOf, Object... args)
     {
         var page = SingletonFactory.getInstance(pageOf, args);
         page.open();
@@ -57,7 +57,7 @@ public class App implements AutoCloseable {
         return page;
     }
 
-    public <TPage extends WebPage> TPage create(Class<TPage> pageOf, Object... args)
+    public <TPage extends WebPage> TPage page(Class<TPage> pageOf, Object... args)
     {
         return SingletonFactory.getInstance(pageOf, args);
     }

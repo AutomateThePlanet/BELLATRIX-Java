@@ -17,16 +17,14 @@ import lombok.Getter;
 import solutions.bellatrix.services.NavigationService;
 
 public abstract class NavigatableWebPage<ElementsT extends BaseElements> extends WebPage<ElementsT> {
-    @Getter protected final NavigationService navigationService;
-
-    public NavigatableWebPage() {
-        this.navigationService = new NavigationService();
+    public NavigationService navigate() {
+        return new NavigationService();
     }
 
     protected abstract String getUrl();
 
     public void open() {
-        getNavigationService().open(getUrl());
+        navigate().to(getUrl());
         waitForPageLoad();
     }
 
