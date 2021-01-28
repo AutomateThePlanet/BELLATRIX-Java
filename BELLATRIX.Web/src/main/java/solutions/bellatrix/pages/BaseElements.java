@@ -11,10 +11,15 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.waitstrategies;
+package solutions.bellatrix.pages;
 
-public class Wait {
-    public static WaitStrategyFactory to() {
-        return new WaitStrategyFactory();
+import lombok.Getter;
+import solutions.bellatrix.services.ComponentCreationService;
+
+public abstract class BaseElements {
+    @Getter protected final ComponentCreationService componentCreationService;
+
+    public BaseElements() {
+        this.componentCreationService = new ComponentCreationService();
     }
 }

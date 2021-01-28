@@ -28,6 +28,7 @@ import solutions.bellatrix.services.BrowserService;
 import solutions.bellatrix.services.ComponentCreateService;
 import solutions.bellatrix.services.ComponentWaitService;
 import solutions.bellatrix.services.JavaScriptService;
+import solutions.bellatrix.utilities.InstanceFactory;
 import solutions.bellatrix.waitstrategies.*;
 
 import java.util.ArrayList;
@@ -157,6 +158,12 @@ public class WebComponent implements Component {
 
     public <TElementType extends WebComponent> TElementType toBeVisible(TElementType element) {
         var waitStrategy = new ToBeVisibleWaitStrategy();
+        element.ensureState(waitStrategy);
+        return element;
+    }
+
+    public <TElementType extends WebComponent, TWaitStrategy extends WaitStrategy> TElementType to(Class<TWaitStrategy> waitClass, TElementType element) {
+        var waitStrategy = InstanceFactory.create(waitClass);
         element.ensureState(waitStrategy);
         return element;
     }

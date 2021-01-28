@@ -11,10 +11,17 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.waitstrategies;
+package solutions.bellatrix.pages;
 
-public class Wait {
-    public static WaitStrategyFactory to() {
-        return new WaitStrategyFactory();
+import java.lang.reflect.ParameterizedType;
+
+public abstract class AssertableWebPage<ElementsT extends BaseElements, AssertionsT extends BaseAssertions<ElementsT>> extends WebPage<ElementsT> {
+    public AssertionsT assertions() {
+        try {
+            var assertionsClass = (Class<AssertionsT>)((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[1];
+            return assertionsClass.getDeclaredConstructor().newInstance();
+        } catch (Exception e) {
+            return null;
+        }
     }
 }

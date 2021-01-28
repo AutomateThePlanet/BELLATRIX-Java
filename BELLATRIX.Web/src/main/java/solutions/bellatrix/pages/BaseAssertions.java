@@ -11,10 +11,12 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.waitstrategies;
+package solutions.bellatrix.pages;
 
-public class Wait {
-    public static WaitStrategyFactory to() {
-        return new WaitStrategyFactory();
+import solutions.bellatrix.utilities.InstanceFactory;
+
+public abstract class BaseAssertions<ElementsT extends BaseElements> {
+    protected ElementsT elements() {
+        return InstanceFactory.<ElementsT>createByTypeParameter(getClass(), 0);
     }
 }

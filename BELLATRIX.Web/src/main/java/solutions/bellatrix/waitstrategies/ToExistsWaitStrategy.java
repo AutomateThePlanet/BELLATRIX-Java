@@ -25,6 +25,10 @@ public class ToExistsWaitStrategy extends WaitStrategy {
        super(timeoutIntervalSeconds, sleepIntervalSeconds);
     }
 
+    public static ToExistsWaitStrategy of() {
+        return new ToExistsWaitStrategy();
+    }
+
     @Override
     public void waitUntil(SearchContext searchContext, By by) {
         waitUntil((x) -> elementExists(searchContext, by));

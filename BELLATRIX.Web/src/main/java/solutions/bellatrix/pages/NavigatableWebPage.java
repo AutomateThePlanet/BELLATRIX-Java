@@ -11,10 +11,25 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.waitstrategies;
+package solutions.bellatrix.pages;
 
-public class Wait {
-    public static WaitStrategyFactory to() {
-        return new WaitStrategyFactory();
+import lombok.Getter;
+import solutions.bellatrix.services.NavigationService;
+
+public abstract class NavigatableWebPage<ElementsT extends BaseElements> extends WebPage<ElementsT> {
+    @Getter protected final NavigationService navigationService;
+
+    public NavigatableWebPage() {
+        this.navigationService = new NavigationService();
+    }
+
+    protected abstract String getUrl();
+
+    public void open() {
+        getNavigationService().open(getUrl());
+        waitForPageLoad();
+    }
+
+    protected void waitForPageLoad() {
     }
 }

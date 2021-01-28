@@ -23,7 +23,7 @@ import solutions.bellatrix.configuration.TimeoutSettings;
 public class BrowserService extends WebService {
     private final JavascriptExecutor javascriptExecutor;
 
-    protected BrowserService() {
+    public BrowserService() {
         super();
         javascriptExecutor = (JavascriptExecutor) getWrappedDriver();
     }

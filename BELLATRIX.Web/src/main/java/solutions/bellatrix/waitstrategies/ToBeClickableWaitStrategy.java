@@ -11,7 +11,10 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.waitstrategies;import org.openqa.selenium.*;
+package solutions.bellatrix.waitstrategies;
+
+import lombok.RequiredArgsConstructor;
+import org.openqa.selenium.*;
 import solutions.bellatrix.configuration.ConfigurationService;
 import solutions.bellatrix.configuration.TimeoutSettings;
 
@@ -19,6 +22,10 @@ public class ToBeClickableWaitStrategy extends WaitStrategy {
     public ToBeClickableWaitStrategy() {
         timeoutInterval = ConfigurationService.get(TimeoutSettings.class).getElementToBeClickableTimeout();
         sleepInterval = ConfigurationService.get(TimeoutSettings.class).getSleepInterval();
+    }
+
+    public static ToBeClickableWaitStrategy of() {
+        return new ToBeClickableWaitStrategy();
     }
 
     public ToBeClickableWaitStrategy(int timeoutIntervalSeconds, int sleepIntervalSeconds) {

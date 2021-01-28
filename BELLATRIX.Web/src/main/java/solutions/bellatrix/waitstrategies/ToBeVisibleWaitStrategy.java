@@ -25,6 +25,10 @@ public class ToBeVisibleWaitStrategy extends WaitStrategy{
        super(timeoutIntervalSeconds, sleepIntervalSeconds);
     }
 
+    public static ToBeVisibleWaitStrategy of() {
+        return new ToBeVisibleWaitStrategy();
+    }
+
     @Override
     public void waitUntil(SearchContext searchContext, By by) {
         waitUntil((x) -> elementIsVisible(searchContext, by));

@@ -23,13 +23,31 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ComponentCreationService extends WebService {
-    public <TComponent extends WebComponent, TFindStrategy extends FindStrategy> TComponent create(Class<TComponent> componentClass, TFindStrategy findStrategy) {
+    public <TComponent extends WebComponent, TFindStrategy extends FindStrategy> TComponent create(Class<TFindStrategy> findStrategyClass, Class<TComponent> componentClass, Object... args) {
+        var findStrategy = InstanceFactory.create(findStrategyClass, args);
+        return create(componentClass, findStrategy);
+    }
+
+    public <TComponent extends WebComponent, TFindStrategy extends FindStrategy> List<TComponent> createAll(Class<TFindStrategy> findStrategyClass, Class<TComponent> componentClass, Object... args) {
+        var findStrategy = InstanceFactory.create(findStrategyClass, args);
+        return createAll(componentClass, findStrategy);
+    }
+
+    public <TComponent extends WebComponent> TComponent createById(Class<TComponent> componentClass, String id) {
+        return create(componentClass, new IdFindStrategy(id));
+    }
+
+    public <TComponent extends WebComponent> List<TComponent> createAllById(Class<TComponent> componentClass, String id) {
+        return createAll(componentClass, new IdFindStrategy(id));
+    }
+
+    protected <TComponent extends WebComponent, TFindStrategy extends FindStrategy> TComponent create(Class<TComponent> componentClass, TFindStrategy findStrategy) {
         var component = InstanceFactory.create(componentClass);
         component.setFindStrategy(findStrategy);
         return component;
     }
 
-    public <TComponent extends WebComponent, TFindStrategy extends FindStrategy> List<TComponent> createAll(Class<TComponent> componentClass, TFindStrategy findStrategy) {
+    protected <TComponent extends WebComponent, TFindStrategy extends FindStrategy> List<TComponent> createAll(Class<TComponent> componentClass, TFindStrategy findStrategy) {
         var nativeElements = DriverService.getWrappedDriver().findElements(findStrategy.convert());
         List<TComponent> componentList = new ArrayList<>();
         for (int i = 0; i < nativeElements.stream().count(); i++) {
@@ -40,13 +58,5 @@ public class ComponentCreationService extends WebService {
         }
 
         return componentList;
-    }
-
-    public <TComponent extends WebComponent> TComponent createById(Class<TComponent> componentClass, String id) {
-        return create(componentClass, new IdFindStrategy(id));
-    }
-
-    public <TComponent extends WebComponent> List<TComponent> createAllById(Class<TComponent> componentClass, String id) {
-        return createAll(componentClass, new IdFindStrategy(id));
     }
 }

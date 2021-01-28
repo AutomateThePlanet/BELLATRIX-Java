@@ -15,6 +15,7 @@ package solutions.bellatrix.configuration;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonParser;
+import lombok.experimental.UtilityClass;
 import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
@@ -22,7 +23,8 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 
-public class ConfigurationService {
+@UtilityClass
+public final class ConfigurationService {
     private static String environment;
 
     public static <T> T get(Class<T> configSection) {
