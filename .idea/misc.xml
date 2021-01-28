@@ -9,9 +9,7 @@
     </option>
     <option name="ignoredFiles">
       <set>
-        <option value="$PROJECT_DIR$/BELLATRIX.TestNG/pom.xml" />
         <option value="$PROJECT_DIR$/BELLATRIX.VideoRecording/pom.xml" />
-        <option value="$PROJECT_DIR$/Chapter 7- Building Extensibility in Your Test Library/pom.xml" />
       </set>
     </option>
   </component>

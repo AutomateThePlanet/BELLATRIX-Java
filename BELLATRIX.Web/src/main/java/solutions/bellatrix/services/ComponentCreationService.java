@@ -14,8 +14,7 @@
 package solutions.bellatrix.services;
 
 import solutions.bellatrix.components.WebComponent;
-import solutions.bellatrix.findstrategies.FindStrategy;
-import solutions.bellatrix.findstrategies.IdFindStrategy;
+import solutions.bellatrix.findstrategies.*;
 import solutions.bellatrix.infrastructure.DriverService;
 import solutions.bellatrix.utilities.InstanceFactory;
 
@@ -37,8 +36,56 @@ public class ComponentCreationService extends WebService {
         return create(componentClass, new IdFindStrategy(id));
     }
 
+    public <TComponent extends WebComponent> TComponent createByCss(Class<TComponent> componentClass, String css) {
+        return create(componentClass, new CssFindStrategy(css));
+    }
+
+    public <TComponent extends WebComponent> TComponent createByXPath(Class<TComponent> componentClass, String xpath) {
+        return create(componentClass, new XPathFindStrategy(xpath));
+    }
+
+    public <TComponent extends WebComponent> TComponent createByLinkText(Class<TComponent> componentClass, String linkText) {
+        return create(componentClass, new LinkTextFindStrategy(linkText));
+    }
+
+    public <TComponent extends WebComponent> TComponent createByTag(Class<TComponent> componentClass, String tag) {
+        return create(componentClass, new TagFindStrategy(tag));
+    }
+
+    public <TComponent extends WebComponent> TComponent createByIdContaining(Class<TComponent> componentClass, String idContaining) {
+        return create(componentClass, new IdContainingFindStrategy(idContaining));
+    }
+
+    public <TComponent extends WebComponent> TComponent createByInnerTextContaining(Class<TComponent> componentClass, String innerText) {
+        return create(componentClass, new InnerTextContainsFindStrategy(innerText));
+    }
+
     public <TComponent extends WebComponent> List<TComponent> createAllById(Class<TComponent> componentClass, String id) {
         return createAll(componentClass, new IdFindStrategy(id));
+    }
+
+    public <TComponent extends WebComponent> List<TComponent> createAllByCss(Class<TComponent> componentClass, String css) {
+        return createAll(componentClass, new CssFindStrategy(css));
+    }
+
+    public <TComponent extends WebComponent> List<TComponent> createAllByXPath(Class<TComponent> componentClass, String xpath) {
+        return createAll(componentClass, new XPathFindStrategy(xpath));
+    }
+
+    public <TComponent extends WebComponent> List<TComponent> createAllByLinkText(Class<TComponent> componentClass, String linkText) {
+        return createAll(componentClass, new LinkTextFindStrategy(linkText));
+    }
+
+    public <TComponent extends WebComponent> List<TComponent> createAllByTag(Class<TComponent> componentClass, String tag) {
+        return createAll(componentClass, new TagFindStrategy(tag));
+    }
+
+    public <TComponent extends WebComponent> List<TComponent> createAllByIdContaining(Class<TComponent> componentClass, String idContaining) {
+        return createAll(componentClass, new IdContainingFindStrategy(idContaining));
+    }
+
+    public <TComponent extends WebComponent> List<TComponent> createAllByInnerTextContaining(Class<TComponent> componentClass, String innerText) {
+        return createAll(componentClass, new InnerTextContainsFindStrategy(innerText));
     }
 
     protected <TComponent extends WebComponent, TFindStrategy extends FindStrategy> TComponent create(Class<TComponent> componentClass, TFindStrategy findStrategy) {

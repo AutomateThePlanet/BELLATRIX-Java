@@ -22,16 +22,6 @@
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
     <modules>
-        <module>Chapter 2- Stabilize the Tests</module>
-        <module>Chapter 3- Optimize the Tests</module>
-        <module>Chapter 4- Tests Readability</module>
-        <module>Chapter 5- Tests Maintainability</module>
-        <module>Chapter 6- API Usability</module>
-        <module>Chapter 7- Building Extensibility</module>
-        <module>Chapter 8- Assessment System</module>
-        <module>Chapter 10- Test Data Preparation</module>
-        <module>Chapter 9- Benchmarking</module>
-        <module>test-spring</module>
         <module>BELLATRIX.Configuration</module>
         <module>BELLATRIX.Logging</module>
         <module>BELLATRIX.Data</module>
@@ -44,6 +34,7 @@
         <module>BELLATRIX.Desktop</module>
         <module>BELLATRIX.Mobile</module>
         <module>BELLATRIX.API</module>
+        <module>BELLATRIX.Web.Tests</module>
     </modules>
 
     <properties>

@@ -11,28 +11,20 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.infrastructure;
+package solutions.bellatrix.pages;
 
 import lombok.Getter;
-import org.testng.annotations.AfterSuite;
-import org.testng.annotations.BeforeSuite;
-import solutions.bellatrix.plugins.BaseTest;
-import solutions.bellatrix.services.App;
+import solutions.bellatrix.services.BrowserService;
+import solutions.bellatrix.services.ComponentCreationService;
 
-public class WebTest extends BaseTest {
-    @Getter private final App app;
+import java.lang.reflect.ParameterizedType;
 
-    public WebTest() {
-        app = new App();
-    }
+public abstract class WebSection {
+    @Getter protected final BrowserService browserService;
+    @Getter protected final ComponentCreationService componentCreationService;
 
-    @BeforeSuite
-    public void beforeSuite() {
-       addPlugin(new BrowserLifecyclePlugin());
-    }
-
-    @AfterSuite
-    public void afterSuite() {
-        app.close();
+    public WebSection() {
+        this.browserService = new BrowserService();
+        this.componentCreationService = new ComponentCreationService();
     }
 }

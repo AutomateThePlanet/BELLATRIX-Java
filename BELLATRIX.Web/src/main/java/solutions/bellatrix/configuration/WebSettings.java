@@ -32,6 +32,7 @@ public class WebSettings {
     private @Getter @Setter BrowserSettings chrome;
     private @Getter @Setter BrowserSettings firefox;
     private @Getter @Setter BrowserSettings edge;
+    private @Getter @Setter TimeoutSettings timeoutSettings;
     private @Getter @Setter int elementWaitTimeout;
     private @Getter @Setter Boolean automaticallyScrollToVisible;
     private @Getter @Setter Boolean waitUntilReadyOnElementFound;

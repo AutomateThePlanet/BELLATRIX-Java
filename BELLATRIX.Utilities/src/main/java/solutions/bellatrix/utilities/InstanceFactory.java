@@ -13,22 +13,35 @@
 
 package solutions.bellatrix.utilities;
 
-import lombok.SneakyThrows;
-import lombok.experimental.UtilityClass;
-
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
 
-@UtilityClass
 public final class InstanceFactory {
-    @SneakyThrows
     public static <T> T create(Class<T> classOf) {
-        T obj = (T)classOf.getConstructors()[0].newInstance();
+        T obj = null;
+        try {
+            obj = (T)classOf.getConstructors()[0].newInstance();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
         return obj;
     }
 
-    @SneakyThrows
     public static <T> T create(Class<T> classOf, Object... args) {
-        T obj = (T)classOf.getConstructors()[0].newInstance(args);
+        T obj = null;
+        try {
+            obj = (T)classOf.getConstructors()[0].newInstance(args);
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
         return obj;
     }
 
