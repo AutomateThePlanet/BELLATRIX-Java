@@ -13,9 +13,14 @@
 
 package solutions.bellatrix.components;
 
+import lombok.experimental.ExtensionMethod;
 import solutions.bellatrix.components.contracts.ComponentHref;
 import solutions.bellatrix.plugins.EventListener;
+import solutions.bellatrix.waitstrategies.WaitStrategyElementsExtensions;
 
+import java.lang.annotation.Target;
+
+@ExtensionMethod({WaitStrategyElementsExtensions.class})
 public class Anchor extends WebComponent implements ComponentHref {
     private static EventListener<ComponentActionEventArgs> CLICKING;
     private static EventListener<ComponentActionEventArgs> CLICKED;
@@ -31,6 +36,8 @@ public class Anchor extends WebComponent implements ComponentHref {
     }
 
     public void click() {
+        String x = null;
+        System.out.println(x.or("Hello, World!"));
         click(CLICKING, CLICKED);
     }
 }

@@ -17,15 +17,19 @@ import solutions.bellatrix.components.WebComponent;
 
 
 public class WaitStrategyElementsExtensions {
-    public static <TElementType extends WebComponent> TElementType toExists(TElementType element) {
+    public static WebComponent toExists1(WebComponent element) {
         var waitStrategy = new ToExistsWaitStrategy();
         element.ensureState(waitStrategy);
         return element;
     }
 
-    public static <TElementType extends WebComponent> TElementType toExists(TElementType element, int timeoutInterval, int sleepInterval) {
+    public static WebComponent toExists1(WebComponent element, int timeoutInterval, int sleepInterval) {
         var waitStrategy = new ToExistsWaitStrategy(timeoutInterval, sleepInterval);
         element.ensureState(waitStrategy);
         return element;
+    }
+
+    public static <T> T or(T object, T ifNull) {
+        return object != null ? object : ifNull;
     }
 }
