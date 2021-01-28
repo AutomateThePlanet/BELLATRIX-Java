@@ -29,7 +29,6 @@
             <groupId>solutions.bellatrix</groupId>
             <artifactId>BELLATRIX.Web</artifactId>
             <version>1.0</version>
-            <scope>test</scope>
         </dependency>
     </dependencies>
 

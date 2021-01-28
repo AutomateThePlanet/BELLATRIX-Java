@@ -17,13 +17,7 @@ import org.openqa.selenium.WebDriver;
 import solutions.bellatrix.infrastructure.DriverService;
 
 public abstract class WebService {
-    private final WebDriver wrappedDriver;
-
     public WebDriver getWrappedDriver() {
-        return wrappedDriver;
-    }
-
-    protected WebService() {
-        this.wrappedDriver = DriverService.getWrappedDriver();
+        return DriverService.getWrappedDriver();
     }
 }

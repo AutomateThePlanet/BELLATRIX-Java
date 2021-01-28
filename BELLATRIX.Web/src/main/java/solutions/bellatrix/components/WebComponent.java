@@ -56,6 +56,10 @@ public class WebComponent implements Component {
     public WebComponent() {
         this.waitStrategies = new ArrayList<>();
         webSettings = ConfigurationService.get(WebSettings.class);
+        javaScriptService = new JavaScriptService();
+        browserService = new BrowserService();
+        componentCreateService = new ComponentCreateService();
+        componentWaitService = new ComponentWaitService();
     }
 
 //    public WebComponent(FindStrategy findStrategy) {

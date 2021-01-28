@@ -21,4 +21,5 @@ import java.lang.annotation.Target;
 public @interface ExecutionBrowser {
     Browser browser() default Browser.CHROME;
     Lifecycle browserBehavior() default Lifecycle.RESTART_EVERY_TIME;
+    ExecutionType executionType() default ExecutionType.REGULAR;
 }

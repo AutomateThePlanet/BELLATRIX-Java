@@ -17,11 +17,12 @@ import lombok.RequiredArgsConstructor;
 import org.openqa.selenium.*;
 import solutions.bellatrix.configuration.ConfigurationService;
 import solutions.bellatrix.configuration.TimeoutSettings;
+import solutions.bellatrix.configuration.WebSettings;
 
 public class ToBeClickableWaitStrategy extends WaitStrategy {
     public ToBeClickableWaitStrategy() {
-        timeoutInterval = ConfigurationService.get(TimeoutSettings.class).getElementToBeClickableTimeout();
-        sleepInterval = ConfigurationService.get(TimeoutSettings.class).getSleepInterval();
+        timeoutInterval = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getElementToBeClickableTimeout();
+        sleepInterval = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getSleepInterval();
     }
 
     public static ToBeClickableWaitStrategy of() {

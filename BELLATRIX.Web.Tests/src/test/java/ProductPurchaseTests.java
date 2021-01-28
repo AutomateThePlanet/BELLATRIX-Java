@@ -18,10 +18,17 @@ import solutions.bellatrix.infrastructure.ExecutionBrowser;
 import solutions.bellatrix.infrastructure.Lifecycle;
 import solutions.bellatrix.infrastructure.WebTest;
 
-@ExecutionBrowser(browser = Browser.CHROME, browserBehavior = Lifecycle.RESTART_EVERY_TIME)
+@ExecutionBrowser(browser = Browser.CHROME, browserBehavior = Lifecycle.REUSE_IF_STARTED)
 public class ProductPurchaseTests extends WebTest {
-    @Test(priority=1)
-    public void completePurchaseSuccessfully_whenNewClient() {
+    @Test
+    public void completePurchaseSuccessfully_first() {
+        getApp().getNavigationService().open("http://demos.bellatrix.solutions/");
+        var addToCartFalcon9 = getApp().getComponentCreationService().createByCss(Anchor.class,"[data-product_id*='28']");
+        addToCartFalcon9.click();
+    }
+
+    @Test
+    public void completePurchaseSuccessfully_second() {
         getApp().getNavigationService().open("http://demos.bellatrix.solutions/");
         var addToCartFalcon9 = getApp().getComponentCreationService().createByCss(Anchor.class,"[data-product_id*='28']");
         addToCartFalcon9.click();

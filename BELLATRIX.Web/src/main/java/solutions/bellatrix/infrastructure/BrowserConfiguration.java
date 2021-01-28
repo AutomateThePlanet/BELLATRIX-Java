@@ -27,10 +27,12 @@ public class BrowserConfiguration {
         return driverOptions;
     }
 
-    public BrowserConfiguration(Browser browser, Lifecycle browserBehavior) {
+    public BrowserConfiguration(Browser browser, Lifecycle browserBehavior, ExecutionType executionType) {
         this.browser = browser;
         this.lifecycle = browserBehavior;
+        this.executionType = executionType;
         driverOptions = new HashMap<>();
+        shouldCaptureHttpTraffic = false;
     }
 
     public int getWidth() {

@@ -25,6 +25,8 @@ public class EventListener<TArgs> {
     }
 
     public void broadcast(TArgs args) {
-        listeners.forEach(x -> x.accept(args));
+        if (listeners.stream().count() > 0) {
+            listeners.forEach(x -> x.accept(args));
+        }
     }
 }

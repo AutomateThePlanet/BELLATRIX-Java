@@ -19,7 +19,7 @@ import org.openqa.selenium.WebElement;
 public class JavaScriptService extends WebService {
     private final JavascriptExecutor javascriptExecutor;
 
-    protected JavaScriptService() {
+    public JavaScriptService() {
         super();
         javascriptExecutor = (JavascriptExecutor) getWrappedDriver();
     }
@@ -43,7 +43,7 @@ public class JavaScriptService extends WebService {
 
     public String execute(String script, Object... args) {
         try {
-            var result = (String)execute(script, args);
+            var result = (String)javascriptExecutor.executeScript(script, args);
             return result ;
         } catch (Exception ex) {
             System.out.print(ex);

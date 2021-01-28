@@ -22,6 +22,14 @@ public class BrowserLifecyclePlugin extends Plugin {
     private static ThreadLocal<BrowserConfiguration> currentBrowserConfiguration;
     private static ThreadLocal<BrowserConfiguration> previousBrowserConfiguration;
     private static ThreadLocal<Boolean> isBrowserStartedDuringPreBeforeClass;
+    private static ThreadLocal<Boolean> isBrowserStartedCorrectly;
+
+    static {
+        currentBrowserConfiguration = new ThreadLocal<>();
+        previousBrowserConfiguration = new ThreadLocal<>();
+        isBrowserStartedDuringPreBeforeClass = new ThreadLocal<>();
+        isBrowserStartedCorrectly = new ThreadLocal<>();
+    }
 
     @Override
     public void preBeforeClass(Class type) {
@@ -36,6 +44,13 @@ public class BrowserLifecyclePlugin extends Plugin {
         }
 
         super.preBeforeClass(type);
+    }
+
+    @Override
+    public void postAfterClass(Class type) {
+        shutdownBrowser();
+        isBrowserStartedDuringPreBeforeClass.set(false);
+        super.preAfterClass(type);
     }
 
     @Override
@@ -67,18 +82,28 @@ public class BrowserLifecyclePlugin extends Plugin {
 
     private void restartBrowser() {
         shutdownBrowser();
-        DriverService.start(currentBrowserConfiguration.get());
+        try {
+            DriverService.start(currentBrowserConfiguration.get());
+            isBrowserStartedCorrectly.set(true);
+        } catch (Exception ex) {
+            isBrowserStartedCorrectly.set(false);
+        }
+
         previousBrowserConfiguration.set(currentBrowserConfiguration.get());
     }
 
     private Boolean shouldRestartBrowser() {
         // TODO: IsBrowserStartedCorrectly getter?
-        if (previousBrowserConfiguration == null)
+        var previousConfiguration = previousBrowserConfiguration.get();
+        var currentConfiguration = currentBrowserConfiguration.get();
+        if (previousConfiguration == null)
         {
             return true;
-        } else if (previousBrowserConfiguration != null && previousBrowserConfiguration != currentBrowserConfiguration) {
+        } else if (!isBrowserStartedCorrectly.get()) {
             return true;
-        } else if (currentBrowserConfiguration.get().getLifecycle() == Lifecycle.RESTART_EVERY_TIME) {
+        } else if (!previousConfiguration.equals(currentConfiguration)) {
+            return true;
+        } else if (currentConfiguration.getLifecycle() == Lifecycle.RESTART_EVERY_TIME) {
             return true;
         } else {
             return false;
@@ -107,16 +132,16 @@ public class BrowserLifecyclePlugin extends Plugin {
             return null;
         }
 
-        return new BrowserConfiguration(executionBrowserAnnotation.browser(), executionBrowserAnnotation.browserBehavior());
+        return new BrowserConfiguration(executionBrowserAnnotation.browser(), executionBrowserAnnotation.browserBehavior(), executionBrowserAnnotation.executionType());
     }
 
     private BrowserConfiguration getExecutionBrowserClassLevel(Class<?> type) {
         var executionBrowserAnnotation = (ExecutionBrowser)type.getDeclaredAnnotation(ExecutionBrowser.class);
         if (executionBrowserAnnotation == null) {
             // set default browser configuration if not set previously.
-            return new BrowserConfiguration(Browser.CHROME, Lifecycle.REUSE_IF_STARTED);
+            return new BrowserConfiguration(Browser.CHROME, Lifecycle.REUSE_IF_STARTED, ExecutionType.REGULAR);
         }
 
-        return new BrowserConfiguration(executionBrowserAnnotation.browser(), executionBrowserAnnotation.browserBehavior());
+        return new BrowserConfiguration(executionBrowserAnnotation.browser(), executionBrowserAnnotation.browserBehavior(), executionBrowserAnnotation.executionType());
     }
 }

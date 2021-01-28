@@ -20,8 +20,8 @@ import solutions.bellatrix.plugins.EventListener;
 import java.lang.annotation.Target;
 
 public class Anchor extends WebComponent implements ComponentHref {
-    private static EventListener<ComponentActionEventArgs> CLICKING;
-    private static EventListener<ComponentActionEventArgs> CLICKED;
+    private final static EventListener<ComponentActionEventArgs> CLICKING = new EventListener<ComponentActionEventArgs>();
+    private final static EventListener<ComponentActionEventArgs> CLICKED = new EventListener<ComponentActionEventArgs>();
 
     @Override
     public Class<?> getComponentClass() {
@@ -34,7 +34,6 @@ public class Anchor extends WebComponent implements ComponentHref {
     }
 
     public void click() {
-        String x = null;
-        click(CLICKING, CLICKED);
+        click(new EventListener<ComponentActionEventArgs>(), new EventListener<ComponentActionEventArgs>());
     }
 }

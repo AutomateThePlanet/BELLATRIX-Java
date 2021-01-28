@@ -19,6 +19,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import solutions.bellatrix.configuration.ConfigurationService;
 import solutions.bellatrix.configuration.TimeoutSettings;
+import solutions.bellatrix.configuration.WebSettings;
 
 public class BrowserService extends WebService {
     private final JavascriptExecutor javascriptExecutor;
@@ -149,16 +150,16 @@ public class BrowserService extends WebService {
 //    }
 
     public void waitForAjax() {
-        int ajaxTimeout = ConfigurationService.get(TimeoutSettings.class).getWaitForAjaxTimeout();
-        int sleepInterval = ConfigurationService.get(TimeoutSettings.class).getSleepInterval();
+        int ajaxTimeout = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getWaitForAjaxTimeout();
+        int sleepInterval = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getSleepInterval();
         var webDriverWait = new WebDriverWait(getWrappedDriver(), ajaxTimeout, sleepInterval);
         var javascriptExecutor = (JavascriptExecutor) getWrappedDriver();
         webDriverWait.until(d -> (Boolean) javascriptExecutor.executeScript("return window.jQuery != undefined && jQuery.active == 0"));
     }
 
     public void waitForAjaxRequest(String requestPartialUrl, int additionalTimeoutInSeconds) {
-        int ajaxTimeout = ConfigurationService.get(TimeoutSettings.class).getWaitForAjaxTimeout();
-        int sleepInterval = ConfigurationService.get(TimeoutSettings.class).getSleepInterval();
+        int ajaxTimeout = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getWaitForAjaxTimeout();
+        int sleepInterval = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getSleepInterval();
         var webDriverWait = new WebDriverWait(getWrappedDriver(), ajaxTimeout + additionalTimeoutInSeconds, sleepInterval);
         webDriverWait.until(d -> {
             String script = String.format("return performance.getEntriesByType('resource').filter(item => item.initiatorType == 'xmlhttprequest' && item.name.toLowerCase().includes('%s'))[0] !== undefined;", requestPartialUrl);
@@ -175,22 +176,22 @@ public class BrowserService extends WebService {
     }
 
     public void waitUntilPageLoadsCompletely() {
-        int waitUntilReadyTimeout = ConfigurationService.get(TimeoutSettings.class).getWaitUntilReadyTimeout();
-        int sleepInterval = ConfigurationService.get(TimeoutSettings.class).getSleepInterval();
+        int waitUntilReadyTimeout = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getWaitUntilReadyTimeout();
+        int sleepInterval = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getSleepInterval();
         var webDriverWait = new WebDriverWait(getWrappedDriver(), waitUntilReadyTimeout, sleepInterval);
         webDriverWait.until(d -> javascriptExecutor.executeScript("return document.readyState").toString().equals("complete"));
     }
 
     public void waitForJavaScriptAnimations() {
-        int waitForJavaScriptAnimationsTimeout = ConfigurationService.get(TimeoutSettings.class).getWaitForJavaScriptAnimationsTimeout();
-        int sleepInterval = ConfigurationService.get(TimeoutSettings.class).getSleepInterval();
+        int waitForJavaScriptAnimationsTimeout = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getWaitForJavaScriptAnimationsTimeout();
+        int sleepInterval = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getSleepInterval();
         var webDriverWait = new WebDriverWait(getWrappedDriver(), waitForJavaScriptAnimationsTimeout, sleepInterval);
         webDriverWait.until(d -> (Boolean) javascriptExecutor.executeScript("return jQuery && jQuery(':animated').length === 0"));
     }
 
     public void waitForAngular() {
-        int angularTimeout = ConfigurationService.get(TimeoutSettings.class).getWaitForAngularTimeout();
-        int sleepInterval = ConfigurationService.get(TimeoutSettings.class).getSleepInterval();
+        int angularTimeout = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getWaitForAngularTimeout();
+        int sleepInterval = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getSleepInterval();
         var webDriverWait = new WebDriverWait(getWrappedDriver(), angularTimeout, sleepInterval);
 
         String isAngular5 = (String) javascriptExecutor.executeScript("return getAllAngularRootElements()[0].attributes['ng-version']");

@@ -23,16 +23,18 @@ public class WebTest extends BaseTest {
     @Getter private final App app;
 
     public WebTest() {
+        System.out.println("WebTest ctor");
         app = new App();
     }
 
     @BeforeSuite
     public void beforeSuite() {
-       addPlugin(new BrowserLifecyclePlugin());
+        System.out.println("WebTest beforeSuite");
+        addPlugin(new BrowserLifecyclePlugin());
     }
 
-    @AfterSuite
-    public void afterSuite() {
-        app.close();
-    }
+//    @AfterSuite
+//    public void afterSuite() {
+//        app.close();
+//    }
 }

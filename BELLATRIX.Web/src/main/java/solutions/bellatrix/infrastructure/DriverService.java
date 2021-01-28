@@ -11,7 +11,9 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.infrastructure;import solutions.bellatrix.configuration.ConfigurationService;
+package solutions.bellatrix.infrastructure;
+
+import solutions.bellatrix.configuration.ConfigurationService;
 import solutions.bellatrix.configuration.WebSettings;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.Dimension;
@@ -29,11 +31,13 @@ import java.util.concurrent.TimeUnit;
 public class DriverService {
     private static ThreadLocal<Boolean> disposed;
     //    private static ProxyService proxyService;
-    private static BrowserSettings browserSettings;
     private static ThreadLocal<BrowserConfiguration> browserConfiguration;
     private static ThreadLocal<WebDriver> wrappedDriver;
 
     static {
+        disposed = new ThreadLocal<>();
+        browserConfiguration = new ThreadLocal<>();
+        wrappedDriver = new ThreadLocal<>();
         disposed.set(false);
     }
 
@@ -45,12 +49,9 @@ public class DriverService {
         return browserConfiguration.get();
     }
 
-    public static BrowserSettings getBrowserSettings() {
-        return browserSettings;
-    }
-
     public static WebDriver start(BrowserConfiguration configuration) {
         browserConfiguration.set(configuration);
+        disposed.set(false);
         WebDriver driver = null;
         // configure proxy
         switch (configuration.getExecutionType()) {

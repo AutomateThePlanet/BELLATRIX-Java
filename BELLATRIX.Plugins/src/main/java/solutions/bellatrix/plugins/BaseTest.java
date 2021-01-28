@@ -45,6 +45,7 @@ public class BaseTest {
 
     @BeforeClass
     public void beforeClassCore() {
+        System.out.println("beforeClassCore");
         try {
             var testClass = this.getClass();
             PluginExecutionEngine.preBeforeClass(testClass);
@@ -57,6 +58,7 @@ public class BaseTest {
 
     @BeforeMethod
     public void beforeMethodCore(ITestResult result) {
+        System.out.println("beforeMethodCore");
         try {
             setTestResult(result);
             var testClass = this.getClass();

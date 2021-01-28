@@ -14,11 +14,12 @@
 package solutions.bellatrix.waitstrategies;import org.openqa.selenium.*;
 import solutions.bellatrix.configuration.ConfigurationService;
 import solutions.bellatrix.configuration.TimeoutSettings;
+import solutions.bellatrix.configuration.WebSettings;
 
 public class ToBeVisibleWaitStrategy extends WaitStrategy{
     public ToBeVisibleWaitStrategy() {
-        timeoutInterval = ConfigurationService.get(TimeoutSettings.class).getElementToBeVisibleTimeout();
-        sleepInterval = ConfigurationService.get(TimeoutSettings.class).getSleepInterval();
+        timeoutInterval = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getElementToBeVisibleTimeout();
+        sleepInterval = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getSleepInterval();
     }
 
     public ToBeVisibleWaitStrategy(int timeoutIntervalSeconds, int sleepIntervalSeconds) {

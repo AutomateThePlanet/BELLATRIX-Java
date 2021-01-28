@@ -17,6 +17,7 @@ import com.google.common.base.Strings;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import solutions.bellatrix.configuration.ConfigurationService;
 import solutions.bellatrix.configuration.TimeoutSettings;
+import solutions.bellatrix.configuration.WebSettings;
 
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
@@ -65,8 +66,8 @@ public class NavigationService extends WebService {
     public void waitForPartialUrl(String partialUrl) {
         try
         {
-            int waitForPartialTimeout = ConfigurationService.get(TimeoutSettings.class).getWaitForPartialUrl();
-            int sleepInterval = ConfigurationService.get(TimeoutSettings.class).getSleepInterval();
+            int waitForPartialTimeout = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getWaitForPartialUrl();
+            int sleepInterval = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getSleepInterval();
             var webDriverWait = new WebDriverWait(getWrappedDriver(), waitForPartialTimeout, sleepInterval);
             webDriverWait.until(d -> getWrappedDriver().getCurrentUrl().contains(partialUrl));
         } catch (Exception ex)
