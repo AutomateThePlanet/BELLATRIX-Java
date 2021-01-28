@@ -11,14 +11,25 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.plugins;import org.testng.ITestResult;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
+package solutions.bellatrix.plugins;
+
+import org.testng.ITestResult;
+import org.testng.annotations.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class BaseTest {
     private ITestResult result;
+    private final List<Plugin> plugins;
+
+    public BaseTest() {
+        this.plugins = new ArrayList<>();
+    }
+
+    public void addPlugin(Plugin plugin) {
+        PluginExecutionEngine.addPlugin(plugin);
+    }
 
     public String getTestName() {
         return getTestResult().getTestName();

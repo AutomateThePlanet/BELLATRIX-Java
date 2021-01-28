@@ -11,8 +11,9 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.plugins;import org.testng.ITestResult;
+package solutions.bellatrix.plugins;
 
+import org.testng.ITestResult;
 import java.lang.reflect.Method;
 
 public class Plugin {
