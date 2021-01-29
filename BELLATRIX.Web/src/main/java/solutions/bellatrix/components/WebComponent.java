@@ -36,22 +36,31 @@ import java.util.List;
 
 @ExtensionMethod({WebComponent.class, WaitStrategyElementsExtensions.class})
 public class WebComponent implements Component {
-    private WebSettings webSettings;
+    public final static EventListener<ComponentActionEventArgs> HOVERING = new EventListener<>();
+    public final static EventListener<ComponentActionEventArgs> HOVERED = new EventListener<>();
+    public final static EventListener<ComponentActionEventArgs> FOCUSING = new EventListener<>();
+    public final static EventListener<ComponentActionEventArgs> FOCUSED = new EventListener<>();
+    public final static EventListener<ComponentActionEventArgs> SCROLLING_TO_VISIBLE = new EventListener<>();
+    public final static EventListener<ComponentActionEventArgs> SCROLLED_TO_VISIBLE = new EventListener<>();
+    public final static EventListener<ComponentActionEventArgs> SETTING_ATTRIBUTE = new EventListener<>();
+    public final static EventListener<ComponentActionEventArgs> ATTRIBUTE_SET = new EventListener<>();
+    public final static EventListener<ComponentActionEventArgs> RETURNING_WRAPPED_ELEMENT = new EventListener<>();
+    public final static EventListener<ComponentActionEventArgs> CREATING_ELEMENT = new EventListener<>();
+    public final static EventListener<ComponentActionEventArgs> CREATED_ELEMENT = new EventListener<>();
+    public final static EventListener<ComponentActionEventArgs> CREATING_ELEMENTS = new EventListener<>();
+    public final static EventListener<ComponentActionEventArgs> CREATED_ELEMENTS = new EventListener<>();
+
     @Getter  @Setter(AccessLevel.PROTECTED) private WebElement wrappedElement;
     @Getter @Setter private WebElement parentWrappedElement;
     @Getter @Setter private int elementIndex;
     @Getter @Setter private FindStrategy findStrategy;
     @Getter private WebDriver wrappedDriver;
-
-    // TODO: set elementName and pageName
-//    @Getter private String elementName;
-//    @Getter private String pageName;
-
-    private List<WaitStrategy> waitStrategies;
     @Getter protected JavaScriptService javaScriptService;
     @Getter protected BrowserService browserService;
     @Getter protected ComponentCreateService componentCreateService;
     @Getter protected ComponentWaitService componentWaitService;
+    private List<WaitStrategy> waitStrategies;
+    private WebSettings webSettings;
 
     public WebComponent() {
         this.waitStrategies = new ArrayList<>();
@@ -67,18 +76,6 @@ public class WebComponent implements Component {
         return String.format("%s (%s)", getComponentClass().getSimpleName(), findStrategy.toString());
     }
 
-//    public WebComponent(FindStrategy findStrategy) {
-//        this(findStrategy, 0, null);
-//    }
-//
-//    public WebComponent(FindStrategy createBy, int elementIndex, WebElement parentWrappedElement) {
-//        this.parentWrappedElement = parentWrappedElement;
-//        this.elementIndex = elementIndex;
-//        this.findStrategy = findStrategy;
-//        this.waitStrategies = new ArrayList<>();
-//        webSettings = ConfigurationService.get(WebSettings.class);
-//    }
-
     public void waitToBe() {
         findElement();
     }
@@ -88,23 +85,22 @@ public class WebComponent implements Component {
     }
 
     public void setAttribute(String name, String value) {
-//        SettingAttribute?.Invoke(this, new ElementActionEventArgs(this));
+        SETTING_ATTRIBUTE.broadcast(new ComponentActionEventArgs(this));
         javaScriptService.execute(String.format("arguments[0].setAttribute('%s', '%s');", name, value), this);
-
-//        AttributeSet?.Invoke(this, new ElementActionEventArgs(this));
+        ATTRIBUTE_SET.broadcast(new ComponentActionEventArgs(this));
     }
 
     public void focus() {
-//        Focusing?.Invoke(this, new ElementActionEventArgs(this));
+        FOCUSING.broadcast(new ComponentActionEventArgs(this));
         javaScriptService.execute("window.focus();");
         javaScriptService.execute("arguments[0].focus();", findElement());
-//        Focused?.Invoke(this, new ElementActionEventArgs(this));
+        FOCUSED.broadcast(new ComponentActionEventArgs(this));
     }
 
     public void hover() {
-//        Focusing?.Invoke(this, new ElementActionEventArgs(this));
+        HOVERING.broadcast(new ComponentActionEventArgs(this));
         javaScriptService.execute("arguments[0].onmouseover();", findElement());
-//        Focused?.Invoke(this, new ElementActionEventArgs(this));
+        HOVERED.broadcast(new ComponentActionEventArgs(this));
     }
 
     public Class<?> getComponentClass() {
@@ -258,14 +254,17 @@ public class WebComponent implements Component {
     }
 
     protected <TComponent extends WebComponent, TFindStrategy extends FindStrategy> TComponent create(Class<TComponent> componentClass, TFindStrategy findStrategy) {
+        CREATING_ELEMENT.broadcast(new ComponentActionEventArgs(this));
         findElement();
         var component = InstanceFactory.create(componentClass);
         component.setFindStrategy(findStrategy);
         component.setParentWrappedElement(wrappedElement);
+        CREATED_ELEMENT.broadcast(new ComponentActionEventArgs(this));
         return component;
     }
 
     protected <TComponent extends WebComponent, TFindStrategy extends FindStrategy> List<TComponent> createAll(Class<TComponent> componentClass, TFindStrategy findStrategy) {
+        CREATING_ELEMENTS.broadcast(new ComponentActionEventArgs(this));
         findElement();
         var nativeElements = wrappedElement.findElements(findStrategy.convert());
         List<TComponent> componentList = new ArrayList<>();
@@ -277,6 +276,7 @@ public class WebComponent implements Component {
             componentList.add(component);
         }
 
+        CREATED_ELEMENTS.broadcast(new ComponentActionEventArgs(this));
         return componentList;
     }
 
@@ -307,6 +307,7 @@ public class WebComponent implements Component {
           System.out.print(String.format("\n\nThe element: \n Name: '%s', \n Locator: '%s = %s', \nWas not found on the page or didn't fulfill the specified conditions.\n\n", getComponentClass().getSimpleName(), findStrategy.toString(), findStrategy.getValue()));
       }
 
+        RETURNING_WRAPPED_ELEMENT.broadcast(new ComponentActionEventArgs(this));
         return wrappedElement;
     }
 
@@ -494,7 +495,7 @@ public class WebComponent implements Component {
 
     private void scrollToVisible(WebElement wrappedElement, Boolean shouldWait)
     {
-        //ScrollingToVisible?.Invoke(this, new ElementActionEventArgs(this));
+        SCROLLING_TO_VISIBLE.broadcast(new ComponentActionEventArgs(this));
         try {
             javaScriptService.execute("arguments[0].scrollIntoView(true);", wrappedElement);
             if (shouldWait)
@@ -508,6 +509,6 @@ public class WebComponent implements Component {
             e.printStackTrace();
         }
 
-        //ScrolledToVisible?.Invoke(this, new ElementActionEventArgs(this));
+        SCROLLED_TO_VISIBLE.broadcast(new ComponentActionEventArgs(this));
     }
 }

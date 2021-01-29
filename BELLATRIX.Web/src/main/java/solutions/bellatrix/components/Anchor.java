@@ -13,13 +13,9 @@
 
 package solutions.bellatrix.components;
 
-import lombok.experimental.ExtensionMethod;
-import solutions.bellatrix.components.contracts.ComponentHref;
 import solutions.bellatrix.plugins.EventListener;
 
-import java.lang.annotation.Target;
-
-public class Anchor extends WebComponent implements ComponentHref {
+public class Anchor extends WebComponent {
     public final static EventListener<ComponentActionEventArgs> CLICKING = new EventListener<ComponentActionEventArgs>();
     public final static EventListener<ComponentActionEventArgs> CLICKED = new EventListener<ComponentActionEventArgs>();
 
@@ -28,9 +24,8 @@ public class Anchor extends WebComponent implements ComponentHref {
         return getClass();
     }
 
-    @Override
     public String getHref() {
-        return null;
+        return findElement().getAttribute("href");
     }
 
     public void click() {
