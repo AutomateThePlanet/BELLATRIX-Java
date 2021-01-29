@@ -17,6 +17,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.ExtensionMethod;
+import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.*;
 import solutions.bellatrix.components.contracts.Component;
 import solutions.bellatrix.configuration.ConfigurationService;
@@ -33,6 +34,8 @@ import solutions.bellatrix.waitstrategies.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.Optional;
 
 @ExtensionMethod({WebComponent.class, WaitStrategyElementsExtensions.class})
 public class WebComponent implements Component {
@@ -321,151 +324,97 @@ public class WebComponent implements Component {
 
         clicked.broadcast(new ComponentActionEventArgs(this));
     }
-//
-//    internal void Hover(EventHandler<ElementActionEventArgs> hovering, EventHandler<ElementActionEventArgs> hovered)
-//    {
-//        hovering?.Invoke(this, new ElementActionEventArgs(this));
-//
-//        JavaScriptService.Execute("arguments[0].onmouseover();", this);
-//
-//        hovered?.Invoke(this, new ElementActionEventArgs(this));
-//    }
-//
-//    internal string GetInnerText()
-//    {
-//        return WrappedElement.Text.Replace("\r\n", string.Empty);
-//    }
-//
-//    internal void SetValue(EventHandler<ElementActionEventArgs> gettingValue, EventHandler<ElementActionEventArgs> gotValue, string value)
-//    {
-//        gettingValue?.Invoke(this, new ElementActionEventArgs(this, value));
-//        SetAttribute("value", value);
-//        gotValue?.Invoke(this, new ElementActionEventArgs(this, value));
-//    }
-//
-//    internal string DefaultGetValue()
-//    {
-//        return WrappedElement.GetAttribute("value");
-//    }
-//
-//    internal int? DefaultGetMaxLength()
-//    {
-//        int? result = string.IsNullOrEmpty(GetAttribute("maxlength")) ? null : (int?)int.Parse(GetAttribute("maxlength"));
-//        if (result != null && (result == 2147483647 || result == -1))
-//        {
-//            result = null;
-//        }
-//
-//        return result;
-//    }
-//
-//    internal int? DefaultGetMinLength()
-//    {
-//        int? result = string.IsNullOrEmpty(GetAttribute("minlength")) ? null : (int?)int.Parse(GetAttribute("minlength"));
-//
-//        if (result != null && result == -1)
-//        {
-//            result = null;
-//        }
-//
-//        return result;
-//    }
-//
-//    internal int? GetSizeAttribute()
-//    {
-//        return string.IsNullOrEmpty(GetAttribute("size")) ? null : (int?)int.Parse(GetAttribute("size"));
-//    }
-//
-//    internal int? GetHeightAttribute()
-//    {
-//        return string.IsNullOrEmpty(GetAttribute("height")) ? null : (int?)int.Parse(GetAttribute("height"));
-//    }
-//
-//    internal int? GetWidthAttribute()
-//    {
-//        return string.IsNullOrEmpty(GetAttribute("width")) ? null : (int?)int.Parse(GetAttribute("width"));
-//    }
-//
-//    internal string GetInnerHtmlAttribute()
-//    {
-//        return WrappedElement.GetAttribute("innerHTML");
-//    }
-//
-//    internal string GetForAttribute()
-//    {
-//        return string.IsNullOrEmpty(GetAttribute("for")) ? null : GetAttribute("for");
-//    }
-//
-//    protected bool GetDisabledAttribute()
-//    {
-//        string valueAttr = WrappedElement.GetAttribute("disabled");
-//        return valueAttr == "true";
-//    }
-//
-//    internal string GetText()
-//    {
-//        return WrappedElement.Text;
-//    }
-//
-//    internal int? GetMinAttribute()
-//    {
-//        return string.IsNullOrEmpty(GetAttribute("min")) ? null : (int?)int.Parse(GetAttribute("min"));
-//    }
-//
-//    internal int? GetMaxAttribute()
-//    {
-//        return string.IsNullOrEmpty(GetAttribute("max")) ? null : (int?)int.Parse(GetAttribute("max"));
-//    }
-//
-//    internal string GetMinAttributeAsString()
-//    {
-//        return string.IsNullOrEmpty(GetAttribute("min")) ? null : GetAttribute("min");
-//    }
-//
-//    internal string GetMaxAttributeAsString()
-//    {
-//        return string.IsNullOrEmpty(GetAttribute("max")) ? null : GetAttribute("max");
-//    }
-//
-//    internal int? GetStepAttribute()
-//    {
-//        return string.IsNullOrEmpty(GetAttribute("step")) ? null : (int?)int.Parse(GetAttribute("step"));
-//    }
-//
-//    internal string GetPlaceholderAttribute()
-//    {
-//        return string.IsNullOrEmpty(GetAttribute("placeholder")) ? null : GetAttribute("placeholder");
-//    }
-//
-//    internal bool GetAutoCompleteAttribute()
-//    {
-//        return GetAttribute("autocomplete") == "on";
-//    }
-//
-//    internal bool GetReadonlyAttribute()
-//    {
-//        return !string.IsNullOrEmpty(GetAttribute("readonly"));
-//    }
-//
-//    internal bool GetRequiredAttribute()
-//    {
-//        return !string.IsNullOrEmpty(GetAttribute("required"));
-//    }
-//
-//    internal string GetList()
-//    {
-//        return string.IsNullOrEmpty(GetAttribute("list")) ? null : GetAttribute("list");
-//    }
-//
-//    internal void DefaultSetText(EventHandler<ElementActionEventArgs> settingValue, EventHandler<ElementActionEventArgs> valueSet, string value)
-//    {
-//        settingValue?.Invoke(this, new ElementActionEventArgs(this, value));
-//
-//        findElement().clear();
-//        findElement().sendKeys(value);
-//
-//        valueSet?.Invoke(this, new ElementActionEventArgs(this, value));
-//    }
+
+    protected void setValue(EventListener<ComponentActionEventArgs> gettingValue, EventListener<ComponentActionEventArgs> gotValue, String value)
+    {
+        gettingValue.broadcast(new ComponentActionEventArgs(this));
+        setAttribute("value", value);
+        gotValue.broadcast(new ComponentActionEventArgs(this));
+    }
+
+    protected String defaultGetValue() {
+        return Optional.ofNullable(getAttribute("value")).orElse("");
+    }
+
+    protected String defaultGetMaxLength() {
+        return Optional.ofNullable(getAttribute("maxlength")).orElse("");
+    }
+
+    protected String defaultGetMinLength() {
+        return Optional.ofNullable(getAttribute("minlength")).orElse("");
+    }
+
+    protected String defaultGetSizeAttribute() {
+        return Optional.ofNullable(getAttribute("size")).orElse("");
+    }
+
+    protected String defaultGetHeightAttribute() {
+        return Optional.ofNullable(getAttribute("height")).orElse("");
+    }
+
+    protected String defaultGetWidthAttribute() {
+        return Optional.ofNullable(getAttribute("width")).orElse("");
+    }
+
+    protected String defaultGetInnerHtmlAttribute() {
+        return Optional.ofNullable(getAttribute("innerHTML")).orElse("");
+    }
+
+    protected String defaultGetForAttribute() {
+        return Optional.ofNullable(getAttribute("for")).orElse("");
+    }
+
+    protected Boolean defaultGetDisabledAttribute() {
+        var valueAttr = Optional.ofNullable(getAttribute("disabled")).orElse("false");
+        return valueAttr.toLowerCase(Locale.ROOT) == "true";
+    }
+
+    protected String defaultGetText() {
+        return Optional.ofNullable(findElement().getText()).orElse("");
+    }
+
+    protected String defaultGetMinAttribute() {
+        return Optional.ofNullable(getAttribute("min")).orElse("");
+    }
+
+    protected String defaultGetMaxAttribute() {
+        return Optional.ofNullable(getAttribute("max")).orElse("");
+    }
+
+    protected String defaultGetStepAttribute() {
+        return Optional.ofNullable(getAttribute("step")).orElse("");
+    }
+
+    protected String GetPlaceholderAttribute() {
+        return Optional.ofNullable(getAttribute("placeholder")).orElse("");
+    }
+
+    protected Boolean defaultGetAutoCompleteAttribute() {
+        return Optional.ofNullable(getAttribute("autocomplete")).orElse("") == "on";
+    }
+
+    protected Boolean defaultGetReadonlyAttribute() {
+        return !StringUtils.isEmpty(Optional.ofNullable(getAttribute("readonly")).orElse(""));
+    }
+
+    protected Boolean defaultGetRequiredAttribute()
+    {
+        return !StringUtils.isEmpty(Optional.ofNullable(getAttribute("required")).orElse(""));
+    }
+
+    protected String defaultGetList() {
+        return Optional.ofNullable(getAttribute("list")).orElse("");
+    }
+
+    protected void defaultSetText(EventListener<ComponentActionEventArgs> settingValue, EventListener<ComponentActionEventArgs> valueSet, String value)
+    {
+        settingValue.broadcast(new ComponentActionEventArgs(this));
+
+        findElement().clear();
+        findElement().sendKeys(value);
+
+        valueSet.broadcast(new ComponentActionEventArgs(this));
+    }
 
     private WebElement findNativeElement() {
         if (parentWrappedElement == null) {
