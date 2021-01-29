@@ -11,9 +11,14 @@
  * limitations under the License.
  */
 
-package pages.CartPage;
+package pages.mainpage;
 
-import solutions.bellatrix.pages.BaseAssertions;
+import org.testng.Assert;
+import solutions.bellatrix.pages.PageAsserts;
 
-public class CartPageAssertions extends BaseAssertions<CartPageElements> {
+public class Asserts extends PageAsserts<MainPageComponents> {
+    public void productBoxLink(String name, String expectedLink) {
+        var actualLink = elements().getProductBoxByName(name).getAttribute("href");
+        Assert.assertEquals(actualLink, expectedLink);
+    }
 }

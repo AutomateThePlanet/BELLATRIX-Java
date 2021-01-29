@@ -18,4 +18,8 @@ public class Heading extends WebComponent {
     public Class<?> getComponentClass() {
         return getClass();
     }
+
+    public String getText() {
+        return defaultGetText();
+    }
 }

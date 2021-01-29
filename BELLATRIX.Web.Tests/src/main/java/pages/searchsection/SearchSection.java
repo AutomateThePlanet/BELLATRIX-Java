@@ -11,12 +11,12 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.pages;
+package pages.searchsection;
 
-import solutions.bellatrix.services.ComponentCreateService;
+import solutions.bellatrix.pages.WebSection;
 
-public abstract class BaseElements {
-    public ComponentCreateService create() {
-        return new ComponentCreateService();
+public class SearchSection extends WebSection<Components, Asserts> {
+    public void searchForItem(String searchText) throws InterruptedException {
+        elements().searchField().setText(searchText);
     }
 }

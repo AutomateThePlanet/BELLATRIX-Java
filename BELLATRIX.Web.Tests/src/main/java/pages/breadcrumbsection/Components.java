@@ -11,27 +11,13 @@
  * limitations under the License.
  */
 
-package pages.MainPage;
+package pages.breadcrumbsection;
 
+import solutions.bellatrix.components.WebComponent;
+import solutions.bellatrix.pages.PageComponents;
 
-import solutions.bellatrix.components.Anchor;
-import solutions.bellatrix.pages.NavigatableAssertableWebPage;
-
-public class MainPage extends NavigatableAssertableWebPage<MainPageElements, MainPageAssertions> {
-
-    @Override
-    protected String getUrl() {
-        return "http://demos.bellatrix.solutions/";
-    }
-
-    @Override
-    protected void waitForPageLoad() {
-        elements().addToCartFalcon9().toExists().waitToBe();
-    }
-
-    public void addRocketToShoppingCart() {
-        open();
-        elements().addToCartFalcon9().click();
-        elements().viewCartButton().click();
+public class Components extends PageComponents {
+    public WebComponent breadcrumb() {
+        return create().byCss(WebComponent.class, "woocommerce-breadcrumb");
     }
 }

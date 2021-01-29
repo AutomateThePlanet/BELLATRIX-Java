@@ -11,20 +11,9 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.components;
+package pages.searchsection;
 
-import solutions.bellatrix.plugins.EventListener;
+import solutions.bellatrix.pages.PageAsserts;
 
-public class Button extends WebComponent {
-    public final static EventListener<ComponentActionEventArgs> CLICKING = new EventListener<>();
-    public final static EventListener<ComponentActionEventArgs> CLICKED = new EventListener<>();
-
-    public void click() {
-        defaultClick(CLICKING, CLICKED);
-    }
-
-    @Override
-    public Class<?> getComponentClass() {
-        return getClass();
-    }
+public class Asserts extends PageAsserts<Components> {
 }

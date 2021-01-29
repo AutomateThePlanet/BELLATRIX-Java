@@ -15,10 +15,11 @@ package solutions.bellatrix.pages;
 
 import solutions.bellatrix.services.BrowserService;
 import solutions.bellatrix.services.ComponentCreateService;
+import solutions.bellatrix.services.NavigationService;
 
 import java.lang.reflect.ParameterizedType;
 
-public abstract class WebPage<ElementsT extends BaseElements> {
+public abstract class WebPage<ComponentsT extends PageComponents, AssertsT extends PageAsserts<ComponentsT>>  {
     public BrowserService browser() {
         return new BrowserService();
     }
@@ -27,12 +28,35 @@ public abstract class WebPage<ElementsT extends BaseElements> {
         return new ComponentCreateService();
     }
 
-    protected ElementsT elements() {
+    public ComponentsT elements() {
         try {
-            var elementsClass = (Class<ElementsT>)((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+            var elementsClass = (Class<ComponentsT>)((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[0];
             return elementsClass.getDeclaredConstructor().newInstance();
         } catch (Exception e) {
             return null;
         }
+    }
+
+    public AssertsT asserts() {
+        try {
+            var assertionsClass = (Class<AssertsT>)((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[1];
+            return assertionsClass.getDeclaredConstructor().newInstance();
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public NavigationService navigate() {
+        return new NavigationService();
+    }
+
+    protected abstract String getUrl();
+
+    public void open() {
+        navigate().to(getUrl());
+        waitForPageLoad();
+    }
+
+    protected void waitForPageLoad() {
     }
 }

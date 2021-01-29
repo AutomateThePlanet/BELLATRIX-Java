@@ -46,7 +46,6 @@ import java.util.function.Function;
 
 import static org.apache.commons.lang3.StringEscapeUtils.unescapeHtml4;
 
-@ExtensionMethod({WebComponent.class, WaitStrategyElementsExtensions.class})
 public class WebComponent implements Component {
     public final static EventListener<ComponentActionEventArgs> HOVERING = new EventListener<>();
     public final static EventListener<ComponentActionEventArgs> HOVERED = new EventListener<>();

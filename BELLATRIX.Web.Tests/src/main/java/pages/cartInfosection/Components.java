@@ -11,17 +11,18 @@
  * limitations under the License.
  */
 
-package pages;
+package pages.cartInfosection;
 
-import solutions.bellatrix.components.TextField;
-import solutions.bellatrix.pages.WebSection;
+import solutions.bellatrix.components.Anchor;
+import solutions.bellatrix.components.Span;
+import solutions.bellatrix.pages.PageComponents;
 
-public class SearchSection extends WebSection {
-    private TextField searchField() {
-        return create().byId(TextField.class,"woocommerce-product-search-field-0");
+public class Components extends PageComponents {
+    public Anchor cartIcon() {
+        return create().byClass(Anchor.class, "cart-contents");
     }
 
-    public void searchForItem(String searchText) throws InterruptedException {
-        searchField().setText(searchText);
+    public Span cartAmount() {
+        return create().byClass(Span.class, "amount");
     }
 }

@@ -11,11 +11,11 @@
  * limitations under the License.
  */
 
-package pages.CartPage;
+package pages.cartpage;
 
-import solutions.bellatrix.pages.NavigatableWebPage;
+import solutions.bellatrix.pages.WebPage;
 
-public class CartPage extends NavigatableWebPage<CartPageElements> {
+public class CartPage extends WebPage<Components, Asserts> {
     @Override
     protected String getUrl() {
         return "http://demos.bellatrix.solutions/cart/";

@@ -11,20 +11,13 @@
  * limitations under the License.
  */
 
-package pages;
+package pages.checkoutpage;
 
-import solutions.bellatrix.components.Anchor;
-import solutions.bellatrix.components.WebComponent;
-import solutions.bellatrix.pages.WebSection;
+import org.testng.Assert;
+import solutions.bellatrix.pages.PageAsserts;
 
-public class BreadcrumbSection extends WebSection {
-
-    private WebComponent breadcrumb() {
-        return create().byCss(WebComponent.class, "woocommerce-breadcrumb");
-    }
-
-    // TODO: add create methods to component
-    public void openBreadcrumbItem(String itemToOpen) {
-        breadcrumb().createByLinkText(Anchor.class, itemToOpen).click();
+public class Asserts extends PageAsserts<Components> {
+    public void orderReceived() {
+        Assert.assertEquals(elements().receivedMessage().getText(), "Order received");
     }
 }

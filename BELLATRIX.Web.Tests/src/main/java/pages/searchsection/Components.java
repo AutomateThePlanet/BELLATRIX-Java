@@ -11,20 +11,13 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.components;
+package pages.searchsection;
 
-import solutions.bellatrix.plugins.EventListener;
+import solutions.bellatrix.components.TextField;
+import solutions.bellatrix.pages.PageComponents;
 
-public class Button extends WebComponent {
-    public final static EventListener<ComponentActionEventArgs> CLICKING = new EventListener<>();
-    public final static EventListener<ComponentActionEventArgs> CLICKED = new EventListener<>();
-
-    public void click() {
-        defaultClick(CLICKING, CLICKED);
-    }
-
-    @Override
-    public Class<?> getComponentClass() {
-        return getClass();
+public class Components extends PageComponents {
+    public TextField searchField() {
+        return create().byId(TextField.class,"woocommerce-product-search-field-0");
     }
 }

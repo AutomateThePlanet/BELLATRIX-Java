@@ -11,17 +11,9 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.pages;
+package pages.cartInfosection;
 
-import java.lang.reflect.ParameterizedType;
+import solutions.bellatrix.pages.PageAsserts;
 
-public abstract class AssertableWebPage<ElementsT extends BaseElements, AssertionsT extends BaseAssertions<ElementsT>> extends WebPage<ElementsT> {
-    public AssertionsT asserts() {
-        try {
-            var assertionsClass = (Class<AssertionsT>)((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[1];
-            return assertionsClass.getDeclaredConstructor().newInstance();
-        } catch (Exception e) {
-            return null;
-        }
-    }
+public class Asserts extends PageAsserts<Components> {
 }

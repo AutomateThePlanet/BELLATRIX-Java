@@ -11,20 +11,26 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.components;
+package pages.mainpage;
 
-import solutions.bellatrix.plugins.EventListener;
 
-public class Button extends WebComponent {
-    public final static EventListener<ComponentActionEventArgs> CLICKING = new EventListener<>();
-    public final static EventListener<ComponentActionEventArgs> CLICKED = new EventListener<>();
+import solutions.bellatrix.pages.WebPage;
 
-    public void click() {
-        defaultClick(CLICKING, CLICKED);
+public class MainPage extends WebPage<MainPageComponents, Asserts> {
+
+    @Override
+    protected String getUrl() {
+        return "http://demos.bellatrix.solutions/";
     }
 
     @Override
-    public Class<?> getComponentClass() {
-        return getClass();
+    protected void waitForPageLoad() {
+        elements().addToCartFalcon9().toExists().waitToBe();
+    }
+
+    public void addRocketToShoppingCart(String rocketName) {
+        open();
+        elements().getProductBoxByName(rocketName).click();
+        elements().viewCartButton().click();
     }
 }

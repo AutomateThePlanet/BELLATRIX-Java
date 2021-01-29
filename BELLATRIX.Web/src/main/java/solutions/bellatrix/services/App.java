@@ -14,7 +14,6 @@
 package solutions.bellatrix.services;
 
 import solutions.bellatrix.infrastructure.DriverService;
-import solutions.bellatrix.pages.NavigatableWebPage;
 import solutions.bellatrix.pages.WebPage;
 import solutions.bellatrix.utilities.SingletonFactory;
 
@@ -37,7 +36,7 @@ public class App implements AutoCloseable {
         return SingletonFactory.getInstance(DialogService.class);
     }
 
-    public JavaScriptService javaScript() {
+    public JavaScriptService script() {
         return SingletonFactory.getInstance(JavaScriptService.class);
     }
 
@@ -45,7 +44,7 @@ public class App implements AutoCloseable {
         return SingletonFactory.getInstance(ComponentCreateService.class);
     }
 
-    public ComponentWaitService waitComponent() {
+    public ComponentWaitService waitFor() {
         return SingletonFactory.getInstance(ComponentWaitService.class);
     }
 
@@ -53,7 +52,7 @@ public class App implements AutoCloseable {
         DriverService.addDriverOptions(key, value);
     }
 
-    public <TPage extends NavigatableWebPage> TPage pageGoTo(Class<TPage> pageOf, Object... args)
+    public <TPage extends WebPage> TPage goTo(Class<TPage> pageOf, Object... args)
     {
         var page = SingletonFactory.getInstance(pageOf, args);
         page.open();
@@ -61,7 +60,7 @@ public class App implements AutoCloseable {
         return page;
     }
 
-    public <TPage extends WebPage> TPage page(Class<TPage> pageOf, Object... args)
+    public <TPage extends WebPage> TPage create(Class<TPage> pageOf, Object... args)
     {
         return SingletonFactory.getInstance(pageOf, args);
     }

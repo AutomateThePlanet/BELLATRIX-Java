@@ -11,20 +11,16 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.components;
+package pages.cartInfosection;
 
-import solutions.bellatrix.plugins.EventListener;
+import solutions.bellatrix.pages.WebSection;
 
-public class Button extends WebComponent {
-    public final static EventListener<ComponentActionEventArgs> CLICKING = new EventListener<>();
-    public final static EventListener<ComponentActionEventArgs> CLICKED = new EventListener<>();
-
-    public void click() {
-        defaultClick(CLICKING, CLICKED);
+public class CartInfoSection extends WebSection<Components, Asserts> {
+    public String getCurrentAmount() {
+        return elements().cartAmount().getText();
     }
 
-    @Override
-    public Class<?> getComponentClass() {
-        return getClass();
+    public void openCart() {
+        elements().cartIcon().click();
     }
 }

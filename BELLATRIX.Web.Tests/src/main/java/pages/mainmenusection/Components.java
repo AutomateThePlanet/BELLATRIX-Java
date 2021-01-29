@@ -11,50 +11,34 @@
  * limitations under the License.
  */
 
-package pages;
+package pages.mainmenusection;
 
 import solutions.bellatrix.components.Anchor;
-import solutions.bellatrix.pages.WebSection;
+import solutions.bellatrix.pages.PageComponents;
 
-public class MainMenuSection extends WebSection {
+public class Components extends PageComponents {
 
-    private Anchor homeLink() {
+    public Anchor homeLink() {
         return create().byLinkText(Anchor.class, "Home");
     }
 
-    private Anchor blogLink() {
+    public Anchor blogLink() {
         return create().byLinkText(Anchor.class, "Blog");
     }
 
-    private Anchor cartLink() {
+    public Anchor cartLink() {
         return create().byLinkText(Anchor.class, "Cart");
     }
 
-    private Anchor checkoutLink() {
+    public Anchor checkoutLink() {
         return create().byLinkText(Anchor.class, "Checkout");
     }
 
-    private Anchor myAccountLink() {
+    public Anchor myAccountLink() {
         return create().byLinkText(Anchor.class, "My Account");
     }
 
-    private Anchor promotionsLink() {
+    public Anchor promotionsLink() {
         return create().byLinkText(Anchor.class, "Promotions");
-    }
-
-    public void openHomePage() {
-        homeLink().click();
-    }
-
-    public void openBlogPage() {
-        blogLink().click();
-    }
-
-    public void openMyAccountPage() {
-        myAccountLink().click();
-    }
-
-    public void openPromotionsPage() {
-        promotionsLink().click();
     }
 }

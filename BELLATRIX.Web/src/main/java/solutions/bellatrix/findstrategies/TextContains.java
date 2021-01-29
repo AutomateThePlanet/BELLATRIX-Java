@@ -11,23 +11,27 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.pages;
+package solutions.bellatrix.findstrategies;
 
-import lombok.Getter;
-import solutions.bellatrix.services.NavigationService;
+import org.openqa.selenium.By;
 
-public abstract class NavigatableWebPage<ElementsT extends BaseElements> extends WebPage<ElementsT> {
-    public NavigationService navigate() {
-        return new NavigationService();
+public class TextContains extends FindStrategy {
+    public TextContains(String value)
+    {
+        super(value);
     }
 
-    protected abstract String getUrl();
-
-    public void open() {
-        navigate().to(getUrl());
-        waitForPageLoad();
+    public static TextContains by(String value) {
+        return new TextContains(value);
     }
 
-    protected void waitForPageLoad() {
+    @Override
+    public By convert() {
+        return By.xpath(String.format("//*[contains(text(), '%s')]", getValue()));
+    }
+
+    @Override
+    public String toString() {
+        return String.format("text containing %s", getValue());
     }
 }

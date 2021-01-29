@@ -16,12 +16,32 @@ package solutions.bellatrix.pages;
 import solutions.bellatrix.services.BrowserService;
 import solutions.bellatrix.services.ComponentCreateService;
 
-public abstract class WebSection {
+import java.lang.reflect.ParameterizedType;
+
+public abstract class WebSection<ComponentsT extends PageComponents, AssertionsT extends PageAsserts<ComponentsT>>  {
     public BrowserService browser() {
         return new BrowserService();
     }
 
     public ComponentCreateService create() {
         return new ComponentCreateService();
+    }
+
+    public ComponentsT elements() {
+        try {
+            var elementsClass = (Class<ComponentsT>)((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+            return elementsClass.getDeclaredConstructor().newInstance();
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public AssertionsT asserts() {
+        try {
+            var assertionsClass = (Class<AssertionsT>)((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[1];
+            return assertionsClass.getDeclaredConstructor().newInstance();
+        } catch (Exception e) {
+            return null;
+        }
     }
 }

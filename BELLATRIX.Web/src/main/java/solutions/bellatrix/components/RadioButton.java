@@ -13,7 +13,16 @@
 
 package solutions.bellatrix.components;
 
+import solutions.bellatrix.plugins.EventListener;
+
 public class RadioButton extends WebComponent {
+    public final static EventListener<ComponentActionEventArgs> CLICKING = new EventListener<>();
+    public final static EventListener<ComponentActionEventArgs> CLICKED = new EventListener<>();
+
+    public void click() {
+        defaultClick(CLICKING, CLICKED);
+    }
+
     @Override
     public Class<?> getComponentClass() {
         return getClass();

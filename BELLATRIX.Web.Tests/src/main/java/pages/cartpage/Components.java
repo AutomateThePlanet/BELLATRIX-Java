@@ -11,13 +11,13 @@
  * limitations under the License.
  */
 
-package pages.CartPage;
+package pages.cartpage;
 
 
 import solutions.bellatrix.components.*;
-import solutions.bellatrix.pages.BaseElements;
+import solutions.bellatrix.pages.PageComponents;
 
-public class CartPageElements extends BaseElements {
+public class Components extends PageComponents {
     public TextField couponCodeTextField() {
         return create().byId(TextField.class, "coupon_code");
     }

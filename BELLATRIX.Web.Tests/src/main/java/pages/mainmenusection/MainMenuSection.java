@@ -11,23 +11,24 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.pages;
+package pages.mainmenusection;
 
-import lombok.Getter;
-import solutions.bellatrix.services.NavigationService;
+import solutions.bellatrix.pages.WebSection;
 
-public abstract class NavigatableAssertableWebPage<ElementsT extends BaseElements, AssertionsT extends BaseAssertions<ElementsT>> extends AssertableWebPage<ElementsT, AssertionsT> {
-    public NavigationService navigate() {
-        return new NavigationService();
+public class MainMenuSection extends WebSection<Components, Asserts> {
+    public void openHomePage() {
+        elements().homeLink().click();
     }
 
-    protected abstract String getUrl();
-
-    public void open() {
-        navigate().to(getUrl());
-        waitForPageLoad();
+    public void openBlogPage() {
+        elements().blogLink().click();
     }
 
-    protected void waitForPageLoad() {
+    public void openMyAccountPage() {
+        elements().myAccountLink().click();
+    }
+
+    public void openPromotionsPage() {
+        elements().promotionsLink().click();
     }
 }

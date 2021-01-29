@@ -11,14 +11,9 @@
  * limitations under the License.
  */
 
-package pages.MainPage;
+package pages.breadcrumbsection;
 
-import org.testng.Assert;
-import solutions.bellatrix.pages.BaseAssertions;
+import solutions.bellatrix.pages.PageAsserts;
 
-public class MainPageAssertions extends BaseAssertions<MainPageElements> {
-    public void productBoxLink(String name, String expectedLink) {
-        var actualLink = elements().getProductBoxByName(name).getAttribute("href");
-        Assert.assertEquals(actualLink, expectedLink);
-    }
+public class Asserts extends PageAsserts<Components> {
 }

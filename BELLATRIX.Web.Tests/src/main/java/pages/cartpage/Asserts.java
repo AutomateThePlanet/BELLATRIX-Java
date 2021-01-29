@@ -11,20 +11,17 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.components;
+package pages.cartpage;
 
-import solutions.bellatrix.plugins.EventListener;
+import org.testng.Assert;
+import solutions.bellatrix.pages.PageAsserts;
 
-public class Button extends WebComponent {
-    public final static EventListener<ComponentActionEventArgs> CLICKING = new EventListener<>();
-    public final static EventListener<ComponentActionEventArgs> CLICKED = new EventListener<>();
-
-    public void click() {
-        defaultClick(CLICKING, CLICKED);
+public class Asserts extends PageAsserts<Components> {
+    public void couponAppliedSuccessfully() {
+        Assert.assertEquals(elements().messageAlert().getText(), "Coupon code applied successfully.");
     }
 
-    @Override
-    public Class<?> getComponentClass() {
-        return getClass();
+    public void totalPrice(String expectedPrice) {
+        Assert.assertEquals(elements().totalSpan().getText(), expectedPrice);
     }
 }

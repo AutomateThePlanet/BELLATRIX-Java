@@ -11,12 +11,20 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.pages;
+package pages.breadcrumbsection;
 
-import solutions.bellatrix.utilities.InstanceFactory;
+import solutions.bellatrix.components.Anchor;
+import solutions.bellatrix.components.WebComponent;
+import solutions.bellatrix.pages.WebSection;
 
-public abstract class BaseAssertions<ElementsT extends BaseElements> {
-    protected ElementsT elements() {
-        return InstanceFactory.<ElementsT>createByTypeParameter(getClass(), 0);
+public class BreadcrumbSection extends WebSection<Components, Asserts> {
+
+    private WebComponent breadcrumb() {
+        return create().byCss(WebComponent.class, "woocommerce-breadcrumb");
+    }
+
+    // TODO: add create methods to component
+    public void openBreadcrumbItem(String itemToOpen) {
+        breadcrumb().createByLinkText(Anchor.class, itemToOpen).click();
     }
 }

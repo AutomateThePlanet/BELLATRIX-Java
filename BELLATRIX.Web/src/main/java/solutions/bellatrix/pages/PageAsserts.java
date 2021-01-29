@@ -11,20 +11,12 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.components;
+package solutions.bellatrix.pages;
 
-import solutions.bellatrix.plugins.EventListener;
+import solutions.bellatrix.utilities.InstanceFactory;
 
-public class Button extends WebComponent {
-    public final static EventListener<ComponentActionEventArgs> CLICKING = new EventListener<>();
-    public final static EventListener<ComponentActionEventArgs> CLICKED = new EventListener<>();
-
-    public void click() {
-        defaultClick(CLICKING, CLICKED);
-    }
-
-    @Override
-    public Class<?> getComponentClass() {
-        return getClass();
+public abstract class PageAsserts<ComponentsT extends PageComponents> {
+    protected ComponentsT elements() {
+        return InstanceFactory.<ComponentsT>createByTypeParameter(getClass(), 0);
     }
 }

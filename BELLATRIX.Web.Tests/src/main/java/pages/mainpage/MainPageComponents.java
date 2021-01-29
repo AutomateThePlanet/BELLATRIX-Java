@@ -11,29 +11,24 @@
  * limitations under the License.
  */
 
-package pages;
+package pages.mainpage;
 
-import org.openqa.selenium.By;
 import solutions.bellatrix.components.Anchor;
-import solutions.bellatrix.components.Label;
-import solutions.bellatrix.components.Span;
-import solutions.bellatrix.pages.WebSection;
+import solutions.bellatrix.components.Button;
+import solutions.bellatrix.components.WebComponent;
+import solutions.bellatrix.pages.PageComponents;
 
-public class CartInfoSection extends WebSection {
+public class MainPageComponents extends PageComponents {
 
-    private Anchor cartIcon() {
-        return create().byClass(Anchor.class, "cart-contents");
+    public Anchor addToCartFalcon9() {
+        return create().byCss(Anchor.class, "[data-product_id*='28']");
     }
 
-    private Span cartAmount() {
-        return create().byClass(Span.class, "amount");
+    public Button viewCartButton() {
+        return create().byCss(Button.class, "[class*='added_to_cart wc-forward']");
     }
 
-    public String getCurrentAmount() {
-        return cartAmount().getText();
-    }
-
-    public void openCart() {
-        cartIcon().click();
+    public Anchor getProductBoxByName(String name) {
+        return create().byXPath(Anchor.class, String.format("//h2[text()='%s']/parent::a[1]", name));
     }
 }

@@ -18,4 +18,10 @@ public class CheckBox extends WebComponent {
     public Class<?> getComponentClass() {
         return getClass();
     }
+
+    public void check() {
+    }
+
+    public void uncheck() {
+    }
 }
