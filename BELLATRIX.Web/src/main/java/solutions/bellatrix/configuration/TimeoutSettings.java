@@ -23,6 +23,7 @@ public class TimeoutSettings {
     @Getter @Setter private int waitForAngularTimeout;
     @Getter @Setter private int waitForPartialUrl;
     @Getter @Setter private int sleepInterval;
+    @Getter @Setter private int validationsTimeout;
     @Getter @Setter private int elementToBeVisibleTimeout;
     @Getter @Setter private int elementToExistTimeout;
     @Getter @Setter private int elementToNotExistTimeout;

@@ -16,8 +16,8 @@ package solutions.bellatrix.components;
 import solutions.bellatrix.plugins.EventListener;
 
 public class Anchor extends WebComponent {
-    public final static EventListener<ComponentActionEventArgs> CLICKING = new EventListener<ComponentActionEventArgs>();
-    public final static EventListener<ComponentActionEventArgs> CLICKED = new EventListener<ComponentActionEventArgs>();
+    public final static EventListener<ComponentActionEventArgs> CLICKING = new EventListener<>();
+    public final static EventListener<ComponentActionEventArgs> CLICKED = new EventListener<>();
 
     @Override
     public Class<?> getComponentClass() {
@@ -25,10 +25,34 @@ public class Anchor extends WebComponent {
     }
 
     public String getHref() {
-        return findElement().getAttribute("href");
+        return defaultGetHref();
+    }
+
+    public String getText() {
+        return defaultGetText();
+    }
+
+    public String getHtml() {
+        return defaultGetInnerHtmlAttribute();
+    }
+
+    public String getTarget() {
+        return defaultGetTargetAttribute();
+    }
+
+    public String getRel() {
+        return defaultGetRelAttribute();
     }
 
     public void click() {
         click(CLICKING, CLICKED);
+    }
+
+    public void validateHrefIs(String value) {
+        defaultValidateHrefIs(value);
+    }
+
+    public void validateHrefIsSet() {
+        defaultValidateHrefIsSet();
     }
 }

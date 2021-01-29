@@ -9,7 +9,6 @@
         <outputRelativeToContentRoot value="true" />
         <module name="BELLATRIX.Desktop" />
         <module name="BELLATRIX.Mobile" />
-        <module name="BELLATRIX.Logging" />
         <module name="BELLATRIX.Plugins" />
         <module name="BELLATRIX.API" />
         <module name="BELLATRIX.Plugins.Screenshots" />
@@ -22,5 +21,8 @@
         <module name="BELLATRIX.Layout" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="BELLATRIX.Logging" target="15" />
+    </bytecodeTargetLevel>
   </component>
 </project>

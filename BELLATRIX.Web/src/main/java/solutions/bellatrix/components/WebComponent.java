@@ -16,9 +16,12 @@ package solutions.bellatrix.components;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.SneakyThrows;
 import lombok.experimental.ExtensionMethod;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.*;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import solutions.bellatrix.components.contracts.Component;
 import solutions.bellatrix.configuration.ConfigurationService;
 import solutions.bellatrix.configuration.WebSettings;
@@ -32,10 +35,15 @@ import solutions.bellatrix.services.JavaScriptService;
 import solutions.bellatrix.utilities.InstanceFactory;
 import solutions.bellatrix.waitstrategies.*;
 
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
+import java.util.function.Function;
+
+import static org.apache.commons.lang3.StringEscapeUtils.unescapeHtml4;
 
 @ExtensionMethod({WebComponent.class, WaitStrategyElementsExtensions.class})
 public class WebComponent implements Component {
@@ -364,6 +372,14 @@ public class WebComponent implements Component {
         return Optional.ofNullable(getAttribute("for")).orElse("");
     }
 
+    protected String defaultGetTargetAttribute() {
+        return Optional.ofNullable(getAttribute("target")).orElse("");
+    }
+
+    protected String defaultGetRelAttribute() {
+        return Optional.ofNullable(getAttribute("rel")).orElse("");
+    }
+
     protected Boolean defaultGetDisabledAttribute() {
         var valueAttr = Optional.ofNullable(getAttribute("disabled")).orElse("false");
         return valueAttr.toLowerCase(Locale.ROOT) == "true";
@@ -385,8 +401,12 @@ public class WebComponent implements Component {
         return Optional.ofNullable(getAttribute("step")).orElse("");
     }
 
-    protected String GetPlaceholderAttribute() {
+    protected String defaultGetPlaceholderAttribute() {
         return Optional.ofNullable(getAttribute("placeholder")).orElse("");
+    }
+
+    protected String defaultGetAcceptAttribute() {
+        return Optional.ofNullable(getAttribute("accept")).orElse(null);
     }
 
     protected Boolean defaultGetAutoCompleteAttribute() {
@@ -404,6 +424,11 @@ public class WebComponent implements Component {
 
     protected String defaultGetList() {
         return Optional.ofNullable(getAttribute("list")).orElse("");
+    }
+
+    @SneakyThrows
+    protected String defaultGetHref() {
+        return unescapeHtml4(URLDecoder.decode(Optional.ofNullable(getAttribute("href")).orElse(""), StandardCharsets.UTF_8.name()));
     }
 
     protected void defaultSetText(EventListener<ComponentActionEventArgs> settingValue, EventListener<ComponentActionEventArgs> valueSet, String value)
@@ -459,5 +484,41 @@ public class WebComponent implements Component {
         }
 
         SCROLLED_TO_VISIBLE.broadcast(new ComponentActionEventArgs(this));
+    }
+
+    public final static EventListener<ComponentActionEventArgs> VALIDATED_ACCEPT_IS_NULL = new EventListener<>();
+    public final static EventListener<ComponentActionEventArgs> VALIDATED_ACCEPT_IS = new EventListener<>();
+
+    protected void defaultValidateAcceptIsNull() {
+        waitUntil((d) -> defaultGetAcceptAttribute() == null, String.format("The control's accept should be null but was '%s'.", defaultGetAcceptAttribute()));
+        VALIDATED_ACCEPT_IS_NULL.broadcast(new ComponentActionEventArgs(this));
+    }
+
+    protected void defaultValidateAcceptIs(String value) {
+        waitUntil((d) -> defaultGetAcceptAttribute().equals(value), String.format("The control's accept should be '%s' but was '%s'.", defaultGetAcceptAttribute()));
+        VALIDATED_ACCEPT_IS.broadcast(new ComponentActionEventArgs(this));
+    }
+
+    public final static EventListener<ComponentActionEventArgs> VALIDATED_HREF_IS_SET = new EventListener<>();
+    public final static EventListener<ComponentActionEventArgs> VALIDATED_HREF_IS = new EventListener<>();
+
+    protected void defaultValidateHrefIs(String value) {
+        waitUntil((d) -> defaultGetHref().equals(value), String.format("The control's href should be '%s' but was '%s'.", value, defaultGetHref()));
+        VALIDATED_HREF_IS.broadcast(new ComponentActionEventArgs(this));
+    }
+
+    protected void defaultValidateHrefIsSet() {
+        waitUntil((d) -> !StringUtils.isEmpty(defaultGetHref()), "The control's href shouldn't be empty but was.");
+        VALIDATED_HREF_IS_SET.broadcast(new ComponentActionEventArgs(this));
+    }
+
+    private void waitUntil(Function<SearchContext, Boolean> waitCondition, String exceptionMessage) {
+        var webDriverWait = new WebDriverWait(DriverService.getWrappedDriver(), webSettings.getTimeoutSettings().getValidationsTimeout(), webSettings.getTimeoutSettings().getSleepInterval());
+        try {
+            webDriverWait.until(waitCondition);
+        } catch (TimeoutException ex) {
+            var validationExceptionMessage = String.format("%s The test failed on URL: %s", exceptionMessage, browserService.getUrl());
+            throw new TimeoutException(validationExceptionMessage, ex);
+        }
     }
 }
