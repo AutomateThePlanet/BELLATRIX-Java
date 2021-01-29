@@ -20,6 +20,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ExecutionBrowser {
     Browser browser() default Browser.CHROME;
-    Lifecycle browserBehavior() default Lifecycle.RESTART_EVERY_TIME;
+    Lifecycle lifecycle() default Lifecycle.RESTART_EVERY_TIME;
     ExecutionType executionType() default ExecutionType.REGULAR;
 }

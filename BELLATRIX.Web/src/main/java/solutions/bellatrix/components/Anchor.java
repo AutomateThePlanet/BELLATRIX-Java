@@ -45,7 +45,7 @@ public class Anchor extends WebComponent {
     }
 
     public void click() {
-        click(CLICKING, CLICKED);
+        defaultClick(CLICKING, CLICKED);
     }
 
     public void validateHrefIs(String value) {

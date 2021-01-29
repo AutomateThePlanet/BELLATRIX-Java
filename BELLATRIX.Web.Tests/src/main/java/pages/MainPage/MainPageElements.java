@@ -13,9 +13,11 @@
 
 package pages.MainPage;
 
+import org.openqa.selenium.internal.FindsById;
 import solutions.bellatrix.components.Anchor;
 import solutions.bellatrix.components.Button;
 import solutions.bellatrix.components.WebComponent;
+import solutions.bellatrix.findstrategies.IdFindStrategy;
 import solutions.bellatrix.pages.BaseElements;
 
 public class MainPageElements extends BaseElements {

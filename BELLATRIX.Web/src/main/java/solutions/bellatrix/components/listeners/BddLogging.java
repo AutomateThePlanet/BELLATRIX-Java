@@ -21,9 +21,7 @@ public class BddLogging {
     private static Boolean isBddLoggingTurnedOn = false;
     public static void turnOn() {
         if (!isBddLoggingTurnedOn) {
-            Anchor.CLICKING.addListener((x) -> {
-                System.out.println(String.format("clicking %s\n", x.getComponent().getElementName()));
-            });
+            Anchor.CLICKING.addListener((x) -> System.out.println(String.format("clicking %s\n", x.getComponent().getElementName())));
             isBddLoggingTurnedOn = true;
         }
     }

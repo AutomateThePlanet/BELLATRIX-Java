@@ -16,7 +16,7 @@ package solutions.bellatrix.pages;
 import java.lang.reflect.ParameterizedType;
 
 public abstract class AssertableWebPage<ElementsT extends BaseElements, AssertionsT extends BaseAssertions<ElementsT>> extends WebPage<ElementsT> {
-    public AssertionsT assertions() {
+    public AssertionsT asserts() {
         try {
             var assertionsClass = (Class<AssertionsT>)((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[1];
             return assertionsClass.getDeclaredConstructor().newInstance();

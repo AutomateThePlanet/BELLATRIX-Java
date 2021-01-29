@@ -328,7 +328,7 @@ public class WebComponent implements Component {
     }
 
 
-    protected void click(EventListener<ComponentActionEventArgs> clicking, EventListener<ComponentActionEventArgs> clicked)
+    protected void defaultClick(EventListener<ComponentActionEventArgs> clicking, EventListener<ComponentActionEventArgs> clicked)
     {
         clicking.broadcast(new ComponentActionEventArgs(this));
 

@@ -12,13 +12,14 @@
  */
 
 import org.testng.annotations.Test;
+import pages.MainPage.MainPage;
 import solutions.bellatrix.components.Anchor;
 import solutions.bellatrix.infrastructure.Browser;
 import solutions.bellatrix.infrastructure.ExecutionBrowser;
 import solutions.bellatrix.infrastructure.Lifecycle;
 import solutions.bellatrix.infrastructure.WebTest;
 
-@ExecutionBrowser(browser = Browser.CHROME, browserBehavior = Lifecycle.REUSE_IF_STARTED)
+@ExecutionBrowser(browser = Browser.CHROME, lifecycle = Lifecycle.REUSE_IF_STARTED)
 public class ProductPurchaseTests extends WebTest {
     @Test
     public void completePurchaseSuccessfully_first() {
@@ -27,6 +28,7 @@ public class ProductPurchaseTests extends WebTest {
         var blogLink = app().create().byLinkText(Anchor.class,"Blog");
         addToCartFalcon9.click();
         blogLink.layout().assertAboveOf(addToCartFalcon9);
+        new MainPage().asserts().productBoxLink("", "");
     }
 
     @Test

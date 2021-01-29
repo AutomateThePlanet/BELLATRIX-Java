@@ -17,7 +17,7 @@ import org.testng.Assert;
 import solutions.bellatrix.pages.BaseAssertions;
 
 public class MainPageAssertions extends BaseAssertions<MainPageElements> {
-    public void assertProductBoxLink(String name, String expectedLink) {
+    public void productBoxLink(String name, String expectedLink) {
         var actualLink = elements().getProductBoxByName(name).getAttribute("href");
         Assert.assertEquals(actualLink, expectedLink);
     }
