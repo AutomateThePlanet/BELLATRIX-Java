@@ -11,14 +11,16 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.components.contracts;
+package layout;
 
-import layout.LayoutComponent;
-import org.openqa.selenium.WebElement;
-import solutions.bellatrix.findstrategies.FindStrategy;
+import lombok.Getter;
 
-public interface Component extends LayoutComponent {
-    Class<?> getComponentClass();
-    WebElement getWrappedElement();
-    FindStrategy getFindStrategy();
+public class LayoutComponentsTwoValuesActionEventArgs {
+    @Getter private final String actionValue;
+    @Getter private final String secondActionValue;
+
+    public LayoutComponentsTwoValuesActionEventArgs(String actionValue, String secondActionValue) {
+        this.actionValue = actionValue;
+        this.secondActionValue = secondActionValue;
+    }
 }

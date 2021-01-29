@@ -13,6 +13,7 @@
 
 package solutions.bellatrix.components;
 
+import layout.LayoutAssertionsFactory;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -81,6 +82,10 @@ public class WebComponent implements Component {
         componentCreateService = new ComponentCreateService();
         componentWaitService = new ComponentWaitService();
         wrappedDriver = DriverService.getWrappedDriver();
+    }
+
+    public LayoutAssertionsFactory layout() {
+        return new LayoutAssertionsFactory(this);
     }
 
     public String getElementName() {

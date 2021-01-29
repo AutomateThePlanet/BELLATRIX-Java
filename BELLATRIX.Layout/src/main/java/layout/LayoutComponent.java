@@ -11,14 +11,13 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.components.contracts;
+package layout;
 
-import layout.LayoutComponent;
-import org.openqa.selenium.WebElement;
-import solutions.bellatrix.findstrategies.FindStrategy;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.Point;
 
-public interface Component extends LayoutComponent {
-    Class<?> getComponentClass();
-    WebElement getWrappedElement();
-    FindStrategy getFindStrategy();
+public interface LayoutComponent {
+    String getElementName();
+    Point getLocation();
+    Dimension getSize();
 }

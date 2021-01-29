@@ -24,7 +24,9 @@ public class ProductPurchaseTests extends WebTest {
     public void completePurchaseSuccessfully_first() {
         app().navigate().to("http://demos.bellatrix.solutions/");
         var addToCartFalcon9 = app().create().byCss(Anchor.class,"[data-product_id*='28']");
+        var blogLink = app().create().byLinkText(Anchor.class,"Blog");
         addToCartFalcon9.click();
+        blogLink.layout().assertAboveOf(addToCartFalcon9);
     }
 
     @Test
