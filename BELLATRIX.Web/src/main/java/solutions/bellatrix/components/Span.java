@@ -14,4 +14,7 @@
 package solutions.bellatrix.components;
 
 public class Span extends WebComponent {
+    public String getText() {
+        return findElement().getText();
+    }
 }

@@ -13,33 +13,33 @@
 
 package pages;
 
-import org.openqa.selenium.By;
+import solutions.bellatrix.components.Anchor;
 import solutions.bellatrix.pages.WebSection;
 
 public class MainMenuSection extends WebSection {
 
-    private Element homeLink() {
-        return driver.findElement(By.linkText("Home"));
+    private Anchor homeLink() {
+        return create().byLinkText(Anchor.class, "Home");
     }
 
-    private Element blogLink() {
-        return driver.findElement(By.linkText("Blog"));
+    private Anchor blogLink() {
+        return create().byLinkText(Anchor.class, "Blog");
     }
 
-    private Element cartLink() {
-        return driver.findElement(By.linkText("Cart"));
+    private Anchor cartLink() {
+        return create().byLinkText(Anchor.class, "Cart");
     }
 
-    private Element checkoutLink() {
-        return driver.findElement(By.linkText("Checkout"));
+    private Anchor checkoutLink() {
+        return create().byLinkText(Anchor.class, "Checkout");
     }
 
-    private Element myAccountLink() {
-        return driver.findElement(By.linkText("My Account"));
+    private Anchor myAccountLink() {
+        return create().byLinkText(Anchor.class, "My Account");
     }
 
-    private Element promotionsLink() {
-        return driver.findElement(By.linkText("Promotions"));
+    private Anchor promotionsLink() {
+        return create().byLinkText(Anchor.class, "Promotions");
     }
 
     public void openHomePage() {

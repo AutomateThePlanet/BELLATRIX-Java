@@ -13,6 +13,7 @@
 
 package pages;
 
+import solutions.bellatrix.components.Anchor;
 import solutions.bellatrix.components.WebComponent;
 import solutions.bellatrix.pages.WebSection;
 
@@ -24,6 +25,6 @@ public class BreadcrumbSection extends WebSection {
 
     // TODO: add create methods to component
     public void openBreadcrumbItem(String itemToOpen) {
-        breadcrumb().findElement(By.linkText(itemToOpen)).click();
+        breadcrumb().createByLinkText(Anchor.class, itemToOpen).click();
     }
 }

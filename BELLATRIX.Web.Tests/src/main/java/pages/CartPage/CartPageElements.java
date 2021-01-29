@@ -14,35 +14,35 @@
 package pages.CartPage;
 
 
+import solutions.bellatrix.components.*;
 import solutions.bellatrix.pages.BaseElements;
 
 public class CartPageElements extends BaseElements {
+    public TextField couponCodeTextField() {
+        return create().byId(TextField.class, "coupon_code");
+    }
 
-//    public Element couponCodeTextField() {
-//        return driver.findElement(By.id("coupon_code"));
-//    }
-//
-//    public Element applyCouponButton() {
-//        return driver.findElement(By.cssSelector("[value*='Apply coupon']"));
-//    }
-//
-//    public Element quantityBox() {
-//        return driver.findElement(By.cssSelector("[class*='input-text qty text']"));
-//    }
-//
-//    public Element updateCart() {
-//        return driver.findElement(By.cssSelector("[value*='Update cart']"));
-//    }
-//
-//    public Element messageAlert() {
-//        return driver.findElement(By.cssSelector("[class*='woocommerce-message']"));
-//    }
-//
-//    public Element totalSpan() {
-//        return driver.findElement(By.xpath("//*[@class='order-total']//span"));
-//    }
-//
-//    public Element proceedToCheckout() {
-//        return driver.findElement(By.cssSelector("[class*='checkout-button button alt wc-forward']"));
-//    }
+    public Button applyCouponButton() {
+        return create().byCss(Button.class, "[value*='Apply coupon']");
+    }
+
+    public TextField quantityBox() {
+        return create().byCss(TextField.class, "[class*='input-text qty text']");
+    }
+
+    public Button updateCart() {
+        return create().byCss(Button.class, "[value*='Update cart']");
+    }
+
+    public Div messageAlert() {
+        return create().byCss(Div.class, "[class*='woocommerce-message']");
+    }
+
+    public Span totalSpan() {
+        return create().byXPath(Span.class, "//*[@class='order-total']//span");
+    }
+
+    public Button proceedToCheckout() {
+        return create().byCss(Button.class, "[class*='checkout-button button alt wc-forward']");
+    }
 }

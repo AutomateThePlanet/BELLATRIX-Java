@@ -14,7 +14,6 @@
 package pages.MainPage;
 
 import org.testng.Assert;
-import pages.v11.multifilepageobjectnavibasepagegeneric.BaseAssertions;
 import solutions.bellatrix.pages.BaseAssertions;
 
 public class MainPageAssertions extends BaseAssertions<MainPageElements> {

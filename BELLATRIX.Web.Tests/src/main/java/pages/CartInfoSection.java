@@ -14,16 +14,19 @@
 package pages;
 
 import org.openqa.selenium.By;
+import solutions.bellatrix.components.Anchor;
+import solutions.bellatrix.components.Label;
+import solutions.bellatrix.components.Span;
 import solutions.bellatrix.pages.WebSection;
 
 public class CartInfoSection extends WebSection {
 
-    private Element cartIcon() {
-        return driver.findElement(By.className("cart-contents"));
+    private Anchor cartIcon() {
+        return create().byClass(Anchor.class, "cart-contents");
     }
 
-    private Element cartAmount() {
-        return driver.findElement(By.className("amount"));
+    private Span cartAmount() {
+        return create().byClass(Span.class, "amount");
     }
 
     public String getCurrentAmount() {

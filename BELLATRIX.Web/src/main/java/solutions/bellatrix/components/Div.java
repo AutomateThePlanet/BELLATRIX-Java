@@ -14,4 +14,7 @@
 package solutions.bellatrix.components;
 
 public class Div extends WebComponent {
+    public String getText() {
+        return findElement().getText();
+    }
 }

@@ -25,7 +25,7 @@ public class MainPage extends NavigatableAssertableWebPage<MainPageElements, Mai
 
     @Override
     protected void waitForPageLoad() {
-        elements().addToCartFalcon9().waitToExists();
+        elements().addToCartFalcon9().toExists(elements().addToCartFalcon9()).waitToBe();
     }
 
     public void addRocketToShoppingCart() {

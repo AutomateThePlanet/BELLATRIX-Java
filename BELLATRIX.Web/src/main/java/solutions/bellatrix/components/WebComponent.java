@@ -4,7 +4,7 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * You may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing, software
+ * Unless required createBy applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
@@ -66,7 +66,7 @@ public class WebComponent implements Component {
 //        this(findStrategy, 0, null);
 //    }
 //
-//    public WebComponent(FindStrategy by, int elementIndex, WebElement parentWrappedElement) {
+//    public WebComponent(FindStrategy createBy, int elementIndex, WebElement parentWrappedElement) {
 //        this.parentWrappedElement = parentWrappedElement;
 //        this.elementIndex = elementIndex;
 //        this.findStrategy = findStrategy;
@@ -188,67 +188,67 @@ public class WebComponent implements Component {
         return createAll(componentClass, findStrategy);
     }
 
-    public <TComponent extends WebComponent> TComponent byId(Class<TComponent> componentClass, String id) {
+    public <TComponent extends WebComponent> TComponent createById(Class<TComponent> componentClass, String id) {
         return create(componentClass, new IdFindStrategy(id));
     }
 
-    public <TComponent extends WebComponent> TComponent byCss(Class<TComponent> componentClass, String css) {
+    public <TComponent extends WebComponent> TComponent createByCss(Class<TComponent> componentClass, String css) {
         return create(componentClass, new CssFindStrategy(css));
     }
 
-    public <TComponent extends WebComponent> TComponent byClass(Class<TComponent> componentClass, String cclass) {
+    public <TComponent extends WebComponent> TComponent createByClass(Class<TComponent> componentClass, String cclass) {
         return create(componentClass, new ClassFindStrategy(cclass));
     }
 
-    public <TComponent extends WebComponent> TComponent byXPath(Class<TComponent> componentClass, String xpath) {
+    public <TComponent extends WebComponent> TComponent createByXPath(Class<TComponent> componentClass, String xpath) {
         return create(componentClass, new XPathFindStrategy(xpath));
     }
 
-    public <TComponent extends WebComponent> TComponent byLinkText(Class<TComponent> componentClass, String linkText) {
+    public <TComponent extends WebComponent> TComponent createByLinkText(Class<TComponent> componentClass, String linkText) {
         return create(componentClass, new LinkTextFindStrategy(linkText));
     }
 
-    public <TComponent extends WebComponent> TComponent byTag(Class<TComponent> componentClass, String tag) {
+    public <TComponent extends WebComponent> TComponent createByTag(Class<TComponent> componentClass, String tag) {
         return create(componentClass, new TagFindStrategy(tag));
     }
 
-    public <TComponent extends WebComponent> TComponent byIdContaining(Class<TComponent> componentClass, String idContaining) {
+    public <TComponent extends WebComponent> TComponent createByIdContaining(Class<TComponent> componentClass, String idContaining) {
         return create(componentClass, new IdContainingFindStrategy(idContaining));
     }
 
-    public <TComponent extends WebComponent> TComponent byInnerTextContaining(Class<TComponent> componentClass, String innerText) {
+    public <TComponent extends WebComponent> TComponent createByInnerTextContaining(Class<TComponent> componentClass, String innerText) {
         return create(componentClass, new InnerTextContainsFindStrategy(innerText));
     }
 
-    public <TComponent extends WebComponent> List<TComponent> allById(Class<TComponent> componentClass, String id) {
+    public <TComponent extends WebComponent> List<TComponent> createAllById(Class<TComponent> componentClass, String id) {
         return createAll(componentClass, new IdFindStrategy(id));
     }
 
-    public <TComponent extends WebComponent> List<TComponent> allByCss(Class<TComponent> componentClass, String css) {
+    public <TComponent extends WebComponent> List<TComponent> createAllByCss(Class<TComponent> componentClass, String css) {
         return createAll(componentClass, new CssFindStrategy(css));
     }
 
-    public <TComponent extends WebComponent> List<TComponent> allByClass(Class<TComponent> componentClass, String cclass) {
+    public <TComponent extends WebComponent> List<TComponent> createAllByClass(Class<TComponent> componentClass, String cclass) {
         return createAll(componentClass, new ClassFindStrategy(cclass));
     }
 
-    public <TComponent extends WebComponent> List<TComponent> allByXPath(Class<TComponent> componentClass, String xpath) {
+    public <TComponent extends WebComponent> List<TComponent> createAllByXPath(Class<TComponent> componentClass, String xpath) {
         return createAll(componentClass, new XPathFindStrategy(xpath));
     }
 
-    public <TComponent extends WebComponent> List<TComponent> allByLinkText(Class<TComponent> componentClass, String linkText) {
+    public <TComponent extends WebComponent> List<TComponent> createAllByLinkText(Class<TComponent> componentClass, String linkText) {
         return createAll(componentClass, new LinkTextFindStrategy(linkText));
     }
 
-    public <TComponent extends WebComponent> List<TComponent> allByTag(Class<TComponent> componentClass, String tag) {
+    public <TComponent extends WebComponent> List<TComponent> createAllByTag(Class<TComponent> componentClass, String tag) {
         return createAll(componentClass, new TagFindStrategy(tag));
     }
 
-    public <TComponent extends WebComponent> List<TComponent> allByIdContaining(Class<TComponent> componentClass, String idContaining) {
+    public <TComponent extends WebComponent> List<TComponent> createAllByIdContaining(Class<TComponent> componentClass, String idContaining) {
         return createAll(componentClass, new IdContainingFindStrategy(idContaining));
     }
 
-    public <TComponent extends WebComponent> List<TComponent> allByInnerTextContaining(Class<TComponent> componentClass, String innerText) {
+    public <TComponent extends WebComponent> List<TComponent> createAllByInnerTextContaining(Class<TComponent> componentClass, String innerText) {
         return createAll(componentClass, new InnerTextContainsFindStrategy(innerText));
     }
 
@@ -482,7 +482,7 @@ public class WebComponent implements Component {
     }
 
     private void scrollToMakeElementVisible(WebElement wrappedElement) {
-        // By default scroll down to make the element visible.
+        // createBy default scroll down to make the element visible.
         if (webSettings.getAutomaticallyScrollToVisible()) {
             scrollToVisible(wrappedElement, false);
         }

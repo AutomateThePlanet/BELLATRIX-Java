@@ -13,20 +13,15 @@
 
 package pages;
 
-import org.openqa.selenium.By;
+import solutions.bellatrix.components.TextField;
 import solutions.bellatrix.pages.WebSection;
 
 public class SearchSection extends WebSection {
-
-    public SearchSection(Driver driver) {
-        this.driver = driver;
-    }
-
-    private Element searchField() {
-        return driver.findElement(By.id("woocommerce-product-search-field-0"));
+    private TextField searchField() {
+        return create().byId(TextField.class,"woocommerce-product-search-field-0");
     }
 
     public void searchForItem(String searchText) throws InterruptedException {
-        searchField().typeText(searchText);
+        searchField().setText(searchText);
     }
 }

@@ -13,20 +13,22 @@
 
 package pages.MainPage;
 
-import org.openqa.selenium.By;
+import solutions.bellatrix.components.Anchor;
+import solutions.bellatrix.components.Button;
+import solutions.bellatrix.components.WebComponent;
 import solutions.bellatrix.pages.BaseElements;
 
 public class MainPageElements extends BaseElements {
 
-    public Element addToCartFalcon9() {
-        return driver.findElement(By.cssSelector("[data-product_id*='28']"));
+    public Anchor addToCartFalcon9() {
+        return create().byCss(Anchor.class, "[data-product_id*='28']");
     }
 
-    public Element viewCartButton() {
-        return driver.findElement(By.cssSelector("[class*='added_to_cart wc-forward']"));
+    public Button viewCartButton() {
+        return create().byCss(Button.class, "[class*='added_to_cart wc-forward']");
     }
 
-    public Element getProductBoxByName(String name) {
-        return driver.findElement(By.xpath(String.format("//h2[text()='%s']/parent::a[1]", name)));
+    public WebComponent getProductBoxByName(String name) {
+        return create().byXPath(WebComponent.class, String.format("//h2[text()='%s']/parent::a[1]", name));
     }
 }

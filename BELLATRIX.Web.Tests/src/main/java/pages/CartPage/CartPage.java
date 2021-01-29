@@ -13,40 +13,34 @@
 
 package pages.CartPage;
 
-import pages.BreadcrumbSection;
 import solutions.bellatrix.pages.NavigatableWebPage;
 
 public class CartPage extends NavigatableWebPage<CartPageElements> {
-
     @Override
     protected String getUrl() {
         return "http://demos.bellatrix.solutions/cart/";
     }
 
-    public BreadcrumbSection breadcrumbSection() {
-        return new BreadcrumbSection(driver);
-    }
-
     @Override
     protected void waitForPageLoad() {
-        elements().couponCodeTextField().waitToExists();
+        elements().couponCodeTextField().toExists(elements().couponCodeTextField()).waitToBe();
     }
 
-    public void applyCoupon(String coupon) throws InterruptedException {
-        elements().couponCodeTextField().typeText(coupon);
+    public void applyCoupon(String coupon) {
+        elements().couponCodeTextField().setText(coupon);
         elements().applyCouponButton().click();
-        driver.waitForAjax();
+        browser().waitForAjax();
     }
 
     public void increaseProductQuantity(int newQuantity) throws InterruptedException {
-        elements().quantityBox().typeText(String.valueOf(newQuantity));
+        elements().quantityBox().setText(String.valueOf(newQuantity));
         elements().updateCart().click();
-        driver.waitForAjax();
+        browser().waitForAjax();
     }
 
     public void clickProceedToCheckout() {
         elements().proceedToCheckout().click();
-        driver.waitUntilPageLoadsCompletely();
+        browser().waitUntilPageLoadsCompletely();
     }
 
     public String getTotal() {
