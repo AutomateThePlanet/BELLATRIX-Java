@@ -25,4 +25,9 @@ public class CssFindStrategy extends FindStrategy {
     public By convert() {
         return By.cssSelector(getValue());
     }
+
+    @Override
+    public String toString() {
+        return String.format("css = %s", getValue());
+    }
 }

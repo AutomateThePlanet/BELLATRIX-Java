@@ -11,11 +11,20 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.components;
+package solutions.bellatrix.components.listeners;
 
-public class Time extends WebComponent {
-    @Override
-    public Class<?> getComponentClass() {
-        return getClass();
+import solutions.bellatrix.components.Anchor;
+
+import java.util.function.Consumer;
+
+public class BddLogging {
+    private static Boolean isBddLoggingTurnedOn = false;
+    public static void turnOn() {
+        if (!isBddLoggingTurnedOn) {
+            Anchor.CLICKING.addListener((x) -> {
+                System.out.println(String.format("clicking %s\n", x.getComponent().getElementName()));
+            });
+            isBddLoggingTurnedOn = true;
+        }
     }
 }

@@ -19,7 +19,7 @@ import solutions.bellatrix.findstrategies.FindStrategy;
 public interface Component {
     Class<?> getComponentClass();
     String getElementName();
-    String getPageName();
+//    String getPageName();
     WebElement getWrappedElement();
     FindStrategy getFindStrategy();
 }

@@ -49,6 +49,10 @@ public class App implements AutoCloseable {
         return SingletonFactory.getInstance(ComponentWaitService.class);
     }
 
+    public void addDriverOptions(String key, String value) {
+        DriverService.addDriverOptions(key, value);
+    }
+
     public <TPage extends NavigatableWebPage> TPage pageGoTo(Class<TPage> pageOf, Object... args)
     {
         var page = SingletonFactory.getInstance(pageOf, args);

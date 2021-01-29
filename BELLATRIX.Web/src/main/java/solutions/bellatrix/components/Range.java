@@ -14,4 +14,8 @@
 package solutions.bellatrix.components;
 
 public class Range extends WebComponent {
+    @Override
+    public Class<?> getComponentClass() {
+        return getClass();
+    }
 }

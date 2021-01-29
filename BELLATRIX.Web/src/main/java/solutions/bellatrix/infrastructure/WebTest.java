@@ -13,9 +13,8 @@
 
 package solutions.bellatrix.infrastructure;
 
-import lombok.Getter;
-import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
+import solutions.bellatrix.components.listeners.BddLogging;
 import solutions.bellatrix.plugins.BaseTest;
 import solutions.bellatrix.services.App;
 
@@ -27,8 +26,8 @@ public class WebTest extends BaseTest {
 
     @BeforeSuite
     public void beforeSuite() {
-        System.out.println("WebTest beforeSuite");
         addPlugin(new BrowserLifecyclePlugin());
+        BddLogging.turnOn();
     }
 
 //    @AfterSuite

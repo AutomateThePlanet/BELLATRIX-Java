@@ -25,4 +25,9 @@ public class TagFindStrategy extends FindStrategy {
     public By convert() {
         return By.tagName(getValue());
     }
+
+    @Override
+    public String toString() {
+        return String.format("tag = %s", getValue());
+    }
 }

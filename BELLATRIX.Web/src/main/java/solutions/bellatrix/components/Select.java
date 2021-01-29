@@ -49,4 +49,9 @@ public class Select extends WebComponent {
     public void selectByIndex(int index) {
         new org.openqa.selenium.support.ui.Select(findElement()).selectByIndex(index);
     }
+
+    @Override
+    public Class<?> getComponentClass() {
+        return getClass();
+    }
 }

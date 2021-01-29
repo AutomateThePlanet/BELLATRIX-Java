@@ -16,4 +16,9 @@ package solutions.bellatrix.components;
 public class Phone extends WebComponent {
     public void setPhone(String phone) {
     }
+
+    @Override
+    public Class<?> getComponentClass() {
+        return getClass();
+    }
 }

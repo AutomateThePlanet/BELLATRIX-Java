@@ -14,4 +14,8 @@
 package solutions.bellatrix.components;
 
 public class Url extends WebComponent {
+    @Override
+    public Class<?> getComponentClass() {
+        return getClass();
+    }
 }

@@ -44,8 +44,8 @@ public class WebComponent implements Component {
     @Getter private WebDriver wrappedDriver;
 
     // TODO: set elementName and pageName
-    @Getter private String elementName;
-    @Getter private String pageName;
+//    @Getter private String elementName;
+//    @Getter private String pageName;
 
     private List<WaitStrategy> waitStrategies;
     @Getter protected JavaScriptService javaScriptService;
@@ -60,6 +60,11 @@ public class WebComponent implements Component {
         browserService = new BrowserService();
         componentCreateService = new ComponentCreateService();
         componentWaitService = new ComponentWaitService();
+        wrappedDriver = DriverService.getWrappedDriver();
+    }
+
+    public String getElementName() {
+        return String.format("%s (%s)", getComponentClass().getSimpleName(), findStrategy.toString());
     }
 
 //    public WebComponent(FindStrategy findStrategy) {
@@ -280,12 +285,12 @@ public class WebComponent implements Component {
           waitStrategies.add(Wait.to().exists());
       }
 
-      WebElement wrappedElement = null;
       try {
           for (var waitStrategy:waitStrategies) {
               componentWaitService.wait(this, waitStrategy);
           }
 
+          wrappedElement = findNativeElement();
           scrollToMakeElementVisible(wrappedElement);
           if (webSettings.getWaitUntilReadyOnElementFound()) {
               browserService.waitForAjax();
@@ -299,7 +304,7 @@ public class WebComponent implements Component {
 
           waitStrategies.clear();
       } catch (WebDriverException ex) {
-          System.out.print(String.format("\n\nThe element: \n Name: '%s', \n Locator: '%s = %s', \n Type: '%s' \nWas not found on the page or didn't fulfill the specified conditions.\n\n", elementName, findStrategy.toString(), findStrategy.getValue(), getClass().getName()));
+          System.out.print(String.format("\n\nThe element: \n Name: '%s', \n Locator: '%s = %s', \nWas not found on the page or didn't fulfill the specified conditions.\n\n", getComponentClass().getSimpleName(), findStrategy.toString(), findStrategy.getValue()));
       }
 
         return wrappedElement;
@@ -311,7 +316,7 @@ public class WebComponent implements Component {
         clicking.broadcast(new ComponentActionEventArgs(this));
 
         this.toExists().toBeClickable().waitToBe();
-        javaScriptService.execute("arguments[0].focus();arguments[0].click();", this);
+        javaScriptService.execute("arguments[0].focus();arguments[0].click();", wrappedElement);
 
         clicked.broadcast(new ComponentActionEventArgs(this));
     }
@@ -461,8 +466,7 @@ public class WebComponent implements Component {
 //        valueSet?.Invoke(this, new ElementActionEventArgs(this, value));
 //    }
 
-    private WebElement findNativeElement()
-    {
+    private WebElement findNativeElement() {
         if (parentWrappedElement == null) {
             return wrappedDriver.findElements(findStrategy.convert()).get(elementIndex);
         } else {
@@ -496,7 +500,7 @@ public class WebComponent implements Component {
             if (shouldWait)
             {
                 Thread.sleep(500);
-                //this.ToExists().WaitToBe();
+                toExists().waitToBe();
             }
         } catch (ElementNotInteractableException ex) {
             System.out.print(ex);

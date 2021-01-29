@@ -25,4 +25,9 @@ public class IdFindStrategy extends FindStrategy {
     public By convert() {
         return By.id(getValue());
     }
+
+    @Override
+    public String toString() {
+        return String.format("id = %s", getValue());
+    }
 }

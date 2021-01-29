@@ -16,4 +16,9 @@ package solutions.bellatrix.components;
 public class TextField extends WebComponent {
     public void setText(String value) {
     }
+
+    @Override
+    public Class<?> getComponentClass() {
+        return getClass();
+    }
 }

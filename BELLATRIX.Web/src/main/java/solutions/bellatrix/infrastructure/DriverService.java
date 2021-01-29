@@ -24,21 +24,32 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
-import solutions.bellatrix.configuration.BrowserSettings;
 
+import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
 public class DriverService {
     private static ThreadLocal<Boolean> disposed;
     //    private static ProxyService proxyService;
     private static ThreadLocal<BrowserConfiguration> browserConfiguration;
+    private static ThreadLocal<HashMap<String, String>> customDriverOptions;
     private static ThreadLocal<WebDriver> wrappedDriver;
 
     static {
         disposed = new ThreadLocal<>();
+        customDriverOptions = new ThreadLocal<>();
+        customDriverOptions.set(new HashMap<>());
         browserConfiguration = new ThreadLocal<>();
         wrappedDriver = new ThreadLocal<>();
         disposed.set(false);
+    }
+
+    public static HashMap<String, String> getCustomDriverOptions() {
+        return customDriverOptions.get();
+    }
+
+    public static void addDriverOptions(String key, String value) {
+        customDriverOptions.get().put(key, value);
     }
 
     public static WebDriver getWrappedDriver() {
@@ -72,6 +83,7 @@ public class DriverService {
             }
         }
 
+        driver.manage().window().maximize();
         changeWindowSize(driver);
         wrappedDriver.set(driver);
 
@@ -85,10 +97,9 @@ public class DriverService {
                 WebDriverManager.chromedriver().setup();
 
                 var chromeOptions = new ChromeOptions();
-                initializeBrowserOptions(chromeOptions);
+                addDriverOptions(chromeOptions);
                 chromeOptions.addArguments("--log-level=3");
                 System.setProperty("webdriver.chrome.silentOutput", "true");
-
                 driver = new ChromeDriver(chromeOptions);
                 driver.manage().timeouts().pageLoadTimeout(ConfigurationService.get(WebSettings.class).getChrome().getPageLoadTimeout(), TimeUnit.SECONDS);
                 driver.manage().timeouts().setScriptTimeout(ConfigurationService.get(WebSettings.class).getChrome().getScriptTimeout(), TimeUnit.SECONDS);
@@ -96,7 +107,7 @@ public class DriverService {
             case CHROME_HEADLESS -> {
                 WebDriverManager.chromedriver().setup();
                 var chromeHeadlessOptions = new ChromeOptions();
-                initializeBrowserOptions(chromeHeadlessOptions);
+                addDriverOptions(chromeHeadlessOptions);
                 chromeHeadlessOptions.addArguments("--log-level=3");
                 chromeHeadlessOptions.setHeadless(true);
                 System.setProperty("webdriver.chrome.silentOutput", "true");
@@ -108,7 +119,7 @@ public class DriverService {
             case FIREFOX -> {
                 WebDriverManager.firefoxdriver().setup();
                 var firefoxOptions = new FirefoxOptions();
-                initializeBrowserOptions(firefoxOptions);
+                addDriverOptions(firefoxOptions);
                 driver = new FirefoxDriver(firefoxOptions);
 
                 driver.manage().timeouts().pageLoadTimeout(ConfigurationService.get(WebSettings.class).getFirefox().getPageLoadTimeout(), TimeUnit.SECONDS);
@@ -117,7 +128,7 @@ public class DriverService {
             case FIREFOX_HEADLESS -> {
                 WebDriverManager.firefoxdriver().setup();
                 var firefoxHeadlessOptions = new FirefoxOptions();
-                initializeBrowserOptions(firefoxHeadlessOptions);
+                addDriverOptions(firefoxHeadlessOptions);
                 firefoxHeadlessOptions.setHeadless(true);
                 driver = new FirefoxDriver(firefoxHeadlessOptions);
 
@@ -141,9 +152,9 @@ public class DriverService {
         return driver;
     }
 
-    private static void initializeBrowserOptions(MutableCapabilities browserOptions) {
-        for (var keyOption:browserConfiguration.get().getDriverOptions().keySet()) {
-            browserOptions.setCapability(keyOption, browserConfiguration.get().getDriverOptions().get(keyOption));
+    private static <TOption extends MutableCapabilities> void addDriverOptions(TOption chromeOptions) {
+        for (var optionKey:browserConfiguration.get().driverOptions.keySet()) {
+            chromeOptions.setCapability(optionKey, browserConfiguration.get().driverOptions.get(optionKey));
         }
     }
 
@@ -182,6 +193,7 @@ public class DriverService {
 
         if (wrappedDriver.get() != null) {
             wrappedDriver.get().close();
+            customDriverOptions.get().clear();
         }
 
         disposed.set(true);

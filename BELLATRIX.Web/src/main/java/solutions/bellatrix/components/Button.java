@@ -16,4 +16,9 @@ package solutions.bellatrix.components;
 public class Button extends WebComponent {
     public void click() {
     }
+
+    @Override
+    public Class<?> getComponentClass() {
+        return getClass();
+    }
 }

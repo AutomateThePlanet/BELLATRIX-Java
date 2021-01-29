@@ -25,4 +25,9 @@ public class ClassFindStrategy extends FindStrategy {
     public By convert() {
         return By.xpath(String.format("//*[@class='%s']", getValue()));
     }
+
+    @Override
+    public String toString() {
+        return String.format("class = %s", getValue());
+    }
 }

@@ -14,4 +14,8 @@
 package solutions.bellatrix.components;
 
 public class InputFile extends WebComponent {
+    @Override
+    public Class<?> getComponentClass() {
+        return getClass();
+    }
 }

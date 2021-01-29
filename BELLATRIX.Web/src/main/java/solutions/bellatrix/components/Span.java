@@ -17,4 +17,9 @@ public class Span extends WebComponent {
     public String getText() {
         return findElement().getText();
     }
+
+    @Override
+    public Class<?> getComponentClass() {
+        return getClass();
+    }
 }

@@ -25,4 +25,9 @@ public class LinkTextFindStrategy extends FindStrategy {
     public By convert() {
         return By.linkText(getValue());
     }
+
+    @Override
+    public String toString() {
+        return String.format("link text = %s", getValue());
+    }
 }

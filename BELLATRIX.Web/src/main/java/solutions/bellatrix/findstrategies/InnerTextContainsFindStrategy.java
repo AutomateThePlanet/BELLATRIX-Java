@@ -25,4 +25,9 @@ public class InnerTextContainsFindStrategy extends FindStrategy {
     public By convert() {
         return By.xpath(String.format("//*[contains(text(), '%s')]", getValue()));
     }
+
+    @Override
+    public String toString() {
+        return String.format("text containing %s", getValue());
+    }
 }
