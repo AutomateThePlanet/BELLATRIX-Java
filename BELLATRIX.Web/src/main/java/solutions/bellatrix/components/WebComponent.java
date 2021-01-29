@@ -21,7 +21,8 @@ import org.openqa.selenium.*;
 import solutions.bellatrix.components.contracts.Component;
 import solutions.bellatrix.configuration.ConfigurationService;
 import solutions.bellatrix.configuration.WebSettings;
-import solutions.bellatrix.findstrategies.FindStrategy;
+import solutions.bellatrix.findstrategies.*;
+import solutions.bellatrix.infrastructure.DriverService;
 import solutions.bellatrix.plugins.EventListener;
 import solutions.bellatrix.services.BrowserService;
 import solutions.bellatrix.services.ComponentCreateService;
@@ -92,6 +93,12 @@ public class WebComponent implements Component {
 //        Focusing?.Invoke(this, new ElementActionEventArgs(this));
         javaScriptService.execute("window.focus();");
         javaScriptService.execute("arguments[0].focus();", findElement());
+//        Focused?.Invoke(this, new ElementActionEventArgs(this));
+    }
+
+    public void hover() {
+//        Focusing?.Invoke(this, new ElementActionEventArgs(this));
+        javaScriptService.execute("arguments[0].onmouseover();", findElement());
 //        Focused?.Invoke(this, new ElementActionEventArgs(this));
     }
 
@@ -169,6 +176,103 @@ public class WebComponent implements Component {
         var waitStrategy = InstanceFactory.create(waitClass);
         element.ensureState(waitStrategy);
         return element;
+    }
+
+    public <TComponent extends WebComponent, TFindStrategy extends FindStrategy> TComponent create(Class<TFindStrategy> findStrategyClass, Class<TComponent> componentClass, Object... args) {
+        var findStrategy = InstanceFactory.create(findStrategyClass, args);
+        return create(componentClass, findStrategy);
+    }
+
+    public <TComponent extends WebComponent, TFindStrategy extends FindStrategy> List<TComponent> createAll(Class<TFindStrategy> findStrategyClass, Class<TComponent> componentClass, Object... args) {
+        var findStrategy = InstanceFactory.create(findStrategyClass, args);
+        return createAll(componentClass, findStrategy);
+    }
+
+    public <TComponent extends WebComponent> TComponent byId(Class<TComponent> componentClass, String id) {
+        return create(componentClass, new IdFindStrategy(id));
+    }
+
+    public <TComponent extends WebComponent> TComponent byCss(Class<TComponent> componentClass, String css) {
+        return create(componentClass, new CssFindStrategy(css));
+    }
+
+    public <TComponent extends WebComponent> TComponent byClass(Class<TComponent> componentClass, String cclass) {
+        return create(componentClass, new ClassFindStrategy(cclass));
+    }
+
+    public <TComponent extends WebComponent> TComponent byXPath(Class<TComponent> componentClass, String xpath) {
+        return create(componentClass, new XPathFindStrategy(xpath));
+    }
+
+    public <TComponent extends WebComponent> TComponent byLinkText(Class<TComponent> componentClass, String linkText) {
+        return create(componentClass, new LinkTextFindStrategy(linkText));
+    }
+
+    public <TComponent extends WebComponent> TComponent byTag(Class<TComponent> componentClass, String tag) {
+        return create(componentClass, new TagFindStrategy(tag));
+    }
+
+    public <TComponent extends WebComponent> TComponent byIdContaining(Class<TComponent> componentClass, String idContaining) {
+        return create(componentClass, new IdContainingFindStrategy(idContaining));
+    }
+
+    public <TComponent extends WebComponent> TComponent byInnerTextContaining(Class<TComponent> componentClass, String innerText) {
+        return create(componentClass, new InnerTextContainsFindStrategy(innerText));
+    }
+
+    public <TComponent extends WebComponent> List<TComponent> allById(Class<TComponent> componentClass, String id) {
+        return createAll(componentClass, new IdFindStrategy(id));
+    }
+
+    public <TComponent extends WebComponent> List<TComponent> allByCss(Class<TComponent> componentClass, String css) {
+        return createAll(componentClass, new CssFindStrategy(css));
+    }
+
+    public <TComponent extends WebComponent> List<TComponent> allByClass(Class<TComponent> componentClass, String cclass) {
+        return createAll(componentClass, new ClassFindStrategy(cclass));
+    }
+
+    public <TComponent extends WebComponent> List<TComponent> allByXPath(Class<TComponent> componentClass, String xpath) {
+        return createAll(componentClass, new XPathFindStrategy(xpath));
+    }
+
+    public <TComponent extends WebComponent> List<TComponent> allByLinkText(Class<TComponent> componentClass, String linkText) {
+        return createAll(componentClass, new LinkTextFindStrategy(linkText));
+    }
+
+    public <TComponent extends WebComponent> List<TComponent> allByTag(Class<TComponent> componentClass, String tag) {
+        return createAll(componentClass, new TagFindStrategy(tag));
+    }
+
+    public <TComponent extends WebComponent> List<TComponent> allByIdContaining(Class<TComponent> componentClass, String idContaining) {
+        return createAll(componentClass, new IdContainingFindStrategy(idContaining));
+    }
+
+    public <TComponent extends WebComponent> List<TComponent> allByInnerTextContaining(Class<TComponent> componentClass, String innerText) {
+        return createAll(componentClass, new InnerTextContainsFindStrategy(innerText));
+    }
+
+    protected <TComponent extends WebComponent, TFindStrategy extends FindStrategy> TComponent create(Class<TComponent> componentClass, TFindStrategy findStrategy) {
+        findElement();
+        var component = InstanceFactory.create(componentClass);
+        component.setFindStrategy(findStrategy);
+        component.setParentWrappedElement(wrappedElement);
+        return component;
+    }
+
+    protected <TComponent extends WebComponent, TFindStrategy extends FindStrategy> List<TComponent> createAll(Class<TComponent> componentClass, TFindStrategy findStrategy) {
+        findElement();
+        var nativeElements = wrappedElement.findElements(findStrategy.convert());
+        List<TComponent> componentList = new ArrayList<>();
+        for (int i = 0; i < nativeElements.stream().count(); i++) {
+            var component = InstanceFactory.create(componentClass);
+            component.setFindStrategy(findStrategy);
+            component.setElementIndex(i);
+            component.setParentWrappedElement(wrappedElement);
+            componentList.add(component);
+        }
+
+        return componentList;
     }
 
     protected WebElement findElement() {
