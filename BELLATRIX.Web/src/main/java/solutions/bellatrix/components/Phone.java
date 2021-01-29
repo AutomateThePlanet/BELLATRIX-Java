@@ -13,7 +13,7 @@
 
 package solutions.bellatrix.components;
 
-public class Button extends WebComponent {
-    public void click() {
+public class Phone extends WebComponent {
+    public void setPhone(String phone) {
     }
 }

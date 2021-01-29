@@ -41,8 +41,8 @@ public class App implements AutoCloseable {
         return SingletonFactory.getInstance(JavaScriptService.class);
     }
 
-    public ComponentCreationService create() {
-        return SingletonFactory.getInstance(ComponentCreationService.class);
+    public ComponentCreateService create() {
+        return SingletonFactory.getInstance(ComponentCreateService.class);
     }
 
     public ComponentWaitService waitComponent() {

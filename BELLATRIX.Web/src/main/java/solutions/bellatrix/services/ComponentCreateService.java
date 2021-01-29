@@ -13,66 +13,105 @@
 
 package solutions.bellatrix.services;
 
-import org.apache.commons.lang3.NotImplementedException;
 import solutions.bellatrix.components.WebComponent;
-import solutions.bellatrix.findstrategies.FindStrategy;
+import solutions.bellatrix.findstrategies.*;
+import solutions.bellatrix.infrastructure.DriverService;
+import solutions.bellatrix.utilities.InstanceFactory;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ComponentCreateService extends WebService {
-    WebComponent findById(String id) {
-        throw new NotImplementedException();
+    public <TComponent extends WebComponent, TFindStrategy extends FindStrategy> TComponent create(Class<TFindStrategy> findStrategyClass, Class<TComponent> componentClass, Object... args) {
+        var findStrategy = InstanceFactory.create(findStrategyClass, args);
+        return create(componentClass, findStrategy);
     }
 
-    WebComponent findByXPath(String xpath) {
-        throw new NotImplementedException();
+    public <TComponent extends WebComponent, TFindStrategy extends FindStrategy> List<TComponent> createAll(Class<TFindStrategy> findStrategyClass, Class<TComponent> componentClass, Object... args) {
+        var findStrategy = InstanceFactory.create(findStrategyClass, args);
+        return createAll(componentClass, findStrategy);
     }
 
-    WebComponent findByTag(String tag) {
-        throw new NotImplementedException();
+    public <TComponent extends WebComponent> TComponent byId(Class<TComponent> componentClass, String id) {
+        return create(componentClass, new IdFindStrategy(id));
     }
 
-    WebComponent findByClass(String cssClass) {
-        throw new NotImplementedException();
+    public <TComponent extends WebComponent> TComponent byCss(Class<TComponent> componentClass, String css) {
+        return create(componentClass, new CssFindStrategy(css));
     }
 
-    WebComponent findByCss(String css) {
-        throw new NotImplementedException();
+    public <TComponent extends WebComponent> TComponent byClass(Class<TComponent> componentClass, String cclass) {
+        return create(componentClass, new ClassFindStrategy(cclass));
     }
 
-    WebComponent findByLinkText(String linkText) {
-        throw new NotImplementedException();
+    public <TComponent extends WebComponent> TComponent byXPath(Class<TComponent> componentClass, String xpath) {
+        return create(componentClass, new XPathFindStrategy(xpath));
     }
 
-    List<WebComponent> findAllById(String id) {
-        throw new NotImplementedException();
+    public <TComponent extends WebComponent> TComponent byLinkText(Class<TComponent> componentClass, String linkText) {
+        return create(componentClass, new LinkTextFindStrategy(linkText));
     }
 
-    List<WebComponent> findAllByXPath(String xpath) {
-        throw new NotImplementedException();
+    public <TComponent extends WebComponent> TComponent byTag(Class<TComponent> componentClass, String tag) {
+        return create(componentClass, new TagFindStrategy(tag));
     }
 
-    List<WebComponent> findAllByTag(String tag) {
-        throw new NotImplementedException();
+    public <TComponent extends WebComponent> TComponent byIdContaining(Class<TComponent> componentClass, String idContaining) {
+        return create(componentClass, new IdContainingFindStrategy(idContaining));
     }
 
-    List<WebComponent> findAllByClass(String cssClass) {
-        throw new NotImplementedException();
+    public <TComponent extends WebComponent> TComponent byInnerTextContaining(Class<TComponent> componentClass, String innerText) {
+        return create(componentClass, new InnerTextContainsFindStrategy(innerText));
     }
 
-    List<WebComponent> findAllByCss(String css) {
-        throw new NotImplementedException();
+    public <TComponent extends WebComponent> List<TComponent> allById(Class<TComponent> componentClass, String id) {
+        return createAll(componentClass, new IdFindStrategy(id));
     }
 
-    List<WebComponent> findAllByLinkText(String linkText) {
-        throw new NotImplementedException();
+    public <TComponent extends WebComponent> List<TComponent> allByCss(Class<TComponent> componentClass, String css) {
+        return createAll(componentClass, new CssFindStrategy(css));
     }
 
-    List<WebComponent> findAll(FindStrategy findStrategy) {
-        throw new NotImplementedException();
+    public <TComponent extends WebComponent> List<TComponent> allByClass(Class<TComponent> componentClass, String cclass) {
+        return createAll(componentClass, new ClassFindStrategy(cclass));
     }
 
-    WebComponent find(FindStrategy findStrategy) {
-        throw new NotImplementedException();
+    public <TComponent extends WebComponent> List<TComponent> allByXPath(Class<TComponent> componentClass, String xpath) {
+        return createAll(componentClass, new XPathFindStrategy(xpath));
+    }
+
+    public <TComponent extends WebComponent> List<TComponent> allByLinkText(Class<TComponent> componentClass, String linkText) {
+        return createAll(componentClass, new LinkTextFindStrategy(linkText));
+    }
+
+    public <TComponent extends WebComponent> List<TComponent> allByTag(Class<TComponent> componentClass, String tag) {
+        return createAll(componentClass, new TagFindStrategy(tag));
+    }
+
+    public <TComponent extends WebComponent> List<TComponent> allByIdContaining(Class<TComponent> componentClass, String idContaining) {
+        return createAll(componentClass, new IdContainingFindStrategy(idContaining));
+    }
+
+    public <TComponent extends WebComponent> List<TComponent> allByInnerTextContaining(Class<TComponent> componentClass, String innerText) {
+        return createAll(componentClass, new InnerTextContainsFindStrategy(innerText));
+    }
+
+    protected <TComponent extends WebComponent, TFindStrategy extends FindStrategy> TComponent create(Class<TComponent> componentClass, TFindStrategy findStrategy) {
+        var component = InstanceFactory.create(componentClass);
+        component.setFindStrategy(findStrategy);
+        return component;
+    }
+
+    protected <TComponent extends WebComponent, TFindStrategy extends FindStrategy> List<TComponent> createAll(Class<TComponent> componentClass, TFindStrategy findStrategy) {
+        var nativeElements = DriverService.getWrappedDriver().findElements(findStrategy.convert());
+        List<TComponent> componentList = new ArrayList<>();
+        for (int i = 0; i < nativeElements.stream().count(); i++) {
+            var component = InstanceFactory.create(componentClass);
+            component.setFindStrategy(findStrategy);
+            component.setElementIndex(i);
+            componentList.add(component);
+        }
+
+        return componentList;
     }
 }

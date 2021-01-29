@@ -13,5 +13,5 @@
 
 package solutions.bellatrix.components;
 
-public class Headline {
+public class Span extends WebComponent {
 }

@@ -13,18 +13,15 @@
 
 package solutions.bellatrix.pages;
 
-import lombok.Getter;
 import solutions.bellatrix.services.BrowserService;
-import solutions.bellatrix.services.ComponentCreationService;
-
-import java.lang.reflect.ParameterizedType;
+import solutions.bellatrix.services.ComponentCreateService;
 
 public abstract class WebSection {
     public BrowserService browser() {
         return new BrowserService();
     }
 
-    public ComponentCreationService create() {
-        return new ComponentCreationService();
+    public ComponentCreateService create() {
+        return new ComponentCreateService();
     }
 }

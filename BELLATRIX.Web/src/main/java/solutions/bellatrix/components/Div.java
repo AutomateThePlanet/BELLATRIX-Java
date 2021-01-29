@@ -13,5 +13,5 @@
 
 package solutions.bellatrix.components;
 
-public class Div {
+public class Div extends WebComponent {
 }

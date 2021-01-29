@@ -17,7 +17,6 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.ExtensionMethod;
-import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.*;
 import solutions.bellatrix.components.contracts.Component;
 import solutions.bellatrix.configuration.ConfigurationService;
@@ -37,7 +36,7 @@ import java.util.List;
 @ExtensionMethod({WebComponent.class, WaitStrategyElementsExtensions.class})
 public class WebComponent implements Component {
     private WebSettings webSettings;
-    @Getter  private WebElement wrappedElement;
+    @Getter  @Setter(AccessLevel.PROTECTED) private WebElement wrappedElement;
     @Getter @Setter private WebElement parentWrappedElement;
     @Getter @Setter private int elementIndex;
     @Getter @Setter private FindStrategy findStrategy;

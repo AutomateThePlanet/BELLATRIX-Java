@@ -13,9 +13,8 @@
 
 package solutions.bellatrix.pages;
 
-import lombok.Getter;
 import solutions.bellatrix.services.BrowserService;
-import solutions.bellatrix.services.ComponentCreationService;
+import solutions.bellatrix.services.ComponentCreateService;
 
 import java.lang.reflect.ParameterizedType;
 
@@ -24,8 +23,8 @@ public abstract class WebPage<ElementsT extends BaseElements> {
         return new BrowserService();
     }
 
-    public ComponentCreationService create() {
-        return new ComponentCreationService();
+    public ComponentCreateService create() {
+        return new ComponentCreateService();
     }
 
     protected ElementsT elements() {

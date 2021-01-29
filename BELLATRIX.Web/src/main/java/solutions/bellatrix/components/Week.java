@@ -13,7 +13,5 @@
 
 package solutions.bellatrix.components;
 
-public class Button extends WebComponent {
-    public void click() {
-    }
+public class Week extends WebComponent {
 }

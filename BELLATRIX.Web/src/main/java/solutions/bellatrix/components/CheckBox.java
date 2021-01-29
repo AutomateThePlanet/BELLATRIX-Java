@@ -13,5 +13,5 @@
 
 package solutions.bellatrix.components;
 
-public class CheckBox {
+public class CheckBox extends WebComponent {
 }

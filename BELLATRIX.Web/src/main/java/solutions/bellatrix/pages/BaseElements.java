@@ -13,11 +13,10 @@
 
 package solutions.bellatrix.pages;
 
-import lombok.Getter;
-import solutions.bellatrix.services.ComponentCreationService;
+import solutions.bellatrix.services.ComponentCreateService;
 
 public abstract class BaseElements {
-    public ComponentCreationService create() {
-        return new ComponentCreationService();
+    public ComponentCreateService create() {
+        return new ComponentCreateService();
     }
 }
