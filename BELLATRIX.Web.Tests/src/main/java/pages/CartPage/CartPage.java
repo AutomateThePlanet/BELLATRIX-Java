@@ -23,7 +23,7 @@ public class CartPage extends NavigatableWebPage<CartPageElements> {
 
     @Override
     protected void waitForPageLoad() {
-        elements().couponCodeTextField().toExists(elements().couponCodeTextField()).waitToBe();
+        elements().couponCodeTextField().toExists().waitToBe();
     }
 
     public void applyCoupon(String coupon) {

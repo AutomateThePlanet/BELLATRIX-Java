@@ -14,6 +14,7 @@
 package pages.MainPage;
 
 
+import solutions.bellatrix.components.Anchor;
 import solutions.bellatrix.pages.NavigatableAssertableWebPage;
 
 public class MainPage extends NavigatableAssertableWebPage<MainPageElements, MainPageAssertions> {
@@ -25,7 +26,7 @@ public class MainPage extends NavigatableAssertableWebPage<MainPageElements, Mai
 
     @Override
     protected void waitForPageLoad() {
-        elements().addToCartFalcon9().toExists(elements().addToCartFalcon9()).waitToBe();
+        elements().addToCartFalcon9().toExists().waitToBe();
     }
 
     public void addRocketToShoppingCart() {

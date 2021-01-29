@@ -154,22 +154,22 @@ public class WebComponent implements Component {
         waitStrategies.add(waitStrategy);
     }
 
-    public <TElementType extends WebComponent> TElementType toExists(TElementType element) {
+    public <TElementType extends WebComponent> TElementType toExists() {
         var waitStrategy = new ToExistsWaitStrategy();
-        element.ensureState(waitStrategy);
-        return element;
+        ensureState(waitStrategy);
+        return (TElementType)this;
     }
 
-    public <TElementType extends WebComponent> TElementType toBeClickable(TElementType element) {
+    public <TElementType extends WebComponent> TElementType toBeClickable() {
         var waitStrategy = new ToBeClickableWaitStrategy();
-        element.ensureState(waitStrategy);
-        return element;
+        ensureState(waitStrategy);
+        return (TElementType)this;
     }
 
-    public <TElementType extends WebComponent> TElementType toBeVisible(TElementType element) {
+    public <TElementType extends WebComponent> TElementType toBeVisible() {
         var waitStrategy = new ToBeVisibleWaitStrategy();
-        element.ensureState(waitStrategy);
-        return element;
+        ensureState(waitStrategy);
+        return (TElementType)this;
     }
 
     public <TElementType extends WebComponent, TWaitStrategy extends WaitStrategy> TElementType to(Class<TWaitStrategy> waitClass, TElementType element) {
@@ -310,7 +310,7 @@ public class WebComponent implements Component {
     {
         clicking.broadcast(new ComponentActionEventArgs(this));
 
-        this.toExists(this).toBeClickable(this).waitToBe();
+        this.toExists().toBeClickable().waitToBe();
         javaScriptService.execute("arguments[0].focus();arguments[0].click();", this);
 
         clicked.broadcast(new ComponentActionEventArgs(this));
