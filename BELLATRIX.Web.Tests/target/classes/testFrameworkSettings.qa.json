@@ -20,6 +20,7 @@
       "waitForJavaScriptAnimationsTimeout": "30",
       "waitForAngularTimeout": "30",
       "waitForPartialUrl": "30",
+      "validationsTimeout": "30",
       "elementToBeVisibleTimeout": "30",
       "elementToExistTimeout": "30",
       "elementToNotExistTimeout": "30",
