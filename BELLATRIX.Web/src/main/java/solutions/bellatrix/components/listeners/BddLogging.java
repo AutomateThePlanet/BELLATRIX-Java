@@ -19,7 +19,7 @@ import java.util.function.Consumer;
 
 public class BddLogging {
     private static Boolean isBddLoggingTurnedOn = false;
-    public static void turnOn() {
+    public static void addListeners() {
         if (!isBddLoggingTurnedOn) {
             Anchor.CLICKING.addListener((x) -> System.out.println(String.format("clicking %s\n", x.getComponent().getElementName())));
             isBddLoggingTurnedOn = true;

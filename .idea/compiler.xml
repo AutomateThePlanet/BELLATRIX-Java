@@ -9,15 +9,15 @@
         <outputRelativeToContentRoot value="true" />
         <module name="BELLATRIX.Desktop" />
         <module name="BELLATRIX.Mobile" />
-        <module name="BELLATRIX.Plugins" />
-        <module name="BELLATRIX.API" />
-        <module name="BELLATRIX.Plugins.Screenshots" />
-        <module name="BELLATRIX.Web" />
         <module name="BELLATRIX.Web.Tests" />
         <module name="BELLATRIX.Configuration" />
         <module name="BELLATRIX.Data" />
         <module name="BELLATRIX.Utilities" />
+        <module name="BELLATRIX.Plugins" />
         <module name="BELLATRIX.Plugins.Video" />
+        <module name="BELLATRIX.API" />
+        <module name="BELLATRIX.Plugins.Screenshots" />
+        <module name="BELLATRIX.Web" />
         <module name="BELLATRIX.Layout" />
       </profile>
     </annotationProcessing>

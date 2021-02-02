@@ -16,8 +16,8 @@ package pages.checkoutpage;
 import org.testng.Assert;
 import solutions.bellatrix.pages.PageAsserts;
 
-public class Asserts extends PageAsserts<Components> {
+public class Asserts extends PageAsserts<Map> {
     public void orderReceived() {
-        Assert.assertEquals(elements().receivedMessage().getText(), "Order received");
+        Assert.assertEquals(map().receivedMessage().getText(), "Order received");
     }
 }

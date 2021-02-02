@@ -14,9 +14,9 @@
 package pages.breadcrumbsection;
 
 import solutions.bellatrix.components.WebComponent;
-import solutions.bellatrix.pages.PageComponents;
+import solutions.bellatrix.pages.PageMap;
 
-public class Components extends PageComponents {
+public class Map extends PageMap {
     public WebComponent breadcrumb() {
         return create().byCss(WebComponent.class, "woocommerce-breadcrumb");
     }

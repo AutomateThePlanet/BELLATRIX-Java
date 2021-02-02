@@ -15,10 +15,9 @@ package pages.mainpage;
 
 import solutions.bellatrix.components.Anchor;
 import solutions.bellatrix.components.Button;
-import solutions.bellatrix.components.WebComponent;
-import solutions.bellatrix.pages.PageComponents;
+import solutions.bellatrix.pages.PageMap;
 
-public class MainPageComponents extends PageComponents {
+public class Map extends PageMap {
 
     public Anchor addToCartFalcon9() {
         return create().byCss(Anchor.class, "[data-product_id*='28']");

@@ -15,12 +15,12 @@ package pages.cartInfosection;
 
 import solutions.bellatrix.pages.WebSection;
 
-public class CartInfoSection extends WebSection<Components, Asserts> {
+public class CartInfoSection extends WebSection<Map, Asserts> {
     public String getCurrentAmount() {
-        return elements().cartAmount().getText();
+        return map().cartAmount().getText();
     }
 
     public void openCart() {
-        elements().cartIcon().click();
+        map().cartIcon().click();
     }
 }

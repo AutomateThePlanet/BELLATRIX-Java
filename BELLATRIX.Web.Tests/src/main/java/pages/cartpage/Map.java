@@ -15,9 +15,9 @@ package pages.cartpage;
 
 
 import solutions.bellatrix.components.*;
-import solutions.bellatrix.pages.PageComponents;
+import solutions.bellatrix.pages.PageMap;
 
-public class Components extends PageComponents {
+public class Map extends PageMap {
     public TextField couponCodeTextField() {
         return create().byId(TextField.class, "coupon_code");
     }

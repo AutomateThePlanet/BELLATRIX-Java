@@ -16,7 +16,7 @@ package pages.mainpage;
 
 import solutions.bellatrix.pages.WebPage;
 
-public class MainPage extends WebPage<MainPageComponents, Asserts> {
+public class MainPage extends WebPage<Map, Asserts> {
 
     @Override
     protected String getUrl() {
@@ -25,12 +25,12 @@ public class MainPage extends WebPage<MainPageComponents, Asserts> {
 
     @Override
     protected void waitForPageLoad() {
-        elements().addToCartFalcon9().toExists().waitToBe();
+        map().addToCartFalcon9().toExists().waitToBe();
     }
 
     public void addRocketToShoppingCart(String rocketName) {
         open();
-        elements().getProductBoxByName(rocketName).click();
-        elements().viewCartButton().click();
+        map().getProductBoxByName(rocketName).click();
+        map().viewCartButton().click();
     }
 }

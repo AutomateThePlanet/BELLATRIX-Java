@@ -15,34 +15,34 @@ package pages.checkoutpage;
 
 import solutions.bellatrix.pages.WebPage;
 
-public class CheckoutPage extends WebPage<Components, Asserts> {
+public class CheckoutPage extends WebPage<Map, Asserts> {
     @Override
     protected String getUrl() {
         return "http://demos.bellatrix.solutions/checkout/";
     }
 
     public void fillBillingInfo(PurchaseInfo purchaseInfo) throws InterruptedException {
-        elements().billingFirstName().setText(purchaseInfo.getFirstName());
-        elements().billingLastName().setText(purchaseInfo.getLastName());
-        elements().billingCompany().setText(purchaseInfo.getCompany());
-        elements().billingCountryWrapper().click();
-        elements().billingCountryFilter().setText(purchaseInfo.getCountry());
-        elements().getCountryOptionByName(purchaseInfo.getCountry()).click();
-        elements().billingAddress1().setText(purchaseInfo.getAddress1());
-        elements().billingAddress2().setText(purchaseInfo.getAddress2());
-        elements().billingCity().setText(purchaseInfo.getCity());
-        elements().billingZip().setText(purchaseInfo.getZip());
-        elements().billingPhone().setText(purchaseInfo.getPhone());
-        elements().billingEmail().setText(purchaseInfo.getEmail());
+        map().billingFirstName().setText(purchaseInfo.getFirstName());
+        map().billingLastName().setText(purchaseInfo.getLastName());
+        map().billingCompany().setText(purchaseInfo.getCompany());
+        map().billingCountryWrapper().click();
+        map().billingCountryFilter().setText(purchaseInfo.getCountry());
+        map().getCountryOptionByName(purchaseInfo.getCountry()).click();
+        map().billingAddress1().setText(purchaseInfo.getAddress1());
+        map().billingAddress2().setText(purchaseInfo.getAddress2());
+        map().billingCity().setText(purchaseInfo.getCity());
+        map().billingZip().setText(purchaseInfo.getZip());
+        map().billingPhone().setText(purchaseInfo.getPhone());
+        map().billingEmail().setText(purchaseInfo.getEmail());
         if (purchaseInfo.getShouldCreateAccount()) {
-            elements().createAccountCheckBox().check();
+            map().createAccountCheckBox().check();
         }
 
         if (purchaseInfo.getShouldCheckPayment()) {
-            elements().checkPaymentsRadioButton().click();
+            map().checkPaymentsRadioButton().click();
         }
 
-        elements().placeOrderButton().click();
+        map().placeOrderButton().click();
         browser().waitForAjax();
     }
 }

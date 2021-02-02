@@ -15,7 +15,7 @@ package pages.cartpage;
 
 import solutions.bellatrix.pages.WebPage;
 
-public class CartPage extends WebPage<Components, Asserts> {
+public class CartPage extends WebPage<Map, Asserts> {
     @Override
     protected String getUrl() {
         return "http://demos.bellatrix.solutions/cart/";
@@ -23,31 +23,31 @@ public class CartPage extends WebPage<Components, Asserts> {
 
     @Override
     protected void waitForPageLoad() {
-        elements().couponCodeTextField().toExists().waitToBe();
+        map().couponCodeTextField().toExists().waitToBe();
     }
 
     public void applyCoupon(String coupon) {
-        elements().couponCodeTextField().setText(coupon);
-        elements().applyCouponButton().click();
+        map().couponCodeTextField().setText(coupon);
+        map().applyCouponButton().click();
         browser().waitForAjax();
     }
 
     public void increaseProductQuantity(int newQuantity) throws InterruptedException {
-        elements().quantityBox().setText(String.valueOf(newQuantity));
-        elements().updateCart().click();
+        map().quantityBox().setText(String.valueOf(newQuantity));
+        map().updateCart().click();
         browser().waitForAjax();
     }
 
     public void clickProceedToCheckout() {
-        elements().proceedToCheckout().click();
+        map().proceedToCheckout().click();
         browser().waitUntilPageLoadsCompletely();
     }
 
     public String getTotal() {
-        return elements().totalSpan().getText();
+        return map().totalSpan().getText();
     }
 
     public String getMessageNotification() {
-        return elements().messageAlert().getText();
+        return map().messageAlert().getText();
     }
 }

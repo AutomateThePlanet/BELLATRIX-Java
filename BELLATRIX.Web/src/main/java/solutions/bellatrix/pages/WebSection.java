@@ -18,7 +18,7 @@ import solutions.bellatrix.services.ComponentCreateService;
 
 import java.lang.reflect.ParameterizedType;
 
-public abstract class WebSection<ComponentsT extends PageComponents, AssertionsT extends PageAsserts<ComponentsT>>  {
+public abstract class WebSection<MapT extends PageMap, AssertionsT extends PageAsserts<MapT>>  {
     public BrowserService browser() {
         return new BrowserService();
     }
@@ -27,9 +27,9 @@ public abstract class WebSection<ComponentsT extends PageComponents, AssertionsT
         return new ComponentCreateService();
     }
 
-    public ComponentsT elements() {
+    public MapT map() {
         try {
-            var elementsClass = (Class<ComponentsT>)((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+            var elementsClass = (Class<MapT>)((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[0];
             return elementsClass.getDeclaredConstructor().newInstance();
         } catch (Exception e) {
             return null;

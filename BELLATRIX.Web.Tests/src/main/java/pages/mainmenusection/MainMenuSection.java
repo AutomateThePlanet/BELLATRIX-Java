@@ -15,20 +15,20 @@ package pages.mainmenusection;
 
 import solutions.bellatrix.pages.WebSection;
 
-public class MainMenuSection extends WebSection<Components, Asserts> {
+public class MainMenuSection extends WebSection<Map, Asserts> {
     public void openHomePage() {
-        elements().homeLink().click();
+        map().homeLink().click();
     }
 
     public void openBlogPage() {
-        elements().blogLink().click();
+        map().blogLink().click();
     }
 
     public void openMyAccountPage() {
-        elements().myAccountLink().click();
+        map().myAccountLink().click();
     }
 
     public void openPromotionsPage() {
-        elements().promotionsLink().click();
+        map().promotionsLink().click();
     }
 }

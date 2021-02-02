@@ -19,7 +19,7 @@ import solutions.bellatrix.services.NavigationService;
 
 import java.lang.reflect.ParameterizedType;
 
-public abstract class WebPage<ComponentsT extends PageComponents, AssertsT extends PageAsserts<ComponentsT>>  {
+public abstract class WebPage<MapT extends PageMap, AssertsT extends PageAsserts<MapT>>  {
     public BrowserService browser() {
         return new BrowserService();
     }
@@ -28,9 +28,9 @@ public abstract class WebPage<ComponentsT extends PageComponents, AssertsT exten
         return new ComponentCreateService();
     }
 
-    public ComponentsT elements() {
+    public MapT map() {
         try {
-            var elementsClass = (Class<ComponentsT>)((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+            var elementsClass = (Class<MapT>)((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[0];
             return elementsClass.getDeclaredConstructor().newInstance();
         } catch (Exception e) {
             return null;

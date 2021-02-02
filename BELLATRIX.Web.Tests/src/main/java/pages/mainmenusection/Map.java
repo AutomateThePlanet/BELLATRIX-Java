@@ -14,9 +14,9 @@
 package pages.mainmenusection;
 
 import solutions.bellatrix.components.Anchor;
-import solutions.bellatrix.pages.PageComponents;
+import solutions.bellatrix.pages.PageMap;
 
-public class Components extends PageComponents {
+public class Map extends PageMap {
 
     public Anchor homeLink() {
         return create().byLinkText(Anchor.class, "Home");

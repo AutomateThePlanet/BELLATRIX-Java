@@ -16,12 +16,12 @@ package pages.cartpage;
 import org.testng.Assert;
 import solutions.bellatrix.pages.PageAsserts;
 
-public class Asserts extends PageAsserts<Components> {
+public class Asserts extends PageAsserts<Map> {
     public void couponAppliedSuccessfully() {
-        Assert.assertEquals(elements().messageAlert().getText(), "Coupon code applied successfully.");
+        Assert.assertEquals(map().messageAlert().getText(), "Coupon code applied successfully.");
     }
 
     public void totalPrice(String expectedPrice) {
-        Assert.assertEquals(elements().totalSpan().getText(), expectedPrice);
+        Assert.assertEquals(map().totalSpan().getText(), expectedPrice);
     }
 }

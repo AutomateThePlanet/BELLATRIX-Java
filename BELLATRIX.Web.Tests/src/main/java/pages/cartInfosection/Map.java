@@ -11,12 +11,18 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.pages;
+package pages.cartInfosection;
 
-import solutions.bellatrix.services.ComponentCreateService;
+import solutions.bellatrix.components.Anchor;
+import solutions.bellatrix.components.Span;
+import solutions.bellatrix.pages.PageMap;
 
-public abstract class PageComponents {
-    public ComponentCreateService create() {
-        return new ComponentCreateService();
+public class Map extends PageMap {
+    public Anchor cartIcon() {
+        return create().byClass(Anchor.class, "cart-contents");
+    }
+
+    public Span cartAmount() {
+        return create().byClass(Span.class, "amount");
     }
 }

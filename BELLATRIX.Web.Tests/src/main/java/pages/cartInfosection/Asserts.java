@@ -15,5 +15,5 @@ package pages.cartInfosection;
 
 import solutions.bellatrix.pages.PageAsserts;
 
-public class Asserts extends PageAsserts<Components> {
+public class Asserts extends PageAsserts<Map> {
 }

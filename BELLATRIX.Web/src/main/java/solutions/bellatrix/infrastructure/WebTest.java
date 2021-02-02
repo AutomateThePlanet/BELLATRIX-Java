@@ -27,7 +27,7 @@ public class WebTest extends BaseTest {
     @BeforeSuite
     public void beforeSuite() {
         addPlugin(new BrowserLifecyclePlugin());
-        BddLogging.turnOn();
+        BddLogging.addListeners();
     }
 
 //    @AfterSuite

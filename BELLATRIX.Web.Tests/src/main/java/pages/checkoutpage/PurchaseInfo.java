@@ -11,19 +11,24 @@
  * limitations under the License.
  */
 
-package pages.checkoutpage;public class PurchaseInfo {
-    private String firstName;
-    private String lastName;
-    private String company;
-    private String country;
-    private String address1;
-    private String address2;
-    private String city;
-    private String zip;
-    private String phone;
-    private String email;
-    private Boolean shouldCreateAccount = false;
-    private Boolean shouldCheckPayment = false;
+package pages.checkoutpage;
+
+import lombok.Getter;
+import lombok.Setter;
+
+public class PurchaseInfo {
+    @Getter @Setter private String firstName;
+    @Getter @Setter private String lastName;
+    @Getter @Setter private String company;
+    @Getter @Setter private String country;
+    @Getter @Setter private String address1;
+    @Getter @Setter private String address2;
+    @Getter @Setter private String city;
+    @Getter @Setter private String zip;
+    @Getter @Setter private String phone;
+    @Getter @Setter private String email;
+    @Getter @Setter private Boolean shouldCreateAccount = false;
+    @Getter @Setter private Boolean shouldCheckPayment = false;
 
     public String getFirstName() {
         return firstName;
@@ -31,93 +36,5 @@ package pages.checkoutpage;public class PurchaseInfo {
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getCompany() {
-        return company;
-    }
-
-    public void setCompany(String company) {
-        this.company = company;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
-    public String getAddress1() {
-        return address1;
-    }
-
-    public void setAddress1(String address1) {
-        this.address1 = address1;
-    }
-
-    public String getAddress2() {
-        return address2;
-    }
-
-    public void setAddress2(String address2) {
-        this.address2 = address2;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getZip() {
-        return zip;
-    }
-
-    public void setZip(String zip) {
-        this.zip = zip;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public Boolean getShouldCreateAccount() {
-        return shouldCreateAccount;
-    }
-
-    public void setShouldCreateAccount(Boolean shouldCreateAccount) {
-        this.shouldCreateAccount = shouldCreateAccount;
-    }
-
-    public Boolean getShouldCheckPayment() {
-        return shouldCheckPayment;
-    }
-
-    public void setShouldCheckPayment(Boolean shouldCheckPayment) {
-        this.shouldCheckPayment = shouldCheckPayment;
     }
 }

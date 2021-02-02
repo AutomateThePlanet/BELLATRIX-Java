@@ -15,8 +15,8 @@ package solutions.bellatrix.pages;
 
 import solutions.bellatrix.utilities.InstanceFactory;
 
-public abstract class PageAsserts<ComponentsT extends PageComponents> {
-    protected ComponentsT elements() {
+public abstract class PageAsserts<ComponentsT extends PageMap> {
+    protected ComponentsT map() {
         return InstanceFactory.<ComponentsT>createByTypeParameter(getClass(), 0);
     }
 }

@@ -14,9 +14,9 @@
 package pages.checkoutpage;
 
 import solutions.bellatrix.components.*;
-import solutions.bellatrix.pages.PageComponents;
+import solutions.bellatrix.pages.PageMap;
 
-public class Components extends PageComponents {
+public class Map extends PageMap {
     public TextField billingFirstName() {
         return create().byId(TextField.class, "billing_first_name");
     }

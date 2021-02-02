@@ -11,13 +11,12 @@
  * limitations under the License.
  */
 
-package pages.searchsection;
+package solutions.bellatrix.pages;
 
-import solutions.bellatrix.components.TextField;
-import solutions.bellatrix.pages.PageComponents;
+import solutions.bellatrix.services.ComponentCreateService;
 
-public class Components extends PageComponents {
-    public TextField searchField() {
-        return create().byId(TextField.class,"woocommerce-product-search-field-0");
+public abstract class PageMap {
+    public ComponentCreateService create() {
+        return new ComponentCreateService();
     }
 }

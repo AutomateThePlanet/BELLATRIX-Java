@@ -17,7 +17,7 @@ import solutions.bellatrix.components.Anchor;
 import solutions.bellatrix.components.WebComponent;
 import solutions.bellatrix.pages.WebSection;
 
-public class BreadcrumbSection extends WebSection<Components, Asserts> {
+public class BreadcrumbSection extends WebSection<Map, Asserts> {
 
     private WebComponent breadcrumb() {
         return create().byCss(WebComponent.class, "woocommerce-breadcrumb");
