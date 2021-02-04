@@ -28,7 +28,8 @@ public class WebTest extends BaseTest {
     @BeforeSuite
     public void beforeSuite() {
         addPlugin(BrowserLifecyclePlugin.of());
-        addPlugin(WebScreenshotsPlugin.of());
+        addPlugin(WebScreenshotPlugin.of());
+        addPlugin(WebVideoPlugin.of());
         BddLogging.addPlugin();
         HighlightElements.addPlugin();
     }

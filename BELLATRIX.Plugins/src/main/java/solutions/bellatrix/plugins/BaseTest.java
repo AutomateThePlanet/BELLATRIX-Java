@@ -31,17 +31,9 @@ public class BaseTest {
         PluginExecutionEngine.addPlugin(plugin);
     }
 
-    public String getTestName() {
-        return getTestResult().getTestName();
-    }
-
-    public void setTestResult(ITestResult result) {
-        this.result = result;
-    }
-
-    public ITestResult getTestResult() {
-        return result;
-    }
+//    public String getTestName() {
+//        return getTestResult().getTestName();
+//    }
 
     @BeforeClass
     public void beforeClassCore() {
@@ -59,25 +51,24 @@ public class BaseTest {
     @BeforeMethod
     public void beforeMethodCore(ITestResult result) {
         try {
-            setTestResult(result);
             var testClass = this.getClass();
-            var methodInfo = testClass.getMethod(getTestResult().getMethod().getMethodName());
-            PluginExecutionEngine.preBeforeTest(getTestResult(), methodInfo);
+            var methodInfo = testClass.getMethod(result.getMethod().getMethodName());
+            PluginExecutionEngine.preBeforeTest(result, methodInfo);
             beforeMethod();
-            PluginExecutionEngine.postBeforeTest(getTestResult(), methodInfo);
+            PluginExecutionEngine.postBeforeTest(result, methodInfo);
         } catch (Exception e) {
             PluginExecutionEngine.beforeTestFailed(e);
         }
     }
 
     @AfterMethod
-    public void afterMethodCore() {
+    public void afterMethodCore(ITestResult result) {
         try {
             var testClass = this.getClass();
-            var methodInfo = testClass.getMethod(getTestResult().getMethod().getMethodName());
-            PluginExecutionEngine.preAfterTest(getTestResult(), methodInfo);
+            var methodInfo = testClass.getMethod(result.getMethod().getMethodName());
+            PluginExecutionEngine.preAfterTest(result, methodInfo);
             afterMethod();
-            PluginExecutionEngine.postAfterTest(getTestResult(), methodInfo);
+            PluginExecutionEngine.postAfterTest(result, methodInfo);
         } catch (Exception e) {
             PluginExecutionEngine.afterTestFailed(e);
         }

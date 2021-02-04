@@ -8,7 +8,10 @@
     "shouldHighlightElements": "true",
     "screenshotsOnFailEnabled": "true",
     "screenshotsSaveLocation": "user.home\\BELLATRIX\\Screenshots",
-    "shouldTakeFullPageScreenshots": "false",
+
+    "videosOnFailEnabled": "true",
+    "videosSaveLocation": "user.home\\BELLATRIX\\Videos",
+
     "timeoutSettings": {
       "elementWaitTimeout": "30",
       "pageLoadTimeout": "30",

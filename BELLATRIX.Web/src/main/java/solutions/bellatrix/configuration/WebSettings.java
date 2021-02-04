@@ -28,16 +28,19 @@ import lombok.Getter;
 import lombok.Setter;
 
 public class WebSettings {
-    private @Getter @Setter String baseUrl;
+    @Getter @Setter private String baseUrl;
 
-    private @Getter @Setter int artificialDelayBeforeAction;
-    private @Getter @Setter TimeoutSettings timeoutSettings;
+    @Getter @Setter private int artificialDelayBeforeAction;
+    @Getter @Setter private TimeoutSettings timeoutSettings;
 
-    private @Getter @Setter Boolean automaticallyScrollToVisible;
-    private @Getter @Setter Boolean waitUntilReadyOnElementFound;
-    private @Getter @Setter Boolean waitForAngular;
+    @Getter @Setter private Boolean automaticallyScrollToVisible;
+    @Getter @Setter private Boolean waitUntilReadyOnElementFound;
+    @Getter @Setter private Boolean waitForAngular;
+    @Getter @Setter private Boolean shouldHighlightElements;
 
-    private @Getter @Setter Boolean shouldHighlightElements;
     @Getter @Setter private Boolean screenshotsOnFailEnabled;
     @Getter @Setter private String screenshotsSaveLocation;
+
+    @Getter @Setter private Boolean videosOnFailEnabled;
+    @Getter @Setter private String videosSaveLocation;
 }

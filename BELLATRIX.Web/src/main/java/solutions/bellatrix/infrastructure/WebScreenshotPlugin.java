@@ -14,10 +14,7 @@
 package solutions.bellatrix.infrastructure;
 
 import lombok.SneakyThrows;
-import org.apache.tools.ant.util.FileUtils;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
-import plugins.screenshots.ScreenshotsPlugin;
+import plugins.screenshots.ScreenshotPlugin;
 import ru.yandex.qatools.ashot.AShot;
 import ru.yandex.qatools.ashot.shooting.ShootingStrategies;
 import solutions.bellatrix.configuration.ConfigurationService;
@@ -28,14 +25,14 @@ import java.io.File;
 import java.nio.file.Paths;
 import java.util.UUID;
 
-public class WebScreenshotsPlugin extends ScreenshotsPlugin {
-    public WebScreenshotsPlugin(Boolean isEnabled) {
+public class WebScreenshotPlugin extends ScreenshotPlugin {
+    public WebScreenshotPlugin(Boolean isEnabled) {
         super(isEnabled);
     }
 
-    public static WebScreenshotsPlugin of() {
+    public static WebScreenshotPlugin of() {
         Boolean isEnabled = ConfigurationService.get(WebSettings.class).getScreenshotsOnFailEnabled();
-        return new WebScreenshotsPlugin(isEnabled);
+        return new WebScreenshotPlugin(isEnabled);
     }
 
     @Override

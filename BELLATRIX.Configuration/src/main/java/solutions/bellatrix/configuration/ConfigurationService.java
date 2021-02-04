@@ -75,5 +75,6 @@ public final class ConfigurationService {
     @SneakyThrows
     public static String getFileAsString(String fileName) {
         InputStream input = ConfigurationService.class.getResourceAsStream("/" + fileName);
+        return IOUtils.toString(input, StandardCharsets.UTF_8);
     }
 }

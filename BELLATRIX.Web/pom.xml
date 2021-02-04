@@ -72,6 +72,12 @@
             <artifactId>ashot</artifactId>
             <version>1.5.4</version>
         </dependency>
+        <dependency>
+            <groupId>solutions.bellatrix</groupId>
+            <artifactId>BELLATRIX.TestExecutionExtensions.Video</artifactId>
+            <version>1.0</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
     <properties>

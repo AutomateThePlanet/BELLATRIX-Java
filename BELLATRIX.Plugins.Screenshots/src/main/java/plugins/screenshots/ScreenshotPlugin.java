@@ -13,6 +13,7 @@
 
 package plugins.screenshots;
 
+import lombok.SneakyThrows;
 import org.testng.ITestResult;
 import solutions.bellatrix.plugins.EventListener;
 import solutions.bellatrix.plugins.Plugin;
@@ -20,11 +21,11 @@ import solutions.bellatrix.plugins.Plugin;
 import java.lang.reflect.Method;
 import java.nio.file.Paths;
 
-public abstract class ScreenshotsPlugin extends Plugin {
+public abstract class ScreenshotPlugin extends Plugin {
     public static final EventListener<ScreenshotPluginEventArgs> SCREENSHOT_GENERATED = new EventListener<>();
     private Boolean isEnabled;
 
-    public ScreenshotsPlugin(Boolean isEnabled) {
+    public ScreenshotPlugin(Boolean isEnabled) {
         this.isEnabled = isEnabled;
     }
 
@@ -33,17 +34,15 @@ public abstract class ScreenshotsPlugin extends Plugin {
     protected abstract String getUniqueFileName(String testName);
 
     @Override
+    @SneakyThrows
     public void preAfterTest(ITestResult testResult, Method memberInfo) {
         if (isEnabled) {
-           try {
-               var screenshotSaveDir = getOutputFolder();
-               var screenshotFileName = getUniqueFileName(memberInfo.getName());
-               takeScreenshot(screenshotSaveDir, screenshotFileName);
-               SCREENSHOT_GENERATED.broadcast(new ScreenshotPluginEventArgs(Paths.get(screenshotSaveDir, screenshotFileName).toString()));
-           } catch (Exception e) {
-               // ignore since it is failing often because of bugs in Remote driver for Chrome
-               e.printStackTrace();
-           }
+            if (testResult.getStatus() == ITestResult.FAILURE) {
+                var screenshotSaveDir = getOutputFolder();
+                var screenshotFileName = getUniqueFileName(memberInfo.getName());
+                takeScreenshot(screenshotSaveDir, screenshotFileName);
+                SCREENSHOT_GENERATED.broadcast(new ScreenshotPluginEventArgs(Paths.get(screenshotSaveDir, screenshotFileName).toString()));
+            }
         }
     }
 }
