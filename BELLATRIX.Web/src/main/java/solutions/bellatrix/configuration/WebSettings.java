@@ -29,13 +29,15 @@ import lombok.Setter;
 
 public class WebSettings {
     private @Getter @Setter String baseUrl;
-    private @Getter @Setter BrowserSettings chrome;
-    private @Getter @Setter BrowserSettings firefox;
-    private @Getter @Setter BrowserSettings edge;
+
+    private @Getter @Setter int artificialDelayBeforeAction;
     private @Getter @Setter TimeoutSettings timeoutSettings;
-    private @Getter @Setter int elementWaitTimeout;
+
     private @Getter @Setter Boolean automaticallyScrollToVisible;
     private @Getter @Setter Boolean waitUntilReadyOnElementFound;
     private @Getter @Setter Boolean waitForAngular;
-    private @Getter @Setter int artificialDelayBeforeAction;
+
+    private @Getter @Setter Boolean shouldHighlightElements;
+    @Getter @Setter private Boolean screenshotsOnFailEnabled;
+    @Getter @Setter private String screenshotsSaveLocation;
 }

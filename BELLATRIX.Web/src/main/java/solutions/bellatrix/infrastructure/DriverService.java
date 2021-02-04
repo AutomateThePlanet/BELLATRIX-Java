@@ -83,6 +83,8 @@ public class DriverService {
             }
         }
 
+        driver.manage().timeouts().pageLoadTimeout(ConfigurationService.get(WebSettings.class).getTimeoutSettings().getPageLoadTimeout(), TimeUnit.SECONDS);
+        driver.manage().timeouts().setScriptTimeout(ConfigurationService.get(WebSettings.class).getTimeoutSettings().getScriptTimeout(), TimeUnit.SECONDS);
         driver.manage().window().maximize();
         changeWindowSize(driver);
         wrappedDriver.set(driver);
@@ -101,8 +103,6 @@ public class DriverService {
                 chromeOptions.addArguments("--log-level=3");
                 System.setProperty("webdriver.chrome.silentOutput", "true");
                 driver = new ChromeDriver(chromeOptions);
-                driver.manage().timeouts().pageLoadTimeout(ConfigurationService.get(WebSettings.class).getChrome().getPageLoadTimeout(), TimeUnit.SECONDS);
-                driver.manage().timeouts().setScriptTimeout(ConfigurationService.get(WebSettings.class).getChrome().getScriptTimeout(), TimeUnit.SECONDS);
             }
             case CHROME_HEADLESS -> {
                 WebDriverManager.chromedriver().setup();
@@ -113,17 +113,12 @@ public class DriverService {
                 System.setProperty("webdriver.chrome.silentOutput", "true");
 
                 driver = new ChromeDriver(chromeHeadlessOptions);
-                driver.manage().timeouts().pageLoadTimeout(ConfigurationService.get(WebSettings.class).getChrome().getPageLoadTimeout(), TimeUnit.SECONDS);
-                driver.manage().timeouts().setScriptTimeout(ConfigurationService.get(WebSettings.class).getChrome().getScriptTimeout(), TimeUnit.SECONDS);
             }
             case FIREFOX -> {
                 WebDriverManager.firefoxdriver().setup();
                 var firefoxOptions = new FirefoxOptions();
                 addDriverOptions(firefoxOptions);
                 driver = new FirefoxDriver(firefoxOptions);
-
-                driver.manage().timeouts().pageLoadTimeout(ConfigurationService.get(WebSettings.class).getFirefox().getPageLoadTimeout(), TimeUnit.SECONDS);
-                driver.manage().timeouts().setScriptTimeout(ConfigurationService.get(WebSettings.class).getFirefox().getScriptTimeout(), TimeUnit.SECONDS);
             }
             case FIREFOX_HEADLESS -> {
                 WebDriverManager.firefoxdriver().setup();
@@ -131,9 +126,6 @@ public class DriverService {
                 addDriverOptions(firefoxHeadlessOptions);
                 firefoxHeadlessOptions.setHeadless(true);
                 driver = new FirefoxDriver(firefoxHeadlessOptions);
-
-                driver.manage().timeouts().pageLoadTimeout(ConfigurationService.get(WebSettings.class).getFirefox().getPageLoadTimeout(), TimeUnit.SECONDS);
-                driver.manage().timeouts().setScriptTimeout(ConfigurationService.get(WebSettings.class).getFirefox().getScriptTimeout(), TimeUnit.SECONDS);
             }
             case EDGE, EDGE_HEADLESS -> {
                 throw new InvalidArgumentException("BELLATRIX doesn't support Edge. It will be supported with the official release of WebDriver 4.0");

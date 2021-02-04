@@ -31,6 +31,10 @@ public class BrowserLifecyclePlugin extends Plugin {
         isBrowserStartedCorrectly = new ThreadLocal<>();
     }
 
+    public static BrowserLifecyclePlugin of() {
+        return new BrowserLifecyclePlugin();
+    }
+
     @Override
     public void preBeforeClass(Class type) {
         currentBrowserConfiguration.set(getExecutionBrowserClassLevel(type));

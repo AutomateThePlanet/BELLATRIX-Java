@@ -51,9 +51,26 @@
         </dependency>
         <dependency>
             <groupId>solutions.bellatrix</groupId>
-            <artifactId>BELLATRIX.Layout.Assertions</artifactId>
+            <artifactId>BELLATRIX.Layout</artifactId>
             <version>1.0</version>
             <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>solutions.bellatrix</groupId>
+            <artifactId>BELLATRIX.TestExecutionExtensions.Screenshots</artifactId>
+            <version>1.0</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>solutions.bellatrix</groupId>
+            <artifactId>BELLATRIX.TestExecutionExtensions.Screenshots</artifactId>
+            <version>1.0</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>ru.yandex.qatools.ashot</groupId>
+            <artifactId>ashot</artifactId>
+            <version>1.5.4</version>
         </dependency>
     </dependencies>
 

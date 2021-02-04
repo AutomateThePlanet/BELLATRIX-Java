@@ -13,10 +13,8 @@
 
 package solutions.bellatrix.waitstrategies;
 
-import lombok.RequiredArgsConstructor;
 import org.openqa.selenium.*;
 import solutions.bellatrix.configuration.ConfigurationService;
-import solutions.bellatrix.configuration.TimeoutSettings;
 import solutions.bellatrix.configuration.WebSettings;
 
 public class ToBeClickableWaitStrategy extends WaitStrategy {
@@ -29,7 +27,7 @@ public class ToBeClickableWaitStrategy extends WaitStrategy {
         return new ToBeClickableWaitStrategy();
     }
 
-    public ToBeClickableWaitStrategy(int timeoutIntervalSeconds, int sleepIntervalSeconds) {
+    public ToBeClickableWaitStrategy(long timeoutIntervalSeconds, long sleepIntervalSeconds) {
        super(timeoutIntervalSeconds, sleepIntervalSeconds);
     }
 

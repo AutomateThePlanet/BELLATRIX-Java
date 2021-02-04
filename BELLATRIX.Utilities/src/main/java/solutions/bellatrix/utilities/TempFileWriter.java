@@ -11,12 +11,25 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.configuration;
+package solutions.bellatrix.utilities;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.SneakyThrows;
+import lombok.experimental.UtilityClass;
 
-public class UrlSettings {
-    @Getter @Setter private String shopUrl;
-    @Getter @Setter  private String accountUrl;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.nio.file.Files;
+import java.nio.file.Path;
+
+@UtilityClass
+public class TempFileWriter {
+    @SneakyThrows
+    public static File writeStringToTempFile(String fileContent) {
+        Path tempFile = Files.createTempFile(null, null);
+        try (var bw = new BufferedWriter(new FileWriter(tempFile.toFile()))) {
+            bw.write(fileContent);
+        }
+        return  tempFile.toFile();
+    }
 }

@@ -18,8 +18,6 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
-import lombok.experimental.ExtensionMethod;
-import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -27,6 +25,7 @@ import solutions.bellatrix.components.contracts.Component;
 import solutions.bellatrix.configuration.ConfigurationService;
 import solutions.bellatrix.configuration.WebSettings;
 import solutions.bellatrix.findstrategies.*;
+import solutions.bellatrix.infrastructure.Browser;
 import solutions.bellatrix.infrastructure.DriverService;
 import solutions.bellatrix.plugins.EventListener;
 import solutions.bellatrix.services.BrowserService;
@@ -268,6 +267,27 @@ public class WebComponent implements Component {
         return createAll(componentClass, new InnerTextContainsFindStrategy(innerText));
     }
 
+    public void highlight() {
+        var currentBrowser = DriverService.getBrowserConfiguration().getBrowser();
+        if (currentBrowser == Browser.CHROME_HEADLESS || currentBrowser == Browser.EDGE_HEADLESS) return;
+
+        try {
+            var nativeElement = wrappedElement;
+            var originalElementBorder = nativeElement.getCssValue("background-color");
+            javaScriptService.execute("arguments[0].style.background='yellow'; return;", nativeElement);
+
+            var runnable = new Runnable() {
+                @SneakyThrows
+                public void run() {
+                    Thread.sleep(100);
+                    javaScriptService.execute("arguments[0].style.background='" + originalElementBorder + "'; return;", nativeElement);
+                }
+            };
+            new Thread(runnable).start();
+
+        } catch (Exception ignored) { }
+    }
+
     protected <TComponent extends WebComponent, TFindStrategy extends FindStrategy> TComponent create(Class<TComponent> componentClass, TFindStrategy findStrategy) {
         CREATING_ELEMENT.broadcast(new ComponentActionEventArgs(this));
         findElement();
@@ -490,6 +510,7 @@ public class WebComponent implements Component {
         SCROLLED_TO_VISIBLE.broadcast(new ComponentActionEventArgs(this));
     }
 
+    // TODO: Anton(03.02.2021) : Align with Kotlin framework design with only 2 global events and single 10 lines class for BDD logging.
     public final static EventListener<ComponentActionEventArgs> VALIDATED_ACCEPT_IS_NULL = new EventListener<>();
     public final static EventListener<ComponentActionEventArgs> VALIDATED_ACCEPT_IS = new EventListener<>();
 

@@ -13,7 +13,6 @@
 
 package solutions.bellatrix.waitstrategies;import org.openqa.selenium.*;
 import solutions.bellatrix.configuration.ConfigurationService;
-import solutions.bellatrix.configuration.TimeoutSettings;
 import solutions.bellatrix.configuration.WebSettings;
 
 public class ToExistsWaitStrategy extends WaitStrategy {
@@ -22,7 +21,7 @@ public class ToExistsWaitStrategy extends WaitStrategy {
         sleepInterval = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getSleepInterval();
     }
 
-    public ToExistsWaitStrategy(int timeoutIntervalSeconds, int sleepIntervalSeconds) {
+    public ToExistsWaitStrategy(long timeoutIntervalSeconds, long sleepIntervalSeconds) {
        super(timeoutIntervalSeconds, sleepIntervalSeconds);
     }
 

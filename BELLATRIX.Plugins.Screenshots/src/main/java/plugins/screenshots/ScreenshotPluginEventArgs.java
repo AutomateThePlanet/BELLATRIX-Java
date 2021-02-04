@@ -11,12 +11,14 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.configuration;
+package plugins.screenshots;
 
 import lombok.Getter;
-import lombok.Setter;
 
-public class UrlSettings {
-    @Getter @Setter private String shopUrl;
-    @Getter @Setter  private String accountUrl;
+public class ScreenshotPluginEventArgs {
+    @Getter private final String screenshotPath;
+
+    public ScreenshotPluginEventArgs(String screenshotPath) {
+        this.screenshotPath = screenshotPath;
+    }
 }

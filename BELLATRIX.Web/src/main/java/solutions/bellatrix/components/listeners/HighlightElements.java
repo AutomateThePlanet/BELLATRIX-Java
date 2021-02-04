@@ -13,16 +13,20 @@
 
 package solutions.bellatrix.components.listeners;
 
-import solutions.bellatrix.components.Anchor;
+import solutions.bellatrix.components.WebComponent;
+import solutions.bellatrix.configuration.ConfigurationService;
+import solutions.bellatrix.configuration.WebSettings;
 
-import java.util.function.Consumer;
-
-public class BddLogging {
-    private static Boolean isBddLoggingTurnedOn = false;
+public class HighlightElements {
+    private static Boolean isHighlightElementsAdded = false;
     public static void addPlugin() {
-        if (!isBddLoggingTurnedOn) {
-            Anchor.CLICKING.addListener((x) -> System.out.println(String.format("clicking %s\n", x.getComponent().getElementName())));
-            isBddLoggingTurnedOn = true;
+        if (!isHighlightElementsAdded) {
+            var shouldHighlightElements = ConfigurationService.get(WebSettings.class).getShouldHighlightElements();
+            if (shouldHighlightElements) {
+                WebComponent.RETURNING_WRAPPED_ELEMENT.addListener((x) -> x.getComponent().highlight());
+            }
+
+            isHighlightElementsAdded = true;
         }
     }
 }

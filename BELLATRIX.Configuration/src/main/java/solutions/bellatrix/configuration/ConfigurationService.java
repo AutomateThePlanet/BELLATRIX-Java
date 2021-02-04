@@ -15,6 +15,7 @@ package solutions.bellatrix.configuration;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonParser;
+import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
 import org.apache.commons.io.IOUtils;
 
@@ -71,12 +72,8 @@ public final class ConfigurationService {
         return sb.toString();
     }
 
+    @SneakyThrows
     public static String getFileAsString(String fileName) {
-        try {
-            InputStream input = ConfigurationService.class.getResourceAsStream("/" + fileName);
-            return IOUtils.toString(input, StandardCharsets.UTF_8);
-        } catch (IOException e) {
-            return null;
-        }
+        InputStream input = ConfigurationService.class.getResourceAsStream("/" + fileName);
     }
 }

@@ -1,19 +1,18 @@
 {
   "webSettings": {
     "baseUrl": "http://demos.bellatrix.solutions/",
-    "elementWaitTimeout": "30",
+    "artificialDelayBeforeAction": "0",
     "automaticallyScrollToVisible": "false",
     "waitUntilReadyOnElementFound": "false",
     "waitForAngular": "false",
-    "shouldHighlightElements": "false",
-    "artificialDelayBeforeAction": "0",
-    "elementWaitTimeout": "30",
-    "chrome": {
-      "pageLoadTimeout": "120",
-      "scriptTimeout": "5",
-      "artificialDelayBeforeAction": "0"
-    },
+    "shouldHighlightElements": "true",
+    "screenshotsOnFailEnabled": "true",
+    "screenshotsSaveLocation": "user.home\\BELLATRIX\\Screenshots",
     "timeoutSettings": {
+      "elementWaitTimeout": "30",
+      "pageLoadTimeout": "30",
+      "scriptTimeout": "1",
+
       "waitForAjaxTimeout": "30",
       "sleepInterval": "1",
       "waitUntilReadyTimeout": "30",
@@ -27,14 +26,6 @@
       "elementToBeClickableTimeout": "30",
       "elementNotToBeVisibleTimeout": "30",
       "elementToHaveContentTimeout": "15"
-    },
-    "firefox": {
-      "pageLoadTimeout": "30",
-      "scriptTimeout": "1"
-    },
-    "chrome": {
-      "pageLoadTimeout": "30",
-      "scriptTimeout": "1"
     }
   },
   "urlSettings": {

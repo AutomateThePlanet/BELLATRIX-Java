@@ -15,6 +15,7 @@ package solutions.bellatrix.infrastructure;
 
 import org.testng.annotations.BeforeSuite;
 import solutions.bellatrix.components.listeners.BddLogging;
+import solutions.bellatrix.components.listeners.HighlightElements;
 import solutions.bellatrix.plugins.BaseTest;
 import solutions.bellatrix.services.App;
 
@@ -26,12 +27,9 @@ public class WebTest extends BaseTest {
 
     @BeforeSuite
     public void beforeSuite() {
-        addPlugin(new BrowserLifecyclePlugin());
-        BddLogging.addListeners();
+        addPlugin(BrowserLifecyclePlugin.of());
+        addPlugin(WebScreenshotsPlugin.of());
+        BddLogging.addPlugin();
+        HighlightElements.addPlugin();
     }
-
-//    @AfterSuite
-//    public void afterSuite() {
-//        app.close();
-//    }
 }

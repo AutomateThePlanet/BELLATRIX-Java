@@ -11,12 +11,20 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.configuration;
+package solutions.bellatrix.utilities;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.SneakyThrows;
+import lombok.experimental.UtilityClass;
+import org.apache.commons.io.IOUtils;
 
-public class UrlSettings {
-    @Getter @Setter private String shopUrl;
-    @Getter @Setter  private String accountUrl;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+
+@UtilityClass
+public class ResourcesReader {
+    @SneakyThrows
+    public static String getFileAsString(Class<?> moduleClass, String fileName) {
+        InputStream input = moduleClass.getResourceAsStream("/" + fileName);
+        return IOUtils.toString(input, StandardCharsets.UTF_8);
+    }
 }

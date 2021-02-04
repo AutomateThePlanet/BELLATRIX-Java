@@ -13,23 +13,9 @@
 
 package solutions.bellatrix.configuration;
 
+import lombok.Getter;
+
 public class BrowserSettings {
-    private int pageLoadTimeout;
-    private int scriptTimeout;
-
-    public int getPageLoadTimeout() {
-        return pageLoadTimeout;
-    }
-
-    public int getScriptTimeout() {
-        return scriptTimeout;
-    }
-
-    @Override
-    public String toString() {
-        return "solutions.bellatrix.configuration.BrowserSettings{" +
-                "pageLoadTimeout=" + pageLoadTimeout +
-                ", scriptTimeout=" + scriptTimeout +
-                '}';
-    }
+    @Getter private int pageLoadTimeout;
+    @Getter private int scriptTimeout;
 }

@@ -17,15 +17,15 @@ import lombok.Getter;
 import solutions.bellatrix.components.contracts.Component;
 
 public class ComponentActionEventArgs {
-    @Getter private final Component component;
+    @Getter private final WebComponent component;
     @Getter private final String actionValue;
 
-    public ComponentActionEventArgs(Component component, String actionValue) {
+    public ComponentActionEventArgs(WebComponent component, String actionValue) {
         this.component = component;
         this.actionValue = actionValue;
     }
 
-    public ComponentActionEventArgs(Component component) {
+    public ComponentActionEventArgs(WebComponent component) {
         this.component = component;
         this.actionValue = "";
     }
