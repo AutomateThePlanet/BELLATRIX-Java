@@ -9,7 +9,7 @@
     "screenshotsOnFailEnabled": "false",
     "screenshotsSaveLocation": "user.home\\BELLATRIX\\Screenshots",
 
-    "videosOnFailEnabled": "true",
+    "videosOnFailEnabled": "false",
     "videosSaveLocation": "user.home\\BELLATRIX\\Videos",
 
     "timeoutSettings": {

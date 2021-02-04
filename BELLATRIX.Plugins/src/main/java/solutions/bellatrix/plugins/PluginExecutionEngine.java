@@ -52,13 +52,13 @@ public final class PluginExecutionEngine {
         }
     }
 
-    public static void preBeforeTest(ITestResult result, Method memberInfo) {
+    public static void preBeforeTest(TestResult result, Method memberInfo) {
         for (var currentObserver: plugins) {
             currentObserver.preBeforeTest(result, memberInfo);
         }
     }
 
-    public static void postBeforeTest(ITestResult result, Method memberInfo) {
+    public static void postBeforeTest(TestResult result, Method memberInfo) {
         for (var currentObserver: plugins) {
             currentObserver.postBeforeTest(result, memberInfo);
         }
@@ -70,13 +70,13 @@ public final class PluginExecutionEngine {
         }
     }
 
-    public static void preAfterTest(ITestResult result, Method memberInfo) {
+    public static void preAfterTest(TestResult result, Method memberInfo) {
         for (var currentObserver: plugins) {
             currentObserver.preAfterTest(result, memberInfo);
         }
     }
 
-    public static void postAfterTest(ITestResult result, Method memberInfo) {
+    public static void postAfterTest(TestResult result, Method memberInfo) {
         for (var currentObserver: plugins) {
             currentObserver.postAfterTest(result, memberInfo);
         }

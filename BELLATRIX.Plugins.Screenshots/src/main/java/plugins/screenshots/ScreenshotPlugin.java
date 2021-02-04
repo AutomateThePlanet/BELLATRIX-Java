@@ -17,6 +17,7 @@ import lombok.SneakyThrows;
 import org.testng.ITestResult;
 import solutions.bellatrix.plugins.EventListener;
 import solutions.bellatrix.plugins.Plugin;
+import solutions.bellatrix.plugins.TestResult;
 
 import java.lang.reflect.Method;
 import java.nio.file.Paths;
@@ -35,14 +36,13 @@ public abstract class ScreenshotPlugin extends Plugin {
 
     @Override
     @SneakyThrows
-    public void preAfterTest(ITestResult testResult, Method memberInfo) {
-        if (isEnabled) {
-            if (testResult.getStatus() == ITestResult.FAILURE) {
-                var screenshotSaveDir = getOutputFolder();
-                var screenshotFileName = getUniqueFileName(memberInfo.getName());
-                takeScreenshot(screenshotSaveDir, screenshotFileName);
-                SCREENSHOT_GENERATED.broadcast(new ScreenshotPluginEventArgs(Paths.get(screenshotSaveDir, screenshotFileName).toString()));
-            }
-        }
+    public void preAfterTest(TestResult testResult, Method memberInfo) {
+        if (!isEnabled || testResult == TestResult.SUCCESS)
+            return;
+
+        var screenshotSaveDir = getOutputFolder();
+        var screenshotFileName = getUniqueFileName(memberInfo.getName());
+        takeScreenshot(screenshotSaveDir, screenshotFileName);
+        SCREENSHOT_GENERATED.broadcast(new ScreenshotPluginEventArgs(Paths.get(screenshotSaveDir, screenshotFileName).toString()));
     }
 }

@@ -11,12 +11,15 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.infrastructure;
+package solutions.bellatrix.infrastructure.junit;
 
 import org.testng.annotations.BeforeSuite;
 import solutions.bellatrix.components.listeners.BddLogging;
 import solutions.bellatrix.components.listeners.HighlightElements;
-import solutions.bellatrix.plugins.BaseTest;
+import solutions.bellatrix.infrastructure.BrowserLifecyclePlugin;
+import solutions.bellatrix.infrastructure.WebScreenshotPlugin;
+import solutions.bellatrix.infrastructure.WebVideoPlugin;
+import solutions.bellatrix.plugins.junit.BaseTest;
 import solutions.bellatrix.services.App;
 
 public class WebTest extends BaseTest {
@@ -25,8 +28,8 @@ public class WebTest extends BaseTest {
         return new App();
     }
 
-    @BeforeSuite
-    public void beforeSuite() {
+    @Override
+    protected void configure() {
         addPlugin(BrowserLifecyclePlugin.of());
         addPlugin(WebScreenshotPlugin.of());
         addPlugin(WebVideoPlugin.of());

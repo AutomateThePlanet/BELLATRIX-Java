@@ -11,34 +11,36 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.plugins;
+package solutions.bellatrix.plugins.testng;
 
 import org.testng.ITestResult;
 import org.testng.annotations.*;
+import solutions.bellatrix.plugins.Plugin;
+import solutions.bellatrix.plugins.PluginExecutionEngine;
+import solutions.bellatrix.plugins.TestResult;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class BaseTest {
-    private ITestResult result;
-    private final List<Plugin> plugins;
+    private static final ThreadLocal<Boolean> CONFIGURATION_EXECUTED = new ThreadLocal<>();
 
     public BaseTest() {
-        this.plugins = new ArrayList<>();
+        CONFIGURATION_EXECUTED.set(false);
     }
 
     public void addPlugin(Plugin plugin) {
         PluginExecutionEngine.addPlugin(plugin);
     }
 
-//    public String getTestName() {
-//        return getTestResult().getTestName();
-//    }
-
     @BeforeClass
     public void beforeClassCore() {
         try {
-            configure();
+            if (!CONFIGURATION_EXECUTED.get()) {
+                configure();
+                CONFIGURATION_EXECUTED.set(true);
+            }
+
             var testClass = this.getClass();
             PluginExecutionEngine.preBeforeClass(testClass);
             beforeClass();
@@ -53,9 +55,9 @@ public class BaseTest {
         try {
             var testClass = this.getClass();
             var methodInfo = testClass.getMethod(result.getMethod().getMethodName());
-            PluginExecutionEngine.preBeforeTest(result, methodInfo);
+            PluginExecutionEngine.preBeforeTest(convertToTestResult(result), methodInfo);
             beforeMethod();
-            PluginExecutionEngine.postBeforeTest(result, methodInfo);
+            PluginExecutionEngine.postBeforeTest(convertToTestResult(result), methodInfo);
         } catch (Exception e) {
             PluginExecutionEngine.beforeTestFailed(e);
         }
@@ -66,9 +68,9 @@ public class BaseTest {
         try {
             var testClass = this.getClass();
             var methodInfo = testClass.getMethod(result.getMethod().getMethodName());
-            PluginExecutionEngine.preAfterTest(result, methodInfo);
+            PluginExecutionEngine.preAfterTest(convertToTestResult(result), methodInfo);
             afterMethod();
-            PluginExecutionEngine.postAfterTest(result, methodInfo);
+            PluginExecutionEngine.postAfterTest(convertToTestResult(result), methodInfo);
         } catch (Exception e) {
             PluginExecutionEngine.afterTestFailed(e);
         }
@@ -104,5 +106,13 @@ public class BaseTest {
 
     protected void afterMethod()
     {
+    }
+
+    private TestResult convertToTestResult(ITestResult testResult) {
+        if (testResult.getStatus() == ITestResult.SUCCESS ) {
+            return TestResult.FAILURE;
+        } else {
+            return TestResult.SUCCESS;
+        }
     }
 }

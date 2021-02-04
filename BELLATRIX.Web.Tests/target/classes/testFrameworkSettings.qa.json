@@ -6,10 +6,10 @@
     "waitUntilReadyOnElementFound": "false",
     "waitForAngular": "false",
     "shouldHighlightElements": "true",
-    "screenshotsOnFailEnabled": "true",
+    "screenshotsOnFailEnabled": "false",
     "screenshotsSaveLocation": "user.home\\BELLATRIX\\Screenshots",
 
-    "videosOnFailEnabled": "true",
+    "videosOnFailEnabled": "false",
     "videosSaveLocation": "user.home\\BELLATRIX\\Videos",
 
     "timeoutSettings": {

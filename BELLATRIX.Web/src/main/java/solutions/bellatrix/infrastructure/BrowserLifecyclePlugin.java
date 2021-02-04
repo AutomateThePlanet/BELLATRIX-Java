@@ -13,8 +13,8 @@
 
 package solutions.bellatrix.infrastructure;
 
-import org.testng.ITestResult;
 import solutions.bellatrix.plugins.Plugin;
+import solutions.bellatrix.plugins.TestResult;
 
 import java.lang.reflect.Method;
 
@@ -38,8 +38,7 @@ public class BrowserLifecyclePlugin extends Plugin {
     @Override
     public void preBeforeClass(Class type) {
         currentBrowserConfiguration.set(getExecutionBrowserClassLevel(type));
-        if (shouldRestartBrowser())
-        {
+        if (shouldRestartBrowser()) {
             restartBrowser();
             // TODO: maybe we can simplify and remove this parameter.
             isBrowserStartedDuringPreBeforeClass.set(true);
@@ -58,7 +57,7 @@ public class BrowserLifecyclePlugin extends Plugin {
     }
 
     @Override
-    public void preBeforeTest(ITestResult testResult, Method memberInfo) {
+    public void preBeforeTest(TestResult testResult, Method memberInfo) {
         currentBrowserConfiguration.set(getBrowserConfiguration(memberInfo));
 
         if (!isBrowserStartedDuringPreBeforeClass.get()) {
@@ -71,9 +70,9 @@ public class BrowserLifecyclePlugin extends Plugin {
     }
 
     @Override
-    public void postAfterTest(ITestResult testResult, Method memberInfo) {
+    public void postAfterTest(TestResult testResult, Method memberInfo) {
         if (currentBrowserConfiguration.get().getLifecycle() ==
-                Lifecycle.RESTART_ON_FAIL && testResult.getStatus() == ITestResult.FAILURE) {
+                Lifecycle.RESTART_ON_FAIL && testResult == TestResult.FAILURE) {
             shutdownBrowser();
             isBrowserStartedDuringPreBeforeClass.set(false);
         }
@@ -100,8 +99,7 @@ public class BrowserLifecyclePlugin extends Plugin {
         // TODO: IsBrowserStartedCorrectly getter?
         var previousConfiguration = previousBrowserConfiguration.get();
         var currentConfiguration = currentBrowserConfiguration.get();
-        if (previousConfiguration == null)
-        {
+        if (previousConfiguration == null) {
             return true;
         } else if (!isBrowserStartedCorrectly.get()) {
             return true;
@@ -118,12 +116,9 @@ public class BrowserLifecyclePlugin extends Plugin {
         BrowserConfiguration result = null;
         var classBrowserType = getExecutionBrowserClassLevel(memberInfo.getDeclaringClass());
         var methodBrowserType = getExecutionBrowserMethodLevel(memberInfo);
-        if (methodBrowserType != null)
-        {
+        if (methodBrowserType != null) {
             result = methodBrowserType;
-        }
-        else if (classBrowserType != null)
-        {
+        } else if (classBrowserType != null) {
             result = classBrowserType;
         }
 
@@ -131,7 +126,7 @@ public class BrowserLifecyclePlugin extends Plugin {
     }
 
     private BrowserConfiguration getExecutionBrowserMethodLevel(Method memberInfo) {
-        var executionBrowserAnnotation = (ExecutionBrowser)memberInfo.getDeclaredAnnotation(ExecutionBrowser.class);
+        var executionBrowserAnnotation = (ExecutionBrowser) memberInfo.getDeclaredAnnotation(ExecutionBrowser.class);
         if (executionBrowserAnnotation == null) {
             return null;
         }
@@ -140,7 +135,7 @@ public class BrowserLifecyclePlugin extends Plugin {
     }
 
     private BrowserConfiguration getExecutionBrowserClassLevel(Class<?> type) {
-        var executionBrowserAnnotation = (ExecutionBrowser)type.getDeclaredAnnotation(ExecutionBrowser.class);
+        var executionBrowserAnnotation = (ExecutionBrowser) type.getDeclaredAnnotation(ExecutionBrowser.class);
         if (executionBrowserAnnotation == null) {
             // set default browser configuration if not set previously.
             return new BrowserConfiguration(Browser.CHROME, Lifecycle.REUSE_IF_STARTED, ExecutionType.REGULAR);

@@ -11,7 +11,11 @@
  * limitations under the License.
  */
 
-import org.testng.annotations.Test;
+package junit;
+
+import org.junit.Before;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 import pages.cartpage.CartPage;
 import pages.checkoutpage.CheckoutPage;
 import pages.checkoutpage.PurchaseInfo;
@@ -21,7 +25,8 @@ import solutions.bellatrix.findstrategies.TextContains;
 import solutions.bellatrix.infrastructure.Browser;
 import solutions.bellatrix.infrastructure.ExecutionBrowser;
 import solutions.bellatrix.infrastructure.Lifecycle;
-import solutions.bellatrix.infrastructure.WebTest;
+import solutions.bellatrix.infrastructure.junit.WebTest;
+import solutions.bellatrix.plugins.PluginExecutionEngine;
 
 @ExecutionBrowser(browser = Browser.CHROME, lifecycle = Lifecycle.REUSE_IF_STARTED)
 public class ProductPurchaseTests extends WebTest {

@@ -30,19 +30,19 @@ public class Plugin {
     public void beforeClassFailed(Exception e) {
     }
 
-    public void preBeforeTest(ITestResult testResult, Method memberInfo) {
+    public void preBeforeTest(TestResult testResult, Method memberInfo) {
     }
 
-    public void postBeforeTest(ITestResult testResult, Method memberInfo) {
+    public void postBeforeTest(TestResult testResult, Method memberInfo) {
     }
 
     public void beforeTestFailed(Exception e) {
     }
 
-    public void preAfterTest(ITestResult testResult, Method memberInfo) {
+    public void preAfterTest(TestResult testResult, Method memberInfo) {
     }
 
-    public void postAfterTest(ITestResult testResult, Method memberInfo) {
+    public void postAfterTest(TestResult testResult, Method memberInfo) {
     }
 
     public void afterTestFailed(Exception e) {

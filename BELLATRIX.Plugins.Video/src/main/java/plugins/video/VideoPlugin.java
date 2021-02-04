@@ -18,6 +18,7 @@ import org.apache.commons.io.FileUtils;
 import org.testng.ITestResult;
 import solutions.bellatrix.plugins.EventListener;
 import solutions.bellatrix.plugins.Plugin;
+import solutions.bellatrix.plugins.TestResult;
 
 import java.io.File;
 import java.lang.reflect.Method;
@@ -36,8 +37,7 @@ public abstract class VideoPlugin extends Plugin {
     protected abstract String getOutputFolder();
     protected abstract String getUniqueFileName(String testName);
 
-    @Override
-    public void preBeforeTest(ITestResult testResult, Method memberInfo) {
+    public void preBeforeTest(TestResult testResult, Method memberInfo) {
         if (isEnabled) {
             try {
                 var videoSaveDir = getOutputFolder();
@@ -52,14 +52,13 @@ public abstract class VideoPlugin extends Plugin {
     }
 
     @SneakyThrows
-    @Override
-    public void preAfterTest(ITestResult testResult, Method memberInfo) {
+    public void preAfterTest(TestResult testResult, Method memberInfo) {
         if (isEnabled) {
             var videoSaveDir = getOutputFolder();
             var videoFileName = getUniqueFileName(memberInfo.getName());
             var videoFullPath = Paths.get(videoSaveDir, videoFileName).toString();
             FMPEG_VIDEO_RECORDER.close();
-            if (testResult.getStatus() == ITestResult.FAILURE) {
+            if (testResult == TestResult.FAILURE) {
                 VIDEO_GENERATED.broadcast(new VideoPluginEventArgs(VIDEO_FULL_PATH.get()));
             } else {
                 FileUtils.forceDeleteOnExit(new File(videoFullPath));
