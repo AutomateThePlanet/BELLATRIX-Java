@@ -15,6 +15,7 @@ package solutions.bellatrix.infrastructure;
 
 import solutions.bellatrix.plugins.Plugin;
 import solutions.bellatrix.plugins.TestResult;
+import solutions.bellatrix.utilities.DebugInformation;
 
 import java.lang.reflect.Method;
 
@@ -89,6 +90,7 @@ public class BrowserLifecyclePlugin extends Plugin {
             DriverService.start(currentBrowserConfiguration.get());
             isBrowserStartedCorrectly.set(true);
         } catch (Exception ex) {
+            DebugInformation.printStackTrace(ex);
             isBrowserStartedCorrectly.set(false);
         }
 

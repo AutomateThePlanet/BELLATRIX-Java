@@ -17,6 +17,8 @@ import lombok.SneakyThrows;
 import net.lightbody.bmp.BrowserMobProxyServer;
 import org.testng.Assert;
 
+import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 
 public class ProxyServer {
@@ -24,8 +26,7 @@ public class ProxyServer {
 
     @SneakyThrows
     public static int init() {
-        var s = new ServerSocket(0);
-        int port = s.getLocalPort();
+        int port = findFreePort();
         proxyServer.set(new BrowserMobProxyServer());
         proxyServer.get().start(port);
         return port;
@@ -60,5 +61,20 @@ public class ProxyServer {
                 && r.getResponse().getContent().getSize() > 40000);
 
         Assert.assertFalse(areThereLargeImages);
+    }
+
+    private static int findFreePort() {
+        int port = 0;
+        // For ServerSocket port number 0 means that the port number is automatically allocated.
+        try (ServerSocket socket = new ServerSocket(0)) {
+            // Disable timeout and reuse address after closing the socket.
+            socket.setReuseAddress(true);
+            port = socket.getLocalPort();
+        } catch (IOException ignored) {}
+        if (port > 0) {
+            return port;
+        }
+
+        throw new RuntimeException("Could not find a free port");
     }
 }

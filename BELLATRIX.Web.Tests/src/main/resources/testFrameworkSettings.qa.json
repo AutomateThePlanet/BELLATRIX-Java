@@ -10,9 +10,9 @@
     "waitUntilReadyOnElementFound": "false",
     "waitForAngular": "false",
     "shouldHighlightElements": "true",
+    "shouldCaptureHttpTraffic": "false",
     "screenshotsOnFailEnabled": "false",
     "screenshotsSaveLocation": "user.home\\BELLATRIX\\Screenshots",
-
     "videosOnFailEnabled": "false",
     "videosSaveLocation": "user.home\\BELLATRIX\\Videos",
 
@@ -20,7 +20,6 @@
       "elementWaitTimeout": "30",
       "pageLoadTimeout": "30",
       "scriptTimeout": "1",
-
       "waitForAjaxTimeout": "30",
       "sleepInterval": "1",
       "waitUntilReadyTimeout": "30",

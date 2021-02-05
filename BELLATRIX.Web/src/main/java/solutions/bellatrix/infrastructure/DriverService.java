@@ -75,7 +75,7 @@ public class DriverService {
         WebDriver driver = null;
         var webSettings = ConfigurationService.get(WebSettings.class);
         var executionType = webSettings.getExecutionType();
-        if (executionType.toLowerCase() == "regular") {
+        if (executionType.equals("regular")) {
             driver = initializeDriverRegularMode();
         } else {
             var gridSettings = webSettings.getGridSettings().stream().filter(g -> g.getProviderName().equals(executionType.toLowerCase())).findFirst();
