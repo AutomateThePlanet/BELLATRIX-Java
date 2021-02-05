@@ -11,27 +11,17 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.infrastructure;
+package solutions.bellatrix.configuration;
 
-public enum Browser {
-    CHROME("chrome"),
-    CHROME_HEADLESS("chrome"),
-    FIREFOX("firefox"),
-    FIREFOX_HEADLESS("firefox"),
-    EDGE("edge"),
-    EDGE_HEADLESS("edge"),
-    OPERA("opera"),
-    SAFARI("safari"),
-    INTERNET_EXPLORER("ie");
+import lombok.Getter;
+import lombok.Setter;
 
-    private String value;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-    Browser(String value){
-        this.value = value;
-    }
-
-    @Override
-    public String toString() {
-        return value;
-    }
+public class GridSettings {
+    @Getter @Setter private String providerName;
+    @Getter @Setter private String url;
+    @Getter @Setter private List<HashMap<String, String>> arguments;
 }

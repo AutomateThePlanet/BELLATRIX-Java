@@ -11,7 +11,11 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.infrastructure;import java.lang.annotation.ElementType;
+package solutions.bellatrix.infrastructure;
+
+import org.openqa.selenium.Platform;
+
+import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
@@ -21,5 +25,8 @@ import java.lang.annotation.Target;
 public @interface ExecutionBrowser {
     Browser browser() default Browser.CHROME;
     Lifecycle lifecycle() default Lifecycle.RESTART_EVERY_TIME;
-    ExecutionType executionType() default ExecutionType.REGULAR;
+    int browserVersion() default 0;
+    Platform platform() default Platform.ANY;
+    int width() default 0;
+    int height() default 0;
 }

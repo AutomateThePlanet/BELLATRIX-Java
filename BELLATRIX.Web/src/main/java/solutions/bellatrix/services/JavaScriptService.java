@@ -15,6 +15,7 @@ package solutions.bellatrix.services;
 
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
+import solutions.bellatrix.utilities.DebugInformation;
 
 public class JavaScriptService extends WebService {
     private final JavascriptExecutor javascriptExecutor;
@@ -29,7 +30,7 @@ public class JavaScriptService extends WebService {
             var result = (String)javascriptExecutor.executeScript(script);
             return result;
         } catch (Exception ex) {
-            System.out.print(ex);
+            DebugInformation.printStackTrace(ex);
             return "";
         }
     }
@@ -46,7 +47,7 @@ public class JavaScriptService extends WebService {
             var result = (String)javascriptExecutor.executeScript(script, args);
             return result ;
         } catch (Exception ex) {
-            System.out.print(ex);
+            DebugInformation.printStackTrace(ex);
             return "";
         }
     }
@@ -61,7 +62,7 @@ public class JavaScriptService extends WebService {
             var result = (String)javascriptExecutor.executeScript(script, nativeElement);
             return result;
         } catch (Exception ex) {
-            System.out.print(ex);
+            DebugInformation.printStackTrace(ex);
             return "";
         }
     }

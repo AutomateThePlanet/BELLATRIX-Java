@@ -27,8 +27,13 @@ package solutions.bellatrix.configuration;/*
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 public class WebSettings {
     @Getter @Setter private String baseUrl;
+    @Getter @Setter private String executionType;
+
+    @Getter @Setter private List<GridSettings> gridSettings;
 
     @Getter @Setter private int artificialDelayBeforeAction;
     @Getter @Setter private TimeoutSettings timeoutSettings;
@@ -37,6 +42,7 @@ public class WebSettings {
     @Getter @Setter private Boolean waitUntilReadyOnElementFound;
     @Getter @Setter private Boolean waitForAngular;
     @Getter @Setter private Boolean shouldHighlightElements;
+    @Getter @Setter private Boolean shouldCaptureHttpTraffic;
 
     @Getter @Setter private Boolean screenshotsOnFailEnabled;
     @Getter @Setter private String screenshotsSaveLocation;

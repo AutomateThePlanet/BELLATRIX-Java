@@ -32,6 +32,7 @@ import solutions.bellatrix.services.BrowserService;
 import solutions.bellatrix.services.ComponentCreateService;
 import solutions.bellatrix.services.ComponentWaitService;
 import solutions.bellatrix.services.JavaScriptService;
+import solutions.bellatrix.utilities.DebugInformation;
 import solutions.bellatrix.utilities.InstanceFactory;
 import solutions.bellatrix.waitstrategies.*;
 
@@ -339,6 +340,7 @@ public class WebComponent implements Component {
 
           waitStrategies.clear();
       } catch (WebDriverException ex) {
+          DebugInformation.printStackTrace(ex);
           System.out.print(String.format("\n\nThe element: \n Name: '%s', \n Locator: '%s = %s', \nWas not found on the page or didn't fulfill the specified conditions.\n\n", getComponentClass().getSimpleName(), findStrategy.toString(), findStrategy.getValue()));
       }
 
@@ -502,9 +504,9 @@ public class WebComponent implements Component {
                 toExists().waitToBe();
             }
         } catch (ElementNotInteractableException ex) {
-            System.out.print(ex);
+            DebugInformation.printStackTrace(ex);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            DebugInformation.printStackTrace(e);
         }
 
         SCROLLED_TO_VISIBLE.broadcast(new ComponentActionEventArgs(this));
@@ -542,6 +544,7 @@ public class WebComponent implements Component {
         try {
             webDriverWait.until(waitCondition);
         } catch (TimeoutException ex) {
+            DebugInformation.printStackTrace(ex);
             var validationExceptionMessage = String.format("%s The test failed on URL: %s", exceptionMessage, browserService.getUrl());
             throw new TimeoutException(validationExceptionMessage, ex);
         }

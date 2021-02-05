@@ -131,16 +131,16 @@ public class BrowserLifecyclePlugin extends Plugin {
             return null;
         }
 
-        return new BrowserConfiguration(executionBrowserAnnotation.browser(), executionBrowserAnnotation.lifecycle(), executionBrowserAnnotation.executionType());
+        return new BrowserConfiguration(executionBrowserAnnotation.browser(), executionBrowserAnnotation.lifecycle());
     }
 
     private BrowserConfiguration getExecutionBrowserClassLevel(Class<?> type) {
         var executionBrowserAnnotation = (ExecutionBrowser) type.getDeclaredAnnotation(ExecutionBrowser.class);
         if (executionBrowserAnnotation == null) {
             // set default browser configuration if not set previously.
-            return new BrowserConfiguration(Browser.CHROME, Lifecycle.REUSE_IF_STARTED, ExecutionType.REGULAR);
+            return new BrowserConfiguration(Browser.CHROME, Lifecycle.REUSE_IF_STARTED);
         }
 
-        return new BrowserConfiguration(executionBrowserAnnotation.browser(), executionBrowserAnnotation.lifecycle(), executionBrowserAnnotation.executionType());
+        return new BrowserConfiguration(executionBrowserAnnotation.browser(), executionBrowserAnnotation.lifecycle());
     }
 }

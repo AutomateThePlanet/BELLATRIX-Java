@@ -11,27 +11,15 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.infrastructure;
+package solutions.bellatrix.utilities;
 
-public enum Browser {
-    CHROME("chrome"),
-    CHROME_HEADLESS("chrome"),
-    FIREFOX("firefox"),
-    FIREFOX_HEADLESS("firefox"),
-    EDGE("edge"),
-    EDGE_HEADLESS("edge"),
-    OPERA("opera"),
-    SAFARI("safari"),
-    INTERNET_EXPLORER("ie");
+import solutions.bellatrix.configuration.ConfigurationService;
+import solutions.bellatrix.utilities.configuration.TroubleshootingSettings;
 
-    private String value;
-
-    Browser(String value){
-        this.value = value;
-    }
-
-    @Override
-    public String toString() {
-        return value;
+public class DebugInformation {
+    public static void printStackTrace(Exception ex) {
+        if (ConfigurationService.get(TroubleshootingSettings.class).getDebugInformationEnabled()) {
+            ex.printStackTrace();
+        }
     }
 }

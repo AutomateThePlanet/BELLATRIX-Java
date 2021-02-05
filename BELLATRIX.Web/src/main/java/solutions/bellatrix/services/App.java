@@ -14,6 +14,7 @@
 package solutions.bellatrix.services;
 
 import solutions.bellatrix.infrastructure.DriverService;
+import solutions.bellatrix.infrastructure.ProxyServer;
 import solutions.bellatrix.pages.WebPage;
 import solutions.bellatrix.utilities.SingletonFactory;
 
@@ -30,6 +31,10 @@ public class App implements AutoCloseable {
 
     public CookiesService cookies() {
         return SingletonFactory.getInstance(CookiesService.class);
+    }
+
+    public ProxyServer requests() {
+        return SingletonFactory.getInstance(ProxyServer.class);
     }
 
     public DialogService dialogs() {

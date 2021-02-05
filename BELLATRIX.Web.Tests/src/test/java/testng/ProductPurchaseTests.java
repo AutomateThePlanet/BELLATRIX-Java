@@ -11,7 +11,9 @@
  * limitations under the License.
  */
 
-package testng;import org.testng.annotations.Test;
+package testng;
+
+import org.testng.annotations.Test;
 import pages.cartpage.CartPage;
 import pages.checkoutpage.CheckoutPage;
 import pages.checkoutpage.PurchaseInfo;

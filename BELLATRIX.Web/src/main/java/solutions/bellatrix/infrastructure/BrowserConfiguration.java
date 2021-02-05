@@ -11,44 +11,42 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.infrastructure;import java.util.HashMap;
-import java.util.Objects;
+package solutions.bellatrix.infrastructure;
+
+import org.openqa.selenium.Platform;
+
+import java.util.HashMap;
 
 public class BrowserConfiguration {
     private Browser browser;
     private Lifecycle lifecycle;
-    private ExecutionType executionType;
     private int height;
     private int width;
-    private Boolean shouldCaptureHttpTraffic;
+    private int version;
+    private Platform platform;
     HashMap<String, String> driverOptions;
 
     public HashMap<String, String> getDriverOptions() {
         return driverOptions;
     }
 
-    public BrowserConfiguration(Browser browser, Lifecycle browserBehavior, ExecutionType executionType) {
+    public BrowserConfiguration(Browser browser, Lifecycle browserBehavior) {
         this.browser = browser;
         this.lifecycle = browserBehavior;
-        this.executionType = executionType;
         driverOptions = new HashMap<>();
-        shouldCaptureHttpTraffic = false;
     }
 
     public int getWidth() {
         return width;
     }
-
-    public Boolean getShouldCaptureHttpTraffic() {
-        return shouldCaptureHttpTraffic;
-    }
-
     public int getHeight() {
         return height;
     }
-
-    public ExecutionType getExecutionType() {
-        return executionType;
+    public int getVersion() {
+        return version;
+    }
+    public Platform getPlatform() {
+        return platform;
     }
 
     public Lifecycle getLifecycle() {
@@ -57,18 +55,5 @@ public class BrowserConfiguration {
 
     public Browser getBrowser() {
         return browser;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        var that = (BrowserConfiguration) o;
-        return height == that.height && width == that.width && browser == that.browser && lifecycle == that.lifecycle && executionType == that.executionType && shouldCaptureHttpTraffic.equals(that.shouldCaptureHttpTraffic);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(browser, lifecycle, executionType, height, width, shouldCaptureHttpTraffic);
     }
 }

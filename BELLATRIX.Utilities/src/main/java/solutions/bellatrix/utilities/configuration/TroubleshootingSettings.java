@@ -11,11 +11,11 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.configuration;
+package solutions.bellatrix.utilities.configuration;
 
 import lombok.Getter;
+import lombok.Setter;
 
-public class BrowserSettings {
-    @Getter private int pageLoadTimeout;
-    @Getter private int scriptTimeout;
+public class TroubleshootingSettings {
+    @Getter @Setter private Boolean debugInformationEnabled;
 }
