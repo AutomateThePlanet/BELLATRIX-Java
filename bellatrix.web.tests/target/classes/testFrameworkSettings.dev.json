@@ -1,6 +1,6 @@
 {
   "troubleshootingSettings": {
-    "debugInformationEnabled": "true"
+    "debugInformationEnabled": "false"
   },
   "webSettings": {
     "baseUrl": "http://demos.bellatrix.solutions/",

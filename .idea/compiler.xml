@@ -7,18 +7,18 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="BELLATRIX.Desktop" />
-        <module name="BELLATRIX.Mobile" />
-        <module name="BELLATRIX.Web.Tests" />
-        <module name="BELLATRIX.Configuration" />
-        <module name="BELLATRIX.Data" />
-        <module name="BELLATRIX.Utilities" />
-        <module name="BELLATRIX.Plugins" />
-        <module name="BELLATRIX.Plugins.Video" />
-        <module name="BELLATRIX.API" />
-        <module name="BELLATRIX.Plugins.Screenshots" />
-        <module name="BELLATRIX.Web" />
-        <module name="BELLATRIX.Layout" />
+        <module name="bellatrix.data" />
+        <module name="bellatrix.web" />
+        <module name="bellatrix.layout" />
+        <module name="bellatrix.plugins.video" />
+        <module name="bellatrix.desktop" />
+        <module name="bellatrix.configuration" />
+        <module name="bellatrix.api" />
+        <module name="bellatrix.utilities" />
+        <module name="bellatrix.web.tests" />
+        <module name="bellatrix.mobile" />
+        <module name="bellatrix.plugins.screenshots" />
+        <module name="bellatrix.plugins" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
