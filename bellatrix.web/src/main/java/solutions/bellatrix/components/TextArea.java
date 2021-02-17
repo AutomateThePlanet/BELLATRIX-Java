@@ -13,9 +13,18 @@
 
 package solutions.bellatrix.components;
 
+import solutions.bellatrix.plugins.EventListener;
+
 public class TextArea extends WebComponent {
+    public final static EventListener<ComponentActionEventArgs> SETTING_TEXT = new EventListener<>();
+    public final static EventListener<ComponentActionEventArgs> TEXT_SET = new EventListener<>();
+
     @Override
     public Class<?> getComponentClass() {
         return getClass();
+    }
+
+    public void setText(String value) {
+        defaultSetText(SETTING_TEXT, TEXT_SET, value);
     }
 }

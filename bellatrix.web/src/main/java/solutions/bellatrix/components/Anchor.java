@@ -48,11 +48,72 @@ public class Anchor extends WebComponent {
         defaultClick(CLICKING, CLICKED);
     }
 
+    // validate inner HTML
+    public void validateHtmlIs(String value) {
+        defaultValidateAttributeIs(this::getHtml, value, "inner HTML");
+    }
+
+    public void validateHtmlContains(String value) {
+        defaultValidateAttributeContains(this::getHtml, value, "inner HTML");
+    }
+
+    public void validateHtmlNotContains(String value) {
+        defaultValidateAttributeNotContains(this::getHtml, value, "inner HTML");
+    }
+
+    // validate inner text
+    public void validateTextIs(String value) {
+        defaultValidateAttributeIs(this::getText, value, "inner text");
+    }
+
+    public void validateTextIsSet() {
+        defaultValidateAttributeSet(this::getText, "inner text");
+    }
+
+    public void validateTextContains(String value) {
+        defaultValidateAttributeContains(this::getText, value, "inner text");
+    }
+
+    public void validateTextNotContains(String value) {
+        defaultValidateAttributeNotContains(this::getText, value, "inner text");
+    }
+
+    // validate HREF
     public void validateHrefIs(String value) {
-        defaultValidateHrefIs(value);
+        defaultValidateAttributeIs(this::getHref, value, "href");
     }
 
     public void validateHrefIsSet() {
-        defaultValidateHrefIsSet();
+        defaultValidateAttributeSet(this::getHref, "href");
+    }
+
+    public void validateHrefNotSet() {
+        defaultValidateAttributeNotSet(this::getHref, "href");
+    }
+
+    // validate Target
+    public void validateTargetIs(String value) {
+        defaultValidateAttributeIs(this::getTarget, value, "target");
+    }
+
+    public void validateTargetSet() {
+        defaultValidateAttributeSet(this::getTarget, "target");
+    }
+
+    public void validateTargetNotSet() {
+        defaultValidateAttributeNotSet(this::getTarget, "target");
+    }
+
+    // validate Rel
+    public void validateRelIs(String value) {
+        defaultValidateAttributeIs(this::getRel, value, "rel");
+    }
+
+    public void validateRelSet() {
+        defaultValidateAttributeSet(this::getRel, "rel");
+    }
+
+    public void validateRelNotSet() {
+        defaultValidateAttributeNotSet(this::getRel, "rel");
     }
 }

@@ -13,8 +13,14 @@
 
 package solutions.bellatrix.components;
 
+import solutions.bellatrix.plugins.EventListener;
+
 public class TextField extends WebComponent {
+    public final static EventListener<ComponentActionEventArgs> SETTING_TEXT = new EventListener<>();
+    public final static EventListener<ComponentActionEventArgs> TEXT_SET = new EventListener<>();
+
     public void setText(String value) {
+        defaultSetText(SETTING_TEXT, TEXT_SET, value);
     }
 
     @Override

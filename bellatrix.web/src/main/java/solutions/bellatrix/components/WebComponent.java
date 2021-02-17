@@ -43,6 +43,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 import static org.apache.commons.lang3.StringEscapeUtils.unescapeHtml4;
 
@@ -529,24 +530,59 @@ public class WebComponent implements Component {
 
     public final static EventListener<ComponentActionEventArgs> VALIDATED_ATTRIBUTE = new EventListener<>();
 
-    protected void defaultValidateAcceptIsNull() {
-        waitUntil((d) -> defaultGetAcceptAttribute() == null, String.format("The control's accept should be null but was '%s'.", defaultGetAcceptAttribute()));
-        VALIDATED_ATTRIBUTE.broadcast(new ComponentActionEventArgs(this, null, "validate accept is null"));
+//    protected void defaultValidateAcceptIsNull() {
+//        waitUntil((d) -> defaultGetAcceptAttribute() == null, String.format("The control's accept should be null but was '%s'.", defaultGetAcceptAttribute()));
+//        VALIDATED_ATTRIBUTE.broadcast(new ComponentActionEventArgs(this, null, "validate accept is null"));
+//    }
+//
+//    protected void defaultValidateAcceptIs(String value) {
+//        waitUntil((d) -> defaultGetAcceptAttribute().equals(value), String.format("The control's accept should be '%s' but was '%s'.", defaultGetAcceptAttribute()));
+//        VALIDATED_ATTRIBUTE.broadcast(new ComponentActionEventArgs(this, value, String.format("validate accept is %s", value)));
+//    }
+//
+//    protected void defaultValidateHrefIs(String value) {
+//        waitUntil((d) -> defaultGetHref().equals(value), String.format("The control's href should be '%s' but was '%s'.", value, defaultGetHref()));
+//        VALIDATED_ATTRIBUTE.broadcast(new ComponentActionEventArgs(this, value, String.format("validate href is %s", value)));
+//    }
+//
+//    protected void defaultValidateHrefIsSet() {
+//        waitUntil((d) -> !StringUtils.isEmpty(defaultGetHref()), "The control's href shouldn't be empty but was.");
+//        VALIDATED_ATTRIBUTE.broadcast(new ComponentActionEventArgs(this, null, "validate href is empty"));
+//    }
+//
+//    protected void defaultValidateTargetIsNull() {
+//        waitUntil((d) -> defaultGetTargetAttribute() == null, String.format("The control's target should be null but was '%s'.", defaultGetTargetAttribute()));
+//        VALIDATED_ATTRIBUTE.broadcast(new ComponentActionEventArgs(this, null, "validate target is null"));
+//    }
+//
+//    protected void defaultValidateTargetIs(String value) {
+//        waitUntil((d) -> defaultGetTargetAttribute().equals(value), String.format("The control's target should be '%s' but was '%s'.", defaultGetTargetAttribute()));
+//        VALIDATED_ATTRIBUTE.broadcast(new ComponentActionEventArgs(this, value, String.format("validate target is %s", value)));
+//    }
+
+    protected void defaultValidateAttributeSet(Supplier<String> supplier, String attributeName) {
+        waitUntil((d) -> !StringUtils.isEmpty(supplier.get()), String.format("The control's %s shouldn't be empty but was.", attributeName));
+        VALIDATED_ATTRIBUTE.broadcast(new ComponentActionEventArgs(this, null, String.format("validate %s is empty", attributeName)));
     }
 
-    protected void defaultValidateAcceptIs(String value) {
-        waitUntil((d) -> defaultGetAcceptAttribute().equals(value), String.format("The control's accept should be '%s' but was '%s'.", defaultGetAcceptAttribute()));
-        VALIDATED_ATTRIBUTE.broadcast(new ComponentActionEventArgs(this, value, String.format("validate accept is %s", value)));
+    protected void defaultValidateAttributeNotSet(Supplier<String> supplier, String attributeName) {
+        waitUntil((d) -> StringUtils.isEmpty(supplier.get()), String.format("The control's %s should be null but was '%s'.", attributeName, supplier.get()));
+        VALIDATED_ATTRIBUTE.broadcast(new ComponentActionEventArgs(this, null, String.format("validate %s is null", attributeName)));
     }
 
-    protected void defaultValidateHrefIs(String value) {
-        waitUntil((d) -> defaultGetHref().equals(value), String.format("The control's href should be '%s' but was '%s'.", value, defaultGetHref()));
-        VALIDATED_ATTRIBUTE.broadcast(new ComponentActionEventArgs(this, value, String.format("validate href is %s", value)));
+    protected void defaultValidateAttributeIs(Supplier<String> supplier, String value, String attributeName) {
+        waitUntil((d) -> supplier.get().strip().equals(value), String.format("The control's %s should be '%s' but was '%s'.", attributeName, supplier.get()));
+        VALIDATED_ATTRIBUTE.broadcast(new ComponentActionEventArgs(this, value, String.format("validate %s is %s", attributeName, value)));
     }
 
-    protected void defaultValidateHrefIsSet() {
-        waitUntil((d) -> !StringUtils.isEmpty(defaultGetHref()), "The control's href shouldn't be empty but was.");
-        VALIDATED_ATTRIBUTE.broadcast(new ComponentActionEventArgs(this, null, "validate href is empty"));
+    protected void defaultValidateAttributeContains(Supplier<String> supplier, String value, String attributeName) {
+        waitUntil((d) -> supplier.get().strip().contains(value), String.format("The control's %s should contain '%s' but was '%s'.", attributeName, supplier.get()));
+        VALIDATED_ATTRIBUTE.broadcast(new ComponentActionEventArgs(this, value, String.format("validate %s contains %s", attributeName, value)));
+    }
+
+    protected void defaultValidateAttributeNotContains(Supplier<String> supplier, String value, String attributeName) {
+        waitUntil((d) -> !supplier.get().strip().contains(value), String.format("The control's %s shouldn't contain '%s' but was '%s'.", attributeName, supplier.get()));
+        VALIDATED_ATTRIBUTE.broadcast(new ComponentActionEventArgs(this, value, String.format("validate %s doesn't contain %s", attributeName, value)));
     }
 
     private void waitUntil(Function<SearchContext, Boolean> waitCondition, String exceptionMessage) {
