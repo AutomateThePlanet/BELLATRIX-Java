@@ -513,30 +513,40 @@ public class WebComponent implements Component {
     }
 
     // TODO: Anton(03.02.2021) : Align with Kotlin framework design with only 2 global events and single 10 lines class for BDD logging.
-    public final static EventListener<ComponentActionEventArgs> VALIDATED_ACCEPT_IS_NULL = new EventListener<>();
-    public final static EventListener<ComponentActionEventArgs> VALIDATED_ACCEPT_IS = new EventListener<>();
+    // TODO: Anton(03.02.2021) : Maybe we can move all of these validate methods to default methods in separate interfaces? However, we cannot easily share protected waitUntil
+//    public final static EventListener<ComponentActionEventArgs> VALIDATED_ACCEPT_IS_NULL = new EventListener<>();
+//    public final static EventListener<ComponentActionEventArgs> VALIDATED_ACCEPT_IS = new EventListener<>();
+//
+//    protected void defaultValidateAcceptIsNull() {
+//        waitUntil((d) -> defaultGetAcceptAttribute() == null, String.format("The control's accept should be null but was '%s'.", defaultGetAcceptAttribute()));
+//        VALIDATED_ACCEPT_IS_NULL.broadcast(new ComponentActionEventArgs(this));
+//    }
+//
+//    protected void defaultValidateAcceptIs(String value) {
+//        waitUntil((d) -> defaultGetAcceptAttribute().equals(value), String.format("The control's accept should be '%s' but was '%s'.", defaultGetAcceptAttribute()));
+//        VALIDATED_ACCEPT_IS.broadcast(new ComponentActionEventArgs(this));
+//    }
+
+    public final static EventListener<ComponentActionEventArgs> VALIDATED_ATTRIBUTE = new EventListener<>();
 
     protected void defaultValidateAcceptIsNull() {
         waitUntil((d) -> defaultGetAcceptAttribute() == null, String.format("The control's accept should be null but was '%s'.", defaultGetAcceptAttribute()));
-        VALIDATED_ACCEPT_IS_NULL.broadcast(new ComponentActionEventArgs(this));
+        VALIDATED_ATTRIBUTE.broadcast(new ComponentActionEventArgs(this, null, "validate accept is null"));
     }
 
     protected void defaultValidateAcceptIs(String value) {
         waitUntil((d) -> defaultGetAcceptAttribute().equals(value), String.format("The control's accept should be '%s' but was '%s'.", defaultGetAcceptAttribute()));
-        VALIDATED_ACCEPT_IS.broadcast(new ComponentActionEventArgs(this));
+        VALIDATED_ATTRIBUTE.broadcast(new ComponentActionEventArgs(this, value, String.format("validate accept is %s", value)));
     }
-
-    public final static EventListener<ComponentActionEventArgs> VALIDATED_HREF_IS_SET = new EventListener<>();
-    public final static EventListener<ComponentActionEventArgs> VALIDATED_HREF_IS = new EventListener<>();
 
     protected void defaultValidateHrefIs(String value) {
         waitUntil((d) -> defaultGetHref().equals(value), String.format("The control's href should be '%s' but was '%s'.", value, defaultGetHref()));
-        VALIDATED_HREF_IS.broadcast(new ComponentActionEventArgs(this));
+        VALIDATED_ATTRIBUTE.broadcast(new ComponentActionEventArgs(this, value, String.format("validate href is %s", value)));
     }
 
     protected void defaultValidateHrefIsSet() {
         waitUntil((d) -> !StringUtils.isEmpty(defaultGetHref()), "The control's href shouldn't be empty but was.");
-        VALIDATED_HREF_IS_SET.broadcast(new ComponentActionEventArgs(this));
+        VALIDATED_ATTRIBUTE.broadcast(new ComponentActionEventArgs(this, null, "validate href is empty"));
     }
 
     private void waitUntil(Function<SearchContext, Boolean> waitCondition, String exceptionMessage) {

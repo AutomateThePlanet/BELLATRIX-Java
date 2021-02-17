@@ -16,6 +16,7 @@ package pages.checkoutpage;
 import lombok.Getter;
 import lombok.Setter;
 
+// TODO: can be converted to record?
 public class PurchaseInfo {
     @Getter @Setter private String firstName;
     @Getter @Setter private String lastName;

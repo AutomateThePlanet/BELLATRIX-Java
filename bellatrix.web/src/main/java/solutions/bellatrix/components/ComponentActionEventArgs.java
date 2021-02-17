@@ -14,19 +14,29 @@
 package solutions.bellatrix.components;
 
 import lombok.Getter;
+import lombok.Setter;
 import solutions.bellatrix.components.contracts.Component;
 
 public class ComponentActionEventArgs {
     @Getter private final WebComponent component;
     @Getter private final String actionValue;
+    @Getter private final String message;
+
+    public ComponentActionEventArgs(WebComponent component, String actionValue, String message) {
+        this.component = component;
+        this.actionValue = actionValue;
+        this.message = message;
+    }
 
     public ComponentActionEventArgs(WebComponent component, String actionValue) {
         this.component = component;
         this.actionValue = actionValue;
+        message = "";
     }
 
     public ComponentActionEventArgs(WebComponent component) {
         this.component = component;
         this.actionValue = "";
+        message = "";
     }
 }

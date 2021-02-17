@@ -17,6 +17,7 @@ import org.testng.Assert;
 import solutions.bellatrix.plugins.EventListener;
 
 public class LayoutAssertionsFactory {
+    // SINGLE EVENT? Use Builder
     public final static EventListener<LayoutTwoComponentsNoExpectedActionEventArgs> ASSERTED_ABOVE_OF_NO_EXPECTED_VALUE = new EventListener<>();
     public final static EventListener<LayoutTwoComponentsActionEventArgs> ASSERTED_ABOVE_OF = new EventListener<>();
     public final static EventListener<LayoutTwoComponentsActionTwoValuesEventArgs> ASSERTED_ABOVE_OF_BETWEEN = new EventListener<>();
