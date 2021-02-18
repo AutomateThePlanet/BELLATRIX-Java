@@ -13,7 +13,7 @@
 
 package solutions.bellatrix.components;
 
-import layout.LayoutAssertionsFactory;
+import layout.LayoutComponentValidationsBuilder;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -47,7 +47,7 @@ import java.util.function.Supplier;
 
 import static org.apache.commons.lang3.StringEscapeUtils.unescapeHtml4;
 
-public class WebComponent implements Component {
+public class WebComponent extends LayoutComponentValidationsBuilder implements Component {
     public final static EventListener<ComponentActionEventArgs> HOVERING = new EventListener<>();
     public final static EventListener<ComponentActionEventArgs> HOVERED = new EventListener<>();
     public final static EventListener<ComponentActionEventArgs> FOCUSING = new EventListener<>();
@@ -84,9 +84,9 @@ public class WebComponent implements Component {
         wrappedDriver = DriverService.getWrappedDriver();
     }
 
-    public LayoutAssertionsFactory layout() {
-        return new LayoutAssertionsFactory(this);
-    }
+//    public LayoutAssertionsFactory layout() {
+//        return new LayoutAssertionsFactory(this);
+//    }
 
     public String getElementName() {
         return String.format("%s (%s)", getComponentClass().getSimpleName(), findStrategy.toString());

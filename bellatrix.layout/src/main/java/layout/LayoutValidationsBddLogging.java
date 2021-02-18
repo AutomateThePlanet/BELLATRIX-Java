@@ -13,14 +13,13 @@
 
 package layout;
 
-import lombok.Getter;
-
-public class LayoutComponentsTwoValuesActionEventArgs {
-    @Getter private final String actionValue;
-    @Getter private final String secondActionValue;
-
-    public LayoutComponentsTwoValuesActionEventArgs(String actionValue, String secondActionValue) {
-        this.actionValue = actionValue;
-        this.secondActionValue = secondActionValue;
+public class LayoutValidationsBddLogging {
+    private static Boolean isBddLoggingTurnedOn = false;
+    public static void addPlugin() {
+        if (!isBddLoggingTurnedOn) {
+            FinishValidationBuilder.VALIDATED_COMPONENT_LAYOUT.addListener((x) -> System.out.println(x.getMessage()));
+            LayoutPreciseValidationBuilder.VALIDATED_COMPONENT_LAYOUT.addListener((x) -> System.out.println(x.getMessage()));
+            isBddLoggingTurnedOn = true;
+        }
     }
 }

@@ -33,7 +33,7 @@ public class ProductPurchaseTests extends WebTest {
         var addToCartFalcon9 = app().create().byCss(Anchor.class,"[data-product_id*='28']");
         var blogLink = app().create().by(Anchor.class, TextContains.by("Blog"));
         addToCartFalcon9.click();
-        blogLink.layout().assertAboveOf(addToCartFalcon9);
+//        blogLink.layout().assertAboveOf(addToCartFalcon9);
         new MainPage().asserts().productBoxLink("", "");
     }
 

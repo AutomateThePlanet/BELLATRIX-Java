@@ -13,18 +13,20 @@
 
 package layout;
 
-import lombok.Getter;
+public enum ComparingOperators {
+    EQUAL("="),
+    GREATER_THAN(">"),
+    GREATER_THAN_EQUAL(">="),
+    LESS_THAN("<"),
+    LESS_THAN_EQUAL("<=");
 
-public class LayoutTwoComponentsActionTwoValuesEventArgs {
-    @Getter private final LayoutComponent component;
-    @Getter private final LayoutComponent secondComponent;
-    @Getter private final String actionValue;
-    @Getter private final String secondActionValue;
+    private final String name;
 
-    public LayoutTwoComponentsActionTwoValuesEventArgs(LayoutComponent component, LayoutComponent secondComponent, String actionValue, String secondActionValue) {
-        this.component = component;
-        this.secondComponent = secondComponent;
-        this.actionValue = actionValue;
-        this.secondActionValue = secondActionValue;
+    private ComparingOperators(String s) {
+        name = s;
+    }
+
+    public String toString() {
+        return this.name;
     }
 }

@@ -13,16 +13,26 @@
 
 package layout;
 
-import lombok.Getter;
+public enum LayoutOptions {
+    ABOVE("above"),
+    RIGHT("right"),
+    LEFT("left"),
+    BELOW("below"),
+    INSIDE("inside"),
+    BOTTOM_INSIDE("bottom inside"),
+    LEFT_INSIDE("left inside"),
+    RIGHT_INSIDE("right inside"),
+    HEIGHT("height"),
+    WIDTH("width"),
+    TOP_INSIDE("top inside");
 
-public class LayoutTwoComponentsActionEventArgs {
-    @Getter private final LayoutComponent component;
-    @Getter private final LayoutComponent secondComponent;
-    @Getter private final String actionValue;
+    private final String name;
 
-    public LayoutTwoComponentsActionEventArgs(LayoutComponent component, LayoutComponent secondComponent, String actionValue) {
-        this.component = component;
-        this.secondComponent = secondComponent;
-        this.actionValue = actionValue;
+    private LayoutOptions(String s) {
+        name = s;
+    }
+
+    public String toString() {
+        return this.name;
     }
 }

@@ -15,14 +15,10 @@ package layout;
 
 import lombok.Getter;
 
-import java.util.List;
+public class LayoutValidationEventArgs {
+    @Getter private final String message;
 
-public class LayoutComponentsActionEventArgs {
-    @Getter private final List<LayoutComponent> components;
-    @Getter private final String actionValue;
-
-    public LayoutComponentsActionEventArgs(List<LayoutComponent> components, String actionValue) {
-        this.components = components;
-        this.actionValue = actionValue;
+    public LayoutValidationEventArgs(String message) {
+        this.message = message;
     }
 }
