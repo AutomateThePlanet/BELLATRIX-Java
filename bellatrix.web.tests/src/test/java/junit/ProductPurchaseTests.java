@@ -36,16 +36,15 @@ public class ProductPurchaseTests extends WebTest {
         var addToCartFalcon9 = app().create().byCss(Anchor.class,"[data-product_id*='28']");
         var blogLink = app().create().by(Anchor.class, TextContains.by("Blog"));
         addToCartFalcon9.click();
+
         blogLink.above(addToCartFalcon9).greaterThan(30).validate();
         blogLink.above(addToCartFalcon9).validate();
         blogLink.height().equal(10).validate();
         blogLink.width().greaterThanOrEqual(10).validate();
         blogLink.inside(addToCartFalcon9).validate();
         blogLink.topInside(addToCartFalcon9).greaterThan(5).validate();
-
         blogLink.alignedHorizontallyTop(addToCartFalcon9, addToCartFalcon9).validate();
 
-        // allign API? and more advanced stuff ---> convert to Kotlin + test tomorrow
         new MainPage().asserts().productBoxLink("", "");
     }
 
