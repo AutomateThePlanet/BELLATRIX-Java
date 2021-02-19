@@ -75,7 +75,7 @@ public class LayoutPreciseValidationBuilder {
     }
 
     public void validate() {
-        Assert.assertTrue(actualDistance > 0);
+        Assert.assertTrue(actualDistance > 0, failedAssertionMessage);
         VALIDATED_COMPONENT_LAYOUT.broadcast(new LayoutValidationEventArgs(notificationMessage));
     }
 }

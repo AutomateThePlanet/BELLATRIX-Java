@@ -42,6 +42,10 @@ public class ProductPurchaseTests extends WebTest {
         blogLink.width().greaterThanOrEqual(10).validate();
         blogLink.inside(addToCartFalcon9).validate();
         blogLink.topInside(addToCartFalcon9).greaterThan(5).validate();
+
+        blogLink.alignedHorizontallyTop(addToCartFalcon9, addToCartFalcon9).validate();
+
+        // allign API? and more advanced stuff ---> convert to Kotlin + test tomorrow
         new MainPage().asserts().productBoxLink("", "");
     }
 
