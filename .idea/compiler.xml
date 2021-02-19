@@ -15,11 +15,6 @@
         <module name="bellatrix.web.tests" />
         <module name="bellatrix.mobile" />
         <module name="bellatrix.plugins.screenshots" />
-      </profile>
-      <profile name="Annotation profile for BELLATRIX" enabled="true">
-        <sourceOutputDir name="../bellatrix.plugins/target/generated-sources/annotations" />
-        <sourceTestOutputDir name="../bellatrix.plugins/target/generated-test-sources/test-annotations" />
-        <outputRelativeToContentRoot value="true" />
         <module name="bellatrix.core" />
       </profile>
     </annotationProcessing>

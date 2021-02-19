@@ -14,16 +14,16 @@
 package testng;
 
 import org.testng.annotations.Test;
-import pages.cartpage.CartPage;
-import pages.checkoutpage.CheckoutPage;
-import pages.checkoutpage.PurchaseInfo;
-import pages.mainpage.MainPage;
-import solutions.bellatrix.components.Anchor;
-import solutions.bellatrix.findstrategies.TextContains;
-import solutions.bellatrix.infrastructure.Browser;
-import solutions.bellatrix.infrastructure.ExecutionBrowser;
-import solutions.bellatrix.infrastructure.Lifecycle;
-import solutions.bellatrix.infrastructure.testng.WebTest;
+import solutions.bellatrix.desktop.pages.cartpage.CartPage;
+import solutions.bellatrix.desktop.pages.checkoutpage.CheckoutPage;
+import solutions.bellatrix.desktop.pages.checkoutpage.PurchaseInfo;
+import solutions.bellatrix.desktop.pages.mainpage.MainPage;
+import solutions.bellatrix.web.components.Anchor;
+import solutions.bellatrix.web.findstrategies.TextContains;
+import solutions.bellatrix.web.infrastructure.Browser;
+import solutions.bellatrix.web.infrastructure.ExecutionBrowser;
+import solutions.bellatrix.web.infrastructure.Lifecycle;
+import solutions.bellatrix.web.infrastructure.testng.WebTest;
 
 @ExecutionBrowser(browser = Browser.CHROME, lifecycle = Lifecycle.REUSE_IF_STARTED)
 public class ProductPurchaseTests extends WebTest {

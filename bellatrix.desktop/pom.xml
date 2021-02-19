@@ -24,6 +24,50 @@
 
     <artifactId>BELLATRIX.Desktop</artifactId>
     <version>1.0</version>
+    <dependencies>
+        <dependency>
+            <groupId>solutions.bellatrix</groupId>
+            <artifactId>BELLATRIX.Plugins</artifactId>
+            <version>1.0</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>solutions.bellatrix</groupId>
+            <artifactId>BELLATRIX.TestExecutionExtensions.Video</artifactId>
+            <version>1.0</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>solutions.bellatrix</groupId>
+            <artifactId>BELLATRIX.TestExecutionExtensions.Screenshots</artifactId>
+            <version>1.0</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>solutions.bellatrix</groupId>
+            <artifactId>BELLATRIX.Layout</artifactId>
+            <version>1.0</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.appium</groupId>
+            <artifactId>java-client</artifactId>
+            <version>7.4.1</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>solutions.bellatrix</groupId>
+            <artifactId>BELLATRIX.Plugins</artifactId>
+            <version>1.0</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>solutions.bellatrix</groupId>
+            <artifactId>BELLATRIX.Layout</artifactId>
+            <version>1.0</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
 
     <properties>
         <maven.compiler.source>15</maven.compiler.source>

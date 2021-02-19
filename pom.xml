@@ -22,18 +22,15 @@
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
     <modules>
-        <module>BELLATRIX.Configuration</module>
-        <module>BELLATRIX.Data</module>
-        <module>BELLATRIX.Layout</module>
-        <module>BELLATRIX.Plugins</module>
-        <module>BELLATRIX.Plugins.Screenshots</module>
-        <module>BELLATRIX.Plugins.Video</module>
-        <module>BELLATRIX.Utilities</module>
-        <module>BELLATRIX.Web</module>
-        <module>BELLATRIX.Desktop</module>
-        <module>BELLATRIX.Mobile</module>
-        <module>BELLATRIX.API</module>
-        <module>BELLATRIX.Web.Tests</module>
+        <module>bellatrix.Layout</module>
+        <module>bellatrix.Core</module>
+        <module>bellatrix.Plugins.Screenshots</module>
+        <module>bellatrix.Plugins.Video</module>
+        <module>bellatrix.Web</module>
+        <module>bellatrix.Desktop</module>
+        <module>bellatrix.Mobile</module>
+        <module>bellatrix.API</module>
+        <module>bellatrix.Web.Tests</module>
     </modules>
 
     <properties>
@@ -43,6 +40,12 @@
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>io.appium</groupId>
+            <artifactId>java-client</artifactId>
+            <version>7.4.1</version>
+        </dependency>
+
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>

@@ -15,10 +15,9 @@ package plugins.video;
 
 import lombok.SneakyThrows;
 import org.apache.commons.io.FileUtils;
-import org.testng.ITestResult;
-import solutions.bellatrix.plugins.EventListener;
-import solutions.bellatrix.plugins.Plugin;
-import solutions.bellatrix.plugins.TestResult;
+import solutions.bellatrix.core.plugins.EventListener;
+import solutions.bellatrix.core.plugins.Plugin;
+import solutions.bellatrix.core.plugins.TestResult;
 
 import java.io.File;
 import java.lang.reflect.Method;

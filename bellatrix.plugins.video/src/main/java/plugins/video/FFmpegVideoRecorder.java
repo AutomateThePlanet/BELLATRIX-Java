@@ -14,8 +14,8 @@
 package plugins.video;
 
 import org.apache.commons.io.FilenameUtils;
-import solutions.bellatrix.utilities.FileDownloader;
-import solutions.bellatrix.utilities.RuntimeInformation;
+import solutions.bellatrix.core.utilities.FileDownloader;
+import solutions.bellatrix.core.utilities.RuntimeInformation;
 
 import java.nio.file.Paths;
 
