@@ -13,7 +13,7 @@
 
 package solutions.bellatrix.desktop.components;
 
-import solutions.bellatrix.core.plugins.EventListener;
+import solutions.bellatrix.web.core.plugins.EventListener;
 
 public class TextField extends DesktopComponent {
     public final static EventListener<ComponentActionEventArgs> SETTING_TEXT = new EventListener<>();
@@ -21,6 +21,10 @@ public class TextField extends DesktopComponent {
 
     public void setText(String value) {
         defaultSetText(SETTING_TEXT, TEXT_SET, value);
+    }
+
+    public String getText() {
+        return defaultGetText();
     }
 
     @Override

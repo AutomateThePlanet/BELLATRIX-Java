@@ -2,6 +2,7 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
       <profile name="Maven default annotation processors profile" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
@@ -13,6 +14,7 @@
         <module name="BELLATRIX.Web.Tests" />
         <module name="bellatrix.api" />
         <module name="bellatrix.mobile" />
+        <module name="bellatrix.desktop.tests" />
         <module name="bellatrix.plugins.screenshots" />
         <module name="bellatrix.core" />
       </profile>
@@ -22,6 +24,7 @@
       <module name="bellatrix.api" target="15" />
       <module name="bellatrix.core" target="15" />
       <module name="bellatrix.desktop" target="15" />
+      <module name="bellatrix.desktop.tests" target="15" />
       <module name="bellatrix.layout" target="15" />
       <module name="bellatrix.mobile" target="15" />
       <module name="bellatrix.plugins.screenshots" target="15" />

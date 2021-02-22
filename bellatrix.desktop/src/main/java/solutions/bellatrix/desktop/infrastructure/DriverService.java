@@ -15,13 +15,14 @@ package solutions.bellatrix.desktop.infrastructure;
 
 import io.appium.java_client.windows.WindowsDriver;
 import io.appium.java_client.windows.WindowsElement;
+import lombok.SneakyThrows;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
-import solutions.bellatrix.core.configuration.ConfigurationService;
-import solutions.bellatrix.core.utilities.DebugInformation;
+import solutions.bellatrix.web.configuration.ConfigurationService;
+import solutions.bellatrix.web.core.utilities.DebugInformation;
 import solutions.bellatrix.desktop.configuration.DesktopSettings;
 import solutions.bellatrix.desktop.configuration.GridSettings;
 
@@ -66,18 +67,18 @@ public class DriverService {
         appConfiguration.set(configuration);
         disposed.set(false);
         WindowsDriver<WindowsElement> driver = null;
-        var webSettings = ConfigurationService.get(DesktopSettings.class);
-        var executionType = webSettings.getExecutionType();
+        var desktopSettings = ConfigurationService.get(DesktopSettings.class);
+        var executionType = desktopSettings.getExecutionType();
         if (executionType.equals("regular")) {
-            driver = initializeDriverRegularMode();
+            driver = initializeDriverRegularMode(desktopSettings.getServiceUrl());
         } else {
-            var gridSettings = webSettings.getGridSettings().stream().filter(g -> g.getProviderName().equals(executionType.toLowerCase())).findFirst();
+            var gridSettings = desktopSettings.getGridSettings().stream().filter(g -> g.getProviderName().equals(executionType.toLowerCase())).findFirst();
             assert gridSettings != null : String.format("The specified execution type '%s' is not declared in the configuration", executionType);
             driver = initializeDriverGridMode(gridSettings.get());
         }
 
-        driver.manage().timeouts().pageLoadTimeout(ConfigurationService.get(DesktopSettings.class).getTimeoutSettings().getPageLoadTimeout(), TimeUnit.SECONDS);
-        driver.manage().timeouts().setScriptTimeout(ConfigurationService.get(DesktopSettings.class).getTimeoutSettings().getScriptTimeout(), TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+//        driver.manage().timeouts().setScriptTimeout(ConfigurationService.get(DesktopSettings.class).getTimeoutSettings().getScriptTimeout(), TimeUnit.SECONDS);
         driver.manage().window().maximize();
         changeWindowSize(driver);
         wrappedDriver.set(driver);
@@ -100,14 +101,15 @@ public class DriverService {
         return driver;
     }
 
-    private static WindowsDriver<WindowsElement> initializeDriverRegularMode() {
+    @SneakyThrows
+    private static WindowsDriver<WindowsElement> initializeDriverRegularMode(String serviceUrl) {
         var caps = new DesiredCapabilities();
         caps.setCapability("app", getAppConfiguration().getAppPath());
-        caps.setCapability("deviceName", "WindowsPC");
-        caps.setCapability("platformName", "Windows");
-        caps.setCapability("appWorkingDir", new File(getAppConfiguration().getAppPath()).getParent());
+//        caps.setCapability("deviceName", "WindowsPC");
+//        caps.setCapability("platformName", "Windows");
+//        caps.setCapability("appWorkingDir", new File(getAppConfiguration().getAppPath()).getParent());
         addDriverOptions(caps);
-        var driver = new WindowsDriver<WindowsElement>(caps);
+        var driver = new WindowsDriver<WindowsElement>(new URL(serviceUrl), caps);
 
         return driver;
     }

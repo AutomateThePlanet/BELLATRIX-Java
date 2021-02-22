@@ -18,13 +18,11 @@ import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import plugins.screenshots.ScreenshotPlugin;
-import solutions.bellatrix.core.configuration.ConfigurationService;
+import solutions.bellatrix.web.configuration.ConfigurationService;
 import solutions.bellatrix.desktop.configuration.DesktopSettings;
 
-import javax.imageio.ImageIO;
 import java.io.File;
 import java.nio.file.Paths;
-import java.sql.Driver;
 import java.util.UUID;
 
 public class DesktopScreenshotPlugin extends ScreenshotPlugin {

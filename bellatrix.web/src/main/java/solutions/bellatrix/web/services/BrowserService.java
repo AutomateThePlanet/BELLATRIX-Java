@@ -17,8 +17,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import solutions.bellatrix.core.configuration.ConfigurationService;
-import solutions.bellatrix.core.configuration.WebSettings;
+import solutions.bellatrix.web.configuration.ConfigurationService;
+import solutions.bellatrix.web.configuration.WebSettings;
 
 public class BrowserService extends WebService {
     private final JavascriptExecutor javascriptExecutor;

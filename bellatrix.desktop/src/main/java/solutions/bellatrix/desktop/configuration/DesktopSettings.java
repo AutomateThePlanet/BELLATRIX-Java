@@ -33,6 +33,8 @@ public class DesktopSettings {
     @Getter @Setter private String executionType;
     @Getter @Setter private String defaultLifeCycle;
     @Getter @Setter private String defaultAppPath;
+    @Getter @Setter private Boolean downloadDemoApps;
+    @Getter @Setter private String serviceUrl;
 
     @Getter @Setter private List<GridSettings> gridSettings;
 

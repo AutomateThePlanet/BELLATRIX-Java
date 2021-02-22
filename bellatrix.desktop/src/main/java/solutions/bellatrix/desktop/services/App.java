@@ -13,7 +13,7 @@
 
 package solutions.bellatrix.desktop.services;
 
-import solutions.bellatrix.core.utilities.SingletonFactory;
+import solutions.bellatrix.web.core.utilities.SingletonFactory;
 import solutions.bellatrix.desktop.infrastructure.DriverService;
 import solutions.bellatrix.desktop.pages.DesktopPage;
 

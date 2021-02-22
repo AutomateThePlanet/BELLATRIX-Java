@@ -15,7 +15,7 @@ package solutions.bellatrix.web.services;
 
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
-import solutions.bellatrix.core.utilities.DebugInformation;
+import solutions.bellatrix.web.core.utilities.DebugInformation;
 
 public class JavaScriptService extends WebService {
     private final JavascriptExecutor javascriptExecutor;

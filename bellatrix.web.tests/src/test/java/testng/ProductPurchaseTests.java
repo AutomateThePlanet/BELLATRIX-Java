@@ -14,10 +14,10 @@
 package testng;
 
 import org.testng.annotations.Test;
-import solutions.bellatrix.desktop.pages.cartpage.CartPage;
-import solutions.bellatrix.desktop.pages.checkoutpage.CheckoutPage;
-import solutions.bellatrix.desktop.pages.checkoutpage.PurchaseInfo;
-import solutions.bellatrix.desktop.pages.mainpage.MainPage;
+import cartpage.CartPage;
+import checkoutpage.CheckoutPage;
+import checkoutpage.PurchaseInfo;
+import mainpage.MainPage;
 import solutions.bellatrix.web.components.Anchor;
 import solutions.bellatrix.web.findstrategies.TextContains;
 import solutions.bellatrix.web.infrastructure.Browser;

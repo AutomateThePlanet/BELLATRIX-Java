@@ -17,12 +17,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 public class TimeoutSettings {
-    @Getter @Setter private long pageLoadTimeout;
-    @Getter @Setter private long scriptTimeout;
     @Getter @Setter private long elementWaitTimeout;
-    @Getter @Setter private long waitUntilReadyTimeout;
-    @Getter @Setter private long waitForJavaScriptAnimationsTimeout;
-    @Getter @Setter private long waitForPartialUrl;
     @Getter @Setter private long sleepInterval;
     @Getter @Setter private long validationsTimeout;
     @Getter @Setter private long elementToBeVisibleTimeout;

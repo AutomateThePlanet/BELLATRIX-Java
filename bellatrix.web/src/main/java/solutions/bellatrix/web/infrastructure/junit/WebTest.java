@@ -13,7 +13,7 @@
 
 package solutions.bellatrix.web.infrastructure.junit;
 
-import solutions.bellatrix.core.plugins.junit.BaseTest;
+import solutions.bellatrix.web.core.plugins.junit.BaseTest;
 import solutions.bellatrix.web.components.listeners.BddLogging;
 import solutions.bellatrix.web.components.listeners.HighlightElements;
 import solutions.bellatrix.web.infrastructure.BrowserLifecyclePlugin;

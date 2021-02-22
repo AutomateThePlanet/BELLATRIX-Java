@@ -13,7 +13,7 @@
 
 package solutions.bellatrix.desktop.services;
 
-import solutions.bellatrix.core.utilities.InstanceFactory;
+import solutions.bellatrix.web.core.utilities.InstanceFactory;
 import solutions.bellatrix.desktop.components.DesktopComponent;
 import solutions.bellatrix.desktop.findstrategies.*;
 import solutions.bellatrix.desktop.infrastructure.DriverService;

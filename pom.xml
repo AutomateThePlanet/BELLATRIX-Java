@@ -31,6 +31,7 @@
         <module>bellatrix.mobile</module>
         <module>bellatrix.api</module>
         <module>bellatrix.web.tests</module>
+        <module>bellatrix.desktop.tests</module>
     </modules>
 
     <properties>

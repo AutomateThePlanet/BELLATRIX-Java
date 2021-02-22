@@ -1,10 +1,12 @@
 {
   "troubleshootingSettings": {
-    "debugInformationEnabled": "false"
+    "debugInformationEnabled": "true"
   },
   "webSettings": {
     "baseUrl": "http://demos.bellatrix.solutions/",
     "executionType": "regular",
+    "defaultBrowser": "chrome",
+    "defaultLifeCycle": "restart everytime time",
     "artificialDelayBeforeAction": "0",
     "automaticallyScrollToVisible": "false",
     "waitUntilReadyOnElementFound": "false",

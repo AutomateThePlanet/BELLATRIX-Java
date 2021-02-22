@@ -13,7 +13,7 @@
 
 package solutions.bellatrix.desktop.pages;
 
-import solutions.bellatrix.core.utilities.InstanceFactory;
+import solutions.bellatrix.web.core.utilities.InstanceFactory;
 
 public abstract class PageAsserts<ComponentsT extends PageMap> {
     protected ComponentsT map() {

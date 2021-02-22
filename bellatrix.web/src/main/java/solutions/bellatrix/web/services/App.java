@@ -13,7 +13,7 @@
 
 package solutions.bellatrix.web.services;
 
-import solutions.bellatrix.core.utilities.SingletonFactory;
+import solutions.bellatrix.web.core.utilities.SingletonFactory;
 import solutions.bellatrix.web.infrastructure.DriverService;
 import solutions.bellatrix.web.infrastructure.ProxyServer;
 import solutions.bellatrix.web.pages.WebPage;

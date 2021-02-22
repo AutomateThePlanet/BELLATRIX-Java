@@ -7,6 +7,7 @@
       <module fileurl="file://$PROJECT_DIR$/bellatrix.api/bellatrix.api.iml" filepath="$PROJECT_DIR$/bellatrix.api/bellatrix.api.iml" />
       <module fileurl="file://$PROJECT_DIR$/bellatrix.core/bellatrix.core.iml" filepath="$PROJECT_DIR$/bellatrix.core/bellatrix.core.iml" />
       <module fileurl="file://$PROJECT_DIR$/bellatrix.desktop/bellatrix.desktop.iml" filepath="$PROJECT_DIR$/bellatrix.desktop/bellatrix.desktop.iml" />
+      <module fileurl="file://$PROJECT_DIR$/bellatrix.desktop.tests/bellatrix.desktop.tests.iml" filepath="$PROJECT_DIR$/bellatrix.desktop.tests/bellatrix.desktop.tests.iml" />
       <module fileurl="file://$PROJECT_DIR$/bellatrix.layout/bellatrix.layout.iml" filepath="$PROJECT_DIR$/bellatrix.layout/bellatrix.layout.iml" />
       <module fileurl="file://$PROJECT_DIR$/bellatrix.mobile/bellatrix.mobile.iml" filepath="$PROJECT_DIR$/bellatrix.mobile/bellatrix.mobile.iml" />
       <module fileurl="file://$PROJECT_DIR$/bellatrix.plugins.screenshots/bellatrix.plugins.screenshots.iml" filepath="$PROJECT_DIR$/bellatrix.plugins.screenshots/bellatrix.plugins.screenshots.iml" />

@@ -4,10 +4,122 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="68a3d93a-23e9-4979-81af-df391bf59c13" name="Default Changelist" comment="">
+    <list default="true" id="55b01a59-bddd-4a9d-b423-43bd7933f1ee" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/bellatrix.core/src/main/java/solutions/bellatrix/web/core/utilities/UserHomePathNormalizer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bellatrix.desktop.tests/bellatrix.desktop.tests.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bellatrix.desktop.tests/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bellatrix.desktop.tests/src/main/resources/application.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bellatrix.desktop.tests/src/main/resources/testFrameworkSettings.dev.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bellatrix.desktop.tests/src/main/resources/testFrameworkSettings.qa.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bellatrix.desktop.tests/src/test/java/junit/ProductPurchaseTests.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bellatrix.desktop.tests/src/test/java/testng/ProductPurchaseTests.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/infrastructure/DownloadDemoAppsPlugin.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bellatrix.web.tests/BELLATRIX.Web.Tests.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__solutions_bellatrix_BELLATRIX_Web_1_0.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.core/src/main/java/solutions/bellatrix/core/configuration/ConfigurationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.core/src/main/java/solutions/bellatrix/web/configuration/ConfigurationService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.core/src/main/java/solutions/bellatrix/core/plugins/EventListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.core/src/main/java/solutions/bellatrix/web/core/plugins/EventListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.core/src/main/java/solutions/bellatrix/core/plugins/Plugin.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.core/src/main/java/solutions/bellatrix/web/core/plugins/Plugin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.core/src/main/java/solutions/bellatrix/core/plugins/PluginExecutionEngine.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.core/src/main/java/solutions/bellatrix/web/core/plugins/PluginExecutionEngine.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.core/src/main/java/solutions/bellatrix/core/plugins/TestResult.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.core/src/main/java/solutions/bellatrix/web/core/plugins/TestResult.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.core/src/main/java/solutions/bellatrix/core/plugins/junit/BaseTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.core/src/main/java/solutions/bellatrix/web/core/plugins/junit/BaseTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.core/src/main/java/solutions/bellatrix/core/plugins/testng/BaseTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.core/src/main/java/solutions/bellatrix/web/core/plugins/testng/BaseTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.core/src/main/java/solutions/bellatrix/core/utilities/DebugInformation.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.core/src/main/java/solutions/bellatrix/web/core/utilities/DebugInformation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.core/src/main/java/solutions/bellatrix/core/utilities/FileDownloader.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.core/src/main/java/solutions/bellatrix/web/core/utilities/FileDownloader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.core/src/main/java/solutions/bellatrix/core/utilities/InstanceFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.core/src/main/java/solutions/bellatrix/web/core/utilities/InstanceFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.core/src/main/java/solutions/bellatrix/core/utilities/ResourcesReader.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.core/src/main/java/solutions/bellatrix/web/core/utilities/ResourcesReader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.core/src/main/java/solutions/bellatrix/core/utilities/RuntimeInformation.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.core/src/main/java/solutions/bellatrix/web/core/utilities/RuntimeInformation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.core/src/main/java/solutions/bellatrix/core/utilities/SingletonFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.core/src/main/java/solutions/bellatrix/web/core/utilities/SingletonFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.core/src/main/java/solutions/bellatrix/core/utilities/TempFileWriter.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.core/src/main/java/solutions/bellatrix/web/core/utilities/TempFileWriter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.core/src/main/java/solutions/bellatrix/core/utilities/UserThread.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.core/src/main/java/solutions/bellatrix/web/core/utilities/UserThread.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.core/src/main/java/solutions/bellatrix/core/utilities/configuration/TroubleshootingSettings.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.core/src/main/java/solutions/bellatrix/web/core/utilities/configuration/TroubleshootingSettings.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/components/Anchor.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/components/Anchor.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/components/Button.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/components/Button.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/components/DesktopComponent.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/components/DesktopComponent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/components/RadioButton.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/components/RadioButton.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/components/TextArea.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/components/TextArea.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/components/TextField.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/components/TextField.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/configuration/DesktopSettings.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/configuration/DesktopSettings.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/configuration/TimeoutSettings.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/configuration/TimeoutSettings.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/infrastructure/AppLifecyclePlugin.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/infrastructure/AppLifecyclePlugin.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/infrastructure/DesktopScreenshotPlugin.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/infrastructure/DesktopScreenshotPlugin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/infrastructure/DesktopVideoPlugin.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/infrastructure/DesktopVideoPlugin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/infrastructure/DriverService.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/infrastructure/DriverService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/infrastructure/junit/DesktopTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/infrastructure/junit/DesktopTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/infrastructure/testng/DesktopTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/infrastructure/testng/DesktopTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/pages/PageAsserts.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/pages/PageAsserts.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/services/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/services/App.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/services/ComponentCreateService.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/services/ComponentCreateService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/waitstrategies/ToBeClickableWaitStrategy.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/waitstrategies/ToBeClickableWaitStrategy.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/waitstrategies/ToBeVisibleWaitStrategy.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/waitstrategies/ToBeVisibleWaitStrategy.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/waitstrategies/ToExistsWaitStrategy.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/waitstrategies/ToExistsWaitStrategy.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.layout/src/main/java/layout/FinishValidationBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.layout/src/main/java/layout/FinishValidationBuilder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.layout/src/main/java/layout/LayoutPreciseValidationBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.layout/src/main/java/layout/LayoutPreciseValidationBuilder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.plugins.screenshots/src/main/java/plugins/screenshots/ScreenshotPlugin.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.plugins.screenshots/src/main/java/plugins/screenshots/ScreenshotPlugin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.plugins.video/src/main/java/plugins/video/FFmpegVideoRecorder.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.plugins.video/src/main/java/plugins/video/FFmpegVideoRecorder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.plugins.video/src/main/java/plugins/video/VideoPlugin.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.plugins.video/src/main/java/plugins/video/VideoPlugin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.web.tests/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.web.tests/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.web.tests/src/main/java/solutions/bellatrix/desktop/pages/breadcrumbsection/Asserts.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.web.tests/src/main/java/searchsection/Asserts.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.web.tests/src/main/java/solutions/bellatrix/desktop/pages/breadcrumbsection/BreadcrumbSection.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.web.tests/src/main/java/breadcrumbsection/BreadcrumbSection.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.web.tests/src/main/java/solutions/bellatrix/desktop/pages/breadcrumbsection/Map.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.web.tests/src/main/java/breadcrumbsection/Map.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.web.tests/src/main/java/solutions/bellatrix/desktop/pages/cartInfosection/Asserts.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.web.tests/src/main/java/cartInfosection/Asserts.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.web.tests/src/main/java/solutions/bellatrix/desktop/pages/cartInfosection/CartInfoSection.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.web.tests/src/main/java/cartInfosection/CartInfoSection.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.web.tests/src/main/java/solutions/bellatrix/desktop/pages/cartInfosection/Map.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.web.tests/src/main/java/cartInfosection/Map.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.web.tests/src/main/java/solutions/bellatrix/desktop/pages/cartpage/Asserts.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.web.tests/src/main/java/cartpage/Asserts.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.web.tests/src/main/java/solutions/bellatrix/desktop/pages/cartpage/CartPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.web.tests/src/main/java/cartpage/CartPage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.web.tests/src/main/java/solutions/bellatrix/desktop/pages/cartpage/Map.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.web.tests/src/main/java/cartpage/Map.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.web.tests/src/main/java/solutions/bellatrix/desktop/pages/checkoutpage/Asserts.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.web.tests/src/main/java/checkoutpage/Asserts.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.web.tests/src/main/java/solutions/bellatrix/desktop/pages/checkoutpage/CheckoutPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.web.tests/src/main/java/checkoutpage/CheckoutPage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.web.tests/src/main/java/solutions/bellatrix/desktop/pages/checkoutpage/Map.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.web.tests/src/main/java/checkoutpage/Map.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.web.tests/src/main/java/solutions/bellatrix/desktop/pages/checkoutpage/PurchaseInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.web.tests/src/main/java/checkoutpage/PurchaseInfo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.web.tests/src/main/java/solutions/bellatrix/desktop/pages/mainmenusection/Asserts.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.web.tests/src/main/java/mainmenusection/Asserts.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.web.tests/src/main/java/solutions/bellatrix/desktop/pages/mainmenusection/MainMenuSection.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.web.tests/src/main/java/mainmenusection/MainMenuSection.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.web.tests/src/main/java/solutions/bellatrix/desktop/pages/mainmenusection/Map.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.web.tests/src/main/java/mainmenusection/Map.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.web.tests/src/main/java/solutions/bellatrix/desktop/pages/mainpage/Asserts.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.web.tests/src/main/java/mainpage/Asserts.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.web.tests/src/main/java/solutions/bellatrix/desktop/pages/mainpage/MainPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.web.tests/src/main/java/mainpage/MainPage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.web.tests/src/main/java/solutions/bellatrix/desktop/pages/mainpage/Map.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.web.tests/src/main/java/mainpage/Map.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.web.tests/src/main/java/solutions/bellatrix/desktop/pages/searchsection/Asserts.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.web.tests/src/main/java/breadcrumbsection/Asserts.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.web.tests/src/main/java/solutions/bellatrix/desktop/pages/searchsection/Map.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.web.tests/src/main/java/searchsection/Map.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.web.tests/src/main/java/solutions/bellatrix/desktop/pages/searchsection/SearchSection.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.web.tests/src/main/java/searchsection/SearchSection.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.web.tests/src/main/resources/testFrameworkSettings.dev.json" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.web.tests/src/main/resources/testFrameworkSettings.dev.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.web.tests/src/main/resources/testFrameworkSettings.qa.json" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.web.tests/src/main/resources/testFrameworkSettings.qa.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.web.tests/src/test/java/junit/ProductPurchaseTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.web.tests/src/test/java/junit/ProductPurchaseTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.web.tests/src/test/java/testng/ProductPurchaseTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.web.tests/src/test/java/testng/ProductPurchaseTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.web.tests/target/classes/testFrameworkSettings.dev.json" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.web.tests/target/classes/testFrameworkSettings.dev.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.web.tests/target/classes/testFrameworkSettings.qa.json" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.web.tests/target/classes/testFrameworkSettings.qa.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.web/bellatrix.web.iml" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.web/bellatrix.web.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.web/src/main/java/solutions/bellatrix/core/configuration/GridSettings.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.web/src/main/java/solutions/bellatrix/web/configuration/GridSettings.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.web/src/main/java/solutions/bellatrix/core/configuration/TimeoutSettings.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.web/src/main/java/solutions/bellatrix/web/configuration/TimeoutSettings.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.web/src/main/java/solutions/bellatrix/core/configuration/UrlDeterminer.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.web/src/main/java/solutions/bellatrix/web/configuration/UrlDeterminer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.web/src/main/java/solutions/bellatrix/core/configuration/UrlSettings.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.web/src/main/java/solutions/bellatrix/web/configuration/UrlSettings.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.web/src/main/java/solutions/bellatrix/core/configuration/WebSettings.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.web/src/main/java/solutions/bellatrix/web/configuration/WebSettings.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.web/src/main/java/solutions/bellatrix/web/components/Anchor.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.web/src/main/java/solutions/bellatrix/web/components/Anchor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.web/src/main/java/solutions/bellatrix/web/components/Button.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.web/src/main/java/solutions/bellatrix/web/components/Button.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.web/src/main/java/solutions/bellatrix/web/components/RadioButton.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.web/src/main/java/solutions/bellatrix/web/components/RadioButton.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.web/src/main/java/solutions/bellatrix/web/components/Select.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.web/src/main/java/solutions/bellatrix/web/components/Select.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.web/src/main/java/solutions/bellatrix/web/components/TextArea.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.web/src/main/java/solutions/bellatrix/web/components/TextArea.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.web/src/main/java/solutions/bellatrix/web/components/TextField.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.web/src/main/java/solutions/bellatrix/web/components/TextField.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.web/src/main/java/solutions/bellatrix/web/components/WebComponent.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.web/src/main/java/solutions/bellatrix/web/components/WebComponent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.web/src/main/java/solutions/bellatrix/web/components/listeners/HighlightElements.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.web/src/main/java/solutions/bellatrix/web/components/listeners/HighlightElements.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.web/src/main/java/solutions/bellatrix/web/infrastructure/BrowserLifecyclePlugin.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.web/src/main/java/solutions/bellatrix/web/infrastructure/BrowserLifecyclePlugin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.web/src/main/java/solutions/bellatrix/web/infrastructure/DriverService.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.web/src/main/java/solutions/bellatrix/web/infrastructure/DriverService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.web/src/main/java/solutions/bellatrix/web/infrastructure/FullPageScreenshotEngine.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.web/src/main/java/solutions/bellatrix/web/infrastructure/FullPageScreenshotEngine.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.web/src/main/java/solutions/bellatrix/web/infrastructure/WebScreenshotPlugin.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.web/src/main/java/solutions/bellatrix/web/infrastructure/WebScreenshotPlugin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.web/src/main/java/solutions/bellatrix/web/infrastructure/WebVideoPlugin.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.web/src/main/java/solutions/bellatrix/web/infrastructure/WebVideoPlugin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.web/src/main/java/solutions/bellatrix/web/infrastructure/junit/WebTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.web/src/main/java/solutions/bellatrix/web/infrastructure/junit/WebTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.web/src/main/java/solutions/bellatrix/web/infrastructure/testng/WebTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.web/src/main/java/solutions/bellatrix/web/infrastructure/testng/WebTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.web/src/main/java/solutions/bellatrix/web/pages/PageAsserts.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.web/src/main/java/solutions/bellatrix/web/pages/PageAsserts.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.web/src/main/java/solutions/bellatrix/web/services/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.web/src/main/java/solutions/bellatrix/web/services/App.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.web/src/main/java/solutions/bellatrix/web/services/BrowserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.web/src/main/java/solutions/bellatrix/web/services/BrowserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.web/src/main/java/solutions/bellatrix/web/services/ComponentCreateService.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.web/src/main/java/solutions/bellatrix/web/services/ComponentCreateService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.web/src/main/java/solutions/bellatrix/web/services/JavaScriptService.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.web/src/main/java/solutions/bellatrix/web/services/JavaScriptService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.web/src/main/java/solutions/bellatrix/web/services/NavigationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.web/src/main/java/solutions/bellatrix/web/services/NavigationService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.web/src/main/java/solutions/bellatrix/web/waitstrategies/ToBeClickableWaitStrategy.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.web/src/main/java/solutions/bellatrix/web/waitstrategies/ToBeClickableWaitStrategy.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.web/src/main/java/solutions/bellatrix/web/waitstrategies/ToBeVisibleWaitStrategy.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.web/src/main/java/solutions/bellatrix/web/waitstrategies/ToBeVisibleWaitStrategy.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.web/src/main/java/solutions/bellatrix/web/waitstrategies/ToExistsWaitStrategy.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.web/src/main/java/solutions/bellatrix/web/waitstrategies/ToExistsWaitStrategy.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -17,7 +129,7 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectId" id="1ophleetSGacwDEiYvXzh2rIItf" />
+  <component name="ProjectId" id="1oqCeYtDAosR5J0jeugK71aBCSd" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -25,17 +137,124 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="settings.editor.selected.configurable" value="reference.settings.project.maven.repository.indices" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="" />
+    </key>
+  </component>
+  <component name="RunManager" selected="JUnit.ProductPurchaseTests.addition">
+    <configuration name="ProductPurchaseTests" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="bellatrix.desktop.tests" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="junit.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="junit" />
+      <option name="MAIN_CLASS_NAME" value="junit.ProductPurchaseTests" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ProductPurchaseTests.addition" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="bellatrix.desktop.tests" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="junit.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="junit" />
+      <option name="MAIN_CLASS_NAME" value="junit.ProductPurchaseTests" />
+      <option name="METHOD_NAME" value="addition" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ProductPurchaseTests.completePurchaseSuccessfully_second" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="BELLATRIX.Web.Tests" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="junit.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="junit" />
+      <option name="MAIN_CLASS_NAME" value="junit.ProductPurchaseTests" />
+      <option name="METHOD_NAME" value="completePurchaseSuccessfully_second" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ProductPurchaseTests.subtraction" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="bellatrix.desktop.tests" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="junit.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="junit" />
+      <option name="MAIN_CLASS_NAME" value="junit.ProductPurchaseTests" />
+      <option name="METHOD_NAME" value="subtraction" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.ProductPurchaseTests.addition" />
+        <item itemvalue="JUnit.ProductPurchaseTests" />
+        <item itemvalue="JUnit.ProductPurchaseTests.subtraction" />
+        <item itemvalue="JUnit.ProductPurchaseTests.completePurchaseSuccessfully_second" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="68a3d93a-23e9-4979-81af-df391bf59c13" name="Default Changelist" comment="" />
-      <created>1613989597151</created>
+      <changelist id="55b01a59-bddd-4a9d-b423-43bd7933f1ee" name="Default Changelist" comment="" />
+      <created>1614004834590</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1613989597151</updated>
+      <updated>1614004834590</updated>
     </task>
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/findstrategies/XPathFindStrategy.java</url>
+          <line>29</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/waitstrategies/ToExistsWaitStrategy.java</url>
+          <line>55</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

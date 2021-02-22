@@ -13,11 +13,12 @@
 
 package solutions.bellatrix.desktop.infrastructure;
 
-import solutions.bellatrix.core.configuration.ConfigurationService;
-import solutions.bellatrix.core.plugins.Plugin;
-import solutions.bellatrix.core.plugins.TestResult;
-import solutions.bellatrix.core.utilities.DebugInformation;
+import solutions.bellatrix.web.configuration.ConfigurationService;
+import solutions.bellatrix.web.core.plugins.Plugin;
+import solutions.bellatrix.web.core.plugins.TestResult;
+import solutions.bellatrix.web.core.utilities.DebugInformation;
 import solutions.bellatrix.desktop.configuration.DesktopSettings;
+import solutions.bellatrix.web.core.utilities.UserHomePathNormalizer;
 
 import java.lang.reflect.Method;
 
@@ -142,6 +143,7 @@ public class AppLifecyclePlugin extends Plugin {
         var executionAppAnnotation = (ExecutionApp) type.getDeclaredAnnotation(ExecutionApp.class);
         if (executionAppAnnotation == null) {
             var defaultAppPath = ConfigurationService.get(DesktopSettings.class).getDefaultAppPath();
+            defaultAppPath = UserHomePathNormalizer.normalizePath(defaultAppPath);
             var defaultLifecycle = Lifecycle.fromText(ConfigurationService.get(DesktopSettings.class).getDefaultLifeCycle());
 
             return new AppConfiguration(defaultLifecycle, defaultAppPath);
