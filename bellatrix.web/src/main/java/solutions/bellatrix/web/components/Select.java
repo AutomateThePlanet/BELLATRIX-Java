@@ -13,7 +13,7 @@
 
 package solutions.bellatrix.web.components;
 
-import solutions.bellatrix.web.core.utilities.InstanceFactory;
+import solutions.bellatrix.core.utilities.InstanceFactory;
 
 import java.util.ArrayList;
 import java.util.List;

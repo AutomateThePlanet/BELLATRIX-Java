@@ -11,12 +11,11 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.web.configuration;
+package solutions.bellatrix.core.utilities.configuration;
 
 import lombok.Getter;
 import lombok.Setter;
 
-public class UrlSettings {
-    @Getter @Setter private String shopUrl;
-    @Getter @Setter  private String accountUrl;
+public class TroubleshootingSettings {
+    @Getter @Setter private Boolean debugInformationEnabled;
 }

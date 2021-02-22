@@ -11,11 +11,9 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.web.core.utilities.configuration;
+package solutions.bellatrix.core.plugins;
 
-import lombok.Getter;
-import lombok.Setter;
-
-public class TroubleshootingSettings {
-    @Getter @Setter private Boolean debugInformationEnabled;
+public enum TestResult {
+    SUCCESS,
+    FAILURE
 }

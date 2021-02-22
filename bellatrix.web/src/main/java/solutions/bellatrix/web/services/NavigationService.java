@@ -15,8 +15,8 @@ package solutions.bellatrix.web.services;
 
 import com.google.common.base.Strings;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import solutions.bellatrix.web.configuration.ConfigurationService;
-import solutions.bellatrix.web.configuration.WebSettings;
+import solutions.bellatrix.core.configuration.ConfigurationService;
+import solutions.bellatrix.core.configuration.WebSettings;
 
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;

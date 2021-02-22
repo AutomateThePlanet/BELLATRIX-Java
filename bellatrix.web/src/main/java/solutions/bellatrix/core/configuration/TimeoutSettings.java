@@ -11,7 +11,7 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.web.configuration;
+package solutions.bellatrix.core.configuration;
 
 import lombok.Getter;
 import lombok.Setter;

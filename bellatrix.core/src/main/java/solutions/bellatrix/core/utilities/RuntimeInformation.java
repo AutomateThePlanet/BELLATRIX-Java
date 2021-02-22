@@ -11,22 +11,15 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.web.core.plugins;
+package solutions.bellatrix.core.utilities;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.function.Consumer;
+import lombok.experimental.UtilityClass;
 
-public class EventListener<TArgs> {
-    private Set<Consumer<TArgs>> listeners = new HashSet();
-
-    public void addListener(Consumer<TArgs> listener) {
-        listeners.add(listener);
-    }
-
-    public void broadcast(TArgs args) {
-        if (listeners.stream().count() > 0) {
-            listeners.forEach(x -> x.accept(args));
-        }
-    }
+@UtilityClass
+public class RuntimeInformation {
+    private static String OS = System.getProperty("os.name").toLowerCase();
+    public static boolean IS_WINDOWS = (OS.indexOf("win") >= 0);
+    public static boolean IS_MAC = (OS.indexOf("mac") >= 0);
+    public static boolean IS_UNIX = (OS.indexOf("nix") >= 0 || OS.indexOf("nux") >= 0 || OS.indexOf("aix") > 0);
+    public static boolean IS_SOLARIS = (OS.indexOf("sunos") >= 0);
 }

@@ -13,7 +13,7 @@
 
 package solutions.bellatrix.web.components;
 
-import solutions.bellatrix.web.core.plugins.EventListener;
+import solutions.bellatrix.core.plugins.EventListener;
 
 public class TextField extends WebComponent {
     public final static EventListener<ComponentActionEventArgs> SETTING_TEXT = new EventListener<>();

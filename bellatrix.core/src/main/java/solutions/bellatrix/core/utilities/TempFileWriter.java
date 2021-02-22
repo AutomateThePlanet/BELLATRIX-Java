@@ -11,22 +11,25 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.web.core.utilities;
+package solutions.bellatrix.core.utilities;
 
 import lombok.SneakyThrows;
+import lombok.experimental.UtilityClass;
 
-public class UserThread implements Runnable {
-    private volatile boolean exit = false;
-    public void run() {
-        while(!exit) {
-            System.out.println("The user thread is running");
-        }
-        System.out.println("The user thread is now stopped");
-    }
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
+@UtilityClass
+public class TempFileWriter {
     @SneakyThrows
-    public void stop() {
-        exit = true;
-        Thread.sleep(5000);
+    public static File writeStringToTempFile(String fileContent) {
+        Path tempFile = Files.createTempFile(null, null);
+        try (var bw = new BufferedWriter(new FileWriter(tempFile.toFile()))) {
+            bw.write(fileContent);
+        }
+        return  tempFile.toFile();
     }
 }

@@ -11,16 +11,16 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.web.core.plugins.testng;
+package solutions.bellatrix.core.plugins.testng;
 
 import org.testng.ITestResult;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
-import solutions.bellatrix.web.core.plugins.Plugin;
-import solutions.bellatrix.web.core.plugins.PluginExecutionEngine;
-import solutions.bellatrix.web.core.plugins.TestResult;
+import solutions.bellatrix.core.plugins.TestResult;
+import solutions.bellatrix.core.plugins.Plugin;
+import solutions.bellatrix.core.plugins.PluginExecutionEngine;
 
 public class BaseTest {
     private static final ThreadLocal<Boolean> CONFIGURATION_EXECUTED = new ThreadLocal<>();

@@ -21,8 +21,8 @@ import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
-import solutions.bellatrix.web.configuration.ConfigurationService;
-import solutions.bellatrix.web.core.utilities.DebugInformation;
+import solutions.bellatrix.core.configuration.ConfigurationService;
+import solutions.bellatrix.core.utilities.DebugInformation;
 import solutions.bellatrix.desktop.configuration.DesktopSettings;
 import solutions.bellatrix.desktop.configuration.GridSettings;
 
@@ -77,7 +77,7 @@ public class DriverService {
             driver = initializeDriverGridMode(gridSettings.get());
         }
 
-        driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 //        driver.manage().timeouts().setScriptTimeout(ConfigurationService.get(DesktopSettings.class).getTimeoutSettings().getScriptTimeout(), TimeUnit.SECONDS);
         driver.manage().window().maximize();
         changeWindowSize(driver);
@@ -105,7 +105,7 @@ public class DriverService {
     private static WindowsDriver<WindowsElement> initializeDriverRegularMode(String serviceUrl) {
         var caps = new DesiredCapabilities();
         caps.setCapability("app", getAppConfiguration().getAppPath());
-//        caps.setCapability("deviceName", "WindowsPC");
+        caps.setCapability("deviceName", "WindowsPC");
 //        caps.setCapability("platformName", "Windows");
 //        caps.setCapability("appWorkingDir", new File(getAppConfiguration().getAppPath()).getParent());
         addDriverOptions(caps);

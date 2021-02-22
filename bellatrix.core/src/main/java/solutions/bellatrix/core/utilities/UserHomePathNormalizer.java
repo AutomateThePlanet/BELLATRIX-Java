@@ -1,4 +1,4 @@
-package solutions.bellatrix.web.core.utilities;
+package solutions.bellatrix.core.utilities;
 
 import java.nio.file.Paths;
 

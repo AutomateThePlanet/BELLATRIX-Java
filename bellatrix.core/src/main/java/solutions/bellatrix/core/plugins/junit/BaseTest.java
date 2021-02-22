@@ -11,7 +11,7 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.web.core.plugins.junit;
+package solutions.bellatrix.core.plugins.junit;
 
 import org.junit.Rule;
 import org.junit.jupiter.api.AfterAll;
@@ -20,9 +20,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.api.extension.TestWatcher;
 import org.junit.runner.Description;
-import solutions.bellatrix.web.core.plugins.Plugin;
-import solutions.bellatrix.web.core.plugins.PluginExecutionEngine;
-import solutions.bellatrix.web.core.plugins.TestResult;
+import solutions.bellatrix.core.plugins.Plugin;
+import solutions.bellatrix.core.plugins.PluginExecutionEngine;
+import solutions.bellatrix.core.plugins.TestResult;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -14,13 +14,9 @@
 package solutions.bellatrix.desktop.infrastructure;
 
 import solutions.bellatrix.desktop.configuration.DesktopSettings;
-import solutions.bellatrix.web.configuration.ConfigurationService;
-import solutions.bellatrix.web.core.plugins.Plugin;
-import solutions.bellatrix.web.core.plugins.TestResult;
-import solutions.bellatrix.web.core.utilities.DebugInformation;
-import solutions.bellatrix.web.core.utilities.FileDownloader;
-
-import java.lang.reflect.Method;
+import solutions.bellatrix.core.configuration.ConfigurationService;
+import solutions.bellatrix.core.plugins.Plugin;
+import solutions.bellatrix.core.utilities.FileDownloader;
 
 public class DownloadDemoAppsPlugin extends Plugin {
     private static ThreadLocal<Boolean> areDemoAppsDownloaded;

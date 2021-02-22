@@ -13,7 +13,7 @@
 
 package solutions.bellatrix.desktop.components;
 
-import solutions.bellatrix.web.core.plugins.EventListener;
+import solutions.bellatrix.core.plugins.EventListener;
 
 public class TextArea extends DesktopComponent {
     public final static EventListener<ComponentActionEventArgs> SETTING_TEXT = new EventListener<>();

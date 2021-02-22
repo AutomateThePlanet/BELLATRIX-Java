@@ -11,10 +11,10 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.web.core.utilities;
+package solutions.bellatrix.core.utilities;
 
-import solutions.bellatrix.web.configuration.ConfigurationService;
-import solutions.bellatrix.web.core.utilities.configuration.TroubleshootingSettings;
+import solutions.bellatrix.core.configuration.ConfigurationService;
+import solutions.bellatrix.core.utilities.configuration.TroubleshootingSettings;
 
 public class DebugInformation {
     public static void printStackTrace(Exception ex) {

@@ -11,7 +11,7 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.web.configuration;/*
+package solutions.bellatrix.core.configuration;/*
  * Copyright 2021 Automate The Planet Ltd.
  * Author: Anton Angelov
  * Licensed under the Apache License, Version 2.0 (the "License");

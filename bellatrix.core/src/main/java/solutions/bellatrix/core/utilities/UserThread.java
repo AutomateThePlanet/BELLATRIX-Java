@@ -11,20 +11,22 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.web.core.utilities;
+package solutions.bellatrix.core.utilities;
 
 import lombok.SneakyThrows;
-import lombok.experimental.UtilityClass;
-import org.apache.commons.io.IOUtils;
 
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
+public class UserThread implements Runnable {
+    private volatile boolean exit = false;
+    public void run() {
+        while(!exit) {
+            System.out.println("The user thread is running");
+        }
+        System.out.println("The user thread is now stopped");
+    }
 
-@UtilityClass
-public class ResourcesReader {
     @SneakyThrows
-    public static String getFileAsString(Class<?> moduleClass, String fileName) {
-        InputStream input = moduleClass.getResourceAsStream("/" + fileName);
-        return IOUtils.toString(input, StandardCharsets.UTF_8);
+    public void stop() {
+        exit = true;
+        Thread.sleep(5000);
     }
 }

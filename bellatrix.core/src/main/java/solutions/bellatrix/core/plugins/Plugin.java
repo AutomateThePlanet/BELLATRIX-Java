@@ -11,7 +11,7 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.web.core.plugins;
+package solutions.bellatrix.core.plugins;
 
 import java.lang.reflect.Method;
 

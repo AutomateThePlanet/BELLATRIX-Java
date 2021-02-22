@@ -11,7 +11,7 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.web.core.utilities;
+package solutions.bellatrix.core.utilities;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;

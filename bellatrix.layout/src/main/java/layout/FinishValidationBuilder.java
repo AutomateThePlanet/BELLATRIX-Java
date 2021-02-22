@@ -15,7 +15,7 @@ package layout;
 
 import lombok.Getter;
 import org.testng.Assert;
-import solutions.bellatrix.web.core.plugins.EventListener;
+import solutions.bellatrix.core.plugins.EventListener;
 
 import java.util.function.Predicate;
 import java.util.function.Supplier;

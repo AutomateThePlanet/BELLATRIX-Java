@@ -11,7 +11,7 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.web.core.utilities;
+package solutions.bellatrix.core.utilities;
 
 import java.util.HashMap;
 import java.util.Map;

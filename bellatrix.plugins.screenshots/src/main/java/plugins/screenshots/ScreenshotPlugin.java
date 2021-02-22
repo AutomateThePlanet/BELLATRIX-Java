@@ -14,9 +14,9 @@
 package plugins.screenshots;
 
 import lombok.SneakyThrows;
-import solutions.bellatrix.web.core.plugins.EventListener;
-import solutions.bellatrix.web.core.plugins.Plugin;
-import solutions.bellatrix.web.core.plugins.TestResult;
+import solutions.bellatrix.core.plugins.EventListener;
+import solutions.bellatrix.core.plugins.Plugin;
+import solutions.bellatrix.core.plugins.TestResult;
 
 import java.lang.reflect.Method;
 import java.nio.file.Paths;

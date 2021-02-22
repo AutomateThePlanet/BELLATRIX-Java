@@ -14,7 +14,7 @@
 package solutions.bellatrix.desktop.infrastructure.testng;
 
 import solutions.bellatrix.desktop.infrastructure.DownloadDemoAppsPlugin;
-import solutions.bellatrix.web.core.plugins.testng.BaseTest;
+import solutions.bellatrix.core.plugins.testng.BaseTest;
 import solutions.bellatrix.desktop.components.listeners.BddLogging;
 import solutions.bellatrix.desktop.infrastructure.AppLifecyclePlugin;
 import solutions.bellatrix.desktop.infrastructure.DesktopScreenshotPlugin;

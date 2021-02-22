@@ -17,8 +17,8 @@ import lombok.SneakyThrows;
 import plugins.screenshots.ScreenshotPlugin;
 import ru.yandex.qatools.ashot.AShot;
 import ru.yandex.qatools.ashot.shooting.ShootingStrategies;
-import solutions.bellatrix.web.configuration.ConfigurationService;
-import solutions.bellatrix.web.configuration.WebSettings;
+import solutions.bellatrix.core.configuration.ConfigurationService;
+import solutions.bellatrix.core.configuration.WebSettings;
 
 import javax.imageio.ImageIO;
 import java.io.File;

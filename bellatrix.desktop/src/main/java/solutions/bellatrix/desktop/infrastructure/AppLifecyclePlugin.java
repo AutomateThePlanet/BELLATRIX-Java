@@ -13,12 +13,12 @@
 
 package solutions.bellatrix.desktop.infrastructure;
 
-import solutions.bellatrix.web.configuration.ConfigurationService;
-import solutions.bellatrix.web.core.plugins.Plugin;
-import solutions.bellatrix.web.core.plugins.TestResult;
-import solutions.bellatrix.web.core.utilities.DebugInformation;
+import solutions.bellatrix.core.configuration.ConfigurationService;
+import solutions.bellatrix.core.plugins.Plugin;
+import solutions.bellatrix.core.plugins.TestResult;
+import solutions.bellatrix.core.utilities.DebugInformation;
 import solutions.bellatrix.desktop.configuration.DesktopSettings;
-import solutions.bellatrix.web.core.utilities.UserHomePathNormalizer;
+import solutions.bellatrix.core.utilities.UserHomePathNormalizer;
 
 import java.lang.reflect.Method;
 

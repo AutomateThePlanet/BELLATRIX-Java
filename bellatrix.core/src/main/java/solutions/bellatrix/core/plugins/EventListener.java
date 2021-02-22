@@ -11,25 +11,22 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.web.core.utilities;
+package solutions.bellatrix.core.plugins;
 
-import lombok.SneakyThrows;
-import lombok.experimental.UtilityClass;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.function.Consumer;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.nio.file.Files;
-import java.nio.file.Path;
+public class EventListener<TArgs> {
+    private Set<Consumer<TArgs>> listeners = new HashSet();
 
-@UtilityClass
-public class TempFileWriter {
-    @SneakyThrows
-    public static File writeStringToTempFile(String fileContent) {
-        Path tempFile = Files.createTempFile(null, null);
-        try (var bw = new BufferedWriter(new FileWriter(tempFile.toFile()))) {
-            bw.write(fileContent);
+    public void addListener(Consumer<TArgs> listener) {
+        listeners.add(listener);
+    }
+
+    public void broadcast(TArgs args) {
+        if (listeners.stream().count() > 0) {
+            listeners.forEach(x -> x.accept(args));
         }
-        return  tempFile.toFile();
     }
 }
