@@ -19,12 +19,33 @@ public class Button extends DesktopComponent {
     public final static EventListener<ComponentActionEventArgs> CLICKING = new EventListener<>();
     public final static EventListener<ComponentActionEventArgs> CLICKED = new EventListener<>();
 
+    @Override
+    public Class<?> getComponentClass() {
+        return getClass();
+    }
+
+    public String getText() {
+        return defaultGetText();
+    }
+
     public void click() {
         defaultClick(CLICKING, CLICKED);
     }
 
-    @Override
-    public Class<?> getComponentClass() {
-        return getClass();
+    // validate inner text
+    public void validateTextIs(String value) {
+        defaultValidateAttributeIs(this::getText, value, "inner text");
+    }
+
+    public void validateTextIsSet() {
+        defaultValidateAttributeSet(this::getText, "inner text");
+    }
+
+    public void validateTextContains(String value) {
+        defaultValidateAttributeContains(this::getText, value, "inner text");
+    }
+
+    public void validateTextNotContains(String value) {
+        defaultValidateAttributeNotContains(this::getText, value, "inner text");
     }
 }

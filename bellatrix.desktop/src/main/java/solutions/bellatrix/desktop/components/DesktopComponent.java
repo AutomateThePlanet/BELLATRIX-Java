@@ -46,12 +46,8 @@ import java.util.function.Supplier;
 public class DesktopComponent extends LayoutComponentValidationsBuilder implements Component {
     public final static EventListener<ComponentActionEventArgs> HOVERING = new EventListener<>();
     public final static EventListener<ComponentActionEventArgs> HOVERED = new EventListener<>();
-    public final static EventListener<ComponentActionEventArgs> FOCUSING = new EventListener<>();
-    public final static EventListener<ComponentActionEventArgs> FOCUSED = new EventListener<>();
     public final static EventListener<ComponentActionEventArgs> SCROLLING_TO_VISIBLE = new EventListener<>();
     public final static EventListener<ComponentActionEventArgs> SCROLLED_TO_VISIBLE = new EventListener<>();
-    public final static EventListener<ComponentActionEventArgs> SETTING_ATTRIBUTE = new EventListener<>();
-    public final static EventListener<ComponentActionEventArgs> ATTRIBUTE_SET = new EventListener<>();
     public final static EventListener<ComponentActionEventArgs> RETURNING_WRAPPED_ELEMENT = new EventListener<>();
     public final static EventListener<ComponentActionEventArgs> CREATING_ELEMENT = new EventListener<>();
     public final static EventListener<ComponentActionEventArgs> CREATED_ELEMENT = new EventListener<>();
@@ -86,18 +82,11 @@ public class DesktopComponent extends LayoutComponentValidationsBuilder implemen
         findElement();
     }
 
-//    public void focus() {
-//        FOCUSING.broadcast(new ComponentActionEventArgs(this));
-//        javaScriptService.execute("window.focus();");
-//        javaScriptService.execute("arguments[0].focus();", findElement());
-//        FOCUSED.broadcast(new ComponentActionEventArgs(this));
-//    }
-//
-//    public void hover() {
-//        HOVERING.broadcast(new ComponentActionEventArgs(this));
-//        javaScriptService.execute("arguments[0].onmouseover();", findElement());
-//        HOVERED.broadcast(new ComponentActionEventArgs(this));
-//    }
+    public void hover() {
+        HOVERING.broadcast(new ComponentActionEventArgs(this));
+        wrappedDriver.getMouse().mouseMove(findElement().getCoordinates());
+        HOVERED.broadcast(new ComponentActionEventArgs(this));
+    }
 
     public Class<?> getComponentClass() {
         return getClass();

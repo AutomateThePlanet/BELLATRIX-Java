@@ -14,11 +14,17 @@
 package solutions.bellatrix.desktop.infrastructure;
 
 import lombok.SneakyThrows;
+import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import plugins.screenshots.ScreenshotPlugin;
 import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.desktop.configuration.DesktopSettings;
 
+import javax.imageio.ImageIO;
 import java.io.File;
+import java.nio.file.Paths;
+import java.sql.Driver;
 import java.util.UUID;
 
 public class DesktopScreenshotPlugin extends ScreenshotPlugin {
@@ -34,11 +40,9 @@ public class DesktopScreenshotPlugin extends ScreenshotPlugin {
     @Override
     @SneakyThrows
     protected void takeScreenshot( String screenshotSaveDir, String filename) {
-//        var screenshot = new AShot()
-//                .shootingStrategy(DesktopSettings.viewportPasting(100))
-//                .takeScreenshot(DriverService.getWrappedDriver());
-//        var destFile = new File(Paths.get(screenshotSaveDir, filename).toString());
-//        ImageIO.write(screenshot.getImage(), "png", destFile);
+        File screenshot = ((TakesScreenshot) DriverService.getWrappedDriver()).getScreenshotAs(OutputType.FILE);
+        var destFile = new File(Paths.get(screenshotSaveDir, filename).toString() + ".png");
+        FileUtils.copyFile(screenshot, destFile);
     }
 
     @Override
