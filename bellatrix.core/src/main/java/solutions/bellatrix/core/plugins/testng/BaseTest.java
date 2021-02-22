@@ -14,10 +14,13 @@
 package solutions.bellatrix.core.plugins.testng;
 
 import org.testng.ITestResult;
-import org.testng.annotations.*;
-import solutions.bellatrix.core.plugins.TestResult;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
 import solutions.bellatrix.core.plugins.Plugin;
 import solutions.bellatrix.core.plugins.PluginExecutionEngine;
+import solutions.bellatrix.core.plugins.TestResult;
 
 public class BaseTest {
     private static final ThreadLocal<Boolean> CONFIGURATION_EXECUTED = new ThreadLocal<>();

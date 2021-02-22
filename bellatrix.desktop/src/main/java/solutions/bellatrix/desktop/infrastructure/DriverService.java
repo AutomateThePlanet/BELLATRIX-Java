@@ -15,11 +15,14 @@ package solutions.bellatrix.desktop.infrastructure;
 
 import io.appium.java_client.windows.WindowsDriver;
 import io.appium.java_client.windows.WindowsElement;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.MutableCapabilities;
+import org.openqa.selenium.Platform;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.remote.DesiredCapabilities;
 import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.core.utilities.DebugInformation;
 import solutions.bellatrix.desktop.configuration.DesktopSettings;
-import org.openqa.selenium.*;
-import org.openqa.selenium.remote.DesiredCapabilities;
 import solutions.bellatrix.desktop.configuration.GridSettings;
 
 import java.io.File;

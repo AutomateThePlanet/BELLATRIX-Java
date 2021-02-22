@@ -13,11 +13,6 @@
 
 package solutions.bellatrix.desktop.components;
 
-import solutions.bellatrix.core.utilities.InstanceFactory;
-
-import java.util.ArrayList;
-import java.util.List;
-
 public class Select extends DesktopComponent {
 //    public Option GetSelected() {
 //        var nativeSelect = new org.openqa.selenium.support.ui.Select(findElement());

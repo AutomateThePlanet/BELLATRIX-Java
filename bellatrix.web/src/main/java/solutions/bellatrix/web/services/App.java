@@ -13,10 +13,10 @@
 
 package solutions.bellatrix.web.services;
 
+import solutions.bellatrix.core.utilities.SingletonFactory;
 import solutions.bellatrix.web.infrastructure.DriverService;
 import solutions.bellatrix.web.infrastructure.ProxyServer;
 import solutions.bellatrix.web.pages.WebPage;
-import solutions.bellatrix.core.utilities.SingletonFactory;
 
 public class App implements AutoCloseable {
     private Boolean disposed = false;

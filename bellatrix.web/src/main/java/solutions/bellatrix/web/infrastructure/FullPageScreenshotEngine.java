@@ -17,9 +17,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.core.configuration.WebSettings;
-import solutions.bellatrix.web.services.JavaScriptService;
 import solutions.bellatrix.core.utilities.ResourcesReader;
 import solutions.bellatrix.core.utilities.TempFileWriter;
+import solutions.bellatrix.web.services.JavaScriptService;
+
 import java.io.File;
 
 public class FullPageScreenshotEngine {

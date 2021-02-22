@@ -14,7 +14,6 @@
 package solutions.bellatrix.desktop.services;
 
 import solutions.bellatrix.desktop.components.DesktopComponent;
-import solutions.bellatrix.desktop.infrastructure.DriverService;
 import solutions.bellatrix.desktop.waitstrategies.WaitStrategy;
 
 public class ComponentWaitService extends DesktopService {

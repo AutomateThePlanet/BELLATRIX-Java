@@ -15,6 +15,7 @@ package solutions.bellatrix.core.utilities;
 
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
+
 import java.io.FileOutputStream;
 import java.net.URL;
 import java.nio.channels.Channels;

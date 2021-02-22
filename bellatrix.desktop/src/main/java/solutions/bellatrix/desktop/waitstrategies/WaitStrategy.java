@@ -13,8 +13,6 @@
 
 package solutions.bellatrix.desktop.waitstrategies;
 
-import io.appium.java_client.windows.WindowsDriver;
-import io.appium.java_client.windows.WindowsElement;
 import lombok.Getter;
 import org.openqa.selenium.By;
 import org.openqa.selenium.SearchContext;

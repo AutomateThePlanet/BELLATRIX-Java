@@ -16,7 +16,6 @@ package solutions.bellatrix.desktop.findstrategies;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.windows.WindowsDriver;
 import io.appium.java_client.windows.WindowsElement;
-import org.openqa.selenium.By;
 
 import java.util.List;
 

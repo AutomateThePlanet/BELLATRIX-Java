@@ -13,8 +13,11 @@
 
 package solutions.bellatrix.core.plugins.junit;
 
-import org.junit.*;
-import org.junit.jupiter.api.*;
+import org.junit.Rule;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.api.extension.TestWatcher;
 import org.junit.runner.Description;
 import solutions.bellatrix.core.plugins.Plugin;

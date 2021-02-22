@@ -22,7 +22,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>BELLATRIX.Plugins</artifactId>
+    <artifactId>bellatrix.core</artifactId>
     <version>1.0</version>
     <dependencies>
         <dependency>

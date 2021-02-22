@@ -14,7 +14,6 @@
 package solutions.bellatrix.desktop.pages.cartpage;
 
 
-import solutions.bellatrix.web.components.*;
 import solutions.bellatrix.web.pages.PageMap;
 
 public class Map extends PageMap {

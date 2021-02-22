@@ -22,7 +22,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>BELLATRIX.TestExecutionExtensions.Video</artifactId>
+    <artifactId>bellatrix.plugins.video</artifactId>
     <version>1.0</version>
 
     <properties>
@@ -38,45 +38,8 @@
         </dependency>
         <dependency>
             <groupId>solutions.bellatrix</groupId>
-            <artifactId>BELLATRIX.Plugins</artifactId>
+            <artifactId>bellatrix.core</artifactId>
             <version>1.0</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>solutions.bellatrix</groupId>
-            <artifactId>BELLATRIX.Utilities</artifactId>
-            <version>1.0</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>solutions.bellatrix</groupId>
-            <artifactId>BELLATRIX.Utilities</artifactId>
-            <version>1.0</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>solutions.bellatrix</groupId>
-            <artifactId>BELLATRIX.Plugins</artifactId>
-            <version>1.0</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>solutions.bellatrix</groupId>
-            <artifactId>BELLATRIX.Plugins</artifactId>
-            <version>1.0</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>solutions.bellatrix</groupId>
-            <artifactId>BELLATRIX.Plugins</artifactId>
-            <version>1.0</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>solutions.bellatrix</groupId>
-            <artifactId>BELLATRIX.Plugins</artifactId>
-            <version>1.0</version>
-            <scope>compile</scope>
         </dependency>
     </dependencies>
 

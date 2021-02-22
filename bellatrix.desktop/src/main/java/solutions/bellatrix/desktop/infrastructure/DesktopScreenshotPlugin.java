@@ -13,10 +13,10 @@
 
 package solutions.bellatrix.desktop.infrastructure;
 
-import solutions.bellatrix.desktop.configuration.DesktopSettings;
 import lombok.SneakyThrows;
 import plugins.screenshots.ScreenshotPlugin;
 import solutions.bellatrix.core.configuration.ConfigurationService;
+import solutions.bellatrix.desktop.configuration.DesktopSettings;
 
 import java.io.File;
 import java.util.UUID;

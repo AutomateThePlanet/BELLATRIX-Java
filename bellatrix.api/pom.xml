@@ -22,7 +22,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>BELLATRIX.API</artifactId>
+    <artifactId>bellatrix.api</artifactId>
     <version>1.0</version>
 
     <properties>

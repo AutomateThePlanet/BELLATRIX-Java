@@ -13,7 +13,6 @@
 
 package solutions.bellatrix.desktop.pages.checkoutpage;
 
-import solutions.bellatrix.web.components.*;
 import solutions.bellatrix.web.pages.PageMap;
 
 public class Map extends PageMap {

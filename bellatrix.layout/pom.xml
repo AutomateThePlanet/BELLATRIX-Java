@@ -22,14 +22,13 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>BELLATRIX.Layout</artifactId>
+    <artifactId>bellatrix.layout</artifactId>
     <version>1.0</version>
     <dependencies>
         <dependency>
             <groupId>solutions.bellatrix</groupId>
-            <artifactId>BELLATRIX.Plugins</artifactId>
+            <artifactId>bellatrix.core</artifactId>
             <version>1.0</version>
-            <scope>compile</scope>
         </dependency>
     </dependencies>
 

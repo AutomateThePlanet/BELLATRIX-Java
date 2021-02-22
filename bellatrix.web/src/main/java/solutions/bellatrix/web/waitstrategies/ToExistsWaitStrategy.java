@@ -11,7 +11,11 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.web.waitstrategies;import org.openqa.selenium.*;
+package solutions.bellatrix.web.waitstrategies;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.SearchContext;
 import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.core.configuration.WebSettings;
 

@@ -18,9 +18,9 @@ import io.appium.java_client.windows.WindowsElement;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
+import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.desktop.configuration.DesktopSettings;
 import solutions.bellatrix.desktop.findstrategies.FindStrategy;
-import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.desktop.infrastructure.DriverService;
 
 import java.util.function.Function;

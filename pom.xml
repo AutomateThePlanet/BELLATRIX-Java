@@ -22,15 +22,15 @@
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
     <modules>
-        <module>bellatrix.Layout</module>
-        <module>bellatrix.Core</module>
-        <module>bellatrix.Plugins.Screenshots</module>
-        <module>bellatrix.Plugins.Video</module>
-        <module>bellatrix.Web</module>
-        <module>bellatrix.Desktop</module>
-        <module>bellatrix.Mobile</module>
-        <module>bellatrix.API</module>
-        <module>bellatrix.Web.Tests</module>
+        <module>bellatrix.layout</module>
+        <module>bellatrix.core</module>
+        <module>bellatrix.plugins.screenshots</module>
+        <module>bellatrix.plugins.video</module>
+        <module>bellatrix.web</module>
+        <module>bellatrix.desktop</module>
+        <module>bellatrix.mobile</module>
+        <module>bellatrix.api</module>
+        <module>bellatrix.web.tests</module>
     </modules>
 
     <properties>

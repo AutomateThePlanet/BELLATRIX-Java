@@ -22,30 +22,18 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>BELLATRIX.Desktop</artifactId>
+    <artifactId>bellatrix.desktop</artifactId>
     <version>1.0</version>
     <dependencies>
         <dependency>
             <groupId>solutions.bellatrix</groupId>
-            <artifactId>BELLATRIX.Plugins</artifactId>
+            <artifactId>bellatrix.core</artifactId>
             <version>1.0</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>solutions.bellatrix</groupId>
-            <artifactId>BELLATRIX.TestExecutionExtensions.Video</artifactId>
-            <version>1.0</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>solutions.bellatrix</groupId>
-            <artifactId>BELLATRIX.TestExecutionExtensions.Screenshots</artifactId>
-            <version>1.0</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>solutions.bellatrix</groupId>
-            <artifactId>BELLATRIX.Layout</artifactId>
+            <artifactId>bellatrix.layout</artifactId>
             <version>1.0</version>
             <scope>compile</scope>
         </dependency>
@@ -57,13 +45,13 @@
         </dependency>
         <dependency>
             <groupId>solutions.bellatrix</groupId>
-            <artifactId>BELLATRIX.Plugins</artifactId>
+            <artifactId>bellatrix.plugins.screenshots</artifactId>
             <version>1.0</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>solutions.bellatrix</groupId>
-            <artifactId>BELLATRIX.Layout</artifactId>
+            <artifactId>bellatrix.plugins.video</artifactId>
             <version>1.0</version>
             <scope>compile</scope>
         </dependency>
