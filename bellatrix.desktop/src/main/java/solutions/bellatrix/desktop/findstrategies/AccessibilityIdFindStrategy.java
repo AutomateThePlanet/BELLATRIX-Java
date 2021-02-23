@@ -37,7 +37,7 @@ public class AccessibilityIdFindStrategy extends FindStrategy {
 
     @Override
     public WebElement findElement(WebElement element) {
-        return element.findElement(By.xpath(String.format("//*[@AccessibilityId='num9Button']")));
+        return element.findElement(By.xpath(String.format("//*[@AccessibilityId='%s']", getValue())));
     }
 
     @Override

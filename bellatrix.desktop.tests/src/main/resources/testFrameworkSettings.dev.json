@@ -16,6 +16,7 @@
     "videosSaveLocation": "user.home\\BELLATRIX\\videos",
 
     "timeoutSettings": {
+      "implicitWaitTimeout": "5",
       "elementWaitTimeout": "30",
       "sleepInterval": "1",
       "waitForPartialUrl": "30",

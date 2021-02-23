@@ -17,6 +17,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 public class TimeoutSettings {
+    @Getter @Setter private long implicitWaitTimeout;
     @Getter @Setter private long elementWaitTimeout;
     @Getter @Setter private long sleepInterval;
     @Getter @Setter private long validationsTimeout;

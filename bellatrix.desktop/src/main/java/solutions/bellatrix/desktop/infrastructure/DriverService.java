@@ -26,6 +26,7 @@ import solutions.bellatrix.core.utilities.DebugInformation;
 import solutions.bellatrix.desktop.configuration.DesktopSettings;
 import solutions.bellatrix.desktop.configuration.GridSettings;
 
+import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
@@ -76,8 +77,7 @@ public class DriverService {
             driver = initializeDriverGridMode(gridSettings.get());
         }
 
-        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
-//        driver.manage().timeouts().setScriptTimeout(ConfigurationService.get(DesktopSettings.class).getTimeoutSettings().getScriptTimeout(), TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(desktopSettings.getTimeoutSettings().getImplicitWaitTimeout(), TimeUnit.SECONDS);
         driver.manage().window().maximize();
         changeWindowSize(driver);
         wrappedDriver.set(driver);
@@ -105,8 +105,8 @@ public class DriverService {
         var caps = new DesiredCapabilities();
         caps.setCapability("app", getAppConfiguration().getAppPath());
         caps.setCapability("deviceName", "WindowsPC");
-//        caps.setCapability("platformName", "Windows");
-//        caps.setCapability("appWorkingDir", new File(getAppConfiguration().getAppPath()).getParent());
+        caps.setCapability("platformName", "Windows");
+        caps.setCapability("appWorkingDir", new File(getAppConfiguration().getAppPath()).getParent());
         addDriverOptions(caps);
         var driver = new WindowsDriver<WebElement>(new URL(serviceUrl), caps);
 
