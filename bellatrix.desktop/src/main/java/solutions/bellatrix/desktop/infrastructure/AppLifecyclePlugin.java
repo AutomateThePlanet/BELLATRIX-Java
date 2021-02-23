@@ -17,8 +17,8 @@ import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.core.plugins.Plugin;
 import solutions.bellatrix.core.plugins.TestResult;
 import solutions.bellatrix.core.utilities.DebugInformation;
-import solutions.bellatrix.desktop.configuration.DesktopSettings;
 import solutions.bellatrix.core.utilities.UserHomePathNormalizer;
+import solutions.bellatrix.desktop.configuration.DesktopSettings;
 
 import java.lang.reflect.Method;
 

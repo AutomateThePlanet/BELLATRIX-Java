@@ -13,8 +13,8 @@
 
 package solutions.bellatrix.desktop.waitstrategies;
 
+import org.openqa.selenium.WebElement;
 import io.appium.java_client.windows.WindowsDriver;
-import io.appium.java_client.windows.WindowsElement;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
@@ -45,7 +45,7 @@ public class ToBeClickableWaitStrategy extends WaitStrategy {
         waitUntil(func);
     }
 
-    private <TFindStrategy extends FindStrategy> Boolean elementIsClickable(WindowsDriver<WindowsElement> searchContext, TFindStrategy findStrategy)
+    private <TFindStrategy extends FindStrategy> Boolean elementIsClickable(WindowsDriver<WebElement> searchContext, TFindStrategy findStrategy)
     {
         var element = findStrategy.findElement(searchContext);
         try

@@ -13,9 +13,9 @@
 
 package solutions.bellatrix.desktop.findstrategies;
 
-import io.appium.java_client.MobileElement;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import io.appium.java_client.windows.WindowsDriver;
-import io.appium.java_client.windows.WindowsElement;
 
 import java.util.List;
 
@@ -26,22 +26,22 @@ public class AccessibilityIdFindStrategy extends FindStrategy {
     }
 
     @Override
-    public WindowsElement findElement(WindowsDriver<WindowsElement> driver) {
+    public WebElement findElement(WindowsDriver<WebElement> driver) {
         return driver.findElementByAccessibilityId(getValue());
     }
 
     @Override
-    public List<WindowsElement> findAllElements(WindowsDriver<WindowsElement> driver) {
+    public List<WebElement> findAllElements(WindowsDriver<WebElement> driver) {
         return driver.findElementsByAccessibilityId(getValue());
     }
 
     @Override
-    public MobileElement findElement(WindowsElement element) {
-        return element.findElementByAccessibilityId(getValue());
+    public WebElement findElement(WebElement element) {
+        return element.findElement(By.xpath(String.format("//*[@AccessibilityId='num9Button']")));
     }
 
     @Override
-    public List<MobileElement> findAllElements(WindowsElement element) {
+    public List<WebElement> findAllElements(WebElement element) {
         return null;
     }
 

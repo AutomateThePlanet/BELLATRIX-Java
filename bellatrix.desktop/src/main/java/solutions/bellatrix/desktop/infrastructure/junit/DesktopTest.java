@@ -13,12 +13,12 @@
 
 package solutions.bellatrix.desktop.infrastructure.junit;
 
-import solutions.bellatrix.desktop.infrastructure.DownloadDemoAppsPlugin;
 import solutions.bellatrix.core.plugins.junit.BaseTest;
 import solutions.bellatrix.desktop.components.listeners.BddLogging;
 import solutions.bellatrix.desktop.infrastructure.AppLifecyclePlugin;
 import solutions.bellatrix.desktop.infrastructure.DesktopScreenshotPlugin;
 import solutions.bellatrix.desktop.infrastructure.DesktopVideoPlugin;
+import solutions.bellatrix.desktop.infrastructure.DownloadDemoAppsPlugin;
 import solutions.bellatrix.desktop.services.App;
 
 public class DesktopTest extends BaseTest {

@@ -13,9 +13,9 @@
 
 package solutions.bellatrix.desktop.findstrategies;
 
-import io.appium.java_client.MobileElement;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import io.appium.java_client.windows.WindowsDriver;
-import io.appium.java_client.windows.WindowsElement;
 
 import java.util.List;
 
@@ -26,23 +26,23 @@ public class TagFindStrategy extends FindStrategy {
     }
 
     @Override
-    public WindowsElement findElement(WindowsDriver<WindowsElement> driver) {
+    public WebElement findElement(WindowsDriver<WebElement> driver) {
         return driver.findElementByTagName(getValue());
     }
 
     @Override
-    public List<WindowsElement> findAllElements(WindowsDriver<WindowsElement> driver) {
+    public List<WebElement> findAllElements(WindowsDriver<WebElement> driver) {
         return driver.findElementsByTagName(getValue());
     }
 
     @Override
-    public MobileElement findElement(WindowsElement element) {
-        return element.findElementByTagName(getValue());
+    public WebElement findElement(WebElement element) {
+        return element.findElement(By.tagName(getValue()));
     }
 
     @Override
-    public List<MobileElement> findAllElements(WindowsElement element) {
-        return element.findElementsByTagName(getValue());
+    public List<WebElement> findAllElements(WebElement element) {
+        return element.findElements(By.tagName(getValue()));
     }
 
     @Override

@@ -13,8 +13,8 @@
 
 package solutions.bellatrix.desktop.components;
 
+import org.openqa.selenium.WebElement;
 import io.appium.java_client.windows.WindowsDriver;
-import io.appium.java_client.windows.WindowsElement;
 import layout.LayoutComponentValidationsBuilder;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -22,6 +22,7 @@ import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.interactions.Coordinates;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.core.plugins.EventListener;
@@ -54,11 +55,11 @@ public class DesktopComponent extends LayoutComponentValidationsBuilder implemen
     public final static EventListener<ComponentActionEventArgs> CREATING_ELEMENTS = new EventListener<>();
     public final static EventListener<ComponentActionEventArgs> CREATED_ELEMENTS = new EventListener<>();
 
-    @Getter @Setter(AccessLevel.PROTECTED) private WindowsElement wrappedElement;
-    @Getter @Setter private WindowsElement parentWrappedElement;
+    @Getter @Setter(AccessLevel.PROTECTED) private WebElement wrappedElement;
+    @Getter @Setter private WebElement parentWrappedElement;
     @Getter @Setter private int elementIndex;
     @Getter @Setter private FindStrategy findStrategy;
-    @Getter private WindowsDriver<WindowsElement> wrappedDriver;
+    @Getter private WindowsDriver<WebElement> wrappedDriver;
     @Getter protected AppService appService;
     @Getter protected ComponentCreateService componentCreateService;
     @Getter protected ComponentWaitService componentWaitService;
@@ -84,7 +85,8 @@ public class DesktopComponent extends LayoutComponentValidationsBuilder implemen
 
     public void hover() {
         HOVERING.broadcast(new ComponentActionEventArgs(this));
-        wrappedDriver.getMouse().mouseMove(findElement().getCoordinates());
+        Actions action = new Actions(wrappedDriver);
+        action.moveToElement(findElement()).build().perform();
         HOVERED.broadcast(new ComponentActionEventArgs(this));
     }
 
@@ -225,7 +227,7 @@ public class DesktopComponent extends LayoutComponentValidationsBuilder implemen
         return componentList;
     }
 
-    protected WindowsElement findElement() {
+    protected WebElement findElement() {
       if (waitStrategies.stream().count() == 0) {
           waitStrategies.add(Wait.to().exists());
       }
@@ -255,7 +257,7 @@ public class DesktopComponent extends LayoutComponentValidationsBuilder implemen
         clicking.broadcast(new ComponentActionEventArgs(this));
 
         this.toExists().toBeClickable().waitToBe();
-        wrappedElement.click();
+        findElement().click();
 
         clicked.broadcast(new ComponentActionEventArgs(this));
     }
@@ -279,11 +281,11 @@ public class DesktopComponent extends LayoutComponentValidationsBuilder implemen
         valueSet.broadcast(new ComponentActionEventArgs(this));
     }
 
-    private WindowsElement findNativeElement() {
+    private WebElement findNativeElement() {
         if (parentWrappedElement == null) {
             return findStrategy.findAllElements(wrappedDriver).get(elementIndex);
         } else {
-            return (WindowsElement)findStrategy.findElement(parentWrappedElement);
+            return findStrategy.findElement(parentWrappedElement);
         }
     }
 
@@ -298,14 +300,14 @@ public class DesktopComponent extends LayoutComponentValidationsBuilder implemen
         }
     }
 
-    private void scrollToMakeElementVisible(WindowsElement wrappedElement) {
+    private void scrollToMakeElementVisible(WebElement wrappedElement) {
         // createBy default scroll down to make the element visible.
         if (desktopSettings.getAutomaticallyScrollToVisible()) {
             scrollToVisible(wrappedElement, false);
         }
     }
 
-    private void scrollToVisible(WindowsElement wrappedElement, Boolean shouldWait)
+    private void scrollToVisible(WebElement wrappedElement, Boolean shouldWait)
     {
         SCROLLING_TO_VISIBLE.broadcast(new ComponentActionEventArgs(this));
         try {

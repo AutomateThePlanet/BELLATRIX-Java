@@ -13,8 +13,8 @@
 
 package solutions.bellatrix.desktop.waitstrategies;
 
+import org.openqa.selenium.WebElement;
 import io.appium.java_client.windows.WindowsDriver;
-import io.appium.java_client.windows.WindowsElement;
 import org.openqa.selenium.WebDriver;
 import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.desktop.configuration.DesktopSettings;
@@ -43,7 +43,7 @@ public class ToExistsWaitStrategy extends WaitStrategy {
         waitUntil(func);
     }
 
-    private <TFindStrategy extends FindStrategy> Boolean elementExists(WindowsDriver<WindowsElement> searchContext, TFindStrategy findStrategy)
+    private <TFindStrategy extends FindStrategy> Boolean elementExists(WindowsDriver<WebElement> searchContext, TFindStrategy findStrategy)
     {
         try
         {

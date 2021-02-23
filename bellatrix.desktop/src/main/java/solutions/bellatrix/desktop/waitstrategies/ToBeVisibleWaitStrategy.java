@@ -14,7 +14,6 @@
 package solutions.bellatrix.desktop.waitstrategies;
 
 import io.appium.java_client.windows.WindowsDriver;
-import io.appium.java_client.windows.WindowsElement;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
@@ -22,6 +21,7 @@ import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.desktop.configuration.DesktopSettings;
 import solutions.bellatrix.desktop.findstrategies.FindStrategy;
 import solutions.bellatrix.desktop.infrastructure.DriverService;
+import org.openqa.selenium.WebElement;
 
 import java.util.function.Function;
 
@@ -45,7 +45,7 @@ public class ToBeVisibleWaitStrategy extends WaitStrategy {
         waitUntil(func);
     }
 
-    private <TFindStrategy extends FindStrategy> Boolean elementIsVisible(WindowsDriver<WindowsElement> searchContext, TFindStrategy findStrategy)
+    private <TFindStrategy extends FindStrategy> Boolean elementIsVisible(WindowsDriver<WebElement> searchContext, TFindStrategy findStrategy)
     {
         var element = findStrategy.findElement(searchContext);
         try

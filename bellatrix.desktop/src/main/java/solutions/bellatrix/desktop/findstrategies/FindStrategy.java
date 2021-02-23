@@ -13,9 +13,8 @@
 
 package solutions.bellatrix.desktop.findstrategies;
 
-import io.appium.java_client.MobileElement;
 import io.appium.java_client.windows.WindowsDriver;
-import io.appium.java_client.windows.WindowsElement;
+import org.openqa.selenium.WebElement;
 
 import java.util.List;
 
@@ -32,11 +31,11 @@ public abstract class FindStrategy {
         return value;
     }
 
-    public abstract WindowsElement findElement(WindowsDriver<WindowsElement> driver);
+    public abstract WebElement findElement(WindowsDriver<WebElement> driver);
 
-    public abstract List<WindowsElement> findAllElements(WindowsDriver<WindowsElement> driver);
+    public abstract List<WebElement> findAllElements(WindowsDriver<WebElement> driver);
 
-    public abstract MobileElement findElement(WindowsElement element);
+    public abstract WebElement findElement(WebElement element);
 
-    public abstract List<MobileElement> findAllElements(WindowsElement element);
+    public abstract List<WebElement> findAllElements(WebElement element);
 }

@@ -13,12 +13,12 @@
 
 package solutions.bellatrix.desktop.components.contracts;
 
-import io.appium.java_client.windows.WindowsElement;
+import org.openqa.selenium.WebElement;
 import layout.LayoutComponent;
 import solutions.bellatrix.desktop.findstrategies.FindStrategy;
 
 public interface Component extends LayoutComponent {
     Class<?> getComponentClass();
-    WindowsElement getWrappedElement();
+    WebElement getWrappedElement();
     FindStrategy getFindStrategy();
 }

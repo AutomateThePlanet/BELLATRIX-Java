@@ -13,8 +13,8 @@
 
 package solutions.bellatrix.desktop.infrastructure;
 
+import org.openqa.selenium.WebElement;
 import io.appium.java_client.windows.WindowsDriver;
-import io.appium.java_client.windows.WindowsElement;
 import lombok.SneakyThrows;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.MutableCapabilities;
@@ -26,7 +26,6 @@ import solutions.bellatrix.core.utilities.DebugInformation;
 import solutions.bellatrix.desktop.configuration.DesktopSettings;
 import solutions.bellatrix.desktop.configuration.GridSettings;
 
-import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
@@ -36,7 +35,7 @@ public class DriverService {
     private static ThreadLocal<Boolean> disposed;
     private static ThreadLocal<AppConfiguration> appConfiguration;
     private static ThreadLocal<HashMap<String, String>> customDriverOptions;
-    private static ThreadLocal<WindowsDriver<WindowsElement>> wrappedDriver;
+    private static ThreadLocal<WindowsDriver<WebElement>> wrappedDriver;
 
     static {
         disposed = new ThreadLocal<>();
@@ -55,7 +54,7 @@ public class DriverService {
         customDriverOptions.get().put(key, value);
     }
 
-    public static WindowsDriver<WindowsElement> getWrappedDriver() {
+    public static WindowsDriver<WebElement> getWrappedDriver() {
         return wrappedDriver.get();
     }
 
@@ -63,10 +62,10 @@ public class DriverService {
         return appConfiguration.get();
     }
 
-    public static WindowsDriver<WindowsElement> start(AppConfiguration configuration) {
+    public static WindowsDriver<WebElement> start(AppConfiguration configuration) {
         appConfiguration.set(configuration);
         disposed.set(false);
-        WindowsDriver<WindowsElement> driver = null;
+        WindowsDriver<WebElement> driver = null;
         var desktopSettings = ConfigurationService.get(DesktopSettings.class);
         var executionType = desktopSettings.getExecutionType();
         if (executionType.equals("regular")) {
@@ -86,14 +85,14 @@ public class DriverService {
         return driver;
     }
 
-    private static WindowsDriver<WindowsElement> initializeDriverGridMode(GridSettings gridSettings) {
+    private static WindowsDriver<WebElement> initializeDriverGridMode(GridSettings gridSettings) {
         var caps = new DesiredCapabilities();
         caps.setCapability("platform", Platform.WIN10);
         caps.setCapability("version", "latest");
 
-        WindowsDriver<WindowsElement> driver = null;
+        WindowsDriver<WebElement> driver = null;
         try {
-            driver = new WindowsDriver<WindowsElement>(new URL(gridSettings.getUrl()), caps);
+            driver = new WindowsDriver<WebElement>(new URL(gridSettings.getUrl()), caps);
         } catch (MalformedURLException e) {
             DebugInformation.printStackTrace(e);
         }
@@ -102,14 +101,14 @@ public class DriverService {
     }
 
     @SneakyThrows
-    private static WindowsDriver<WindowsElement> initializeDriverRegularMode(String serviceUrl) {
+    private static WindowsDriver<WebElement> initializeDriverRegularMode(String serviceUrl) {
         var caps = new DesiredCapabilities();
         caps.setCapability("app", getAppConfiguration().getAppPath());
         caps.setCapability("deviceName", "WindowsPC");
 //        caps.setCapability("platformName", "Windows");
 //        caps.setCapability("appWorkingDir", new File(getAppConfiguration().getAppPath()).getParent());
         addDriverOptions(caps);
-        var driver = new WindowsDriver<WindowsElement>(new URL(serviceUrl), caps);
+        var driver = new WindowsDriver<WebElement>(new URL(serviceUrl), caps);
 
         return driver;
     }

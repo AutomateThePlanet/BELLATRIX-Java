@@ -15,8 +15,8 @@ package solutions.bellatrix.desktop.infrastructure;
 
 import plugins.video.VideoPlugin;
 import solutions.bellatrix.core.configuration.ConfigurationService;
-import solutions.bellatrix.desktop.configuration.DesktopSettings;
 import solutions.bellatrix.core.utilities.UserHomePathNormalizer;
+import solutions.bellatrix.desktop.configuration.DesktopSettings;
 
 import java.io.File;
 import java.util.UUID;

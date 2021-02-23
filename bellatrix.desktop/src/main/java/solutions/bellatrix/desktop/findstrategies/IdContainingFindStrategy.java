@@ -13,9 +13,9 @@
 
 package solutions.bellatrix.desktop.findstrategies;
 
-import io.appium.java_client.MobileElement;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import io.appium.java_client.windows.WindowsDriver;
-import io.appium.java_client.windows.WindowsElement;
 
 import java.util.List;
 
@@ -28,23 +28,23 @@ public class IdContainingFindStrategy extends FindStrategy {
     }
 
     @Override
-    public WindowsElement findElement(WindowsDriver<WindowsElement> driver) {
+    public WebElement findElement(WindowsDriver<WebElement> driver) {
         return driver.findElementByXPath(String.format(XPATH_CONTAINING_EXPRESSION, getValue()));
     }
 
     @Override
-    public List<WindowsElement> findAllElements(WindowsDriver<WindowsElement> driver) {
+    public List<WebElement> findAllElements(WindowsDriver<WebElement> driver) {
         return driver.findElementsByXPath(String.format(XPATH_CONTAINING_EXPRESSION, getValue()));
     }
 
     @Override
-    public MobileElement findElement(WindowsElement element) {
-        return element.findElementByXPath(String.format(XPATH_CONTAINING_EXPRESSION, getValue()));
+    public WebElement findElement(WebElement element) {
+        return element.findElement(By.xpath(String.format(XPATH_CONTAINING_EXPRESSION, getValue())));
     }
 
     @Override
-    public List<MobileElement> findAllElements(WindowsElement element) {
-        return element.findElementsByXPath(String.format(XPATH_CONTAINING_EXPRESSION, getValue()));
+    public List<WebElement> findAllElements(WebElement element) {
+        return element.findElements(By.xpath(String.format(XPATH_CONTAINING_EXPRESSION, getValue())));
     }
 
     @Override
