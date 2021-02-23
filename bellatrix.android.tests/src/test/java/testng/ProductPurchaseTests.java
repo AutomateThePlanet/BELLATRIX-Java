@@ -14,10 +14,10 @@
 package testng;
 
 import org.junit.jupiter.api.Test;
-import solutions.bellatrix.mobile.components.Button;
-import solutions.bellatrix.mobile.infrastructure.ExecutionApp;
-import solutions.bellatrix.mobile.infrastructure.Lifecycle;
-import solutions.bellatrix.mobile.infrastructure.junit.AndroidTest;
+import solutions.bellatrix.ios.components.Button;
+import solutions.bellatrix.ios.infrastructure.ExecutionApp;
+import solutions.bellatrix.ios.infrastructure.Lifecycle;
+import solutions.bellatrix.ios.infrastructure.junit.AndroidTest;
 
 @ExecutionApp(lifecycle = Lifecycle.RESTART_ON_FAIL)
 public class ProductPurchaseTests extends AndroidTest {

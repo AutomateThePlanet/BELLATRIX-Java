@@ -28,11 +28,13 @@
         <module>bellatrix.plugins.video</module>
         <module>bellatrix.web</module>
         <module>bellatrix.desktop</module>
-        <module>bellatrix.mobile</module>
+        <module>bellatrix.android</module>
         <module>bellatrix.api</module>
         <module>bellatrix.web.tests</module>
         <module>bellatrix.desktop.tests</module>
-        <module>bellatrix.mobile.tests</module>
+        <module>bellatrix.android.tests</module>
+        <module>bellatrix.ios</module>
+        <module>bellatrix.ios.tests</module>
     </modules>
 
     <properties>

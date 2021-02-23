@@ -9,11 +9,11 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>bellatrix.mobile.tests</artifactId>
+    <artifactId>bellatrix.android.tests</artifactId>
     <dependencies>
         <dependency>
             <groupId>solutions.bellatrix</groupId>
-            <artifactId>bellatrix.mobile</artifactId>
+            <artifactId>bellatrix.android</artifactId>
             <version>1.0</version>
             <scope>test</scope>
         </dependency>
