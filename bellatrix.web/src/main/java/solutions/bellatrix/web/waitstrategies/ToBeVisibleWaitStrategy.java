@@ -18,7 +18,7 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.SearchContext;
 import org.openqa.selenium.StaleElementReferenceException;
 import solutions.bellatrix.core.configuration.ConfigurationService;
-import solutions.bellatrix.core.configuration.WebSettings;
+import solutions.bellatrix.web.configuration.WebSettings;
 
 public class ToBeVisibleWaitStrategy extends WaitStrategy{
     public ToBeVisibleWaitStrategy() {

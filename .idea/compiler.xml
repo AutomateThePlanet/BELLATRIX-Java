@@ -13,20 +13,22 @@
         <module name="bellatrix.desktop" />
         <module name="BELLATRIX.Web.Tests" />
         <module name="bellatrix.api" />
-        <module name="bellatrix.mobile" />
         <module name="bellatrix.desktop.tests" />
         <module name="bellatrix.plugins.screenshots" />
         <module name="bellatrix.core" />
+        <module name="bellatrix.android" />
+        <module name="bellatrix.android.tests" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="BELLATRIX" target="1.11" />
+      <module name="bellatrix.android" target="15" />
+      <module name="bellatrix.android.tests" target="15" />
       <module name="bellatrix.api" target="15" />
       <module name="bellatrix.core" target="15" />
       <module name="bellatrix.desktop" target="15" />
       <module name="bellatrix.desktop.tests" target="15" />
       <module name="bellatrix.layout" target="15" />
-      <module name="bellatrix.mobile" target="15" />
       <module name="bellatrix.plugins.screenshots" target="15" />
       <module name="bellatrix.plugins.video" target="15" />
       <module name="bellatrix.web" target="15" />

@@ -1,0 +1,29 @@
+/*
+ * Copyright 2021 Automate The Planet Ltd.
+ * Author: Anton Angelov
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package testng;
+
+import org.junit.jupiter.api.Test;
+import solutions.bellatrix.mobile.components.Button;
+import solutions.bellatrix.mobile.infrastructure.ExecutionApp;
+import solutions.bellatrix.mobile.infrastructure.Lifecycle;
+import solutions.bellatrix.mobile.infrastructure.junit.AndroidTest;
+
+@ExecutionApp(lifecycle = Lifecycle.RESTART_ON_FAIL)
+public class ProductPurchaseTests extends AndroidTest {
+    @Test
+    public void buttonClicked_when_callClickMethod() {
+        var button = app().create().byIdContaining(Button.class, "button");
+        button.click();
+    }
+}

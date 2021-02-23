@@ -28,8 +28,8 @@ import org.openqa.selenium.opera.OperaOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import solutions.bellatrix.core.configuration.ConfigurationService;
-import solutions.bellatrix.core.configuration.GridSettings;
-import solutions.bellatrix.core.configuration.WebSettings;
+import solutions.bellatrix.web.configuration.GridSettings;
+import solutions.bellatrix.web.configuration.WebSettings;
 import solutions.bellatrix.core.utilities.DebugInformation;
 
 import java.net.MalformedURLException;
