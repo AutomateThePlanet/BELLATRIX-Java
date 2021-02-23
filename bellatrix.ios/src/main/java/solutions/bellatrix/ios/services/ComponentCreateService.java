@@ -69,8 +69,8 @@ public class ComponentCreateService extends MobileService {
         return by(componentClass, new AccessibilityIdFindStrategy(accessibilityId));
     }
 
-    public <TComponent extends IOSComponent> List<TComponent> allById(Class<TComponent> componentClass, String automationId) {
-        return allBy(componentClass, new IdFindStrategy(automationId));
+    public <TComponent extends IOSComponent> List<TComponent> allById(Class<TComponent> componentClass, String id) {
+        return allBy(componentClass, new IdFindStrategy(id));
     }
 
     public <TComponent extends IOSComponent> List<TComponent> allByName(Class<TComponent> componentClass, String name) {
