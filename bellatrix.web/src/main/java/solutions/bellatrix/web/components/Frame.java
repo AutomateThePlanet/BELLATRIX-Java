@@ -13,9 +13,13 @@
 
 package solutions.bellatrix.web.components;
 
-public class Date extends WebComponent {
+public class Frame extends WebComponent {
     @Override
     public Class<?> getComponentClass() {
         return getClass();
+    }
+
+    public void getName() {
+        defaultGetName();
     }
 }

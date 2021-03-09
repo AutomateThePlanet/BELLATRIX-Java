@@ -61,6 +61,7 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
     public final static EventListener<ComponentActionEventArgs> CREATED_ELEMENT = new EventListener<>();
     public final static EventListener<ComponentActionEventArgs> CREATING_ELEMENTS = new EventListener<>();
     public final static EventListener<ComponentActionEventArgs> CREATED_ELEMENTS = new EventListener<>();
+    public final static EventListener<ComponentActionEventArgs> VALIDATED_ATTRIBUTE = new EventListener<>();
 
     @Getter @Setter(AccessLevel.PROTECTED) private WebElement wrappedElement;
     @Getter @Setter private WebElement parentWrappedElement;
@@ -366,6 +367,10 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
     protected String defaultGetValue() {
         return Optional.ofNullable(getAttribute("value")).orElse("");
     }
+    
+    protected String defaultGetName() {
+        return Optional.ofNullable(getAttribute("name")).orElse("");
+    }
 
     protected String defaultGetMaxLength() {
         return Optional.ofNullable(getAttribute("maxlength")).orElse("");
@@ -507,43 +512,5 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
         }
 
         SCROLLED_TO_VISIBLE.broadcast(new ComponentActionEventArgs(this));
-    }
-
-    public final static EventListener<ComponentActionEventArgs> VALIDATED_ATTRIBUTE = new EventListener<>();
-
-    protected void defaultValidateAttributeSet(Supplier<String> supplier, String attributeName) {
-        waitUntil((d) -> !StringUtils.isEmpty(supplier.get()), String.format("The control's %s shouldn't be empty but was.", attributeName));
-        VALIDATED_ATTRIBUTE.broadcast(new ComponentActionEventArgs(this, null, String.format("validate %s is empty", attributeName)));
-    }
-
-    protected void defaultValidateAttributeNotSet(Supplier<String> supplier, String attributeName) {
-        waitUntil((d) -> StringUtils.isEmpty(supplier.get()), String.format("The control's %s should be null but was '%s'.", attributeName, supplier.get()));
-        VALIDATED_ATTRIBUTE.broadcast(new ComponentActionEventArgs(this, null, String.format("validate %s is null", attributeName)));
-    }
-
-    protected void defaultValidateAttributeIs(Supplier<String> supplier, String value, String attributeName) {
-        waitUntil((d) -> supplier.get().strip().equals(value), String.format("The control's %s should be '%s' but was '%s'.", attributeName, value, supplier.get()));
-        VALIDATED_ATTRIBUTE.broadcast(new ComponentActionEventArgs(this, value, String.format("validate %s is %s", attributeName, value)));
-    }
-
-    protected void defaultValidateAttributeContains(Supplier<String> supplier, String value, String attributeName) {
-        waitUntil((d) -> supplier.get().strip().contains(value), String.format("The control's %s should contain '%s' but was '%s'.", attributeName, value, supplier.get()));
-        VALIDATED_ATTRIBUTE.broadcast(new ComponentActionEventArgs(this, value, String.format("validate %s contains %s", attributeName, value)));
-    }
-
-    protected void defaultValidateAttributeNotContains(Supplier<String> supplier, String value, String attributeName) {
-        waitUntil((d) -> !supplier.get().strip().contains(value), String.format("The control's %s shouldn't contain '%s' but was '%s'.", attributeName, value, supplier.get()));
-        VALIDATED_ATTRIBUTE.broadcast(new ComponentActionEventArgs(this, value, String.format("validate %s doesn't contain %s", attributeName, value)));
-    }
-
-    private void waitUntil(Function<SearchContext, Boolean> waitCondition, String exceptionMessage) {
-        var webDriverWait = new WebDriverWait(DriverService.getWrappedDriver(), webSettings.getTimeoutSettings().getValidationsTimeout(), webSettings.getTimeoutSettings().getSleepInterval());
-        try {
-            webDriverWait.until(waitCondition);
-        } catch (TimeoutException ex) {
-            DebugInformation.printStackTrace(ex);
-            var validationExceptionMessage = String.format("%s The test failed on URL: %s", exceptionMessage, browserService.getUrl());
-            throw new TimeoutException(validationExceptionMessage, ex);
-        }
     }
 }

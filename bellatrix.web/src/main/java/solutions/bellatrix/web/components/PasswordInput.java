@@ -13,7 +13,10 @@
 
 package solutions.bellatrix.web.components;
 
-public class Email extends WebComponent {
+public class PasswordInput extends WebComponent {
+    public void setPassword(String password) {
+    }
+
     @Override
     public Class<?> getComponentClass() {
         return getClass();

@@ -25,7 +25,7 @@ public final class PluginExecutionEngine {
     }
 
     public static void addPlugin(Plugin plugin) {
-        if (!plugins.stream().anyMatch(p -> p.getClass().getName() == plugin.getClass().getName())) {
+        if (!plugins.stream().anyMatch(p -> p.getClass().getName().equals(plugin.getClass().getName()))) {
             plugins.add(plugin);
         }
     }

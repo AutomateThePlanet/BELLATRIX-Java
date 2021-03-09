@@ -13,7 +13,7 @@
 
 package solutions.bellatrix.web.components;
 
-public class Time extends WebComponent {
+public class TimeInput extends WebComponent {
     @Override
     public Class<?> getComponentClass() {
         return getClass();

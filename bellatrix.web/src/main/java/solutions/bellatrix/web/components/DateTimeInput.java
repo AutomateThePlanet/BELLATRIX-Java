@@ -13,10 +13,7 @@
 
 package solutions.bellatrix.web.components;
 
-public class Phone extends WebComponent {
-    public void setPhone(String phone) {
-    }
-
+public class DateTimeInput extends WebComponent {
     @Override
     public Class<?> getComponentClass() {
         return getClass();

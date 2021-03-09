@@ -28,6 +28,18 @@ import solutions.bellatrix.web.infrastructure.junit.WebTest;
 //@ExecutionBrowser(browser = Browser.CHROME, lifecycle = Lifecycle.REUSE_IF_STARTED)
 public class ProductPurchaseTests extends WebTest {
     @Test
+    public void sandbox() {
+        app().navigate().to("http://demos.bellatrix.solutions/");
+        var addToCartFalcon9 = app().create().byCss(Anchor.class, "[data-product_id*='28']");
+        addToCartFalcon9.validateTargetNotSet();
+        addToCartFalcon9.validateRelIsSet();
+        addToCartFalcon9.validateRelIs("nofollow");
+        addToCartFalcon9.validateTextContains("Add");
+        addToCartFalcon9.validateHtmlContains("cart");
+        addToCartFalcon9.validateHrefIs("http://demos.bellatrix.solutions/?add-to-cart=28");
+    }
+
+    @Test
     public void completePurchaseSuccessfully_first() {
         app().navigate().to("http://demos.bellatrix.solutions/");
         var addToCartFalcon9 = app().create().byCss(Anchor.class,"[data-product_id*='28']");

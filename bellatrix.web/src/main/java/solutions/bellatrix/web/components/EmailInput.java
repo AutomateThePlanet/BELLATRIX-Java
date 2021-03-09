@@ -13,7 +13,7 @@
 
 package solutions.bellatrix.web.components;
 
-public class Week extends WebComponent {
+public class EmailInput extends WebComponent {
     @Override
     public Class<?> getComponentClass() {
         return getClass();

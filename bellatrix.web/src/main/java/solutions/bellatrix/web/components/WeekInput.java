@@ -13,7 +13,7 @@
 
 package solutions.bellatrix.web.components;
 
-public class DateTimeLocal extends WebComponent {
+public class WeekInput extends WebComponent {
     @Override
     public Class<?> getComponentClass() {
         return getClass();

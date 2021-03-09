@@ -13,7 +13,7 @@
 
 package solutions.bellatrix.web.components;
 
-public class Number extends WebComponent {
+public class NumberInput extends WebComponent {
     @Override
     public Class<?> getComponentClass() {
         return getClass();

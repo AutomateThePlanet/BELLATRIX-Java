@@ -11,26 +11,11 @@
  * limitations under the License.
  */
 
-package mainpage;
+package solutions.bellatrix.web.components;
 
-
-import solutions.bellatrix.web.pages.WebPage;
-
-public class MainPage extends WebPage<Map, Asserts> {
-
+public class DateInput extends WebComponent {
     @Override
-    protected String getUrl() {
-        return "http://demos.bellatrix.solutions/";
-    }
-
-    @Override
-    protected void waitForPageLoad() {
-        map().addToCartFalcon9().toExists().waitToBe();
-    }
-
-    public void addRocketToShoppingCart(String rocketName) {
-        open();
-        map().getProductAddToCartButtonByName(rocketName).click();
-        map().viewCartButton().click();
+    public Class<?> getComponentClass() {
+        return getClass();
     }
 }

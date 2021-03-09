@@ -13,7 +13,7 @@
 
 package solutions.bellatrix.web.components;
 
-public class Month extends WebComponent {
+public class MonthInput extends WebComponent {
     @Override
     public Class<?> getComponentClass() {
         return getClass();
