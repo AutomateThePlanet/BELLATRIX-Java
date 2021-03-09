@@ -6,8 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="55b01a59-bddd-4a9d-b423-43bd7933f1ee" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bellatrix.ios/src/main/java/solutions/bellatrix/ios/findstrategies/ClassFindStrategy.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.ios/src/main/java/solutions/bellatrix/ios/findstrategies/ClassFindStrategy.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bellatrix.ios/src/main/java/solutions/bellatrix/ios/services/ComponentCreateService.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.ios/src/main/java/solutions/bellatrix/ios/services/ComponentCreateService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.layout/bellatrix.layout.iml" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.layout/bellatrix.layout.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.web.tests/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.web.tests/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.web.tests/src/main/java/mainpage/MainPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.web.tests/src/main/java/mainpage/MainPage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.web.tests/src/test/java/junit/ProductPurchaseTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.web.tests/src/test/java/junit/ProductPurchaseTests.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,7 +28,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../BELLATRIX-Kotlin" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.0" />

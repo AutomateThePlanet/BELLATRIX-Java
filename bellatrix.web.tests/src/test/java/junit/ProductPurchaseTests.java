@@ -34,9 +34,12 @@ public class ProductPurchaseTests extends WebTest {
         var blogLink = app().create().by(Anchor.class, TextContains.by("Blog"));
         addToCartFalcon9.click();
 
-        blogLink.above(addToCartFalcon9).greaterThan(30).validate();
+        blogLink.below(addToCartFalcon9).greaterThan(30).validate();
         blogLink.above(addToCartFalcon9).validate();
+
         blogLink.height().equal(10).validate();
+
+
         blogLink.width().greaterThanOrEqual(10).validate();
         blogLink.inside(addToCartFalcon9).validate();
         blogLink.topInside(addToCartFalcon9).greaterThan(5).validate();
