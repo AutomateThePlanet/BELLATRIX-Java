@@ -13,12 +13,15 @@
 
 package solutions.bellatrix.web.components;
 
-public class Heading extends WebComponent {
+import solutions.bellatrix.web.components.contracts.ComponentText;
+
+public class Heading extends WebComponent implements ComponentText {
     @Override
     public Class<?> getComponentClass() {
         return getClass();
     }
 
+    @Override
     public String getText() {
         return defaultGetText();
     }

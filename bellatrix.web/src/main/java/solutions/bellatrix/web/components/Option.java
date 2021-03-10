@@ -13,9 +13,34 @@
 
 package solutions.bellatrix.web.components;
 
-public class Option extends WebComponent {
+import solutions.bellatrix.web.components.contracts.ComponentDisabled;
+import solutions.bellatrix.web.components.contracts.ComponentSelected;
+import solutions.bellatrix.web.components.contracts.ComponentText;
+import solutions.bellatrix.web.components.contracts.ComponentValue;
+
+public class Option extends WebComponent implements ComponentText, ComponentValue, ComponentDisabled, ComponentSelected {
     @Override
     public Class<?> getComponentClass() {
         return getClass();
+    }
+
+    @Override
+    public boolean isDisabled() {
+        return defaultGetDisabledAttribute();
+    }
+
+    @Override
+    public boolean isSelected() {
+        return findElement().isSelected();
+    }
+
+    @Override
+    public String getText() {
+        return defaultGetText();
+    }
+
+    @Override
+    public String getValue() {
+        return defaultGetValue();
     }
 }

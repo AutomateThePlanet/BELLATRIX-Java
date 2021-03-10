@@ -13,9 +13,79 @@
 
 package solutions.bellatrix.web.components;
 
-public class WeekInput extends WebComponent {
+import solutions.bellatrix.core.plugins.EventListener;
+import solutions.bellatrix.web.components.contracts.*;
+
+public class WeekInput extends WebComponent implements ComponentDisabled, ComponentValue, ComponentWeek, ComponentAutoComplete, ComponentReadonly, ComponentRequired, ComponentMaxText, ComponentMinText, ComponentStep {
+    public final static EventListener<ComponentActionEventArgs> SETTING_WEEK = new EventListener<>();
+    public final static EventListener<ComponentActionEventArgs> WEEK_SET = new EventListener<>();
+
     @Override
     public Class<?> getComponentClass() {
         return getClass();
+    }
+
+    @Override
+    public boolean isAutoComplete() {
+        return false;
+    }
+
+    @Override
+    public boolean isDisabled() {
+        return false;
+    }
+
+    @Override
+    public String getMax() {
+        return null;
+    }
+
+    @Override
+    public String getMin() {
+        return null;
+    }
+
+    @Override
+    public boolean isReadonly() {
+        return false;
+    }
+
+    @Override
+    public boolean isRequired() {
+        return false;
+    }
+
+    @Override
+    public double getStep() {
+        return 0;
+    }
+
+    @Override
+    public String getValue() {
+        return null;
+    }
+
+    @Override
+    public String getWeek() {
+        return null;
+    }
+
+    @Override
+    public void setWeek(int year, int weekNumber) {
+
+    }
+
+    protected void defaultSetWeek(int year, int weekNumber) {
+        if (weekNumber <= 0 || weekNumber > 52) throw new IllegalArgumentException(String.format("The week number should be between 0 and 53 but you specified: %d", weekNumber));
+        if (year <= 0) throw new IllegalArgumentException(String.format("The year should be a positive number but you specified: %d", year));
+
+        String valueToBeSet;
+
+        if (weekNumber < 10) {
+            valueToBeSet = String.format("%d-W0%d", year, weekNumber);
+        } else {
+            valueToBeSet = String.format("%d-W%d", year, weekNumber);
+        }
+        setValue(SETTING_WEEK, WEEK_SET, valueToBeSet);
     }
 }

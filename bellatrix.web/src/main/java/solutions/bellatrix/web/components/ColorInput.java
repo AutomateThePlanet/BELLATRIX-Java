@@ -16,9 +16,9 @@ package solutions.bellatrix.web.components;
 import solutions.bellatrix.core.plugins.EventListener;
 import solutions.bellatrix.web.components.contracts.*;
 
-public class PasswordInput extends WebComponent implements ComponentDisabled, ComponentValue, ComponentPassword, ComponentAutoComplete, ComponentReadonly, ComponentRequired, ComponentMaxLength, ComponentMinLength, ComponentSize, ComponentPlaceholder {
-    public final static EventListener<ComponentActionEventArgs> SETTING_PASSWORD = new EventListener<>();
-    public final static EventListener<ComponentActionEventArgs> PASSWORD_SET = new EventListener<>();
+public class ColorInput extends WebComponent implements ComponentDisabled, ComponentValue, ComponentColor, ComponentList, ComponentAutoComplete, ComponentRequired {
+    public final static EventListener<ComponentActionEventArgs> SETTING_COLOR = new EventListener<>();
+    public final static EventListener<ComponentActionEventArgs> COLOR_SET = new EventListener<>();
 
     @Override
     public Class<?> getComponentClass() {
@@ -26,13 +26,13 @@ public class PasswordInput extends WebComponent implements ComponentDisabled, Co
     }
 
     @Override
-    public String getPassword() {
+    public String getColor() {
         return getValue();
     }
 
     @Override
-    public void setPassword(String value) {
-        setValue(SETTING_PASSWORD, PASSWORD_SET, value);
+    public void setColor(String value) {
+        setValue(SETTING_COLOR, COLOR_SET, value);
     }
 
     @Override
@@ -46,33 +46,13 @@ public class PasswordInput extends WebComponent implements ComponentDisabled, Co
     }
 
     @Override
-    public int getMaxLength() {
-        return Integer.parseInt(defaultGetMaxLength());
-    }
-
-    @Override
-    public int getMinLength() {
-        return Integer.parseInt(defaultGetMinLength());
-    }
-
-    @Override
-    public String getPlaceholder() {
-        return defaultGetPlaceholderAttribute();
-    }
-
-    @Override
-    public boolean isReadonly() {
-        return defaultGetReadonlyAttribute();
+    public String getList() {
+        return defaultGetList();
     }
 
     @Override
     public boolean isRequired() {
         return defaultGetRequiredAttribute();
-    }
-
-    @Override
-    public int getSizeAttribute() {
-        return Integer.parseInt(defaultGetSizeAttribute());
     }
 
     @Override

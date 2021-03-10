@@ -14,17 +14,79 @@
 package solutions.bellatrix.web.components;
 
 import solutions.bellatrix.core.plugins.EventListener;
+import solutions.bellatrix.web.components.contracts.*;
 
-public class TextField extends WebComponent {
+public class TextField extends WebComponent implements ComponentDisabled, ComponentText, ComponentHtml, ComponentValue, ComponentAutoComplete, ComponentReadonly, ComponentRequired, ComponentMaxLength, ComponentMinLength, ComponentSize, ComponentPlaceholder {
     public final static EventListener<ComponentActionEventArgs> SETTING_TEXT = new EventListener<>();
     public final static EventListener<ComponentActionEventArgs> TEXT_SET = new EventListener<>();
+
+    @Override
+    public Class<?> getComponentClass() {
+        return getClass();
+    }
+
+    @Override
+    public String getText() {
+        String text = defaultGetText();
+
+        if(text.isEmpty()) {
+            return defaultGetValue();
+        }
+
+        return text;
+    }
 
     public void setText(String value) {
         defaultSetText(SETTING_TEXT, TEXT_SET, value);
     }
 
     @Override
-    public Class<?> getComponentClass() {
-        return getClass();
+    public boolean isAutoComplete() {
+        return defaultGetAutoCompleteAttribute();
+    }
+
+    @Override
+    public boolean isDisabled() {
+        return defaultGetDisabledAttribute();
+    }
+
+    @Override
+    public String getHtml() {
+        return defaultGetInnerHtmlAttribute();
+    }
+
+    @Override
+    public int getMaxLength() {
+        return Integer.parseInt(defaultGetMaxLength());
+    }
+
+    @Override
+    public int getMinLength() {
+        return Integer.parseInt(defaultGetMinLength());
+    }
+
+    @Override
+    public String getPlaceholder() {
+        return defaultGetPlaceholderAttribute();
+    }
+
+    @Override
+    public boolean isReadonly() {
+        return defaultGetReadonlyAttribute();
+    }
+
+    @Override
+    public boolean isRequired() {
+        return defaultGetRequiredAttribute();
+    }
+
+    @Override
+    public int getSizeAttribute() {
+        return Integer.parseInt(defaultGetSizeAttribute());
+    }
+
+    @Override
+    public String getValue() {
+        return defaultGetValue();
     }
 }

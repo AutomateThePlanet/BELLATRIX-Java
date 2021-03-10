@@ -13,12 +13,70 @@
 
 package solutions.bellatrix.web.components;
 
-public class PhoneInput extends WebComponent {
-    public void setPhone(String phone) {
-    }
+import solutions.bellatrix.core.plugins.EventListener;
+import solutions.bellatrix.web.components.contracts.*;
+
+public class PhoneInput extends WebComponent implements ComponentDisabled, ComponentValue, ComponentPhone, ComponentAutoComplete, ComponentReadonly, ComponentRequired, ComponentMaxLength, ComponentMinLength, ComponentSize, ComponentPlaceholder {
+    public final static EventListener<ComponentActionEventArgs> SETTING_PHONE = new EventListener<>();
+    public final static EventListener<ComponentActionEventArgs> PHONE_SET = new EventListener<>();
 
     @Override
     public Class<?> getComponentClass() {
         return getClass();
+    }
+
+    @Override
+    public String getPhone() {
+        return getValue();
+    }
+
+    @Override
+    public void setPhone(String value) {
+        setValue(SETTING_PHONE, PHONE_SET, value);
+    }
+
+    @Override
+    public boolean isAutoComplete() {
+        return defaultGetAutoCompleteAttribute();
+    }
+
+    @Override
+    public boolean isDisabled() {
+        return defaultGetDisabledAttribute();
+    }
+
+    @Override
+    public int getMaxLength() {
+        return Integer.parseInt(defaultGetMaxLength());
+    }
+
+    @Override
+    public int getMinLength() {
+        return Integer.parseInt(defaultGetMinLength());
+    }
+
+    @Override
+    public String getPlaceholder() {
+        return defaultGetPlaceholderAttribute();
+    }
+
+    @Override
+    public boolean isReadonly() {
+        return defaultGetReadonlyAttribute();
+    }
+
+    @Override
+    public boolean isRequired() {
+        return defaultGetRequiredAttribute();
+    }
+
+    @Override
+    public int getSizeAttribute() {
+        return Integer.parseInt(defaultGetSizeAttribute());
+    }
+
+    @Override
+    public String getValue() {
+        return defaultGetValue();
     }
 }

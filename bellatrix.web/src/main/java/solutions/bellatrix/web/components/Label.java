@@ -13,9 +13,28 @@
 
 package solutions.bellatrix.web.components;
 
-public class Label extends WebComponent {
+import solutions.bellatrix.web.components.contracts.ComponentFor;
+import solutions.bellatrix.web.components.contracts.ComponentHtml;
+import solutions.bellatrix.web.components.contracts.ComponentText;
+
+public class Label extends WebComponent implements ComponentText, ComponentHtml, ComponentFor {
     @Override
     public Class<?> getComponentClass() {
         return getClass();
+    }
+
+    @Override
+    public String getFor() {
+        return defaultGetForAttribute();
+    }
+
+    @Override
+    public String getHtml() {
+        return defaultGetInnerHtmlAttribute();
+    }
+
+    @Override
+    public String getText() {
+        return defaultGetText();
     }
 }

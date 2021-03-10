@@ -13,9 +13,70 @@
 
 package solutions.bellatrix.web.components;
 
-public class EmailInput extends WebComponent {
+import solutions.bellatrix.core.plugins.EventListener;
+import solutions.bellatrix.web.components.contracts.*;
+
+public class EmailInput extends WebComponent implements ComponentDisabled, ComponentValue, ComponentEmail, ComponentAutoComplete, ComponentReadonly, ComponentRequired, ComponentMaxLength, ComponentMinLength, ComponentSize, ComponentPlaceholder {
+    public final static EventListener<ComponentActionEventArgs> SETTING_EMAIL = new EventListener<>();
+    public final static EventListener<ComponentActionEventArgs> EMAIL_SET = new EventListener<>();
+
     @Override
     public Class<?> getComponentClass() {
         return getClass();
+    }
+
+    @Override
+    public String getEmail() {
+        return getValue();
+    }
+
+    @Override
+    public void setEmail(String email) {
+        setValue(SETTING_EMAIL, EMAIL_SET, email);
+    }
+
+    @Override
+    public boolean isAutoComplete() {
+        return defaultGetAutoCompleteAttribute();
+    }
+
+    @Override
+    public boolean isDisabled() {
+        return defaultGetDisabledAttribute();
+    }
+
+    @Override
+    public int getMaxLength() {
+        return Integer.parseInt(defaultGetMaxLength());
+    }
+
+    @Override
+    public int getMinLength() {
+        return Integer.parseInt(defaultGetMinLength());
+    }
+
+    @Override
+    public String getPlaceholder() {
+        return defaultGetPlaceholderAttribute();
+    }
+
+    @Override
+    public boolean isReadonly() {
+        return defaultGetReadonlyAttribute();
+    }
+
+    @Override
+    public boolean isRequired() {
+        return defaultGetRequiredAttribute();
+    }
+
+    @Override
+    public int getSizeAttribute() {
+        return Integer.parseInt(defaultGetSizeAttribute());
+    }
+
+    @Override
+    public String getValue() {
+        return defaultGetValue();
     }
 }

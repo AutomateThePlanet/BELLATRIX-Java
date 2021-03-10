@@ -20,7 +20,7 @@ import lombok.Setter;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.*;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.support.ui.Select;
 import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.web.configuration.WebSettings;
 import solutions.bellatrix.core.plugins.EventListener;
@@ -42,8 +42,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
-import java.util.function.Function;
-import java.util.function.Supplier;
 
 import static org.apache.commons.lang3.StringEscapeUtils.unescapeHtml4;
 
@@ -357,10 +355,48 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
         clicked.broadcast(new ComponentActionEventArgs(this));
     }
 
+    protected void defaultCheck(EventListener<ComponentActionEventArgs> clicking, EventListener<ComponentActionEventArgs> clicked)
+    {
+        clicking.broadcast(new ComponentActionEventArgs(this));
+
+        this.toExists().toBeClickable().waitToBe();
+        if (!findElement().isSelected()) {
+            javaScriptService.execute("arguments[0].focus();arguments[0].click();", wrappedElement);
+        }
+
+        clicked.broadcast(new ComponentActionEventArgs(this));
+    }
+
+    protected void defaultUncheck(EventListener<ComponentActionEventArgs> clicking, EventListener<ComponentActionEventArgs> clicked)
+    {
+        clicking.broadcast(new ComponentActionEventArgs(this));
+
+        this.toExists().toBeClickable().waitToBe();
+        if (findElement().isSelected()) {
+            javaScriptService.execute("arguments[0].focus();arguments[0].click();", wrappedElement);
+        }
+
+        clicked.broadcast(new ComponentActionEventArgs(this));
+    }
+
     protected void setValue(EventListener<ComponentActionEventArgs> gettingValue, EventListener<ComponentActionEventArgs> gotValue, String value)
     {
         gettingValue.broadcast(new ComponentActionEventArgs(this));
-        setAttribute("value", value);
+        javaScriptService.execute(String.format("arguments[0].value = '%s';", value), findElement());
+        gotValue.broadcast(new ComponentActionEventArgs(this));
+    }
+
+    protected void defaultSelectByText(EventListener<ComponentActionEventArgs> gettingValue, EventListener<ComponentActionEventArgs> gotValue, String value)
+    {
+        gettingValue.broadcast(new ComponentActionEventArgs(this));
+        new Select(findElement()).selectByVisibleText(value);
+        gotValue.broadcast(new ComponentActionEventArgs(this));
+    }
+
+    protected void defaultSelectByIndex(EventListener<ComponentActionEventArgs> gettingValue, EventListener<ComponentActionEventArgs> gotValue, int value)
+    {
+        gettingValue.broadcast(new ComponentActionEventArgs(this));
+        new Select(findElement()).selectByIndex(value);
         gotValue.broadcast(new ComponentActionEventArgs(this));
     }
 
@@ -382,6 +418,34 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
 
     protected String defaultGetSizeAttribute() {
         return Optional.ofNullable(getAttribute("size")).orElse("");
+    }
+
+    protected String defaultGetSizesAttribute() {
+        return Optional.ofNullable(getAttribute("sizes")).orElse("");
+    }
+
+    protected String defaultGetSrcAttribute() {
+        return Optional.ofNullable(getAttribute("src")).orElse("");
+    }
+
+    protected String defaultGetSrcSetAttribute() {
+        return Optional.ofNullable(getAttribute("srcset")).orElse("");
+    }
+
+    protected String defaultGetAltAttribute() {
+        return Optional.ofNullable(getAttribute("alt")).orElse("");
+    }
+
+    protected String defaultGetColsAttribute() {
+        return Optional.ofNullable(getAttribute("cols")).orElse("");
+    }
+
+    protected String defaultGetRowsAttribute() {
+        return Optional.ofNullable(getAttribute("rows")).orElse("");
+    }
+
+    protected String defaultGetLongDescAttribute() {
+        return Optional.ofNullable(getAttribute("longdesc")).orElse("");
     }
 
     protected String defaultGetHeightAttribute() {
@@ -410,7 +474,7 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
 
     protected Boolean defaultGetDisabledAttribute() {
         var valueAttr = Optional.ofNullable(getAttribute("disabled")).orElse("false");
-        return valueAttr.toLowerCase(Locale.ROOT) == "true";
+        return valueAttr.toLowerCase(Locale.ROOT).equals("true");
     }
 
     protected String defaultGetText() {
@@ -429,6 +493,10 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
         return Optional.ofNullable(getAttribute("step")).orElse("");
     }
 
+    protected String defaultGetWrapAttribute() {
+        return Optional.ofNullable(getAttribute("wrap")).orElse("");
+    }
+
     protected String defaultGetPlaceholderAttribute() {
         return Optional.ofNullable(getAttribute("placeholder")).orElse("");
     }
@@ -438,7 +506,11 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
     }
 
     protected Boolean defaultGetAutoCompleteAttribute() {
-        return Optional.ofNullable(getAttribute("autocomplete")).orElse("") == "on";
+        return Optional.ofNullable(getAttribute("autocomplete")).orElse("").equals("on");
+    }
+
+    protected Boolean defaultGetSpellCheckAttribute() {
+        return Optional.ofNullable(getAttribute("spellcheck")).orElse("").equals("on");
     }
 
     protected Boolean defaultGetReadonlyAttribute() {
@@ -448,6 +520,11 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
     protected Boolean defaultGetRequiredAttribute()
     {
         return !StringUtils.isEmpty(Optional.ofNullable(getAttribute("required")).orElse(""));
+    }
+
+    protected Boolean defaultGetMultipleAttribute()
+    {
+        return !StringUtils.isEmpty(Optional.ofNullable(getAttribute("multiple")).orElse(""));
     }
 
     protected String defaultGetList() {

@@ -25,19 +25,19 @@ public interface ComponentUrl extends Component {
     void setUrl(String url);
 
     @SneakyThrows
-    default void validateTargetIs(String value) {
+    default void validateUrlIs(String value) {
         Method method = WebValidator.class.getDeclaredMethod("defaultValidateAttributeIs", WebComponent.class, String.class, String.class, String.class);
         method.invoke(SingletonFactory.getInstance(WebValidator.class), (WebComponent)this, getUrl(), value, "URL");
     }
 
     @SneakyThrows
-    default void validateTargetIsContains(String value) {
+    default void validateUrlIsContains(String value) {
         Method method = WebValidator.class.getDeclaredMethod("defaultValidateAttributeContains", WebComponent.class, String.class, String.class, String.class);
         method.invoke(SingletonFactory.getInstance(WebValidator.class), (WebComponent)this, getUrl(), value, "URL");
     }
 
     @SneakyThrows
-    default void validateTargetNotContains(String value) {
+    default void validateUrlNotContains(String value) {
         Method method = WebValidator.class.getDeclaredMethod("defaultValidateAttributeNotContains", WebComponent.class, String.class, String.class, String.class);
         method.invoke(SingletonFactory.getInstance(WebValidator.class), (WebComponent)this, getUrl(), value, "URL");
     }

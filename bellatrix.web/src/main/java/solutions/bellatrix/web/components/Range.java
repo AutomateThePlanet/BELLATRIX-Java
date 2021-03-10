@@ -13,9 +13,65 @@
 
 package solutions.bellatrix.web.components;
 
-public class Range extends WebComponent {
+import solutions.bellatrix.core.plugins.EventListener;
+import solutions.bellatrix.web.components.contracts.*;
+
+public class Range extends WebComponent implements ComponentDisabled, ComponentValue, ComponentRange, ComponentList, ComponentAutoComplete, ComponentRequired, ComponentMax, ComponentMin, ComponentStep {
+    public final static EventListener<ComponentActionEventArgs> SETTING_RANGE = new EventListener<>();
+    public final static EventListener<ComponentActionEventArgs> RANGE_SET = new EventListener<>();
+
     @Override
     public Class<?> getComponentClass() {
         return getClass();
+    }
+
+    @Override
+    public double getRange() {
+        return Double.parseDouble(getValue());
+    }
+
+    @Override
+    public void setRange(Number value) {
+        setValue(SETTING_RANGE, RANGE_SET, String.valueOf(value));
+    }
+
+    @Override
+    public boolean isAutoComplete() {
+        return defaultGetAutoCompleteAttribute();
+    }
+
+    @Override
+    public boolean isDisabled() {
+        return defaultGetDisabledAttribute();
+    }
+
+    @Override
+    public String getList() {
+        return defaultGetList();
+    }
+
+    @Override
+    public double getMax() {
+        return Double.parseDouble(defaultGetMaxAttribute());
+    }
+
+    @Override
+    public double getMin() {
+        return Double.parseDouble(defaultGetMinAttribute());
+    }
+
+    @Override
+    public boolean isRequired() {
+        return defaultGetRequiredAttribute();
+    }
+
+    @Override
+    public double getStep() {
+        return Double.parseDouble(defaultGetStepAttribute());
+    }
+
+    @Override
+    public String getValue() {
+        return defaultGetValue();
     }
 }

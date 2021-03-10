@@ -13,22 +13,34 @@
 
 package solutions.bellatrix.web.components;
 
-import solutions.bellatrix.web.components.contracts.ComponentHtml;
-import solutions.bellatrix.web.components.contracts.ComponentText;
+import solutions.bellatrix.core.plugins.EventListener;
+import solutions.bellatrix.web.components.contracts.*;
 
-public class Div extends WebComponent implements ComponentText, ComponentHtml {
+public class FileInput extends WebComponent implements ComponentRequired, ComponentMultiple, ComponentAccept {
+    public final static EventListener<ComponentActionEventArgs> UPLOADING = new EventListener<>();
+    public final static EventListener<ComponentActionEventArgs> UPLOADED = new EventListener<>();
+
     @Override
     public Class<?> getComponentClass() {
         return getClass();
     }
 
-    @Override
-    public String getHtml() {
-        return defaultGetInnerHtmlAttribute();
+    public void upload(String file) {
+        defaultSetText(UPLOADING, UPLOADED, file);
     }
 
     @Override
-    public String getText() {
-        return defaultGetText();
+    public String getAccept() {
+        return defaultGetAcceptAttribute();
+    }
+
+    @Override
+    public boolean isMultiple() {
+        return defaultGetMultipleAttribute();
+    }
+
+    @Override
+    public boolean isRequired() {
+        return defaultGetRequiredAttribute();
     }
 }

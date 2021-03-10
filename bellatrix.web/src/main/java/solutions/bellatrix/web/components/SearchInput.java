@@ -16,9 +16,9 @@ package solutions.bellatrix.web.components;
 import solutions.bellatrix.core.plugins.EventListener;
 import solutions.bellatrix.web.components.contracts.*;
 
-public class MonthInput extends WebComponent implements ComponentDisabled, ComponentValue, ComponentMonth, ComponentAutoComplete, ComponentReadonly, ComponentRequired, ComponentMaxText, ComponentMinText, ComponentStep {
-    public final static EventListener<ComponentActionEventArgs> SETTING_MONTH = new EventListener<>();
-    public final static EventListener<ComponentActionEventArgs> MONTH_SET = new EventListener<>();
+public class SearchInput extends WebComponent implements ComponentDisabled, ComponentValue, ComponentSearch, ComponentAutoComplete, ComponentReadonly, ComponentRequired, ComponentMaxLength, ComponentMinLength, ComponentSize, ComponentPlaceholder {
+    public final static EventListener<ComponentActionEventArgs> SETTING_SEARCH = new EventListener<>();
+    public final static EventListener<ComponentActionEventArgs> SEARCH_SET = new EventListener<>();
 
     @Override
     public Class<?> getComponentClass() {
@@ -26,13 +26,13 @@ public class MonthInput extends WebComponent implements ComponentDisabled, Compo
     }
 
     @Override
-    public String getMonth() {
+    public String getSearch() {
         return getValue();
     }
 
     @Override
-    public void setMonth(int year, int monthNumber) {
-        defaultSetMonth(year, monthNumber);
+    public void setSearch(String search) {
+        setValue(SETTING_SEARCH, SEARCH_SET, search);
     }
 
     @Override
@@ -46,13 +46,18 @@ public class MonthInput extends WebComponent implements ComponentDisabled, Compo
     }
 
     @Override
-    public String getMax() {
-        return defaultGetMaxAttribute();
+    public int getMaxLength() {
+        return Integer.parseInt(defaultGetMaxLength());
     }
 
     @Override
-    public String getMin() {
-        return defaultGetMinAttribute();
+    public int getMinLength() {
+        return Integer.parseInt(defaultGetMinLength());
+    }
+
+    @Override
+    public String getPlaceholder() {
+        return defaultGetPlaceholderAttribute();
     }
 
     @Override
@@ -66,26 +71,12 @@ public class MonthInput extends WebComponent implements ComponentDisabled, Compo
     }
 
     @Override
-    public double getStep() {
-        return Double.parseDouble(defaultGetStepAttribute());
+    public int getSizeAttribute() {
+        return Integer.parseInt(defaultGetSizeAttribute());
     }
 
     @Override
     public String getValue() {
         return defaultGetValue();
-    }
-
-    protected void defaultSetMonth(int year, int monthNumber) {
-        if (monthNumber <= 0 || monthNumber > 12) throw new IllegalArgumentException(String.format("The month number should be between 0 and 12 but you specified: %d", monthNumber));
-        if (year <= 0) throw new IllegalArgumentException(String.format("The year should be a positive number but you specified: %d", year));
-
-        String valueToBeSet;
-
-        if (monthNumber < 10) {
-            valueToBeSet = String.format("%d-0%d", year, monthNumber);
-        } else {
-            valueToBeSet = String.format("%d-%d", year, monthNumber);
-        }
-        setValue(SETTING_MONTH, MONTH_SET, valueToBeSet);
     }
 }
