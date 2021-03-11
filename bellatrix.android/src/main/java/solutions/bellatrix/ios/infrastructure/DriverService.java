@@ -71,7 +71,7 @@ public class DriverService {
             driver = initializeDriverRegularMode(androidSettings.getServiceUrl());
         } else {
             var gridSettings = androidSettings.getGridSettings().stream().filter(g -> g.getProviderName().equals(executionType.toLowerCase())).findFirst();
-            assert gridSettings != null : String.format("The specified execution type '%s' is not declared in the configuration", executionType);
+            assert gridSettings.isPresent() : String.format("The specified execution type '%s' is not declared in the configuration", executionType);
             driver = initializeDriverGridMode(gridSettings.get());
         }
 
