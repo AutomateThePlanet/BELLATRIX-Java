@@ -17,5 +17,5 @@ import lombok.Getter;
 import lombok.Setter;
 
 public class TroubleshootingSettings {
-    @Getter @Setter private boolean debugInformationEnabled;
+    @Getter @Setter private Boolean debugInformationEnabled;
 }
