@@ -55,7 +55,7 @@ public class AppService extends MobileService {
         getWrappedIOSDriver().removeApp(appId);
     }
 
-    public Boolean isAppInstalled(String bundleId) {
+    public boolean isAppInstalled(String bundleId) {
         try {
             return getWrappedIOSDriver().isAppInstalled(bundleId);
         }

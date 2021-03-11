@@ -153,7 +153,7 @@ public class BrowserService extends WebService {
         long sleepInterval = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getSleepInterval();
         var webDriverWait = new WebDriverWait(getWrappedDriver(), ajaxTimeout, sleepInterval);
         var javascriptExecutor = (JavascriptExecutor) getWrappedDriver();
-        webDriverWait.until(d -> (Boolean) javascriptExecutor.executeScript("return window.jQuery != undefined && jQuery.active == 0"));
+        webDriverWait.until(d -> (boolean) javascriptExecutor.executeScript("return window.jQuery != undefined && jQuery.active == 0"));
     }
 
     public void waitForAjaxRequest(String requestPartialUrl, int additionalTimeoutInSeconds) {
@@ -185,7 +185,7 @@ public class BrowserService extends WebService {
         long waitForJavaScriptAnimationsTimeout = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getWaitForJavaScriptAnimationsTimeout();
         long sleepInterval = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getSleepInterval();
         var webDriverWait = new WebDriverWait(getWrappedDriver(), waitForJavaScriptAnimationsTimeout, sleepInterval);
-        webDriverWait.until(d -> (Boolean) javascriptExecutor.executeScript("return jQuery && jQuery(':animated').length === 0"));
+        webDriverWait.until(d -> (boolean) javascriptExecutor.executeScript("return jQuery && jQuery(':animated').length === 0"));
     }
 
     public void waitForAngular() {
@@ -195,13 +195,13 @@ public class BrowserService extends WebService {
 
         String isAngular5 = (String) javascriptExecutor.executeScript("return getAllAngularRootElements()[0].attributes['ng-version']");
         if (StringUtils.isBlank(isAngular5)) {
-            webDriverWait.until(d -> (Boolean) javascriptExecutor.executeScript("return window.getAllAngularTestabilities().findIndex(x=>!x.isStable()) === -1"));
+            webDriverWait.until(d -> (boolean) javascriptExecutor.executeScript("return window.getAllAngularTestabilities().findIndex(x=>!x.isStable()) === -1"));
         } else {
-            Boolean isAngularDefined = (Boolean) javascriptExecutor.executeScript("return window.angular === undefined");
-            if (!((Boolean) isAngularDefined)) {
-                Boolean isAngularInjectorUnDefined = (Boolean) javascriptExecutor.executeScript("return angular.element(document).injector() === undefined");
+            boolean isAngularDefined = (boolean) javascriptExecutor.executeScript("return window.angular === undefined");
+            if (!((boolean) isAngularDefined)) {
+                boolean isAngularInjectorUnDefined = (boolean) javascriptExecutor.executeScript("return angular.element(document).injector() === undefined");
                 if (!isAngularInjectorUnDefined) {
-                    webDriverWait.until(d -> (Boolean) javascriptExecutor.executeScript("return angular.element(document).injector().get('$http').pendingRequests.length === 0"));
+                    webDriverWait.until(d -> (boolean) javascriptExecutor.executeScript("return angular.element(document).injector().get('$http').pendingRequests.length === 0"));
                 }
             }
         }

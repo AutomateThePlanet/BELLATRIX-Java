@@ -99,7 +99,7 @@ public class BrowserLifecyclePlugin extends Plugin {
         previousBrowserConfiguration.set(currentBrowserConfiguration.get());
     }
 
-    private Boolean shouldRestartBrowser() {
+    private boolean shouldRestartBrowser() {
         // TODO: IsBrowserStartedCorrectly getter?
         var previousConfiguration = previousBrowserConfiguration.get();
         var currentConfiguration = currentBrowserConfiguration.get();

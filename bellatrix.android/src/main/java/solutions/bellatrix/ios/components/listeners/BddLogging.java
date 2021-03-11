@@ -17,7 +17,7 @@ import solutions.bellatrix.ios.components.Anchor;
 import solutions.bellatrix.ios.components.AndroidComponent;
 
 public class BddLogging {
-    private static Boolean isBddLoggingTurnedOn = false;
+    private static boolean isBddLoggingTurnedOn = false;
     public static void addPlugin() {
         if (!isBddLoggingTurnedOn) {
             Anchor.CLICKING.addListener((x) -> System.out.println(String.format("clicking %s\n", x.getComponent().getElementName())));

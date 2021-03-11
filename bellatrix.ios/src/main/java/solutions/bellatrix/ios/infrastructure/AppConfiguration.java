@@ -32,7 +32,7 @@ public class AppConfiguration {
         return appiumOptions;
     }
 
-    public AppConfiguration(Boolean isMobileWebExecution) {
+    public AppConfiguration(boolean isMobileWebExecution) {
         this.isMobileWebExecution = isMobileWebExecution;
     }
 

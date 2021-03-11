@@ -227,7 +227,7 @@ public class AndroidComponent extends LayoutComponentValidationsBuilder implemen
         clicked.broadcast(new ComponentActionEventArgs(this));
     }
 
-    protected Boolean defaultGetDisabledAttribute() {
+    protected boolean defaultGetDisabledAttribute() {
         var valueAttr = Optional.ofNullable(getAttribute("disabled")).orElse("false");
         return valueAttr.toLowerCase(Locale.ROOT) == "true";
     }
@@ -272,7 +272,7 @@ public class AndroidComponent extends LayoutComponentValidationsBuilder implemen
         }
     }
 
-    private void scrollToVisible(MobileElement wrappedElement, Boolean shouldWait)
+    private void scrollToVisible(MobileElement wrappedElement, boolean shouldWait)
     {
         SCROLLING_TO_VISIBLE.broadcast(new ComponentActionEventArgs(this));
         try {

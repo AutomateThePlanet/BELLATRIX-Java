@@ -17,7 +17,7 @@ import solutions.bellatrix.web.components.Anchor;
 import solutions.bellatrix.web.components.WebComponent;
 
 public class BddLogging {
-    private static Boolean isBddLoggingTurnedOn = false;
+    private static boolean isBddLoggingTurnedOn = false;
     public static void addPlugin() {
         if (!isBddLoggingTurnedOn) {
             Anchor.CLICKING.addListener((x) -> System.out.printf("clicking %s%n", x.getComponent().getElementName()));

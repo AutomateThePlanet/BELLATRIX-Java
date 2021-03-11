@@ -19,7 +19,7 @@ import solutions.bellatrix.web.infrastructure.ProxyServer;
 import solutions.bellatrix.web.pages.WebPage;
 
 public class App implements AutoCloseable {
-    private Boolean disposed = false;
+    private boolean disposed = false;
 
     public NavigationService navigate() {
         return SingletonFactory.getInstance(NavigationService.class);

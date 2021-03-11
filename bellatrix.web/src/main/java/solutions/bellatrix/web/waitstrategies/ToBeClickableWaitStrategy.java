@@ -39,7 +39,7 @@ public class ToBeClickableWaitStrategy extends WaitStrategy {
         waitUntil((x) -> elementIsClickable(searchContext, by));
     }
 
-    private Boolean elementIsClickable(SearchContext searchContext, By by)
+    private boolean elementIsClickable(SearchContext searchContext, By by)
     {
         var element = findElement(searchContext, by);
         try

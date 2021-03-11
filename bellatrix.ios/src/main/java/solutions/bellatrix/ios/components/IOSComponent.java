@@ -266,7 +266,7 @@ public class IOSComponent extends LayoutComponentValidationsBuilder implements C
         clicked.broadcast(new ComponentActionEventArgs(this));
     }
 
-    protected Boolean defaultGetDisabledAttribute() {
+    protected boolean defaultGetDisabledAttribute() {
         var valueAttr = Optional.ofNullable(getAttribute("disabled")).orElse("false");
         return valueAttr.toLowerCase(Locale.ROOT) == "true";
     }
@@ -311,7 +311,7 @@ public class IOSComponent extends LayoutComponentValidationsBuilder implements C
         }
     }
 
-    private void scrollToVisible(MobileElement wrappedElement, Boolean shouldWait)
+    private void scrollToVisible(MobileElement wrappedElement, boolean shouldWait)
     {
         SCROLLING_TO_VISIBLE.broadcast(new ComponentActionEventArgs(this));
         try {

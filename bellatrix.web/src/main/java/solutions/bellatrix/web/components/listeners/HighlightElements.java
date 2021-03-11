@@ -18,7 +18,7 @@ import solutions.bellatrix.web.configuration.WebSettings;
 import solutions.bellatrix.web.components.WebComponent;
 
 public class HighlightElements {
-    private static Boolean isHighlightElementsAdded = false;
+    private static boolean isHighlightElementsAdded = false;
     public static void addPlugin() {
         if (!isHighlightElementsAdded) {
             var shouldHighlightElements = ConfigurationService.get(WebSettings.class).getShouldHighlightElements();

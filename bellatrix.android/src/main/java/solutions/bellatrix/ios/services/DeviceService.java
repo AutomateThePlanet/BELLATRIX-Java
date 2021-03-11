@@ -39,7 +39,7 @@ public class DeviceService extends MobileService {
         ((Rotatable)getWrappedAndroidDriver()).rotate(newOrientation);
     }
 
-    public Boolean isLocked() {
+    public boolean isLocked() {
         return getWrappedAndroidDriver().isDeviceLocked();
     }
 

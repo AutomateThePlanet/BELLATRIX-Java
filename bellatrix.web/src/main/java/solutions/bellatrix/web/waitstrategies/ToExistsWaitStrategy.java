@@ -38,7 +38,7 @@ public class ToExistsWaitStrategy extends WaitStrategy {
         waitUntil((x) -> elementExists(searchContext, by));
     }
 
-    private Boolean elementExists(SearchContext searchContext, By by)
+    private boolean elementExists(SearchContext searchContext, By by)
     {
         try
         {

@@ -472,7 +472,7 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
         return Optional.ofNullable(getAttribute("rel")).orElse("");
     }
 
-    protected Boolean defaultGetDisabledAttribute() {
+    protected boolean defaultGetDisabledAttribute() {
         var valueAttr = Optional.ofNullable(getAttribute("disabled")).orElse("false");
         return valueAttr.toLowerCase(Locale.ROOT).equals("true");
     }
@@ -505,24 +505,24 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
         return Optional.ofNullable(getAttribute("accept")).orElse(null);
     }
 
-    protected Boolean defaultGetAutoCompleteAttribute() {
+    protected boolean defaultGetAutoCompleteAttribute() {
         return Optional.ofNullable(getAttribute("autocomplete")).orElse("").equals("on");
     }
 
-    protected Boolean defaultGetSpellCheckAttribute() {
+    protected boolean defaultGetSpellCheckAttribute() {
         return Optional.ofNullable(getAttribute("spellcheck")).orElse("").equals("on");
     }
 
-    protected Boolean defaultGetReadonlyAttribute() {
+    protected boolean defaultGetReadonlyAttribute() {
         return !StringUtils.isEmpty(Optional.ofNullable(getAttribute("readonly")).orElse(""));
     }
 
-    protected Boolean defaultGetRequiredAttribute()
+    protected boolean defaultGetRequiredAttribute()
     {
         return !StringUtils.isEmpty(Optional.ofNullable(getAttribute("required")).orElse(""));
     }
 
-    protected Boolean defaultGetMultipleAttribute()
+    protected boolean defaultGetMultipleAttribute()
     {
         return !StringUtils.isEmpty(Optional.ofNullable(getAttribute("multiple")).orElse(""));
     }
@@ -572,7 +572,7 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
         }
     }
 
-    private void scrollToVisible(WebElement wrappedElement, Boolean shouldWait)
+    private void scrollToVisible(WebElement wrappedElement, boolean shouldWait)
     {
         SCROLLING_TO_VISIBLE.broadcast(new ComponentActionEventArgs(this));
         try {

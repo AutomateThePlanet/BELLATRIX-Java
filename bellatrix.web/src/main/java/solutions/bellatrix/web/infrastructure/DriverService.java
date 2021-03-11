@@ -148,7 +148,7 @@ public class DriverService {
 
     private static WebDriver initializeDriverRegularMode() {
         WebDriver driver = null;
-        Boolean shouldCaptureHttpTraffic = ConfigurationService.get(WebSettings.class).getShouldCaptureHttpTraffic();
+        boolean shouldCaptureHttpTraffic = ConfigurationService.get(WebSettings.class).getShouldCaptureHttpTraffic();
         int port = ProxyServer.init();
         String proxyUrl = "127.0.0.1:" + port;
         final var proxyConfig = new Proxy()

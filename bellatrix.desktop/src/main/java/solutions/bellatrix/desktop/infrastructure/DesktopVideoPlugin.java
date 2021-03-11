@@ -22,12 +22,12 @@ import java.io.File;
 import java.util.UUID;
 
 public class DesktopVideoPlugin extends VideoPlugin {
-    public DesktopVideoPlugin(Boolean isEnabled) {
+    public DesktopVideoPlugin(boolean isEnabled) {
         super(isEnabled);
     }
 
     public static DesktopVideoPlugin of() {
-        Boolean isEnabled = ConfigurationService.get(DesktopSettings.class).getVideosOnFailEnabled();
+        boolean isEnabled = ConfigurationService.get(DesktopSettings.class).getVideosOnFailEnabled();
         return new DesktopVideoPlugin(isEnabled);
     }
 

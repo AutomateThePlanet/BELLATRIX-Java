@@ -22,12 +22,12 @@ import java.io.File;
 import java.util.UUID;
 
 public class MobileVideoPlugin extends VideoPlugin {
-    public MobileVideoPlugin(Boolean isEnabled) {
+    public MobileVideoPlugin(boolean isEnabled) {
         super(isEnabled);
     }
 
     public static MobileVideoPlugin of() {
-        Boolean isEnabled = ConfigurationService.get(AndroidSettings.class).getVideosOnFailEnabled();
+        boolean isEnabled = ConfigurationService.get(AndroidSettings.class).getVideosOnFailEnabled();
         return new MobileVideoPlugin(isEnabled);
     }
 

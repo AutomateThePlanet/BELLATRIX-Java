@@ -26,12 +26,12 @@ import java.nio.file.Paths;
 import java.util.UUID;
 
 public class MobileScreenshotPlugin extends ScreenshotPlugin {
-    public MobileScreenshotPlugin(Boolean isEnabled) {
+    public MobileScreenshotPlugin(boolean isEnabled) {
         super(isEnabled);
     }
 
     public static MobileScreenshotPlugin of() {
-        Boolean isEnabled = ConfigurationService.get(AndroidSettings.class).getScreenshotsOnFailEnabled();
+        boolean isEnabled = ConfigurationService.get(AndroidSettings.class).getScreenshotsOnFailEnabled();
         return new MobileScreenshotPlugin(isEnabled);
     }
 
