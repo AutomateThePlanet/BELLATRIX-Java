@@ -15,9 +15,9 @@ package solutions.bellatrix.web.services;
 
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import solutions.bellatrix.core.configuration.ConfigurationService;
+import solutions.bellatrix.web.components.Frame;
 import solutions.bellatrix.web.configuration.WebSettings;
 
 public class BrowserService extends WebService {
@@ -72,10 +72,8 @@ public class BrowserService extends WebService {
         getWrappedDriver().switchTo().window(tabName);
     }
 
-    public void SwitchToFrame(WebDriver.TargetLocator frame) {
-        if (frame.activeElement() != null) {
-            getWrappedDriver().switchTo().frame(frame.activeElement());
-        }
+    public void switchToFrame(Frame frame) {
+        getWrappedDriver().switchTo().frame(frame.findElement());
     }
 
 //    public void ClearSessionStorage() {

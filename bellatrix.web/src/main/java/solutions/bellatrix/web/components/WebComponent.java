@@ -312,7 +312,7 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
         return componentList;
     }
 
-    protected WebElement findElement() {
+    public WebElement findElement() {
       if (waitStrategies.stream().count() == 0) {
           waitStrategies.add(Wait.to().exists());
       }
