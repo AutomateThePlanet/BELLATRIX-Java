@@ -6,15 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="55b01a59-bddd-4a9d-b423-43bd7933f1ee" name="Default Changelist" comment="removed redundant expression">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bellatrix.ios.tests/target/classes/application.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bellatrix.ios.tests/target/classes/testFrameworkSettings.dev.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bellatrix.ios.tests/target/classes/testFrameworkSettings.qa.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bellatrix.web.tests/src/test/java/testng/ProductPurchaseTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.web.tests/src/test/java/testng/ProductPurchaseTests.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bellatrix.web.tests/target/classes/application.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bellatrix.web.tests/target/classes/testFrameworkSettings.dev.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bellatrix.web.tests/target/classes/testFrameworkSettings.qa.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bellatrix.web/target/classes/META-INF/BELLATRIX.Web.kotlin_module" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bellatrix.web/target/classes/html2canvas.js" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -240,7 +231,21 @@
       <option name="project" value="LOCAL" />
       <updated>1615478306461</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="temporary directory rename">
+      <created>1615517887384</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1615517887384</updated>
+    </task>
+    <task id="LOCAL-00012" summary="duplicate directory in repo fix">
+      <created>1615517991119</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1615517991119</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -266,7 +271,9 @@
     <MESSAGE value="fixed debugInformationEnabled property" />
     <MESSAGE value="improved switchToFrame functionality" />
     <MESSAGE value="added screen and viewport web components" />
-    <option name="LAST_COMMIT_MESSAGE" value="added screen and viewport web components" />
+    <MESSAGE value="temporary directory rename" />
+    <MESSAGE value="duplicate directory in repo fix" />
+    <option name="LAST_COMMIT_MESSAGE" value="duplicate directory in repo fix" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
