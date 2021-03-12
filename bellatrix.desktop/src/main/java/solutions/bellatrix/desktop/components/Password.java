@@ -13,13 +13,29 @@
 
 package solutions.bellatrix.desktop.components;
 
-public class Heading extends DesktopComponent {
+import solutions.bellatrix.core.plugins.EventListener;
+import solutions.bellatrix.desktop.components.contracts.ComponentDate;
+import solutions.bellatrix.desktop.components.contracts.ComponentDisabled;
+
+public class Password extends DesktopComponent implements ComponentDisabled {
+    public final static EventListener<ComponentActionEventArgs> SETTING_PASSWORD = new EventListener<>();
+    public final static EventListener<ComponentActionEventArgs> PASSWORD_SET = new EventListener<>();
+
     @Override
     public Class<?> getComponentClass() {
         return getClass();
     }
 
-    public String getText() {
+    public void setPassword(String password) {
+        defaultSetText(SETTING_PASSWORD, PASSWORD_SET, password);
+    }
+
+    public String getPassword() {
         return defaultGetText();
+    }
+
+    @Override
+    public boolean isDisabled() {
+        return false;
     }
 }

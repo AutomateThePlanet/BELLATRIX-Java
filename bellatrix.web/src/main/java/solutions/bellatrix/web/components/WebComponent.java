@@ -337,7 +337,7 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
           waitStrategies.clear();
       } catch (WebDriverException ex) {
           DebugInformation.printStackTrace(ex);
-          System.out.print(String.format("\n\nThe element: \n Name: '%s', \n Locator: '%s = %s', \nWas not found on the page or didn't fulfill the specified conditions.\n\n", getComponentClass().getSimpleName(), findStrategy.toString(), findStrategy.getValue()));
+          System.out.printf("\n\nThe element: \n Name: '%s', \n Locator: '%s = %s', \nWas not found on the page or didn't fulfill the specified conditions.\n\n", getComponentClass().getSimpleName(), findStrategy.toString(), findStrategy.getValue());
       }
 
         RETURNING_WRAPPED_ELEMENT.broadcast(new ComponentActionEventArgs(this));
@@ -345,8 +345,7 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
     }
 
 
-    protected void defaultClick(EventListener<ComponentActionEventArgs> clicking, EventListener<ComponentActionEventArgs> clicked)
-    {
+    protected void defaultClick(EventListener<ComponentActionEventArgs> clicking, EventListener<ComponentActionEventArgs> clicked) {
         clicking.broadcast(new ComponentActionEventArgs(this));
 
         this.toExists().toBeClickable().waitToBe();
@@ -355,8 +354,7 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
         clicked.broadcast(new ComponentActionEventArgs(this));
     }
 
-    protected void defaultCheck(EventListener<ComponentActionEventArgs> clicking, EventListener<ComponentActionEventArgs> clicked)
-    {
+    protected void defaultCheck(EventListener<ComponentActionEventArgs> clicking, EventListener<ComponentActionEventArgs> clicked) {
         clicking.broadcast(new ComponentActionEventArgs(this));
 
         this.toExists().toBeClickable().waitToBe();
@@ -367,8 +365,7 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
         clicked.broadcast(new ComponentActionEventArgs(this));
     }
 
-    protected void defaultUncheck(EventListener<ComponentActionEventArgs> clicking, EventListener<ComponentActionEventArgs> clicked)
-    {
+    protected void defaultUncheck(EventListener<ComponentActionEventArgs> clicking, EventListener<ComponentActionEventArgs> clicked) {
         clicking.broadcast(new ComponentActionEventArgs(this));
 
         this.toExists().toBeClickable().waitToBe();
@@ -379,22 +376,19 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
         clicked.broadcast(new ComponentActionEventArgs(this));
     }
 
-    protected void setValue(EventListener<ComponentActionEventArgs> gettingValue, EventListener<ComponentActionEventArgs> gotValue, String value)
-    {
+    protected void setValue(EventListener<ComponentActionEventArgs> gettingValue, EventListener<ComponentActionEventArgs> gotValue, String value) {
         gettingValue.broadcast(new ComponentActionEventArgs(this));
         javaScriptService.execute(String.format("arguments[0].value = '%s';", value), findElement());
         gotValue.broadcast(new ComponentActionEventArgs(this));
     }
 
-    protected void defaultSelectByText(EventListener<ComponentActionEventArgs> gettingValue, EventListener<ComponentActionEventArgs> gotValue, String value)
-    {
+    protected void defaultSelectByText(EventListener<ComponentActionEventArgs> gettingValue, EventListener<ComponentActionEventArgs> gotValue, String value) {
         gettingValue.broadcast(new ComponentActionEventArgs(this));
         new Select(findElement()).selectByVisibleText(value);
         gotValue.broadcast(new ComponentActionEventArgs(this));
     }
 
-    protected void defaultSelectByIndex(EventListener<ComponentActionEventArgs> gettingValue, EventListener<ComponentActionEventArgs> gotValue, int value)
-    {
+    protected void defaultSelectByIndex(EventListener<ComponentActionEventArgs> gettingValue, EventListener<ComponentActionEventArgs> gotValue, int value) {
         gettingValue.broadcast(new ComponentActionEventArgs(this));
         new Select(findElement()).selectByIndex(value);
         gotValue.broadcast(new ComponentActionEventArgs(this));

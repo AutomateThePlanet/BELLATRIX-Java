@@ -13,15 +13,40 @@
 
 package solutions.bellatrix.desktop.components;
 
-public class CheckBox extends DesktopComponent {
+import solutions.bellatrix.core.plugins.EventListener;
+import solutions.bellatrix.desktop.components.contracts.ComponentChecked;
+import solutions.bellatrix.desktop.components.contracts.ComponentDisabled;
+
+public class CheckBox extends DesktopComponent implements ComponentDisabled, ComponentChecked {
+    public final static EventListener<ComponentActionEventArgs> CHECKING = new EventListener<>();
+    public final static EventListener<ComponentActionEventArgs> CHECKED = new EventListener<>();
+    public final static EventListener<ComponentActionEventArgs> UNCHECKING = new EventListener<>();
+    public final static EventListener<ComponentActionEventArgs> UNCHECKED = new EventListener<>();
+
     @Override
     public Class<?> getComponentClass() {
         return getClass();
     }
 
     public void check() {
+        if(!findElement().isSelected()) {
+            defaultClick(CHECKING, CHECKED);
+        }
     }
 
     public void uncheck() {
+        if(findElement().isSelected()) {
+            defaultClick(UNCHECKING, UNCHECKED);
+        }
+    }
+
+    @Override
+    public boolean isChecked() {
+        return findElement().isSelected();
+    }
+
+    @Override
+    public boolean isDisabled() {
+        return defaultGetDisabledAttribute();
     }
 }

@@ -11,15 +11,8 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.desktop.components;
+package solutions.bellatrix.desktop.components.contracts;
 
-public class Span extends DesktopComponent {
-    public String getText() {
-        return findElement().getText();
-    }
-
-    @Override
-    public Class<?> getComponentClass() {
-        return getClass();
-    }
+public interface ComponentSelected extends Component {
+    boolean isSelected();
 }

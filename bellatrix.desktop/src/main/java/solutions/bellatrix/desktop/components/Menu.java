@@ -13,24 +13,9 @@
 
 package solutions.bellatrix.desktop.components;
 
-import solutions.bellatrix.core.plugins.EventListener;
-import solutions.bellatrix.desktop.components.contracts.ComponentText;
-
-public class Anchor extends DesktopComponent implements ComponentText {
-    public final static EventListener<ComponentActionEventArgs> CLICKING = new EventListener<>();
-    public final static EventListener<ComponentActionEventArgs> CLICKED = new EventListener<>();
-
-    public void click() {
-        defaultClick(CLICKING, CLICKED);
-    }
-
+public class Menu extends DesktopComponent {
     @Override
     public Class<?> getComponentClass() {
         return getClass();
-    }
-
-    @Override
-    public String getText() {
-        return defaultGetText();
     }
 }

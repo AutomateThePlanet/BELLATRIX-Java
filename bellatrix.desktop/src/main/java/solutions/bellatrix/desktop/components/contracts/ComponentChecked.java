@@ -11,18 +11,15 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.desktop.components;
+package solutions.bellatrix.desktop.components.contracts;
 
-import solutions.bellatrix.desktop.components.contracts.ComponentText;
+import lombok.SneakyThrows;
+import solutions.bellatrix.core.utilities.SingletonFactory;
+import solutions.bellatrix.desktop.components.DesktopComponent;
+import solutions.bellatrix.desktop.components.validators.DesktopValidator;
 
-public class Label extends DesktopComponent implements ComponentText {
-    @Override
-    public Class<?> getComponentClass() {
-        return getClass();
-    }
+import java.lang.reflect.Method;
 
-    @Override
-    public String getText() {
-        return defaultGetText();
-    }
+public interface ComponentChecked extends Component {
+    boolean isChecked();
 }

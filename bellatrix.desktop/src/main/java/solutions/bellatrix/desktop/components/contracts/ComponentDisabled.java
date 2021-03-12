@@ -11,18 +11,8 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.desktop.components;
+package solutions.bellatrix.desktop.components.contracts;
 
-import solutions.bellatrix.desktop.components.contracts.ComponentText;
-
-public class Label extends DesktopComponent implements ComponentText {
-    @Override
-    public Class<?> getComponentClass() {
-        return getClass();
-    }
-
-    @Override
-    public String getText() {
-        return defaultGetText();
-    }
+public interface ComponentDisabled extends Component {
+    boolean isDisabled();
 }

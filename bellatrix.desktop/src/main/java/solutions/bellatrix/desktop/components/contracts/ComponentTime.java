@@ -11,11 +11,8 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.desktop.components;
+package solutions.bellatrix.desktop.components.contracts;
 
-public class InputFile extends DesktopComponent {
-    @Override
-    public Class<?> getComponentClass() {
-        return getClass();
-    }
+public interface ComponentTime extends Component {
+    String getTime();
 }

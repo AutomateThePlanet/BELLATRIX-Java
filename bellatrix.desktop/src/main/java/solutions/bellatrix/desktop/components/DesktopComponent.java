@@ -29,6 +29,7 @@ import solutions.bellatrix.core.plugins.EventListener;
 import solutions.bellatrix.core.utilities.DebugInformation;
 import solutions.bellatrix.core.utilities.InstanceFactory;
 import solutions.bellatrix.desktop.components.contracts.Component;
+import solutions.bellatrix.desktop.components.contracts.ComponentVisible;
 import solutions.bellatrix.desktop.configuration.DesktopSettings;
 import solutions.bellatrix.desktop.findstrategies.*;
 import solutions.bellatrix.desktop.infrastructure.DriverService;
@@ -44,7 +45,7 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-public class DesktopComponent extends LayoutComponentValidationsBuilder implements Component {
+public class DesktopComponent extends LayoutComponentValidationsBuilder implements Component, ComponentVisible {
     public final static EventListener<ComponentActionEventArgs> HOVERING = new EventListener<>();
     public final static EventListener<ComponentActionEventArgs> HOVERED = new EventListener<>();
     public final static EventListener<ComponentActionEventArgs> SCROLLING_TO_VISIBLE = new EventListener<>();
@@ -281,6 +282,14 @@ public class DesktopComponent extends LayoutComponentValidationsBuilder implemen
         valueSet.broadcast(new ComponentActionEventArgs(this));
     }
 
+    protected void defaultSelectByText(EventListener<ComponentActionEventArgs> settingValue, EventListener<ComponentActionEventArgs> valueSet, String value) {
+        settingValue.broadcast(new ComponentActionEventArgs(this));
+        if (!defaultGetText().equals(value)) {
+            findElement().sendKeys(value);
+        }
+        valueSet.broadcast(new ComponentActionEventArgs(this));
+    }
+
     private WebElement findNativeElement() {
         if (parentWrappedElement == null) {
             return findStrategy.findAllElements(wrappedDriver).get(elementIndex);
@@ -323,5 +332,14 @@ public class DesktopComponent extends LayoutComponentValidationsBuilder implemen
         }
 
         SCROLLED_TO_VISIBLE.broadcast(new ComponentActionEventArgs(this));
+    }
+
+    @Override
+    public boolean isVisible() {
+        try {
+            return findElement().isDisplayed();
+        } catch (WebDriverException ignored) {
+            return false;
+        }
     }
 }

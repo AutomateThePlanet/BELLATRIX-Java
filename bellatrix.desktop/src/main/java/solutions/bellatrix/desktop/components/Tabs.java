@@ -13,7 +13,7 @@
 
 package solutions.bellatrix.desktop.components;
 
-public class Option extends DesktopComponent {
+public class Tabs extends DesktopComponent {
     @Override
     public Class<?> getComponentClass() {
         return getClass();

@@ -5,7 +5,31 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="55b01a59-bddd-4a9d-b423-43bd7933f1ee" name="Default Changelist" comment="removed redundant expression">
+      <change afterPath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/components/ComboBox.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/components/Password.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/components/contracts/ComponentDate.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/components/contracts/ComponentDisabled.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/components/contracts/ComponentSelected.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/components/contracts/ComponentText.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/components/contracts/ComponentTime.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/components/contracts/ComponentVisible.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/components/Anchor.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/components/Anchor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/components/Button.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/components/Button.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/components/CheckBox.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/components/CheckBox.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/components/DesktopComponent.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/components/DesktopComponent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/components/Div.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/components/Date.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/components/Heading.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/components/Expander.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/components/InputFile.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/components/ListBox.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/components/Label.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/components/Label.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/components/Option.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/components/Menu.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/components/RadioButton.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/components/RadioButton.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/components/Search.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/components/Tabs.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/components/Select.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/components/Span.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/components/contracts/ComponentChecked.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/components/TextField.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/components/TextField.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/components/Time.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/components/Time.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.web/src/main/java/solutions/bellatrix/web/components/WebComponent.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.web/src/main/java/solutions/bellatrix/web/components/WebComponent.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,7 +47,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="main" />
+        <entry key="$PROJECT_DIR$" value="web-components-impl" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -37,7 +61,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../BELLATRIX-Kotlin" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.0" />
@@ -53,62 +77,15 @@
       <recent name="" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="solutions.bellatrix.desktop.components" />
+      <recent name="solutions.bellatrix.desktop.components.contracts" />
       <recent name="solutions.bellatrix.web.components.contracts" />
       <recent name="solutions.bellatrix.web.components" />
       <recent name="solutions.bellatrix.mobile.findstrategies" />
-      <recent name="solutions.bellatrix.mobile.services" />
     </key>
   </component>
-  <component name="RunManager" selected="TestNG.ProductPurchaseTests.sandbox">
-    <configuration name="ProductPurchaseTests.completePurchaseSuccessfully_first" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="bellatrix.web.Tests" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="junit.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="junit" />
-      <option name="MAIN_CLASS_NAME" value="junit.ProductPurchaseTests" />
-      <option name="METHOD_NAME" value="completePurchaseSuccessfully_first" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="ProductPurchaseTests.purchaseFalcon9WithoutFacade" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="bellatrix.web.Tests" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="junit.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="junit" />
-      <option name="MAIN_CLASS_NAME" value="junit.ProductPurchaseTests" />
-      <option name="METHOD_NAME" value="purchaseFalcon9WithoutFacade" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="ProductPurchaseTests.sandbox" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="bellatrix.web.Tests" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="junit.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="junit" />
-      <option name="MAIN_CLASS_NAME" value="junit.ProductPurchaseTests" />
-      <option name="METHOD_NAME" value="sandbox" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="ProductPurchaseTests.subtraction" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="JUnit.CalculatorTests (1)">
+    <configuration name="CalculatorTests (1)" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="bellatrix.desktop.tests" />
       <extension name="coverage">
         <pattern>
@@ -117,14 +94,76 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="junit" />
-      <option name="MAIN_CLASS_NAME" value="junit.ProductPurchaseTests" />
-      <option name="METHOD_NAME" value="subtraction" />
+      <option name="MAIN_CLASS_NAME" value="junit.CalculatorTests" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="CalculatorTests" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="bellatrix.desktop.tests" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="testng.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="testng" />
+      <option name="MAIN_CLASS_NAME" value="testng.CalculatorTests" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="CalculatorTests" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="bellatrix.desktop.tests" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="junit.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="junit" />
+      <option name="MAIN_CLASS_NAME" value="junit.CalculatorTests" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="CalculatorTests.addition" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="bellatrix.desktop.tests" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="testng.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="testng" />
+      <option name="MAIN_CLASS_NAME" value="testng.CalculatorTests" />
+      <option name="METHOD_NAME" value="addition" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ProductPurchaseTests.sandbox" type="TestNG" temporary="true" nameIsGenerated="true">
+    <configuration name="CalculatorTests" type="TestNG" temporary="true" nameIsGenerated="true">
+      <module name="bellatrix.desktop.tests" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="testng.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="testng" />
+      <option name="MAIN_CLASS_NAME" value="testng.CalculatorTests" />
+      <option name="TEST_OBJECT" value="CLASS" />
+      <properties />
+      <listeners />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="CalculatorTests.sandbox" type="TestNG" temporary="true" nameIsGenerated="true">
       <module name="bellatrix.web.Tests" />
       <extension name="coverage">
         <pattern>
@@ -133,7 +172,7 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="testng" />
-      <option name="MAIN_CLASS_NAME" value="testng.ProductPurchaseTests" />
+      <option name="MAIN_CLASS_NAME" value="testng.CalculatorTests" />
       <option name="METHOD_NAME" value="sandbox" />
       <option name="TEST_OBJECT" value="METHOD" />
       <properties />
@@ -144,11 +183,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="TestNG.ProductPurchaseTests.sandbox" />
-        <item itemvalue="JUnit.ProductPurchaseTests.subtraction" />
-        <item itemvalue="JUnit.ProductPurchaseTests.sandbox" />
-        <item itemvalue="JUnit.ProductPurchaseTests.purchaseFalcon9WithoutFacade" />
-        <item itemvalue="JUnit.ProductPurchaseTests.completePurchaseSuccessfully_first" />
+        <item itemvalue="JUnit.CalculatorTests (1)" />
+        <item itemvalue="TestNG.CalculatorTests" />
+        <item itemvalue="JUnit.CalculatorTests" />
+        <item itemvalue="JUnit.CalculatorTests" />
+        <item itemvalue="JUnit.CalculatorTests.addition" />
       </list>
     </recent_temporary>
   </component>
@@ -245,7 +284,49 @@
       <option name="project" value="LOCAL" />
       <updated>1615517991119</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="updated workspace file">
+      <created>1615520141331</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1615520141331</updated>
+    </task>
+    <task id="LOCAL-00014" summary="optimized imports">
+      <created>1615521045522</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1615521045522</updated>
+    </task>
+    <task id="LOCAL-00015" summary="fixed tests">
+      <created>1615530818640</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1615530818640</updated>
+    </task>
+    <task id="LOCAL-00016" summary="added DesktopValidator">
+      <created>1615530865406</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1615530865406</updated>
+    </task>
+    <task id="LOCAL-00017" summary="fixed bdd logging">
+      <created>1615530976996</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1615530976996</updated>
+    </task>
+    <task id="LOCAL-00018" summary="moved functionality from DesktopComponent to DesktopValidator">
+      <created>1615531049733</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1615531049733</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -273,7 +354,13 @@
     <MESSAGE value="added screen and viewport web components" />
     <MESSAGE value="temporary directory rename" />
     <MESSAGE value="duplicate directory in repo fix" />
-    <option name="LAST_COMMIT_MESSAGE" value="duplicate directory in repo fix" />
+    <MESSAGE value="updated workspace file" />
+    <MESSAGE value="optimized imports" />
+    <MESSAGE value="fixed tests" />
+    <MESSAGE value="added DesktopValidator" />
+    <MESSAGE value="fixed bdd logging" />
+    <MESSAGE value="moved functionality from DesktopComponent to DesktopValidator" />
+    <option name="LAST_COMMIT_MESSAGE" value="moved functionality from DesktopComponent to DesktopValidator" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

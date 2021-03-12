@@ -14,17 +14,29 @@
 package solutions.bellatrix.desktop.components;
 
 import solutions.bellatrix.core.plugins.EventListener;
+import solutions.bellatrix.desktop.components.contracts.ComponentChecked;
+import solutions.bellatrix.desktop.components.contracts.ComponentDisabled;
 
-public class RadioButton extends DesktopComponent {
+public class RadioButton extends DesktopComponent implements ComponentDisabled, ComponentChecked {
     public final static EventListener<ComponentActionEventArgs> CLICKING = new EventListener<>();
     public final static EventListener<ComponentActionEventArgs> CLICKED = new EventListener<>();
+
+    @Override
+    public Class<?> getComponentClass() {
+        return getClass();
+    }
 
     public void click() {
         defaultClick(CLICKING, CLICKED);
     }
 
     @Override
-    public Class<?> getComponentClass() {
-        return getClass();
+    public boolean isChecked() {
+        return findElement().isSelected();
+    }
+
+    @Override
+    public boolean isDisabled() {
+        return defaultGetDisabledAttribute();
     }
 }
