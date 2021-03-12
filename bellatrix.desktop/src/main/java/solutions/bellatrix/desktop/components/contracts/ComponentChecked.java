@@ -22,4 +22,16 @@ import java.lang.reflect.Method;
 
 public interface ComponentChecked extends Component {
     boolean isChecked();
+
+    @SneakyThrows
+    default void validateIsChecked() {
+        Method method = DesktopValidator.class.getDeclaredMethod("defaultValidateAttributeTrue", DesktopComponent.class, boolean.class, String.class);
+        method.invoke(SingletonFactory.getInstance(DesktopValidator.class), (DesktopComponent)this, isChecked(), "checked");
+    }
+
+    @SneakyThrows
+    default void validateIsUnchecked() {
+        Method method = DesktopValidator.class.getDeclaredMethod("defaultValidateAttributeTrue", DesktopComponent.class, boolean.class, String.class);
+        method.invoke(SingletonFactory.getInstance(DesktopValidator.class), (DesktopComponent)this, !isChecked(), "unchecked");
+    }
 }

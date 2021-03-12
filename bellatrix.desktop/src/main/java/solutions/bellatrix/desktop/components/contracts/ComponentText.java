@@ -30,20 +30,14 @@ public interface ComponentText extends Component {
     }
 
     @SneakyThrows
-    default void validateTextIsSet() {
-        Method method = DesktopValidator.class.getDeclaredMethod("defaultValidateAttributeIsSet", DesktopComponent.class, String.class, String.class);
-        method.invoke(SingletonFactory.getInstance(DesktopValidator.class), (DesktopComponent)this, getText(), "inner text");
-    }
-
-    @SneakyThrows
     default void validateTextContains(String value) {
-        Method method = DesktopValidator.class.getDeclaredMethod("defaultValidateAttributeNotSet", DesktopComponent.class, String.class, String.class);
-        method.invoke(SingletonFactory.getInstance(DesktopValidator.class), (DesktopComponent)this, getText(), "inner text");
+        Method method = DesktopValidator.class.getDeclaredMethod("defaultValidateAttributeContains", DesktopComponent.class, String.class, String.class, String.class);
+        method.invoke(SingletonFactory.getInstance(DesktopValidator.class), (DesktopComponent)this, getText(), value, "inner text");
     }
 
     @SneakyThrows
     default void validateTextNotContains(String value) {
-        Method method = DesktopValidator.class.getDeclaredMethod("defaultValidateAttributeNotSet", DesktopComponent.class, String.class, String.class);
-        method.invoke(SingletonFactory.getInstance(DesktopValidator.class), (DesktopComponent)this, getText(), "inner text");
+        Method method = DesktopValidator.class.getDeclaredMethod("defaultValidateAttributeNotContains", DesktopComponent.class, String.class, String.class, String.class);
+        method.invoke(SingletonFactory.getInstance(DesktopValidator.class), (DesktopComponent)this, getText(), value, "inner text");
     }
 }

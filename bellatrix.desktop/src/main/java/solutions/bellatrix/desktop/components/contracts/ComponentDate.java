@@ -13,6 +13,31 @@
 
 package solutions.bellatrix.desktop.components.contracts;
 
+import lombok.SneakyThrows;
+import solutions.bellatrix.core.utilities.SingletonFactory;
+import solutions.bellatrix.desktop.components.DesktopComponent;
+import solutions.bellatrix.desktop.components.validators.DesktopValidator;
+
+import java.lang.reflect.Method;
+
 public interface ComponentDate extends Component {
     String getDate();
+
+    @SneakyThrows
+    default void validateDateIs(String value) {
+        Method method = DesktopValidator.class.getDeclaredMethod("defaultValidateAttributeIs", DesktopComponent.class, String.class, String.class, String.class);
+        method.invoke(SingletonFactory.getInstance(DesktopValidator.class), (DesktopComponent)this, getDate(), value, "date");
+    }
+
+    @SneakyThrows
+    default void validateDateContains(String value) {
+        Method method = DesktopValidator.class.getDeclaredMethod("defaultValidateAttributeContains", DesktopComponent.class, String.class, String.class, String.class);
+        method.invoke(SingletonFactory.getInstance(DesktopValidator.class), (DesktopComponent)this, getDate(), value, "date");
+    }
+
+    @SneakyThrows
+    default void validateDateNotContains(String value) {
+        Method method = DesktopValidator.class.getDeclaredMethod("defaultValidateAttributeNotContains", DesktopComponent.class, String.class,  String.class, String.class);
+        method.invoke(SingletonFactory.getInstance(DesktopValidator.class), (DesktopComponent)this, getDate(), value, "date");
+    }
 }

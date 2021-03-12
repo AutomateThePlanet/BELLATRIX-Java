@@ -13,6 +13,25 @@
 
 package solutions.bellatrix.desktop.components.contracts;
 
+import lombok.SneakyThrows;
+import solutions.bellatrix.core.utilities.SingletonFactory;
+import solutions.bellatrix.desktop.components.DesktopComponent;
+import solutions.bellatrix.desktop.components.validators.DesktopValidator;
+
+import java.lang.reflect.Method;
+
 public interface ComponentVisible extends Component {
     boolean isVisible();
+
+    @SneakyThrows
+    default void validateIsSelected() {
+        Method method = DesktopValidator.class.getDeclaredMethod("defaultValidateAttributeTrue", DesktopComponent.class, boolean.class, String.class);
+        method.invoke(SingletonFactory.getInstance(DesktopValidator.class), (DesktopComponent)this, isVisible(), "visible");
+    }
+
+    @SneakyThrows
+    default void validateNotSelected() {
+        Method method = DesktopValidator.class.getDeclaredMethod("defaultValidateAttributeFalse", DesktopComponent.class, boolean.class, String.class);
+        method.invoke(SingletonFactory.getInstance(DesktopValidator.class), (DesktopComponent)this, isVisible(), "visible");
+    }
 }

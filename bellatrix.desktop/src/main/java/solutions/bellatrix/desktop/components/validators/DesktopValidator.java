@@ -56,6 +56,16 @@ public class DesktopValidator {
         VALIDATED_ATTRIBUTE.broadcast(new ComponentActionEventArgs(component, value, String.format("validate %s doesn't contain %s", attributeName, value)));
     }
 
+    protected void defaultValidateAttributeTrue(DesktopComponent component, boolean property, String attributeName) {
+        waitUntil((d) -> property, String.format("The control should be %s but wasn't.", attributeName));
+        VALIDATED_ATTRIBUTE.broadcast(new ComponentActionEventArgs(component, null, String.format("validate is %s", attributeName)));
+    }
+
+    protected void defaultValidateAttributeFalse(DesktopComponent component, boolean property, String attributeName) {
+        waitUntil((d) -> !property, String.format("The control shouldn't be %s but was.", attributeName));
+        VALIDATED_ATTRIBUTE.broadcast(new ComponentActionEventArgs(component, null, String.format("validate not %s", attributeName)));
+    }
+
     private void waitUntil(Function<SearchContext, Boolean> waitCondition, String exceptionMessage) {
         var webDriverWait = new WebDriverWait(DriverService.getWrappedDriver(), desktopSettings.getTimeoutSettings().getValidationsTimeout(), desktopSettings.getTimeoutSettings().getSleepInterval());
         try {
