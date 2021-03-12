@@ -19,7 +19,6 @@ import solutions.bellatrix.web.components.WebComponent;
 import solutions.bellatrix.web.components.validations.WebValidator;
 
 import java.lang.reflect.Method;
-import java.util.function.Supplier;
 
 public interface ComponentHtml extends Component {
     String getHtml();

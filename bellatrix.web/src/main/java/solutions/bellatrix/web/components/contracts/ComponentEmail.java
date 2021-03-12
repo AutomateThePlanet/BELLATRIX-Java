@@ -19,7 +19,6 @@ import solutions.bellatrix.web.components.WebComponent;
 import solutions.bellatrix.web.components.validations.WebValidator;
 
 import java.lang.reflect.Method;
-import java.time.LocalDateTime;
 
 public interface ComponentEmail extends Component {
     String getEmail();

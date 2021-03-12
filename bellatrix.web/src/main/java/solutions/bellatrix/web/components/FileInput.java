@@ -14,7 +14,9 @@
 package solutions.bellatrix.web.components;
 
 import solutions.bellatrix.core.plugins.EventListener;
-import solutions.bellatrix.web.components.contracts.*;
+import solutions.bellatrix.web.components.contracts.ComponentAccept;
+import solutions.bellatrix.web.components.contracts.ComponentMultiple;
+import solutions.bellatrix.web.components.contracts.ComponentRequired;
 
 public class FileInput extends WebComponent implements ComponentRequired, ComponentMultiple, ComponentAccept {
     public final static EventListener<ComponentActionEventArgs> UPLOADING = new EventListener<>();

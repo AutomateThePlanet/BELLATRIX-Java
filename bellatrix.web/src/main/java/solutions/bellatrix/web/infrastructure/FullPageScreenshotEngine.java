@@ -16,9 +16,9 @@ package solutions.bellatrix.web.infrastructure;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import solutions.bellatrix.core.configuration.ConfigurationService;
-import solutions.bellatrix.web.configuration.WebSettings;
 import solutions.bellatrix.core.utilities.ResourcesReader;
 import solutions.bellatrix.core.utilities.TempFileWriter;
+import solutions.bellatrix.web.configuration.WebSettings;
 import solutions.bellatrix.web.services.JavaScriptService;
 
 import java.io.File;

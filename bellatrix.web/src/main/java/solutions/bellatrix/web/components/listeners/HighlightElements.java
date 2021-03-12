@@ -14,8 +14,8 @@
 package solutions.bellatrix.web.components.listeners;
 
 import solutions.bellatrix.core.configuration.ConfigurationService;
-import solutions.bellatrix.web.configuration.WebSettings;
 import solutions.bellatrix.web.components.WebComponent;
+import solutions.bellatrix.web.configuration.WebSettings;
 
 public class HighlightElements {
     private static boolean isHighlightElementsAdded = false;
