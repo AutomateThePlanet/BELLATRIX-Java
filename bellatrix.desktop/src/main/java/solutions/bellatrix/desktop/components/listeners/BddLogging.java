@@ -15,13 +15,14 @@ package solutions.bellatrix.desktop.components.listeners;
 
 import solutions.bellatrix.desktop.components.Anchor;
 import solutions.bellatrix.desktop.components.DesktopComponent;
+import solutions.bellatrix.desktop.components.validators.DesktopValidator;
 
 public class BddLogging {
     private static boolean isBddLoggingTurnedOn = false;
     public static void addPlugin() {
         if (!isBddLoggingTurnedOn) {
-            Anchor.CLICKING.addListener((x) -> System.out.println(String.format("clicking %s\n", x.getComponent().getElementName())));
-            DesktopComponent.VALIDATED_ATTRIBUTE.addListener((x) -> System.out.println(x.getMessage()));
+            Anchor.CLICKING.addListener((x) -> System.out.printf("clicking %s\n%n", x.getComponent().getElementName()));
+            DesktopValidator.VALIDATED_ATTRIBUTE.addListener((x) -> System.out.println(x.getMessage()));
             isBddLoggingTurnedOn = true;
         }
     }
