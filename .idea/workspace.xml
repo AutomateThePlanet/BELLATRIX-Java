@@ -6,14 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="55b01a59-bddd-4a9d-b423-43bd7933f1ee" name="Default Changelist" comment="removed redundant expression">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/components/contracts/ComponentChecked.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/components/contracts/ComponentChecked.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/components/contracts/ComponentDate.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/components/contracts/ComponentDate.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/components/contracts/ComponentDisabled.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/components/contracts/ComponentDisabled.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/components/contracts/ComponentSelected.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/components/contracts/ComponentSelected.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/components/contracts/ComponentText.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/components/contracts/ComponentText.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/components/contracts/ComponentTime.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/components/contracts/ComponentTime.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/components/contracts/ComponentVisible.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/components/contracts/ComponentVisible.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/components/validators/DesktopValidator.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/components/validators/DesktopValidator.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -317,7 +309,14 @@
       <option name="project" value="LOCAL" />
       <updated>1615535601555</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="added validation methods">
+      <created>1615537000594</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1615537000594</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -333,7 +332,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="added validation methods" />
     <MESSAGE value="updated configuration files" />
     <MESSAGE value="removed redundant expression" />
     <MESSAGE value="implemented web components" />
@@ -352,7 +350,8 @@
     <MESSAGE value="fixed bdd logging" />
     <MESSAGE value="moved functionality from DesktopComponent to DesktopValidator" />
     <MESSAGE value="implemented desktop components and validation methods" />
-    <option name="LAST_COMMIT_MESSAGE" value="implemented desktop components and validation methods" />
+    <MESSAGE value="added validation methods" />
+    <option name="LAST_COMMIT_MESSAGE" value="added validation methods" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

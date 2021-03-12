@@ -29,13 +29,13 @@ public class CheckBox extends DesktopComponent implements ComponentDisabled, Com
     }
 
     public void check() {
-        if(!findElement().isSelected()) {
+        if (!findElement().isSelected()) {
             defaultClick(CHECKING, CHECKED);
         }
     }
 
     public void uncheck() {
-        if(findElement().isSelected()) {
+        if (findElement().isSelected()) {
             defaultClick(UNCHECKING, UNCHECKED);
         }
     }
