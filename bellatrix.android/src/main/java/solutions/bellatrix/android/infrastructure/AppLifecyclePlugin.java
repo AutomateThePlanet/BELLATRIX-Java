@@ -18,7 +18,7 @@ import solutions.bellatrix.core.plugins.Plugin;
 import solutions.bellatrix.core.plugins.TestResult;
 import solutions.bellatrix.core.utilities.DebugInformation;
 import solutions.bellatrix.core.utilities.UserHomePathNormalizer;
-import solutions.bellatrix.ios.configuration.AndroidSettings;
+import solutions.bellatrix.android.configuration.AndroidSettings;
 
 import java.lang.reflect.Method;
 

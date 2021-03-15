@@ -11,7 +11,7 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.ios.waitstrategies;
+package solutions.bellatrix.android.waitstrategies;
 
 public class Wait {
     public static WaitStrategyFactory to() {

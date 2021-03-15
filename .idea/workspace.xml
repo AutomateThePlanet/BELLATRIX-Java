@@ -5,7 +5,23 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="55b01a59-bddd-4a9d-b423-43bd7933f1ee" name="Default Changelist" comment="removed redundant expression">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.android/src/main/java/solutions/bellatrix/android/components/Anchor.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.android/src/main/java/solutions/bellatrix/android/components/Anchor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.android/src/main/java/solutions/bellatrix/android/components/Button.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.android/src/main/java/solutions/bellatrix/android/components/Button.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.android/src/main/java/solutions/bellatrix/android/components/Select.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.android/src/main/java/solutions/bellatrix/android/components/Select.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.android/src/main/java/solutions/bellatrix/android/components/TextArea.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.android/src/main/java/solutions/bellatrix/android/components/TextArea.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.android/src/main/java/solutions/bellatrix/android/components/Time.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.android/src/main/java/solutions/bellatrix/android/components/Time.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.android/src/main/java/solutions/bellatrix/android/components/listeners/BddLogging.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.android/src/main/java/solutions/bellatrix/android/components/listeners/BddLogging.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.android/src/main/java/solutions/bellatrix/android/configuration/AndroidSettings.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.android/src/main/java/solutions/bellatrix/android/configuration/AndroidSettings.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.android/src/main/java/solutions/bellatrix/android/configuration/GridSettings.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.android/src/main/java/solutions/bellatrix/android/configuration/GridSettings.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/components/contracts/ComponentChecked.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/components/contracts/ComponentChecked.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/components/contracts/ComponentDate.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/components/contracts/ComponentDate.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/components/contracts/ComponentDisabled.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/components/contracts/ComponentDisabled.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/components/contracts/ComponentSelected.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/components/contracts/ComponentSelected.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/components/contracts/ComponentText.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/components/contracts/ComponentText.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/components/contracts/ComponentTime.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/components/contracts/ComponentTime.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/components/contracts/ComponentVisible.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/components/contracts/ComponentVisible.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/components/listeners/BddLogging.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/components/listeners/BddLogging.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/components/validators/DesktopValidator.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.desktop/src/main/java/solutions/bellatrix/desktop/components/validations/DesktopValidator.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,7 +39,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="web-components-impl" />
+        <entry key="$PROJECT_DIR$" value="desktop-components-impl" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -330,7 +346,21 @@
       <option name="project" value="LOCAL" />
       <updated>1615540582434</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="renamed package">
+      <created>1615796140988</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1615796140988</updated>
+    </task>
+    <task id="LOCAL-00024" summary="renamed package">
+      <created>1615796225023</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1615796225023</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -367,7 +397,8 @@
     <MESSAGE value="added validation methods" />
     <MESSAGE value="added space after if" />
     <MESSAGE value="added missing component" />
-    <option name="LAST_COMMIT_MESSAGE" value="added missing component" />
+    <MESSAGE value="renamed package" />
+    <option name="LAST_COMMIT_MESSAGE" value="renamed package" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

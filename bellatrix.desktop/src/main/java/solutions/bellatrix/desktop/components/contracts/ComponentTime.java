@@ -16,7 +16,7 @@ package solutions.bellatrix.desktop.components.contracts;
 import lombok.SneakyThrows;
 import solutions.bellatrix.core.utilities.SingletonFactory;
 import solutions.bellatrix.desktop.components.DesktopComponent;
-import solutions.bellatrix.desktop.components.validators.DesktopValidator;
+import solutions.bellatrix.desktop.components.validations.DesktopValidator;
 
 import java.lang.reflect.Method;
 

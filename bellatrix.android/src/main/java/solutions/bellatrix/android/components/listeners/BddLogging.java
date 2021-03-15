@@ -14,7 +14,7 @@
 package solutions.bellatrix.android.components.listeners;
 
 import solutions.bellatrix.android.components.AndroidComponent;
-import solutions.bellatrix.ios.components.Anchor;
+import solutions.bellatrix.android.components.Anchor;
 
 public class BddLogging {
     private static boolean isBddLoggingTurnedOn = false;

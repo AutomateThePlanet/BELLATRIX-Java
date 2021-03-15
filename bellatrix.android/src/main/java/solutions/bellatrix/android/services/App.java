@@ -11,7 +11,7 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.ios.services;
+package solutions.bellatrix.android.services;
 
 import solutions.bellatrix.android.pages.AndroidPage;
 import solutions.bellatrix.core.utilities.SingletonFactory;

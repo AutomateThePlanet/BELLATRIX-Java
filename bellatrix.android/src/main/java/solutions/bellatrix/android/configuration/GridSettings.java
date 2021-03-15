@@ -11,7 +11,7 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.ios.configuration;
+package solutions.bellatrix.android.configuration;
 
 import lombok.Getter;
 import lombok.Setter;

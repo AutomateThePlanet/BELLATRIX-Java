@@ -13,7 +13,7 @@
 
 package solutions.bellatrix.android.pages;
 
-import solutions.bellatrix.ios.services.ComponentCreateService;
+import solutions.bellatrix.android.services.ComponentCreateService;
 
 public abstract class PageMap {
     public ComponentCreateService create() {

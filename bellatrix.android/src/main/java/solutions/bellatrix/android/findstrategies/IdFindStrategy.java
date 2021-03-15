@@ -11,7 +11,7 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.ios.findstrategies;
+package solutions.bellatrix.android.findstrategies;
 
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.android.AndroidDriver;

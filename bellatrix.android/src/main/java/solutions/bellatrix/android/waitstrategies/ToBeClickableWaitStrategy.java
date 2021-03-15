@@ -20,7 +20,7 @@ import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import solutions.bellatrix.android.findstrategies.FindStrategy;
 import solutions.bellatrix.core.configuration.ConfigurationService;
-import solutions.bellatrix.ios.configuration.AndroidSettings;
+import solutions.bellatrix.android.configuration.AndroidSettings;
 import solutions.bellatrix.android.infrastructure.DriverService;
 
 import java.util.function.Function;

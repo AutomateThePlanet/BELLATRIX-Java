@@ -11,7 +11,7 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.ios.components;
+package solutions.bellatrix.android.components;
 
 public class Time extends AndroidComponent {
     @Override
