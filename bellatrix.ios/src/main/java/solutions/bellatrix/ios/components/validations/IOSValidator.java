@@ -46,6 +46,11 @@ public class IOSValidator {
         VALIDATED_ATTRIBUTE.broadcast(new ComponentActionEventArgs(component, value, String.format("validate %s is %s", attributeName, value)));
     }
 
+    public void defaultValidateAttributeIs(IOSComponent component, Number property, Number value, String attributeName) {
+        waitUntil((d) -> property.equals(value), String.format("The control's %s should be '%s' but was '%s'.", attributeName, value, property));
+        VALIDATED_ATTRIBUTE.broadcast(new ComponentActionEventArgs(component, value.toString(), String.format("validate %s is %s", attributeName, value)));
+    }
+
     public void defaultValidateAttributeContains(IOSComponent component, String property, String value, String attributeName) {
         waitUntil((d) -> property.strip().contains(value), String.format("The control's %s should contain '%s' but was '%s'.", attributeName, value, property));
         VALIDATED_ATTRIBUTE.broadcast(new ComponentActionEventArgs(component, value, String.format("validate %s contains %s", attributeName, value)));
