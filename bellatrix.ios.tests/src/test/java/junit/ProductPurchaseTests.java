@@ -14,10 +14,10 @@
 package junit;
 
 import org.junit.jupiter.api.Test;
-import solutions.bellatrix.ios.components.Button;
-import solutions.bellatrix.ios.infrastructure.ExecutionApp;
-import solutions.bellatrix.ios.infrastructure.Lifecycle;
-import solutions.bellatrix.ios.infrastructure.junit.IOSTest;
+import solutions.bellatrix.android.components.Button;
+import solutions.bellatrix.android.infrastructure.ExecutionApp;
+import solutions.bellatrix.android.infrastructure.Lifecycle;
+import solutions.bellatrix.android.infrastructure.junit.IOSTest;
 
 @ExecutionApp(lifecycle = Lifecycle.RESTART_ON_FAIL)
 public class ProductPurchaseTests extends IOSTest {

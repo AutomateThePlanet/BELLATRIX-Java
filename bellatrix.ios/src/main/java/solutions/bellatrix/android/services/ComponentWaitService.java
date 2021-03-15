@@ -11,19 +11,18 @@
  * limitations under the License.
  */
 
-package testng;
+package solutions.bellatrix.android.services;
 
-import org.junit.jupiter.api.Test;
-import solutions.bellatrix.android.components.Button;
-import solutions.bellatrix.android.infrastructure.ExecutionApp;
-import solutions.bellatrix.android.infrastructure.Lifecycle;
-import solutions.bellatrix.android.infrastructure.junit.AndroidTest;
+import solutions.bellatrix.android.components.IOSComponent;
+import solutions.bellatrix.android.waitstrategies.WaitStrategy;
 
-@ExecutionApp(lifecycle = Lifecycle.RESTART_ON_FAIL)
-public class ProductPurchaseTests extends AndroidTest {
-    @Test
-    public void buttonClicked_when_callClickMethod() {
-        var button = app().create().byIdContaining(Button.class, "button");
-        button.click();
+public class ComponentWaitService extends MobileService {
+    public void wait(IOSComponent component, WaitStrategy waitStrategy) {
+        if (component.getParentWrappedElement() == null) {
+            waitStrategy.waitUntil(component.getFindStrategy());
+        } else {
+            // TODO: should be fixed to pass parent Wrapped Element?
+            waitStrategy.waitUntil(component.getFindStrategy());
+        }
     }
 }

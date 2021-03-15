@@ -11,19 +11,24 @@
  * limitations under the License.
  */
 
-package testng;
+package solutions.bellatrix.android.components;
 
-import org.junit.jupiter.api.Test;
-import solutions.bellatrix.android.components.Button;
-import solutions.bellatrix.android.infrastructure.ExecutionApp;
-import solutions.bellatrix.android.infrastructure.Lifecycle;
-import solutions.bellatrix.android.infrastructure.junit.AndroidTest;
+import solutions.bellatrix.core.plugins.EventListener;
 
-@ExecutionApp(lifecycle = Lifecycle.RESTART_ON_FAIL)
-public class ProductPurchaseTests extends AndroidTest {
-    @Test
-    public void buttonClicked_when_callClickMethod() {
-        var button = app().create().byIdContaining(Button.class, "button");
-        button.click();
+public class TextField extends IOSComponent {
+    public final static EventListener<ComponentActionEventArgs> SETTING_TEXT = new EventListener<>();
+    public final static EventListener<ComponentActionEventArgs> TEXT_SET = new EventListener<>();
+
+    public void setText(String value) {
+        defaultSetText(SETTING_TEXT, TEXT_SET, value);
+    }
+
+    public String getText() {
+        return defaultGetText();
+    }
+
+    @Override
+    public Class<?> getComponentClass() {
+        return getClass();
     }
 }

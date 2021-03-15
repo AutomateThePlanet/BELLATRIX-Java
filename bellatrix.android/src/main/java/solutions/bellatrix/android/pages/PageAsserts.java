@@ -11,19 +11,12 @@
  * limitations under the License.
  */
 
-package testng;
+package solutions.bellatrix.android.pages;
 
-import org.junit.jupiter.api.Test;
-import solutions.bellatrix.android.components.Button;
-import solutions.bellatrix.android.infrastructure.ExecutionApp;
-import solutions.bellatrix.android.infrastructure.Lifecycle;
-import solutions.bellatrix.android.infrastructure.junit.AndroidTest;
+import solutions.bellatrix.core.utilities.InstanceFactory;
 
-@ExecutionApp(lifecycle = Lifecycle.RESTART_ON_FAIL)
-public class ProductPurchaseTests extends AndroidTest {
-    @Test
-    public void buttonClicked_when_callClickMethod() {
-        var button = app().create().byIdContaining(Button.class, "button");
-        button.click();
+public abstract class PageAsserts<ComponentsT extends PageMap> {
+    protected ComponentsT map() {
+        return InstanceFactory.<ComponentsT>createByTypeParameter(getClass(), 0);
     }
 }

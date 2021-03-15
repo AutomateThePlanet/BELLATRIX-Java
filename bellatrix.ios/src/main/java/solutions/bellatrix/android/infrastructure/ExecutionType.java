@@ -11,19 +11,9 @@
  * limitations under the License.
  */
 
-package testng;
+package solutions.bellatrix.android.infrastructure;
 
-import org.junit.jupiter.api.Test;
-import solutions.bellatrix.android.components.Button;
-import solutions.bellatrix.android.infrastructure.ExecutionApp;
-import solutions.bellatrix.android.infrastructure.Lifecycle;
-import solutions.bellatrix.android.infrastructure.junit.AndroidTest;
-
-@ExecutionApp(lifecycle = Lifecycle.RESTART_ON_FAIL)
-public class ProductPurchaseTests extends AndroidTest {
-    @Test
-    public void buttonClicked_when_callClickMethod() {
-        var button = app().create().byIdContaining(Button.class, "button");
-        button.click();
-    }
+public enum ExecutionType {
+    REGULAR,
+    GRID
 }

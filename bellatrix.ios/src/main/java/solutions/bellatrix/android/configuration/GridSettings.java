@@ -11,19 +11,16 @@
  * limitations under the License.
  */
 
-package testng;
+package solutions.bellatrix.android.configuration;
 
-import org.junit.jupiter.api.Test;
-import solutions.bellatrix.android.components.Button;
-import solutions.bellatrix.android.infrastructure.ExecutionApp;
-import solutions.bellatrix.android.infrastructure.Lifecycle;
-import solutions.bellatrix.android.infrastructure.junit.AndroidTest;
+import lombok.Getter;
+import lombok.Setter;
 
-@ExecutionApp(lifecycle = Lifecycle.RESTART_ON_FAIL)
-public class ProductPurchaseTests extends AndroidTest {
-    @Test
-    public void buttonClicked_when_callClickMethod() {
-        var button = app().create().byIdContaining(Button.class, "button");
-        button.click();
-    }
+import java.util.HashMap;
+import java.util.List;
+
+public class GridSettings {
+    @Getter @Setter private String providerName;
+    @Getter @Setter private String url;
+    @Getter @Setter private List<HashMap<String, String>> arguments;
 }

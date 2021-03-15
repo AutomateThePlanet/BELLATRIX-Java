@@ -11,19 +11,18 @@
  * limitations under the License.
  */
 
-package testng;
+package solutions.bellatrix.android.components.listeners;
 
-import org.junit.jupiter.api.Test;
-import solutions.bellatrix.android.components.Button;
-import solutions.bellatrix.android.infrastructure.ExecutionApp;
-import solutions.bellatrix.android.infrastructure.Lifecycle;
-import solutions.bellatrix.android.infrastructure.junit.AndroidTest;
+import solutions.bellatrix.android.components.Anchor;
+import solutions.bellatrix.android.components.IOSComponent;
 
-@ExecutionApp(lifecycle = Lifecycle.RESTART_ON_FAIL)
-public class ProductPurchaseTests extends AndroidTest {
-    @Test
-    public void buttonClicked_when_callClickMethod() {
-        var button = app().create().byIdContaining(Button.class, "button");
-        button.click();
+public class BddLogging {
+    private static boolean isBddLoggingTurnedOn = false;
+    public static void addPlugin() {
+        if (!isBddLoggingTurnedOn) {
+            Anchor.CLICKING.addListener((x) -> System.out.println(String.format("clicking %s\n", x.getComponent().getElementName())));
+            IOSComponent.VALIDATED_ATTRIBUTE.addListener((x) -> System.out.println(x.getMessage()));
+            isBddLoggingTurnedOn = true;
+        }
     }
 }

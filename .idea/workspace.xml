@@ -159,11 +159,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.CalculatorTests (1)" />
+        <item itemvalue="TestNG.CalculatorTests.sandbox" />
         <item itemvalue="TestNG.CalculatorTests" />
-        <item itemvalue="JUnit.CalculatorTests" />
-        <item itemvalue="JUnit.CalculatorTests" />
         <item itemvalue="JUnit.CalculatorTests.addition" />
+        <item itemvalue="JUnit.CalculatorTests" />
+        <item itemvalue="JUnit.CalculatorTests (1)" />
       </list>
     </recent_temporary>
   </component>
@@ -323,7 +323,14 @@
       <option name="project" value="LOCAL" />
       <updated>1615538530144</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="added missing component">
+      <created>1615540582434</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1615540582434</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -359,7 +366,8 @@
     <MESSAGE value="implemented desktop components and validation methods" />
     <MESSAGE value="added validation methods" />
     <MESSAGE value="added space after if" />
-    <option name="LAST_COMMIT_MESSAGE" value="added space after if" />
+    <MESSAGE value="added missing component" />
+    <option name="LAST_COMMIT_MESSAGE" value="added missing component" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
