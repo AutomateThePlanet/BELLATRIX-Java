@@ -11,12 +11,12 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.android.infrastructure;
+package solutions.bellatrix.ios.infrastructure;
 
 import lombok.Getter;
 import org.jsoup.internal.StringUtil;
 import solutions.bellatrix.core.configuration.ConfigurationService;
-import solutions.bellatrix.android.configuration.AndroidSettings;
+import solutions.bellatrix.ios.configuration.AndroidSettings;
 
 import java.util.HashMap;
 

@@ -11,7 +11,7 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.android.infrastructure;
+package solutions.bellatrix.ios.infrastructure;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

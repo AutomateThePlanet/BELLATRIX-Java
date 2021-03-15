@@ -16,7 +16,7 @@ package solutions.bellatrix.android.infrastructure;
 import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.core.plugins.Plugin;
 import solutions.bellatrix.core.utilities.FileDownloader;
-import solutions.bellatrix.android.configuration.AndroidSettings;
+import solutions.bellatrix.ios.configuration.AndroidSettings;
 
 public class DownloadDemoAppsPlugin extends Plugin {
     private static ThreadLocal<Boolean> areDemoAppsDownloaded;

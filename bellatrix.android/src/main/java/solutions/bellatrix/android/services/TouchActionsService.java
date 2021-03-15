@@ -11,7 +11,7 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.android.services;
+package solutions.bellatrix.ios.services;
 
 import io.appium.java_client.MultiTouchAction;
 import io.appium.java_client.TouchAction;

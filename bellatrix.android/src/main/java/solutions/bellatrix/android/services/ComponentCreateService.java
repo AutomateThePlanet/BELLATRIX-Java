@@ -11,12 +11,13 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.android.services;
+package solutions.bellatrix.ios.services;
 
+import solutions.bellatrix.android.findstrategies.*;
 import solutions.bellatrix.core.utilities.InstanceFactory;
 import solutions.bellatrix.android.components.AndroidComponent;
 import solutions.bellatrix.android.findstrategies.FindStrategy;
-import solutions.bellatrix.android.findstrategies.*;
+import solutions.bellatrix.ios.findstrategies.*;
 import solutions.bellatrix.android.infrastructure.DriverService;
 
 import java.util.ArrayList;

@@ -11,7 +11,7 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.android.components;
+package solutions.bellatrix.ios.components;
 
 import solutions.bellatrix.core.plugins.EventListener;
 
