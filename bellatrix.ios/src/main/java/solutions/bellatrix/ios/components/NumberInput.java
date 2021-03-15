@@ -13,18 +13,31 @@
 
 package solutions.bellatrix.ios.components;
 
+import solutions.bellatrix.ios.components.contracts.ComponentDisabled;
+import solutions.bellatrix.ios.components.contracts.ComponentNumber;
 import solutions.bellatrix.core.plugins.EventListener;
 
-public class TextArea extends IOSComponent {
-    public final static EventListener<ComponentActionEventArgs> SETTING_TEXT = new EventListener<>();
-    public final static EventListener<ComponentActionEventArgs> TEXT_SET = new EventListener<>();
+public class NumberInput extends IOSComponent implements ComponentDisabled, ComponentNumber {
+    public final static EventListener<ComponentActionEventArgs> SETTING_NUMBER = new EventListener<>();
+    public final static EventListener<ComponentActionEventArgs> NUMBER_SET = new EventListener<>();
 
     @Override
     public Class<?> getComponentClass() {
         return getClass();
     }
 
-    public void setText(String value) {
-        defaultSetText(SETTING_TEXT, TEXT_SET, value);
+    public void setNumber(Number value) {
+        defaultSetText(SETTING_NUMBER, NUMBER_SET, value.toString());
+    }
+
+    @Override
+    public double getNumber() {
+        var resultText = defaultGetValueAttribute();
+        return Double.parseDouble(resultText);
+    }
+
+    @Override
+    public boolean isDisabled() {
+        return defaultGetDisabledAttribute();
     }
 }

@@ -13,9 +13,17 @@
 
 package solutions.bellatrix.android.components;
 
-public class Search extends AndroidComponent {
+import solutions.bellatrix.android.findstrategies.ClassFindStrategy;
+
+import java.util.List;
+
+public class Grid extends AndroidComponent {
     @Override
     public Class<?> getComponentClass() {
         return getClass();
+    }
+
+    public <TComponent extends AndroidComponent> List<TComponent> getAll(Class<TComponent> componentClass, String searchClass) {
+        return createAll(componentClass, new ClassFindStrategy(searchClass));
     }
 }

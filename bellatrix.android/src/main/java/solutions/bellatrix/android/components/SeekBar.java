@@ -14,25 +14,28 @@
 package solutions.bellatrix.android.components;
 
 import solutions.bellatrix.android.components.contracts.ComponentDisabled;
-import solutions.bellatrix.android.components.contracts.ComponentText;
+import solutions.bellatrix.android.services.TouchActionsService;
 import solutions.bellatrix.core.plugins.EventListener;
 
-public class TextField extends AndroidComponent implements ComponentDisabled, ComponentText {
-    public final static EventListener<ComponentActionEventArgs> SETTING_TEXT = new EventListener<>();
-    public final static EventListener<ComponentActionEventArgs> TEXT_SET = new EventListener<>();
+public class SeekBar extends AndroidComponent implements ComponentDisabled {
+    public final static EventListener<ComponentActionEventArgs> SETTING_PERCENTAGE = new EventListener<>();
+    public final static EventListener<ComponentActionEventArgs> PERCENTAGE_SET = new EventListener<>();
 
     @Override
     public Class<?> getComponentClass() {
         return getClass();
     }
 
-    public void setText(String value) {
-        defaultSetText(SETTING_TEXT, TEXT_SET, value);
-    }
+    public void set(Number percentage) {
+        SETTING_PERCENTAGE.broadcast(new ComponentActionEventArgs(this, percentage.toString()));
 
-    @Override
-    public String getText() {
-        return defaultGetText();
+        int end = findElement().getSize().getWidth();
+        int y = findElement().getLocation().getY();
+        var touchActionsService = new TouchActionsService();
+        int moveTo = (int)(((double) percentage / 100) * end);
+        touchActionsService.press(moveTo, y).release().perform();
+
+        PERCENTAGE_SET.broadcast(new ComponentActionEventArgs(this, percentage.toString()));
     }
 
     @Override

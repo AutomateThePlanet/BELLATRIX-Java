@@ -13,32 +13,32 @@
 
 package solutions.bellatrix.android.components;
 
-import solutions.bellatrix.android.components.contracts.ComponentChecked;
 import solutions.bellatrix.android.components.contracts.ComponentDisabled;
+import solutions.bellatrix.android.components.contracts.ComponentOn;
 import solutions.bellatrix.android.components.contracts.ComponentText;
 import solutions.bellatrix.core.plugins.EventListener;
 
-public class CheckBox extends AndroidComponent implements ComponentDisabled, ComponentChecked, ComponentText {
-    public final static EventListener<ComponentActionEventArgs> CHECKING = new EventListener<>();
-    public final static EventListener<ComponentActionEventArgs> CHECKED = new EventListener<>();
-    public final static EventListener<ComponentActionEventArgs> UNCHECKING = new EventListener<>();
-    public final static EventListener<ComponentActionEventArgs> UNCHECKED = new EventListener<>();
+public class Switch extends AndroidComponent implements ComponentDisabled, ComponentOn, ComponentText {
+    public final static EventListener<ComponentActionEventArgs> TURNING_ON = new EventListener<>();
+    public final static EventListener<ComponentActionEventArgs> TURNED_ON = new EventListener<>();
+    public final static EventListener<ComponentActionEventArgs> TURNING_OFF = new EventListener<>();
+    public final static EventListener<ComponentActionEventArgs> TURNED_OFF = new EventListener<>();
 
     @Override
     public Class<?> getComponentClass() {
         return getClass();
     }
 
-    public void check() {
-        defaultCheck(CHECKING, CHECKED);
+    public void turnOn() {
+        defaultCheck(TURNING_ON, TURNED_ON);
     }
 
-    public void uncheck() {
-        defaultUncheck(UNCHECKING, UNCHECKED);
+    public void turnOff() {
+        defaultUncheck(TURNING_OFF, TURNED_OFF);
     }
 
     @Override
-    public boolean isChecked() {
+    public boolean isOn() {
         return defaultGetCheckedAttribute();
     }
 

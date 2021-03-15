@@ -19,10 +19,8 @@ import layout.LayoutComponentValidationsBuilder;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import solutions.bellatrix.android.components.contracts.Component;
 import solutions.bellatrix.android.findstrategies.FindStrategy;
 import solutions.bellatrix.android.findstrategies.NameFindStrategy;
@@ -38,18 +36,15 @@ import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.core.plugins.EventListener;
 import solutions.bellatrix.core.utilities.DebugInformation;
 import solutions.bellatrix.core.utilities.InstanceFactory;
-import solutions.bellatrix.ios.configuration.AndroidSettings;
-import solutions.bellatrix.ios.findstrategies.*;
+import solutions.bellatrix.android.configuration.AndroidSettings;
 import solutions.bellatrix.android.infrastructure.DriverService;
-import solutions.bellatrix.ios.services.*;
-import solutions.bellatrix.ios.waitstrategies.*;
+import solutions.bellatrix.android.services.*;
+import solutions.bellatrix.android.waitstrategies.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
-import java.util.function.Function;
-import java.util.function.Supplier;
 
 public class AndroidComponent extends LayoutComponentValidationsBuilder implements Component {
     public final static EventListener<ComponentActionEventArgs> HOVERING = new EventListener<>();
@@ -237,9 +232,38 @@ public class AndroidComponent extends LayoutComponentValidationsBuilder implemen
         clicked.broadcast(new ComponentActionEventArgs(this));
     }
 
+    protected void defaultCheck(EventListener<ComponentActionEventArgs> checking, EventListener<ComponentActionEventArgs> checked)
+    {
+        checking.broadcast(new ComponentActionEventArgs(this));
+
+        this.toExists().toBeClickable().waitToBe();
+        if(!findElement().isSelected()) {
+            findElement().click();
+        }
+
+        checked.broadcast(new ComponentActionEventArgs(this));
+    }
+
+    protected void defaultUncheck(EventListener<ComponentActionEventArgs> unchecking, EventListener<ComponentActionEventArgs> unchecked)
+    {
+        unchecking.broadcast(new ComponentActionEventArgs(this));
+
+        this.toExists().toBeClickable().waitToBe();
+        if(findElement().isSelected()) {
+            findElement().click();
+        }
+
+        unchecked.broadcast(new ComponentActionEventArgs(this));
+    }
+
     protected boolean defaultGetDisabledAttribute() {
         var valueAttr = Optional.ofNullable(getAttribute("disabled")).orElse("false");
-        return valueAttr.toLowerCase(Locale.ROOT) == "true";
+        return valueAttr.toLowerCase(Locale.ROOT).equals("true");
+    }
+
+    protected boolean defaultGetCheckedAttribute() {
+        var valueAttr = Optional.ofNullable(getAttribute("checked")).orElse("false");
+        return valueAttr.toLowerCase(Locale.ROOT).equals("true");
     }
 
     protected String defaultGetText() {
@@ -305,42 +329,5 @@ public class AndroidComponent extends LayoutComponentValidationsBuilder implemen
         }
 
         SCROLLED_TO_VISIBLE.broadcast(new ComponentActionEventArgs(this));
-    }
-
-    public final static EventListener<ComponentActionEventArgs> VALIDATED_ATTRIBUTE = new EventListener<>();
-
-    protected void defaultValidateAttributeSet(Supplier<String> supplier, String attributeName) {
-        waitUntil((d) -> !StringUtils.isEmpty(supplier.get()), String.format("The control's %s shouldn't be empty but was.", attributeName));
-        VALIDATED_ATTRIBUTE.broadcast(new ComponentActionEventArgs(this, null, String.format("validate %s is empty", attributeName)));
-    }
-
-    protected void defaultValidateAttributeNotSet(Supplier<String> supplier, String attributeName) {
-        waitUntil((d) -> StringUtils.isEmpty(supplier.get()), String.format("The control's %s should be null but was '%s'.", attributeName, supplier.get()));
-        VALIDATED_ATTRIBUTE.broadcast(new ComponentActionEventArgs(this, null, String.format("validate %s is null", attributeName)));
-    }
-
-    protected void defaultValidateAttributeIs(Supplier<String> supplier, String value, String attributeName) {
-        waitUntil((d) -> supplier.get().strip().equals(value), String.format("The control's %s should be '%s' but was '%s'.", attributeName, value, supplier.get()));
-        VALIDATED_ATTRIBUTE.broadcast(new ComponentActionEventArgs(this, value, String.format("validate %s is %s", attributeName, value)));
-    }
-
-    protected void defaultValidateAttributeContains(Supplier<String> supplier, String value, String attributeName) {
-        waitUntil((d) -> supplier.get().strip().contains(value), String.format("The control's %s should contain '%s' but was '%s'.", attributeName, value, supplier.get()));
-        VALIDATED_ATTRIBUTE.broadcast(new ComponentActionEventArgs(this, value, String.format("validate %s contains %s", attributeName, value)));
-    }
-
-    protected void defaultValidateAttributeNotContains(Supplier<String> supplier, String value, String attributeName) {
-        waitUntil((d) -> !supplier.get().strip().contains(value), String.format("The control's %s shouldn't contain '%s' but was '%s'.", attributeName, value, supplier.get()));
-        VALIDATED_ATTRIBUTE.broadcast(new ComponentActionEventArgs(this, value, String.format("validate %s doesn't contain %s", attributeName, value)));
-    }
-
-    private void waitUntil(Function<SearchContext, Boolean> waitCondition, String exceptionMessage) {
-        var webDriverWait = new WebDriverWait(DriverService.getWrappedAndroidDriver(), androidSettings.getTimeoutSettings().getValidationsTimeout(), androidSettings.getTimeoutSettings().getSleepInterval());
-        try {
-            webDriverWait.until(waitCondition);
-        } catch (TimeoutException ex) {
-            DebugInformation.printStackTrace(ex);
-            throw ex;
-        }
     }
 }

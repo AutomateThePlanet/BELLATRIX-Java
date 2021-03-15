@@ -13,15 +13,42 @@
 
 package solutions.bellatrix.ios.components;
 
-public class CheckBox extends IOSComponent {
+import solutions.bellatrix.ios.components.contracts.ComponentChecked;
+import solutions.bellatrix.ios.components.contracts.ComponentDisabled;
+import solutions.bellatrix.ios.components.contracts.ComponentText;
+import solutions.bellatrix.core.plugins.EventListener;
+
+public class CheckBox extends IOSComponent implements ComponentDisabled, ComponentChecked, ComponentText {
+    public final static EventListener<ComponentActionEventArgs> CHECKING = new EventListener<>();
+    public final static EventListener<ComponentActionEventArgs> CHECKED = new EventListener<>();
+    public final static EventListener<ComponentActionEventArgs> UNCHECKING = new EventListener<>();
+    public final static EventListener<ComponentActionEventArgs> UNCHECKED = new EventListener<>();
+
     @Override
     public Class<?> getComponentClass() {
         return getClass();
     }
 
     public void check() {
+        defaultCheck(CHECKING, CHECKED);
     }
 
     public void uncheck() {
+        defaultUncheck(UNCHECKING, UNCHECKED);
+    }
+
+    @Override
+    public boolean isChecked() {
+        return defaultGetCheckedAttribute();
+    }
+
+    @Override
+    public boolean isDisabled() {
+        return false;
+    }
+
+    @Override
+    public String getText() {
+        return defaultGetText();
     }
 }

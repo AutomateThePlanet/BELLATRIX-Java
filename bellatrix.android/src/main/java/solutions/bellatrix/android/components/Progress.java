@@ -13,9 +13,16 @@
 
 package solutions.bellatrix.android.components;
 
-public class Progress extends AndroidComponent {
+import solutions.bellatrix.android.components.contracts.ComponentDisabled;
+
+public class Progress extends AndroidComponent implements ComponentDisabled {
     @Override
     public Class<?> getComponentClass() {
         return getClass();
+    }
+
+    @Override
+    public boolean isDisabled() {
+        return defaultGetDisabledAttribute();
     }
 }

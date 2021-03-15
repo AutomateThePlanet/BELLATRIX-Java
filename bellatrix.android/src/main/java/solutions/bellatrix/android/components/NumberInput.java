@@ -14,25 +14,32 @@
 package solutions.bellatrix.android.components;
 
 import solutions.bellatrix.android.components.contracts.ComponentDisabled;
-import solutions.bellatrix.android.components.contracts.ComponentText;
+import solutions.bellatrix.android.components.contracts.ComponentNumber;
+import solutions.bellatrix.android.findstrategies.ClassFindStrategy;
 import solutions.bellatrix.core.plugins.EventListener;
 
-public class TextField extends AndroidComponent implements ComponentDisabled, ComponentText {
-    public final static EventListener<ComponentActionEventArgs> SETTING_TEXT = new EventListener<>();
-    public final static EventListener<ComponentActionEventArgs> TEXT_SET = new EventListener<>();
+public class NumberInput extends AndroidComponent implements ComponentDisabled, ComponentNumber {
+    public final static EventListener<ComponentActionEventArgs> SETTING_NUMBER = new EventListener<>();
+    public final static EventListener<ComponentActionEventArgs> NUMBER_SET = new EventListener<>();
 
     @Override
     public Class<?> getComponentClass() {
         return getClass();
     }
 
-    public void setText(String value) {
-        defaultSetText(SETTING_TEXT, TEXT_SET, value);
+    public void setNumber(Number value) {
+        defaultSetText(SETTING_NUMBER, NUMBER_SET, value.toString());
     }
 
     @Override
-    public String getText() {
-        return defaultGetText();
+    public double getNumber() {
+        var resultText = defaultGetText();
+        if (resultText.isEmpty()) {
+            var textField = create(TextField.class, new ClassFindStrategy("android.widget.EditText"));
+            resultText = textField.getText();
+        }
+
+        return Double.parseDouble(resultText);
     }
 
     @Override

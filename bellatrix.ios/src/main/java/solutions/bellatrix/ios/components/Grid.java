@@ -11,15 +11,19 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.android.components;
+package solutions.bellatrix.ios.components;
 
-public class Div extends AndroidComponent {
-    public String getText() {
-        return findElement().getText();
-    }
+import solutions.bellatrix.ios.findstrategies.ClassFindStrategy;
 
+import java.util.List;
+
+public class Grid extends IOSComponent {
     @Override
     public Class<?> getComponentClass() {
         return getClass();
+    }
+
+    public <TComponent extends IOSComponent> List<TComponent> getAll(Class<TComponent> componentClass, String searchClass) {
+        return createAll(componentClass, new ClassFindStrategy(searchClass));
     }
 }

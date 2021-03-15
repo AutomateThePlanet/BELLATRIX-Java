@@ -13,13 +13,28 @@
 
 package solutions.bellatrix.ios.components;
 
-public class Div extends IOSComponent {
-    public String getText() {
-        return findElement().getText();
-    }
+import solutions.bellatrix.ios.components.contracts.ComponentDisabled;
+import solutions.bellatrix.core.plugins.EventListener;
+
+public class PasswordInput extends IOSComponent implements ComponentDisabled {
+    public final static EventListener<ComponentActionEventArgs> SETTING_PASSWORD = new EventListener<>();
+    public final static EventListener<ComponentActionEventArgs> PASSWORD_SET = new EventListener<>();
 
     @Override
     public Class<?> getComponentClass() {
         return getClass();
+    }
+
+    public void setPassword(String password) {
+        defaultSetText(SETTING_PASSWORD, PASSWORD_SET, password);
+    }
+
+    public String getPassword() {
+        return defaultGetValueAttribute();
+    }
+
+    @Override
+    public boolean isDisabled() {
+        return defaultGetDisabledAttribute();
     }
 }

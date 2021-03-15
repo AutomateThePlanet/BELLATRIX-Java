@@ -13,35 +13,33 @@
 
 package solutions.bellatrix.ios.components;
 
-import solutions.bellatrix.ios.components.contracts.ComponentChecked;
 import solutions.bellatrix.ios.components.contracts.ComponentDisabled;
-import solutions.bellatrix.ios.components.contracts.ComponentText;
+import solutions.bellatrix.ios.services.TouchActionsService;
 import solutions.bellatrix.core.plugins.EventListener;
 
-public class RadioButton extends IOSComponent implements ComponentDisabled, ComponentChecked, ComponentText {
-    public final static EventListener<ComponentActionEventArgs> CLICKING = new EventListener<>();
-    public final static EventListener<ComponentActionEventArgs> CLICKED = new EventListener<>();
+public class SeekBar extends IOSComponent implements ComponentDisabled {
+    public final static EventListener<ComponentActionEventArgs> SETTING_PERCENTAGE = new EventListener<>();
+    public final static EventListener<ComponentActionEventArgs> PERCENTAGE_SET = new EventListener<>();
 
     @Override
     public Class<?> getComponentClass() {
         return getClass();
     }
 
-    public void click() {
-        defaultClick(CLICKING, CLICKED);
-    }
+    public void set(Number percentage) {
+        SETTING_PERCENTAGE.broadcast(new ComponentActionEventArgs(this, percentage.toString()));
 
-    public String getText() {
-        return defaultGetText();
+        int end = findElement().getSize().getWidth();
+        int y = findElement().getLocation().getY();
+        var touchActionsService = new TouchActionsService();
+        int moveTo = (int)(((double)percentage / 100) * end);
+        touchActionsService.press(moveTo, y).release().perform();
+
+        PERCENTAGE_SET.broadcast(new ComponentActionEventArgs(this, percentage.toString()));
     }
 
     @Override
     public boolean isDisabled() {
         return defaultGetDisabledAttribute();
-    }
-
-    @Override
-    public boolean isChecked() {
-        return defaultGetCheckedAttribute();
     }
 }

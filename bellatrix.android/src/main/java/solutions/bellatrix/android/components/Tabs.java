@@ -11,11 +11,19 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.ios.components;
+package solutions.bellatrix.android.components;
 
-public class Search extends IOSComponent {
+import solutions.bellatrix.android.findstrategies.ClassFindStrategy;
+
+import java.util.List;
+
+public class Tabs extends AndroidComponent {
     @Override
     public Class<?> getComponentClass() {
         return getClass();
+    }
+
+    public <TComponent extends AndroidComponent> List<TComponent> getAll(Class<TComponent> componentClass, String searchClass) {
+        return createAll(componentClass, new ClassFindStrategy(searchClass));
     }
 }

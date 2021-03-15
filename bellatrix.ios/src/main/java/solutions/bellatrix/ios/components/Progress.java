@@ -13,9 +13,16 @@
 
 package solutions.bellatrix.ios.components;
 
-public class Progress extends IOSComponent {
+import solutions.bellatrix.ios.components.contracts.ComponentDisabled;
+
+public class Progress extends IOSComponent implements ComponentDisabled {
     @Override
     public Class<?> getComponentClass() {
         return getClass();
+    }
+
+    @Override
+    public boolean isDisabled() {
+        return defaultGetDisabledAttribute();
     }
 }

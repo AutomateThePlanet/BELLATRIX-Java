@@ -13,9 +13,16 @@
 
 package solutions.bellatrix.android.components;
 
-public class Label extends AndroidComponent {
+import solutions.bellatrix.android.components.contracts.ComponentText;
+
+public class Label extends AndroidComponent implements ComponentText {
     @Override
     public Class<?> getComponentClass() {
         return getClass();
+    }
+
+    @Override
+    public String getText() {
+        return defaultGetText();
     }
 }

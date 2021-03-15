@@ -13,18 +13,30 @@
 
 package solutions.bellatrix.android.components;
 
+import solutions.bellatrix.android.components.contracts.ComponentDisabled;
+import solutions.bellatrix.android.components.contracts.ComponentNumber;
+import solutions.bellatrix.android.findstrategies.ClassFindStrategy;
 import solutions.bellatrix.core.plugins.EventListener;
 
-public class TextArea extends AndroidComponent {
-    public final static EventListener<ComponentActionEventArgs> SETTING_TEXT = new EventListener<>();
-    public final static EventListener<ComponentActionEventArgs> TEXT_SET = new EventListener<>();
+public class PasswordInput extends AndroidComponent implements ComponentDisabled {
+    public final static EventListener<ComponentActionEventArgs> SETTING_PASSWORD = new EventListener<>();
+    public final static EventListener<ComponentActionEventArgs> PASSWORD_SET = new EventListener<>();
 
     @Override
     public Class<?> getComponentClass() {
         return getClass();
     }
 
-    public void setText(String value) {
-        defaultSetText(SETTING_TEXT, TEXT_SET, value);
+    public void setPassword(String password) {
+        defaultSetText(SETTING_PASSWORD, PASSWORD_SET, password);
+    }
+
+    public String getPassword() {
+        return defaultGetText();
+    }
+
+    @Override
+    public boolean isDisabled() {
+        return defaultGetDisabledAttribute();
     }
 }

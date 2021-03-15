@@ -13,15 +13,15 @@
 
 package solutions.bellatrix.ios.components.listeners;
 
-import solutions.bellatrix.ios.components.Anchor;
-import solutions.bellatrix.ios.components.IOSComponent;
+import solutions.bellatrix.ios.components.Button;
+import solutions.bellatrix.ios.components.validations.IOSValidator;
 
 public class BddLogging {
     private static boolean isBddLoggingTurnedOn = false;
     public static void addPlugin() {
         if (!isBddLoggingTurnedOn) {
-            Anchor.CLICKING.addListener((x) -> System.out.println(String.format("clicking %s\n", x.getComponent().getElementName())));
-            IOSComponent.VALIDATED_ATTRIBUTE.addListener((x) -> System.out.println(x.getMessage()));
+            Button.CLICKING.addListener((x) -> System.out.printf("clicking %s%n", x.getComponent().getElementName()));
+            IOSValidator.VALIDATED_ATTRIBUTE.addListener((x) -> System.out.println(x.getMessage()));
             isBddLoggingTurnedOn = true;
         }
     }
