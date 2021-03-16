@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="55b01a59-bddd-4a9d-b423-43bd7933f1ee" name="Default Changelist" comment="removed redundant expression">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="55b01a59-bddd-4a9d-b423-43bd7933f1ee" name="Default Changelist" comment="removed redundant expression" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -391,7 +389,14 @@
       <option name="project" value="LOCAL" />
       <updated>1615885485215</updated>
     </task>
-    <option name="localTasksCounter" value="31" />
+    <task id="LOCAL-00031" summary="optimized imports">
+      <created>1615889040992</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1615889040992</updated>
+    </task>
+    <option name="localTasksCounter" value="32" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -416,7 +421,6 @@
     <MESSAGE value="temporary directory rename" />
     <MESSAGE value="duplicate directory in repo fix" />
     <MESSAGE value="updated workspace file" />
-    <MESSAGE value="optimized imports" />
     <MESSAGE value="fixed tests" />
     <MESSAGE value="added DesktopValidator" />
     <MESSAGE value="fixed bdd logging" />
@@ -432,7 +436,8 @@
     <MESSAGE value="refactored component validators" />
     <MESSAGE value="fixed mobile check/uncheck methods" />
     <MESSAGE value="renamed &quot;inner text&quot; to &quot;text&quot; for mobile components" />
-    <option name="LAST_COMMIT_MESSAGE" value="renamed &quot;inner text&quot; to &quot;text&quot; for mobile components" />
+    <MESSAGE value="optimized imports" />
+    <option name="LAST_COMMIT_MESSAGE" value="optimized imports" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

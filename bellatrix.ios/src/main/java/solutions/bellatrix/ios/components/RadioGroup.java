@@ -52,6 +52,6 @@ public class RadioGroup extends IOSComponent {
     }
 
     public List<RadioButton> getAll() {
-        return createAll(RadioButton.class, new ClassFindStrategy("android.widget.RadioButton"));
+        return createAll(RadioButton.class, new ClassFindStrategy("XCUIElementTypeRadioButton"));
     }
 }
