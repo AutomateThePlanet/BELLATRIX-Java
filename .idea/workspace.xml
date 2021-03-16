@@ -6,8 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="55b01a59-bddd-4a9d-b423-43bd7933f1ee" name="Default Changelist" comment="removed redundant expression">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bellatrix.android/src/main/java/solutions/bellatrix/android/components/AndroidComponent.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.android/src/main/java/solutions/bellatrix/android/components/AndroidComponent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bellatrix.ios/src/main/java/solutions/bellatrix/ios/components/IOSComponent.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.ios/src/main/java/solutions/bellatrix/ios/components/IOSComponent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.android/src/main/java/solutions/bellatrix/android/components/contracts/ComponentText.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.android/src/main/java/solutions/bellatrix/android/components/contracts/ComponentText.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -379,7 +378,14 @@
       <option name="project" value="LOCAL" />
       <updated>1615882132449</updated>
     </task>
-    <option name="localTasksCounter" value="29" />
+    <task id="LOCAL-00029" summary="fixed mobile check/uncheck methods">
+      <created>1615884291295</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1615884291295</updated>
+    </task>
+    <option name="localTasksCounter" value="30" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -395,7 +401,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="removed redundant expression" />
     <MESSAGE value="implemented web components" />
     <MESSAGE value="configuration files update" />
     <MESSAGE value="changed Boolean object to boolean primitive" />
@@ -420,7 +425,8 @@
     <MESSAGE value="implemented iOS and Android components and validations" />
     <MESSAGE value="added number validation" />
     <MESSAGE value="refactored component validators" />
-    <option name="LAST_COMMIT_MESSAGE" value="refactored component validators" />
+    <MESSAGE value="fixed mobile check/uncheck methods" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed mobile check/uncheck methods" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

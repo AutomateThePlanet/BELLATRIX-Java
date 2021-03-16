@@ -26,18 +26,18 @@ public interface ComponentText extends Component {
     @SneakyThrows
     default void validateTextIs(String value) {
         Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIs", IOSComponent.class, String.class, String.class, String.class);
-        method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (IOSComponent)this, getText(), value, "inner text");
+        method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (IOSComponent)this, getText(), value, "text");
     }
 
     @SneakyThrows
     default void validateTextContains(String value) {
         Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeContains", IOSComponent.class, String.class, String.class, String.class);
-        method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (IOSComponent)this, getText(), value, "inner text");
+        method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (IOSComponent)this, getText(), value, "text");
     }
 
     @SneakyThrows
     default void validateTextNotContains(String value) {
         Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeNotContains", IOSComponent.class, String.class, String.class, String.class);
-        method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (IOSComponent)this, getText(), value, "inner text");
+        method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (IOSComponent)this, getText(), value, "text");
     }
 }
