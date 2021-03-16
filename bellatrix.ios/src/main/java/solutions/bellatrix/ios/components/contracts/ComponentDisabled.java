@@ -16,7 +16,7 @@ package solutions.bellatrix.ios.components.contracts;
 import lombok.SneakyThrows;
 import solutions.bellatrix.core.utilities.SingletonFactory;
 import solutions.bellatrix.ios.components.IOSComponent;
-import solutions.bellatrix.ios.components.validations.IOSValidator;
+import solutions.bellatrix.ios.validations.ComponentValidator;
 
 import java.lang.reflect.Method;
 
@@ -25,13 +25,13 @@ public interface ComponentDisabled extends Component {
 
     @SneakyThrows
     default void validateIsDisabled() {
-        Method method = IOSValidator.class.getDeclaredMethod("defaultValidateAttributeTrue", IOSComponent.class, boolean.class, String.class);
-        method.invoke(SingletonFactory.getInstance(IOSValidator.class), (IOSComponent)this, isDisabled(), "disabled");
+        Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeTrue", IOSComponent.class, boolean.class, String.class);
+        method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (IOSComponent)this, isDisabled(), "disabled");
     }
 
     @SneakyThrows
     default void validateNotDisabled() {
-        Method method = IOSValidator.class.getDeclaredMethod("defaultValidateAttributeFalse", IOSComponent.class, boolean.class, String.class);
-        method.invoke(SingletonFactory.getInstance(IOSValidator.class), (IOSComponent)this, isDisabled(), "disabled");
+        Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeFalse", IOSComponent.class, boolean.class, String.class);
+        method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (IOSComponent)this, isDisabled(), "disabled");
     }
 }

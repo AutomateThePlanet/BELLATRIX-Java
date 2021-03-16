@@ -55,6 +55,7 @@ public class DesktopComponent extends LayoutComponentValidationsBuilder implemen
     public final static EventListener<ComponentActionEventArgs> CREATED_ELEMENT = new EventListener<>();
     public final static EventListener<ComponentActionEventArgs> CREATING_ELEMENTS = new EventListener<>();
     public final static EventListener<ComponentActionEventArgs> CREATED_ELEMENTS = new EventListener<>();
+    public final static EventListener<ComponentActionEventArgs> VALIDATED_ATTRIBUTE = new EventListener<>();
 
     @Getter @Setter(AccessLevel.PROTECTED) private WebElement wrappedElement;
     @Getter @Setter private WebElement parentWrappedElement;

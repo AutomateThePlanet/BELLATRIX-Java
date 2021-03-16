@@ -15,7 +15,7 @@ package solutions.bellatrix.android.components.contracts;
 
 import lombok.SneakyThrows;
 import solutions.bellatrix.android.components.AndroidComponent;
-import solutions.bellatrix.android.components.validations.AndroidValidator;
+import solutions.bellatrix.android.validations.ComponentValidator;
 import solutions.bellatrix.core.utilities.SingletonFactory;
 
 import java.lang.reflect.Method;
@@ -25,7 +25,7 @@ public interface ComponentNumber extends Component {
 
     @SneakyThrows
     default void validateNumberIs(Number value) {
-        Method method = AndroidValidator.class.getDeclaredMethod("defaultValidateAttributeIs", AndroidComponent.class, Number.class, Number.class, String.class);
-        method.invoke(SingletonFactory.getInstance(AndroidValidator.class), (AndroidComponent)this, getNumber(), value, "number");
+        Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIs", AndroidComponent.class, Number.class, Number.class, String.class);
+        method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (AndroidComponent)this, getNumber(), value, "number");
     }
 }

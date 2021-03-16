@@ -15,7 +15,7 @@ package solutions.bellatrix.android.components.contracts;
 
 import lombok.SneakyThrows;
 import solutions.bellatrix.android.components.AndroidComponent;
-import solutions.bellatrix.android.components.validations.AndroidValidator;
+import solutions.bellatrix.android.validations.ComponentValidator;
 import solutions.bellatrix.core.utilities.SingletonFactory;
 
 import java.lang.reflect.Method;
@@ -25,13 +25,13 @@ public interface ComponentChecked extends Component {
 
     @SneakyThrows
     default void validateIsChecked() {
-        Method method = AndroidValidator.class.getDeclaredMethod("defaultValidateAttributeTrue", AndroidComponent.class, boolean.class, String.class);
-        method.invoke(SingletonFactory.getInstance(AndroidValidator.class), (AndroidComponent)this, isChecked(), "checked");
+        Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeTrue", AndroidComponent.class, boolean.class, String.class);
+        method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (AndroidComponent)this, isChecked(), "checked");
     }
 
     @SneakyThrows
     default void validateIsUnchecked() {
-        Method method = AndroidValidator.class.getDeclaredMethod("defaultValidateAttributeTrue", AndroidComponent.class, boolean.class, String.class);
-        method.invoke(SingletonFactory.getInstance(AndroidValidator.class), (AndroidComponent)this, !isChecked(), "unchecked");
+        Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeTrue", AndroidComponent.class, boolean.class, String.class);
+        method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (AndroidComponent)this, !isChecked(), "unchecked");
     }
 }

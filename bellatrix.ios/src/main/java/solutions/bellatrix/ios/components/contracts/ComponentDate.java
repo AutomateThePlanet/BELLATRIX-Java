@@ -16,7 +16,7 @@ package solutions.bellatrix.ios.components.contracts;
 import lombok.SneakyThrows;
 import solutions.bellatrix.core.utilities.SingletonFactory;
 import solutions.bellatrix.ios.components.IOSComponent;
-import solutions.bellatrix.ios.components.validations.IOSValidator;
+import solutions.bellatrix.ios.validations.ComponentValidator;
 
 import java.lang.reflect.Method;
 
@@ -25,19 +25,19 @@ public interface ComponentDate extends Component {
 
     @SneakyThrows
     default void validateDateIs(String value) {
-        Method method = IOSValidator.class.getDeclaredMethod("defaultValidateAttributeIs", IOSComponent.class, String.class, String.class, String.class);
-        method.invoke(SingletonFactory.getInstance(IOSValidator.class), (IOSComponent)this, getDate(), value, "date");
+        Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIs", IOSComponent.class, String.class, String.class, String.class);
+        method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (IOSComponent)this, getDate(), value, "date");
     }
 
     @SneakyThrows
     default void validateDateContains(String value) {
-        Method method = IOSValidator.class.getDeclaredMethod("defaultValidateAttributeContains", IOSComponent.class, String.class, String.class, String.class);
-        method.invoke(SingletonFactory.getInstance(IOSValidator.class), (IOSComponent)this, getDate(), value, "date");
+        Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeContains", IOSComponent.class, String.class, String.class, String.class);
+        method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (IOSComponent)this, getDate(), value, "date");
     }
 
     @SneakyThrows
     default void validateDateNotContains(String value) {
-        Method method = IOSValidator.class.getDeclaredMethod("defaultValidateAttributeNotContains", IOSComponent.class, String.class,  String.class, String.class);
-        method.invoke(SingletonFactory.getInstance(IOSValidator.class), (IOSComponent)this, getDate(), value, "date");
+        Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeNotContains", IOSComponent.class, String.class,  String.class, String.class);
+        method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (IOSComponent)this, getDate(), value, "date");
     }
 }

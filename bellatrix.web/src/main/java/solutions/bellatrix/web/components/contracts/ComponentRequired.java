@@ -16,7 +16,7 @@ package solutions.bellatrix.web.components.contracts;
 import lombok.SneakyThrows;
 import solutions.bellatrix.core.utilities.SingletonFactory;
 import solutions.bellatrix.web.components.WebComponent;
-import solutions.bellatrix.web.components.validations.WebValidator;
+import solutions.bellatrix.web.validations.ComponentValidator;
 
 import java.lang.reflect.Method;
 
@@ -25,13 +25,13 @@ public interface ComponentRequired extends Component {
 
     @SneakyThrows
     default void validateIsRequired() {
-        Method method = WebValidator.class.getDeclaredMethod("defaultValidateAttributeTrue", WebComponent.class, boolean.class, String.class);
-        method.invoke(SingletonFactory.getInstance(WebValidator.class), (WebComponent)this, isRequired(), "required");
+        Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeTrue", WebComponent.class, boolean.class, String.class);
+        method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, isRequired(), "required");
     }
 
     @SneakyThrows
     default void validateNotRequired() {
-        Method method = WebValidator.class.getDeclaredMethod("defaultValidateAttributeFalse", WebComponent.class, boolean.class, String.class);
-        method.invoke(SingletonFactory.getInstance(WebValidator.class), (WebComponent)this, isRequired(), "required");
+        Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeFalse", WebComponent.class, boolean.class, String.class);
+        method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, isRequired(), "required");
     }
 }
