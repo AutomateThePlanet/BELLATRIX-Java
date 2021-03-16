@@ -16,7 +16,7 @@ package solutions.bellatrix.web.components.contracts;
 import lombok.SneakyThrows;
 import solutions.bellatrix.core.utilities.SingletonFactory;
 import solutions.bellatrix.web.components.WebComponent;
-import solutions.bellatrix.web.components.validations.WebValidator;
+import solutions.bellatrix.web.validations.ComponentValidator;
 
 import java.lang.reflect.Method;
 
@@ -25,19 +25,19 @@ public interface ComponentAlt extends Component {
 
     @SneakyThrows
     default void validateAltIs(String value) {
-        Method method = WebValidator.class.getDeclaredMethod("defaultValidateAttributeIs", WebComponent.class, String.class, String.class, String.class);
-        method.invoke(SingletonFactory.getInstance(WebValidator.class), (WebComponent)this, getAlt(), value, "alt");
+        Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIs", WebComponent.class, String.class, String.class, String.class);
+        method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getAlt(), value, "alt");
     }
 
     @SneakyThrows
     default void validateAltIsSet() {
-        Method method = WebValidator.class.getDeclaredMethod("defaultValidateAttributeIsSet", WebComponent.class, String.class, String.class);
-        method.invoke(SingletonFactory.getInstance(WebValidator.class), (WebComponent)this, getAlt(), "alt");
+        Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIsSet", WebComponent.class, String.class, String.class);
+        method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getAlt(), "alt");
     }
 
     @SneakyThrows
     default void validateAltNotSet() {
-        Method method = WebValidator.class.getDeclaredMethod("defaultValidateAttributeNotSet", WebComponent.class, String.class, String.class);
-        method.invoke(SingletonFactory.getInstance(WebValidator.class), (WebComponent)this, getAlt(), "alt");
+        Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeNotSet", WebComponent.class, String.class, String.class);
+        method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getAlt(), "alt");
     }
 }

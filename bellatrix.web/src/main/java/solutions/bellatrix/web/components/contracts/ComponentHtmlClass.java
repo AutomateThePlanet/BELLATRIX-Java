@@ -16,7 +16,7 @@ package solutions.bellatrix.web.components.contracts;
 import lombok.SneakyThrows;
 import solutions.bellatrix.core.utilities.SingletonFactory;
 import solutions.bellatrix.web.components.WebComponent;
-import solutions.bellatrix.web.components.validations.WebValidator;
+import solutions.bellatrix.web.validations.ComponentValidator;
 
 import java.lang.reflect.Method;
 
@@ -25,31 +25,31 @@ public interface ComponentHtmlClass extends Component {
 
     @SneakyThrows
     default void validateClassIs(String value) {
-        Method method = WebValidator.class.getDeclaredMethod("defaultValidateAttributeIs", WebComponent.class, String.class, String.class, String.class);
-        method.invoke(SingletonFactory.getInstance(WebValidator.class), (WebComponent)this, getHtmlClass(), value, "class");
+        Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIs", WebComponent.class, String.class, String.class, String.class);
+        method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getHtmlClass(), value, "class");
     }
 
     @SneakyThrows
     default void validateClassIsSet() {
-        Method method = WebValidator.class.getDeclaredMethod("defaultValidateAttributeIsSet", WebComponent.class, String.class, String.class);
-        method.invoke(SingletonFactory.getInstance(WebValidator.class), (WebComponent)this, getHtmlClass(), "class");
+        Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIsSet", WebComponent.class, String.class, String.class);
+        method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getHtmlClass(), "class");
     }
 
     @SneakyThrows
     default void validateClassNotSet() {
-        Method method = WebValidator.class.getDeclaredMethod("defaultValidateAttributeNotSet", WebComponent.class, String.class, String.class);
-        method.invoke(SingletonFactory.getInstance(WebValidator.class), (WebComponent)this, getHtmlClass(), "class");
+        Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeNotSet", WebComponent.class, String.class, String.class);
+        method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getHtmlClass(), "class");
     }
 
     @SneakyThrows
     default void validateClassContains(String value) {
-        Method method = WebValidator.class.getDeclaredMethod("defaultValidateAttributeContains", WebComponent.class, String.class, String.class, String.class);
-        method.invoke(SingletonFactory.getInstance(WebValidator.class), (WebComponent)this, getHtmlClass(), value, "class");
+        Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeContains", WebComponent.class, String.class, String.class, String.class);
+        method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getHtmlClass(), value, "class");
     }
 
     @SneakyThrows
     default void validateClassNotContains(String value) {
-        Method method = WebValidator.class.getDeclaredMethod("defaultValidateAttributeNotContains", WebComponent.class, String.class, String.class, String.class);
-        method.invoke(SingletonFactory.getInstance(WebValidator.class), (WebComponent)this, getHtmlClass(), value, "class");
+        Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeNotContains", WebComponent.class, String.class, String.class, String.class);
+        method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getHtmlClass(), value, "class");
     }
 }

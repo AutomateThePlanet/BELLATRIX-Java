@@ -11,7 +11,7 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.web.components.validations;
+package solutions.bellatrix.web.validations;
 
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.SearchContext;
@@ -27,7 +27,7 @@ import solutions.bellatrix.web.services.BrowserService;
 
 import java.util.function.Function;
 
-public class WebValidator {
+public class ComponentValidator {
     private final WebSettings webSettings = ConfigurationService.get(WebSettings.class);
     private final BrowserService browserService = new BrowserService();
 

@@ -11,7 +11,7 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.android.components.validations;
+package solutions.bellatrix.android.validations;
 
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.SearchContext;
@@ -27,48 +27,57 @@ import solutions.bellatrix.core.utilities.DebugInformation;
 
 import java.util.function.Function;
 
-public class AndroidValidator {
+public class ComponentValidator {
     private final AndroidSettings androidSettings = ConfigurationService.get(AndroidSettings.class);
-    public final static EventListener<ComponentActionEventArgs> VALIDATED_ATTRIBUTE = new EventListener<>();
+
+    public void defaultValidateAttributeIsNull(AndroidComponent component, Object property, String attributeName) {
+        waitUntil((d) -> (property == null), String.format("The control's %s should be null but was '%s'.", attributeName, property));
+        AndroidComponent.VALIDATED_ATTRIBUTE.broadcast(new ComponentActionEventArgs(component, null, String.format("validate %s is null", attributeName)));
+    }
+
+    public void defaultValidateAttributeNotNull(AndroidComponent component, Object property, String attributeName) {
+        waitUntil((d) -> (property != null), String.format("The control's %s shouldn't be null but was.", attributeName));
+        AndroidComponent.VALIDATED_ATTRIBUTE.broadcast(new ComponentActionEventArgs(component, null, String.format("validate %s is set", attributeName)));
+    }
 
     public void defaultValidateAttributeIsSet(AndroidComponent component, String property, String attributeName) {
         waitUntil((d) -> !StringUtils.isEmpty(property), String.format("The control's %s shouldn't be empty but was.", attributeName));
-        VALIDATED_ATTRIBUTE.broadcast(new ComponentActionEventArgs(component, null, String.format("validate %s is empty", attributeName)));
+        AndroidComponent.VALIDATED_ATTRIBUTE.broadcast(new ComponentActionEventArgs(component, null, String.format("validate %s is set", attributeName)));
     }
 
     public void defaultValidateAttributeNotSet(AndroidComponent component, String property, String attributeName) {
         waitUntil((d) -> StringUtils.isEmpty(property), String.format("The control's %s should be null but was '%s'.", attributeName, property));
-        VALIDATED_ATTRIBUTE.broadcast(new ComponentActionEventArgs(component, null, String.format("validate %s is null", attributeName)));
+        AndroidComponent.VALIDATED_ATTRIBUTE.broadcast(new ComponentActionEventArgs(component, null, String.format("validate %s is null", attributeName)));
     }
 
     public void defaultValidateAttributeIs(AndroidComponent component, String property, String value, String attributeName) {
         waitUntil((d) -> property.strip().equals(value), String.format("The control's %s should be '%s' but was '%s'.", attributeName, value, property));
-        VALIDATED_ATTRIBUTE.broadcast(new ComponentActionEventArgs(component, value, String.format("validate %s is %s", attributeName, value)));
+        AndroidComponent.VALIDATED_ATTRIBUTE.broadcast(new ComponentActionEventArgs(component, value, String.format("validate %s is '%s'", attributeName, value)));
     }
 
     public void defaultValidateAttributeIs(AndroidComponent component, Number property, Number value, String attributeName) {
         waitUntil((d) -> property.equals(value), String.format("The control's %s should be '%s' but was '%s'.", attributeName, value, property));
-        VALIDATED_ATTRIBUTE.broadcast(new ComponentActionEventArgs(component, value.toString(), String.format("validate %s is %s", attributeName, value)));
+        AndroidComponent.VALIDATED_ATTRIBUTE.broadcast(new ComponentActionEventArgs(component, value.toString(), String.format("validate %s is '%s'", attributeName, value)));
     }
 
     public void defaultValidateAttributeContains(AndroidComponent component, String property, String value, String attributeName) {
         waitUntil((d) -> property.strip().contains(value), String.format("The control's %s should contain '%s' but was '%s'.", attributeName, value, property));
-        VALIDATED_ATTRIBUTE.broadcast(new ComponentActionEventArgs(component, value, String.format("validate %s contains %s", attributeName, value)));
+        AndroidComponent.VALIDATED_ATTRIBUTE.broadcast(new ComponentActionEventArgs(component, value, String.format("validate %s contains '%s'", attributeName, value)));
     }
 
     public void defaultValidateAttributeNotContains(AndroidComponent component, String property, String value, String attributeName) {
         waitUntil((d) -> !property.strip().contains(value), String.format("The control's %s shouldn't contain '%s' but was '%s'.", attributeName, value, property));
-        VALIDATED_ATTRIBUTE.broadcast(new ComponentActionEventArgs(component, value, String.format("validate %s doesn't contain %s", attributeName, value)));
+        AndroidComponent.VALIDATED_ATTRIBUTE.broadcast(new ComponentActionEventArgs(component, value, String.format("validate %s doesn't contain '%s'", attributeName, value)));
     }
 
     public void defaultValidateAttributeTrue(AndroidComponent component, boolean property, String attributeName) {
-        waitUntil((d) -> property, String.format("The control should be %s but wasn't.", attributeName));
-        VALIDATED_ATTRIBUTE.broadcast(new ComponentActionEventArgs(component, null, String.format("validate is %s", attributeName)));
+        waitUntil((d) -> property, String.format("The control should be '%s' but wasn't.", attributeName));
+        AndroidComponent.VALIDATED_ATTRIBUTE.broadcast(new ComponentActionEventArgs(component, null, String.format("validate is %s", attributeName)));
     }
 
     public void defaultValidateAttributeFalse(AndroidComponent component, boolean property, String attributeName) {
-        waitUntil((d) -> !property, String.format("The control shouldn't be %s but was.", attributeName));
-        VALIDATED_ATTRIBUTE.broadcast(new ComponentActionEventArgs(component, null, String.format("validate not %s", attributeName)));
+        waitUntil((d) -> !property, String.format("The control should be '%s' but was.", attributeName));
+        AndroidComponent.VALIDATED_ATTRIBUTE.broadcast(new ComponentActionEventArgs(component, null, String.format("validate not %s", attributeName)));
     }
 
     private void waitUntil(Function<SearchContext, Boolean> waitCondition, String exceptionMessage) {

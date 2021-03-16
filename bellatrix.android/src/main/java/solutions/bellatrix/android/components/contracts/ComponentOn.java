@@ -15,7 +15,7 @@ package solutions.bellatrix.android.components.contracts;
 
 import lombok.SneakyThrows;
 import solutions.bellatrix.android.components.AndroidComponent;
-import solutions.bellatrix.android.components.validations.AndroidValidator;
+import solutions.bellatrix.android.validations.ComponentValidator;
 import solutions.bellatrix.core.utilities.SingletonFactory;
 
 import java.lang.reflect.Method;
@@ -25,13 +25,13 @@ public interface ComponentOn extends Component {
 
     @SneakyThrows
     default void validateIsOn() {
-        Method method = AndroidValidator.class.getDeclaredMethod("defaultValidateAttributeTrue", AndroidComponent.class, boolean.class, String.class);
-        method.invoke(SingletonFactory.getInstance(AndroidValidator.class), (AndroidComponent)this, isOn(), "on");
+        Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeTrue", AndroidComponent.class, boolean.class, String.class);
+        method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (AndroidComponent)this, isOn(), "on");
     }
 
     @SneakyThrows
     default void validateIsOff() {
-        Method method = AndroidValidator.class.getDeclaredMethod("defaultValidateAttributeTrue", AndroidComponent.class, boolean.class, String.class);
-        method.invoke(SingletonFactory.getInstance(AndroidValidator.class), (AndroidComponent)this, !isOn(), "off");
+        Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeTrue", AndroidComponent.class, boolean.class, String.class);
+        method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (AndroidComponent)this, !isOn(), "off");
     }
 }

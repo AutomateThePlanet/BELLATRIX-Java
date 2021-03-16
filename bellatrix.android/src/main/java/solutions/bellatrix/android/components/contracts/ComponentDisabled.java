@@ -15,7 +15,7 @@ package solutions.bellatrix.android.components.contracts;
 
 import lombok.SneakyThrows;
 import solutions.bellatrix.android.components.AndroidComponent;
-import solutions.bellatrix.android.components.validations.AndroidValidator;
+import solutions.bellatrix.android.validations.ComponentValidator;
 import solutions.bellatrix.core.utilities.SingletonFactory;
 
 import java.lang.reflect.Method;
@@ -25,13 +25,13 @@ public interface ComponentDisabled extends Component {
 
     @SneakyThrows
     default void validateIsDisabled() {
-        Method method = AndroidValidator.class.getDeclaredMethod("defaultValidateAttributeTrue", AndroidComponent.class, boolean.class, String.class);
-        method.invoke(SingletonFactory.getInstance(AndroidValidator.class), (AndroidComponent)this, isDisabled(), "disabled");
+        Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeTrue", AndroidComponent.class, boolean.class, String.class);
+        method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (AndroidComponent)this, isDisabled(), "disabled");
     }
 
     @SneakyThrows
     default void validateNotDisabled() {
-        Method method = AndroidValidator.class.getDeclaredMethod("defaultValidateAttributeFalse", AndroidComponent.class, boolean.class, String.class);
-        method.invoke(SingletonFactory.getInstance(AndroidValidator.class), (AndroidComponent)this, isDisabled(), "disabled");
+        Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeFalse", AndroidComponent.class, boolean.class, String.class);
+        method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (AndroidComponent)this, isDisabled(), "disabled");
     }
 }

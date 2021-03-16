@@ -16,7 +16,7 @@ package solutions.bellatrix.web.components.contracts;
 import lombok.SneakyThrows;
 import solutions.bellatrix.core.utilities.SingletonFactory;
 import solutions.bellatrix.web.components.WebComponent;
-import solutions.bellatrix.web.components.validations.WebValidator;
+import solutions.bellatrix.web.validations.ComponentValidator;
 
 import java.lang.reflect.Method;
 
@@ -25,31 +25,31 @@ public interface ComponentPlaceholder extends Component {
 
     @SneakyThrows
     default void validatePlaceholderIs(String value) {
-        Method method = WebValidator.class.getDeclaredMethod("defaultValidateAttributeIs", WebComponent.class, String.class, String.class, String.class);
-        method.invoke(SingletonFactory.getInstance(WebValidator.class), (WebComponent)this, getPlaceholder(), value, "placeholder");
+        Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIs", WebComponent.class, String.class, String.class, String.class);
+        method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getPlaceholder(), value, "placeholder");
     }
 
     @SneakyThrows
     default void validatePlaceholderIsSet() {
-        Method method = WebValidator.class.getDeclaredMethod("defaultValidateAttributeIsSet", WebComponent.class, String.class, String.class);
-        method.invoke(SingletonFactory.getInstance(WebValidator.class), (WebComponent)this, getPlaceholder(), "placeholder");
+        Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIsSet", WebComponent.class, String.class, String.class);
+        method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getPlaceholder(), "placeholder");
     }
 
     @SneakyThrows
     default void validatePlaceholderNotSet() {
-        Method method = WebValidator.class.getDeclaredMethod("defaultValidateAttributeNotSet", WebComponent.class, String.class, String.class);
-        method.invoke(SingletonFactory.getInstance(WebValidator.class), (WebComponent)this, getPlaceholder(), "placeholder");
+        Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeNotSet", WebComponent.class, String.class, String.class);
+        method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getPlaceholder(), "placeholder");
     }
 
     @SneakyThrows
     default void validatePlaceholderContains(String value) {
-        Method method = WebValidator.class.getDeclaredMethod("defaultValidateAttributeContains", WebComponent.class, String.class, String.class, String.class);
-        method.invoke(SingletonFactory.getInstance(WebValidator.class), (WebComponent)this, getPlaceholder(), value, "placeholder");
+        Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeContains", WebComponent.class, String.class, String.class, String.class);
+        method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getPlaceholder(), value, "placeholder");
     }
 
     @SneakyThrows
     default void validatePlaceholderNotContains(String value) {
-        Method method = WebValidator.class.getDeclaredMethod("defaultValidateAttributeNotContains", WebComponent.class, String.class, String.class, String.class);
-        method.invoke(SingletonFactory.getInstance(WebValidator.class), (WebComponent)this, getPlaceholder(), value, "placeholder");
+        Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeNotContains", WebComponent.class, String.class, String.class, String.class);
+        method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getPlaceholder(), value, "placeholder");
     }
 }

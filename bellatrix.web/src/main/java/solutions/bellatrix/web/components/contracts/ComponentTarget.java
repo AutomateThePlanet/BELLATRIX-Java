@@ -16,7 +16,7 @@ package solutions.bellatrix.web.components.contracts;
 import lombok.SneakyThrows;
 import solutions.bellatrix.core.utilities.SingletonFactory;
 import solutions.bellatrix.web.components.WebComponent;
-import solutions.bellatrix.web.components.validations.WebValidator;
+import solutions.bellatrix.web.validations.ComponentValidator;
 
 import java.lang.reflect.Method;
 
@@ -25,19 +25,19 @@ public interface ComponentTarget extends Component {
 
     @SneakyThrows
     default void validateTargetIs(String value) {
-        Method method = WebValidator.class.getDeclaredMethod("defaultValidateAttributeIs", WebComponent.class, String.class, String.class, String.class);
-        method.invoke(SingletonFactory.getInstance(WebValidator.class), (WebComponent)this, getTarget(), value, "target");
+        Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIs", WebComponent.class, String.class, String.class, String.class);
+        method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getTarget(), value, "target");
     }
 
     @SneakyThrows
     default void validateTargetIsSet() {
-        Method method = WebValidator.class.getDeclaredMethod("defaultValidateAttributeIsSet", WebComponent.class, String.class, String.class);
-        method.invoke(SingletonFactory.getInstance(WebValidator.class), (WebComponent)this, getTarget(), "target");
+        Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIsSet", WebComponent.class, String.class, String.class);
+        method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getTarget(), "target");
     }
 
     @SneakyThrows
     default void validateTargetNotSet() {
-        Method method = WebValidator.class.getDeclaredMethod("defaultValidateAttributeNotSet", WebComponent.class, String.class, String.class);
-        method.invoke(SingletonFactory.getInstance(WebValidator.class), (WebComponent)this, getTarget(), "target");
+        Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeNotSet", WebComponent.class, String.class, String.class);
+        method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getTarget(), "target");
     }
 }

@@ -16,7 +16,7 @@ package solutions.bellatrix.desktop.components.contracts;
 import lombok.SneakyThrows;
 import solutions.bellatrix.core.utilities.SingletonFactory;
 import solutions.bellatrix.desktop.components.DesktopComponent;
-import solutions.bellatrix.desktop.components.validations.DesktopValidator;
+import solutions.bellatrix.desktop.validations.ComponentValidator;
 
 import java.lang.reflect.Method;
 
@@ -25,19 +25,19 @@ public interface ComponentTime extends Component {
 
     @SneakyThrows
     default void validateTimeIs(String value) {
-        Method method = DesktopValidator.class.getDeclaredMethod("defaultValidateAttributeIs", DesktopComponent.class, String.class, String.class, String.class);
-        method.invoke(SingletonFactory.getInstance(DesktopValidator.class), (DesktopComponent)this, getTime(), value, "time");
+        Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIs", DesktopComponent.class, String.class, String.class, String.class);
+        method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (DesktopComponent)this, getTime(), value, "time");
     }
 
     @SneakyThrows
     default void validateTimeContains(String value) {
-        Method method = DesktopValidator.class.getDeclaredMethod("defaultValidateAttributeContains", DesktopComponent.class, String.class, String.class, String.class);
-        method.invoke(SingletonFactory.getInstance(DesktopValidator.class), (DesktopComponent)this, getTime(), value, "time");
+        Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeContains", DesktopComponent.class, String.class, String.class, String.class);
+        method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (DesktopComponent)this, getTime(), value, "time");
     }
 
     @SneakyThrows
     default void validateTimeNotContains(String value) {
-        Method method = DesktopValidator.class.getDeclaredMethod("defaultValidateAttributeNotContains", DesktopComponent.class, String.class, String.class, String.class);
-        method.invoke(SingletonFactory.getInstance(DesktopValidator.class), (DesktopComponent)this, getTime(), value, "time");
+        Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeNotContains", DesktopComponent.class, String.class, String.class, String.class);
+        method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (DesktopComponent)this, getTime(), value, "time");
     }
 }

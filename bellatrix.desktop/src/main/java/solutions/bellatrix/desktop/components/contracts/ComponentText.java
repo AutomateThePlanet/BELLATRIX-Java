@@ -16,7 +16,7 @@ package solutions.bellatrix.desktop.components.contracts;
 import lombok.SneakyThrows;
 import solutions.bellatrix.core.utilities.SingletonFactory;
 import solutions.bellatrix.desktop.components.DesktopComponent;
-import solutions.bellatrix.desktop.components.validations.DesktopValidator;
+import solutions.bellatrix.desktop.validations.ComponentValidator;
 
 import java.lang.reflect.Method;
 
@@ -25,19 +25,19 @@ public interface ComponentText extends Component {
 
     @SneakyThrows
     default void validateTextIs(String value) {
-        Method method = DesktopValidator.class.getDeclaredMethod("defaultValidateAttributeIs", DesktopComponent.class, String.class, String.class, String.class);
-        method.invoke(SingletonFactory.getInstance(DesktopValidator.class), (DesktopComponent)this, getText(), value, "inner text");
+        Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIs", DesktopComponent.class, String.class, String.class, String.class);
+        method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (DesktopComponent)this, getText(), value, "inner text");
     }
 
     @SneakyThrows
     default void validateTextContains(String value) {
-        Method method = DesktopValidator.class.getDeclaredMethod("defaultValidateAttributeContains", DesktopComponent.class, String.class, String.class, String.class);
-        method.invoke(SingletonFactory.getInstance(DesktopValidator.class), (DesktopComponent)this, getText(), value, "inner text");
+        Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeContains", DesktopComponent.class, String.class, String.class, String.class);
+        method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (DesktopComponent)this, getText(), value, "inner text");
     }
 
     @SneakyThrows
     default void validateTextNotContains(String value) {
-        Method method = DesktopValidator.class.getDeclaredMethod("defaultValidateAttributeNotContains", DesktopComponent.class, String.class, String.class, String.class);
-        method.invoke(SingletonFactory.getInstance(DesktopValidator.class), (DesktopComponent)this, getText(), value, "inner text");
+        Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeNotContains", DesktopComponent.class, String.class, String.class, String.class);
+        method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (DesktopComponent)this, getText(), value, "inner text");
     }
 }
