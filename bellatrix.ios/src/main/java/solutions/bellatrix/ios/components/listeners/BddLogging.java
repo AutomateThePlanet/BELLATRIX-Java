@@ -14,14 +14,14 @@
 package solutions.bellatrix.ios.components.listeners;
 
 import solutions.bellatrix.ios.components.Button;
-import solutions.bellatrix.ios.validations.ComponentValidator;
+import solutions.bellatrix.ios.components.IOSComponent;
 
 public class BddLogging {
     private static boolean isBddLoggingTurnedOn = false;
     public static void addPlugin() {
         if (!isBddLoggingTurnedOn) {
             Button.CLICKING.addListener((x) -> System.out.printf("clicking %s%n", x.getComponent().getElementName()));
-            ComponentValidator.VALIDATED_ATTRIBUTE.addListener((x) -> System.out.println(x.getMessage()));
+            IOSComponent.VALIDATED_ATTRIBUTE.addListener((x) -> System.out.println(x.getMessage()));
             isBddLoggingTurnedOn = true;
         }
     }

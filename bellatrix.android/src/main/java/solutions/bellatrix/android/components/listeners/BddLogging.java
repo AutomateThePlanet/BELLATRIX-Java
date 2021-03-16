@@ -13,15 +13,15 @@
 
 package solutions.bellatrix.android.components.listeners;
 
+import solutions.bellatrix.android.components.AndroidComponent;
 import solutions.bellatrix.android.components.Button;
-import solutions.bellatrix.android.validations.ComponentValidator;
 
 public class BddLogging {
     private static boolean isBddLoggingTurnedOn = false;
     public static void addPlugin() {
         if (!isBddLoggingTurnedOn) {
             Button.CLICKING.addListener((x) -> System.out.printf("clicking %s%n", x.getComponent().getElementName()));
-            ComponentValidator.VALIDATED_ATTRIBUTE.addListener((x) -> System.out.println(x.getMessage()));
+            AndroidComponent.VALIDATED_ATTRIBUTE.addListener((x) -> System.out.println(x.getMessage()));
             isBddLoggingTurnedOn = true;
         }
     }

@@ -14,6 +14,7 @@
 package solutions.bellatrix.desktop.components.listeners;
 
 import solutions.bellatrix.desktop.components.Anchor;
+import solutions.bellatrix.desktop.components.DesktopComponent;
 import solutions.bellatrix.desktop.validations.ComponentValidator;
 
 public class BddLogging {
@@ -21,7 +22,7 @@ public class BddLogging {
     public static void addPlugin() {
         if (!isBddLoggingTurnedOn) {
             Anchor.CLICKING.addListener((x) -> System.out.printf("clicking %s\n%n", x.getComponent().getElementName()));
-            ComponentValidator.VALIDATED_ATTRIBUTE.addListener((x) -> System.out.println(x.getMessage()));
+            DesktopComponent.VALIDATED_ATTRIBUTE.addListener((x) -> System.out.println(x.getMessage()));
             isBddLoggingTurnedOn = true;
         }
     }
