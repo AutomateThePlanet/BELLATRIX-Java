@@ -13,16 +13,13 @@
 
 package junit;
 
-import org.junit.jupiter.api.Test;
 import cartpage.CartPage;
 import checkoutpage.CheckoutPage;
 import checkoutpage.PurchaseInfo;
 import mainpage.MainPage;
+import org.junit.jupiter.api.Test;
 import solutions.bellatrix.web.components.Anchor;
 import solutions.bellatrix.web.findstrategies.TextContains;
-import solutions.bellatrix.web.infrastructure.Browser;
-import solutions.bellatrix.web.infrastructure.ExecutionBrowser;
-import solutions.bellatrix.web.infrastructure.Lifecycle;
 import solutions.bellatrix.web.infrastructure.junit.WebTest;
 
 //@ExecutionBrowser(browser = Browser.CHROME, lifecycle = Lifecycle.REUSE_IF_STARTED)

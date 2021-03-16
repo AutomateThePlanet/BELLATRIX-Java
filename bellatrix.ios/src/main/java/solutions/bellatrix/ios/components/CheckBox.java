@@ -13,10 +13,10 @@
 
 package solutions.bellatrix.ios.components;
 
+import solutions.bellatrix.core.plugins.EventListener;
 import solutions.bellatrix.ios.components.contracts.ComponentChecked;
 import solutions.bellatrix.ios.components.contracts.ComponentDisabled;
 import solutions.bellatrix.ios.components.contracts.ComponentText;
-import solutions.bellatrix.core.plugins.EventListener;
 
 public class CheckBox extends IOSComponent implements ComponentDisabled, ComponentChecked, ComponentText {
     public final static EventListener<ComponentActionEventArgs> CHECKING = new EventListener<>();

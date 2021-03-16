@@ -13,13 +13,9 @@
 
 package solutions.bellatrix.desktop.infrastructure;
 
-import org.openqa.selenium.WebElement;
 import io.appium.java_client.windows.WindowsDriver;
 import lombok.SneakyThrows;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.MutableCapabilities;
-import org.openqa.selenium.Platform;
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.*;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.core.utilities.DebugInformation;

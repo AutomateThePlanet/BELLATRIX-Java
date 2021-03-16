@@ -13,17 +13,13 @@
 
 package solutions.bellatrix.desktop.components;
 
-import org.openqa.selenium.WebElement;
 import io.appium.java_client.windows.WindowsDriver;
 import layout.LayoutComponentValidationsBuilder;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.interactions.Coordinates;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.core.plugins.EventListener;
 import solutions.bellatrix.core.utilities.DebugInformation;
@@ -42,8 +38,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
-import java.util.function.Function;
-import java.util.function.Supplier;
 
 public class DesktopComponent extends LayoutComponentValidationsBuilder implements Component, ComponentVisible {
     public final static EventListener<ComponentActionEventArgs> HOVERING = new EventListener<>();

@@ -16,9 +16,9 @@ package solutions.bellatrix.ios.infrastructure.junit;
 import solutions.bellatrix.core.plugins.junit.BaseTest;
 import solutions.bellatrix.ios.components.listeners.BddLogging;
 import solutions.bellatrix.ios.infrastructure.AppLifecyclePlugin;
-import solutions.bellatrix.ios.infrastructure.MobileVideoPlugin;
 import solutions.bellatrix.ios.infrastructure.DownloadDemoAppsPlugin;
 import solutions.bellatrix.ios.infrastructure.MobileScreenshotPlugin;
+import solutions.bellatrix.ios.infrastructure.MobileVideoPlugin;
 import solutions.bellatrix.ios.services.App;
 
 public class IOSTest extends BaseTest {

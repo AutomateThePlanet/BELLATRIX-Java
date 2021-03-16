@@ -13,8 +13,8 @@
 
 package solutions.bellatrix.desktop.services;
 
-import org.openqa.selenium.WebElement;
 import io.appium.java_client.windows.WindowsDriver;
+import org.openqa.selenium.WebElement;
 import solutions.bellatrix.desktop.infrastructure.DriverService;
 
 public abstract class DesktopService {

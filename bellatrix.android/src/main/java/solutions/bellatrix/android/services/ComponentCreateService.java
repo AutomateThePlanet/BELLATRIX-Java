@@ -13,12 +13,10 @@
 
 package solutions.bellatrix.android.services;
 
-import solutions.bellatrix.android.findstrategies.*;
-import solutions.bellatrix.core.utilities.InstanceFactory;
 import solutions.bellatrix.android.components.AndroidComponent;
-import solutions.bellatrix.android.findstrategies.FindStrategy;
 import solutions.bellatrix.android.findstrategies.*;
 import solutions.bellatrix.android.infrastructure.DriverService;
+import solutions.bellatrix.core.utilities.InstanceFactory;
 
 import java.util.ArrayList;
 import java.util.List;

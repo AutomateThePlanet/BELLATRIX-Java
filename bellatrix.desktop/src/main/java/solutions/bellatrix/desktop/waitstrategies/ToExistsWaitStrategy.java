@@ -13,9 +13,9 @@
 
 package solutions.bellatrix.desktop.waitstrategies;
 
-import org.openqa.selenium.WebElement;
 import io.appium.java_client.windows.WindowsDriver;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.desktop.configuration.DesktopSettings;
 import solutions.bellatrix.desktop.findstrategies.FindStrategy;

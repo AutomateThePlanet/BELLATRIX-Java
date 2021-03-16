@@ -13,11 +13,7 @@
 
 package solutions.bellatrix.android.components;
 
-import solutions.bellatrix.android.components.contracts.ComponentChecked;
-import solutions.bellatrix.android.components.contracts.ComponentDisabled;
-import solutions.bellatrix.android.components.contracts.ComponentText;
 import solutions.bellatrix.android.findstrategies.ClassFindStrategy;
-import solutions.bellatrix.core.plugins.EventListener;
 
 import java.util.List;
 

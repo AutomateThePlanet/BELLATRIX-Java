@@ -19,10 +19,11 @@ import layout.LayoutComponentValidationsBuilder;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.commons.lang3.StringUtils;
-import org.openqa.selenium.*;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.ElementNotInteractableException;
+import org.openqa.selenium.Point;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.core.plugins.EventListener;
 import solutions.bellatrix.core.utilities.DebugInformation;
@@ -30,15 +31,15 @@ import solutions.bellatrix.core.utilities.InstanceFactory;
 import solutions.bellatrix.ios.components.contracts.Component;
 import solutions.bellatrix.ios.findstrategies.*;
 import solutions.bellatrix.ios.infrastructure.DriverService;
-import solutions.bellatrix.ios.services.*;
+import solutions.bellatrix.ios.services.AppService;
+import solutions.bellatrix.ios.services.ComponentCreateService;
+import solutions.bellatrix.ios.services.ComponentWaitService;
 import solutions.bellatrix.ios.waitstrategies.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
-import java.util.function.Function;
-import java.util.function.Supplier;
 
 public class IOSComponent extends LayoutComponentValidationsBuilder implements Component {
     public final static EventListener<ComponentActionEventArgs> HOVERING = new EventListener<>();

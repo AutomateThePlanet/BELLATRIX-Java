@@ -13,11 +13,11 @@
 
 package solutions.bellatrix.ios.components;
 
+import solutions.bellatrix.core.plugins.EventListener;
 import solutions.bellatrix.ios.components.contracts.ComponentDisabled;
 import solutions.bellatrix.ios.components.contracts.ComponentText;
 import solutions.bellatrix.ios.findstrategies.ClassFindStrategy;
 import solutions.bellatrix.ios.findstrategies.ValueContainingFindStrategy;
-import solutions.bellatrix.core.plugins.EventListener;
 
 public class ComboBox extends IOSComponent implements ComponentDisabled, ComponentText {
 

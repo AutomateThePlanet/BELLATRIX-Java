@@ -6,7 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="55b01a59-bddd-4a9d-b423-43bd7933f1ee" name="Default Changelist" comment="removed redundant expression">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bellatrix.android/src/main/java/solutions/bellatrix/android/components/contracts/ComponentText.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.android/src/main/java/solutions/bellatrix/android/components/contracts/ComponentText.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -385,7 +384,14 @@
       <option name="project" value="LOCAL" />
       <updated>1615884291295</updated>
     </task>
-    <option name="localTasksCounter" value="30" />
+    <task id="LOCAL-00030" summary="renamed &quot;inner text&quot; to &quot;text&quot; for mobile components">
+      <created>1615885485215</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1615885485215</updated>
+    </task>
+    <option name="localTasksCounter" value="31" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -401,7 +407,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="implemented web components" />
     <MESSAGE value="configuration files update" />
     <MESSAGE value="changed Boolean object to boolean primitive" />
     <MESSAGE value="added isPresent check" />
@@ -426,7 +431,8 @@
     <MESSAGE value="added number validation" />
     <MESSAGE value="refactored component validators" />
     <MESSAGE value="fixed mobile check/uncheck methods" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed mobile check/uncheck methods" />
+    <MESSAGE value="renamed &quot;inner text&quot; to &quot;text&quot; for mobile components" />
+    <option name="LAST_COMMIT_MESSAGE" value="renamed &quot;inner text&quot; to &quot;text&quot; for mobile components" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -13,9 +13,9 @@
 
 package solutions.bellatrix.android.services;
 
+import solutions.bellatrix.android.infrastructure.DriverService;
 import solutions.bellatrix.android.pages.AndroidPage;
 import solutions.bellatrix.core.utilities.SingletonFactory;
-import solutions.bellatrix.android.infrastructure.DriverService;
 
 public class App implements AutoCloseable {
     private boolean disposed = false;

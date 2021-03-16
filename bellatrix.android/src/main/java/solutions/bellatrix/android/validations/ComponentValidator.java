@@ -22,7 +22,6 @@ import solutions.bellatrix.android.components.ComponentActionEventArgs;
 import solutions.bellatrix.android.configuration.AndroidSettings;
 import solutions.bellatrix.android.infrastructure.DriverService;
 import solutions.bellatrix.core.configuration.ConfigurationService;
-import solutions.bellatrix.core.plugins.EventListener;
 import solutions.bellatrix.core.utilities.DebugInformation;
 
 import java.util.function.Function;

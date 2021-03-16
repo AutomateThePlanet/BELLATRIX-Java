@@ -13,8 +13,8 @@
 
 package solutions.bellatrix.ios.components;
 
-import solutions.bellatrix.ios.components.contracts.ComponentDisabled;
 import solutions.bellatrix.core.plugins.EventListener;
+import solutions.bellatrix.ios.components.contracts.ComponentDisabled;
 
 public class PasswordInput extends IOSComponent implements ComponentDisabled {
     public final static EventListener<ComponentActionEventArgs> SETTING_PASSWORD = new EventListener<>();

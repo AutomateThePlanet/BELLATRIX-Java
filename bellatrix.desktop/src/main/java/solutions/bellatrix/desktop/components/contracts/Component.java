@@ -13,8 +13,8 @@
 
 package solutions.bellatrix.desktop.components.contracts;
 
-import org.openqa.selenium.WebElement;
 import layout.LayoutComponent;
+import org.openqa.selenium.WebElement;
 import solutions.bellatrix.desktop.findstrategies.FindStrategy;
 
 public interface Component extends LayoutComponent {

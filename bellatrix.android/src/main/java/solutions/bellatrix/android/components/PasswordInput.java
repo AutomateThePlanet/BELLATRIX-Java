@@ -14,8 +14,6 @@
 package solutions.bellatrix.android.components;
 
 import solutions.bellatrix.android.components.contracts.ComponentDisabled;
-import solutions.bellatrix.android.components.contracts.ComponentNumber;
-import solutions.bellatrix.android.findstrategies.ClassFindStrategy;
 import solutions.bellatrix.core.plugins.EventListener;
 
 public class PasswordInput extends AndroidComponent implements ComponentDisabled {

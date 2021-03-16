@@ -13,10 +13,10 @@
 
 package solutions.bellatrix.ios.components;
 
+import solutions.bellatrix.core.plugins.EventListener;
 import solutions.bellatrix.ios.components.contracts.ComponentDisabled;
 import solutions.bellatrix.ios.components.contracts.ComponentOn;
 import solutions.bellatrix.ios.components.contracts.ComponentText;
-import solutions.bellatrix.core.plugins.EventListener;
 
 public class ToggleButton extends IOSComponent implements ComponentDisabled, ComponentOn, ComponentText {
     public final static EventListener<ComponentActionEventArgs> TURNING_ON = new EventListener<>();

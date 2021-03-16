@@ -13,9 +13,9 @@
 
 package solutions.bellatrix.ios.components;
 
+import solutions.bellatrix.core.plugins.EventListener;
 import solutions.bellatrix.ios.components.contracts.ComponentDisabled;
 import solutions.bellatrix.ios.components.contracts.ComponentNumber;
-import solutions.bellatrix.core.plugins.EventListener;
 
 public class NumberInput extends IOSComponent implements ComponentDisabled, ComponentNumber {
     public final static EventListener<ComponentActionEventArgs> SETTING_NUMBER = new EventListener<>();

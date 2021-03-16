@@ -13,13 +13,13 @@
 
 package solutions.bellatrix.android.infrastructure.testng;
 
-import solutions.bellatrix.core.plugins.testng.BaseTest;
 import solutions.bellatrix.android.components.listeners.BddLogging;
 import solutions.bellatrix.android.infrastructure.AppLifecyclePlugin;
+import solutions.bellatrix.android.infrastructure.DownloadDemoAppsPlugin;
 import solutions.bellatrix.android.infrastructure.MobileScreenshotPlugin;
 import solutions.bellatrix.android.infrastructure.MobileVideoPlugin;
-import solutions.bellatrix.android.infrastructure.DownloadDemoAppsPlugin;
 import solutions.bellatrix.android.services.App;
+import solutions.bellatrix.core.plugins.testng.BaseTest;
 
 public class AndroidTest extends BaseTest {
 

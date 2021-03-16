@@ -15,7 +15,6 @@ package solutions.bellatrix.desktop.components.listeners;
 
 import solutions.bellatrix.desktop.components.Anchor;
 import solutions.bellatrix.desktop.components.DesktopComponent;
-import solutions.bellatrix.desktop.validations.ComponentValidator;
 
 public class BddLogging {
     private static boolean isBddLoggingTurnedOn = false;

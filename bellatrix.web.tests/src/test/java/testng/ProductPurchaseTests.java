@@ -13,11 +13,11 @@
 
 package testng;
 
-import org.testng.annotations.Test;
 import cartpage.CartPage;
 import checkoutpage.CheckoutPage;
 import checkoutpage.PurchaseInfo;
 import mainpage.MainPage;
+import org.testng.annotations.Test;
 import solutions.bellatrix.web.components.Anchor;
 import solutions.bellatrix.web.components.CheckBox;
 import solutions.bellatrix.web.components.Frame;

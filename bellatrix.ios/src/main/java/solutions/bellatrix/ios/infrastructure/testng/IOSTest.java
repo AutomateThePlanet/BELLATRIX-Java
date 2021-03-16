@@ -16,9 +16,9 @@ package solutions.bellatrix.ios.infrastructure.testng;
 import solutions.bellatrix.core.plugins.testng.BaseTest;
 import solutions.bellatrix.ios.components.listeners.BddLogging;
 import solutions.bellatrix.ios.infrastructure.AppLifecyclePlugin;
+import solutions.bellatrix.ios.infrastructure.DownloadDemoAppsPlugin;
 import solutions.bellatrix.ios.infrastructure.MobileScreenshotPlugin;
 import solutions.bellatrix.ios.infrastructure.MobileVideoPlugin;
-import solutions.bellatrix.ios.infrastructure.DownloadDemoAppsPlugin;
 import solutions.bellatrix.ios.services.App;
 
 public class IOSTest extends BaseTest {
