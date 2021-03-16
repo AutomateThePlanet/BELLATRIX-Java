@@ -5,7 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="55b01a59-bddd-4a9d-b423-43bd7933f1ee" name="Default Changelist" comment="removed redundant expression">
-      <change beforePath="$PROJECT_DIR$/bellatrix.ios/src/main/java/solutions/bellatrix/ios/components/listeners/BddLogging.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.ios/src/main/java/solutions/bellatrix/ios/components/listeners/BddLogging.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.android/src/main/java/solutions/bellatrix/android/components/AndroidComponent.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.android/src/main/java/solutions/bellatrix/android/components/AndroidComponent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.ios/src/main/java/solutions/bellatrix/ios/components/IOSComponent.java" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.ios/src/main/java/solutions/bellatrix/ios/components/IOSComponent.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

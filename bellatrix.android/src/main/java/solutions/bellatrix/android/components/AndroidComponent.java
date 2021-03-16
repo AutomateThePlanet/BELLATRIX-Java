@@ -238,7 +238,7 @@ public class AndroidComponent extends LayoutComponentValidationsBuilder implemen
         checking.broadcast(new ComponentActionEventArgs(this));
 
         this.toExists().toBeClickable().waitToBe();
-        if(!findElement().isSelected()) {
+        if(!this.defaultGetCheckedAttribute()) {
             findElement().click();
         }
 
@@ -250,7 +250,7 @@ public class AndroidComponent extends LayoutComponentValidationsBuilder implemen
         unchecking.broadcast(new ComponentActionEventArgs(this));
 
         this.toExists().toBeClickable().waitToBe();
-        if(findElement().isSelected()) {
+        if(this.defaultGetCheckedAttribute()) {
             findElement().click();
         }
 

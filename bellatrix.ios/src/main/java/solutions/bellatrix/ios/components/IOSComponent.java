@@ -272,7 +272,7 @@ public class IOSComponent extends LayoutComponentValidationsBuilder implements C
         checking.broadcast(new ComponentActionEventArgs(this));
 
         this.toExists().toBeClickable().waitToBe();
-        if(!findElement().isSelected()) {
+        if(!this.defaultGetCheckedAttribute()) {
             findElement().click();
         }
 
@@ -284,7 +284,7 @@ public class IOSComponent extends LayoutComponentValidationsBuilder implements C
         unchecking.broadcast(new ComponentActionEventArgs(this));
 
         this.toExists().toBeClickable().waitToBe();
-        if(findElement().isSelected()) {
+        if(this.defaultGetCheckedAttribute()) {
             findElement().click();
         }
 
