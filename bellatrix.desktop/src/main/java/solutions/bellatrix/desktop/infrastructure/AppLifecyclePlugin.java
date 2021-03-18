@@ -100,7 +100,7 @@ public class AppLifecyclePlugin extends Plugin {
         previousAppConfiguration.set(currentAppConfiguration.get());
     }
 
-    private Boolean shouldRestartApp() {
+    private boolean shouldRestartApp() {
         // TODO: IsAppStartedCorrectly getter?
         var previousConfiguration = previousAppConfiguration.get();
         var currentConfiguration = currentAppConfiguration.get();

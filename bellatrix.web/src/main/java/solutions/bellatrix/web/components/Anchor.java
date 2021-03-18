@@ -14,106 +14,43 @@
 package solutions.bellatrix.web.components;
 
 import solutions.bellatrix.core.plugins.EventListener;
+import solutions.bellatrix.web.components.contracts.*;
 
-public class Anchor extends WebComponent {
+public class Anchor extends WebComponent implements ComponentHtml, ComponentText, ComponentHref, ComponentTarget, ComponentRel {
     public final static EventListener<ComponentActionEventArgs> CLICKING = new EventListener<>();
     public final static EventListener<ComponentActionEventArgs> CLICKED = new EventListener<>();
+
+    public void click() {
+        defaultClick(CLICKING, CLICKED);
+    }
 
     @Override
     public Class<?> getComponentClass() {
         return getClass();
     }
 
+    @Override
     public String getHref() {
         return defaultGetHref();
     }
 
+    @Override
     public String getText() {
         return defaultGetText();
     }
 
+    @Override
     public String getHtml() {
         return defaultGetInnerHtmlAttribute();
     }
 
+    @Override
     public String getTarget() {
         return defaultGetTargetAttribute();
     }
 
+    @Override
     public String getRel() {
         return defaultGetRelAttribute();
-    }
-
-    public void click() {
-        defaultClick(CLICKING, CLICKED);
-    }
-
-    // validate inner HTML
-    public void validateHtmlIs(String value) {
-        defaultValidateAttributeIs(this::getHtml, value, "inner HTML");
-    }
-
-    public void validateHtmlContains(String value) {
-        defaultValidateAttributeContains(this::getHtml, value, "inner HTML");
-    }
-
-    public void validateHtmlNotContains(String value) {
-        defaultValidateAttributeNotContains(this::getHtml, value, "inner HTML");
-    }
-
-    // validate inner text
-    public void validateTextIs(String value) {
-        defaultValidateAttributeIs(this::getText, value, "inner text");
-    }
-
-    public void validateTextIsSet() {
-        defaultValidateAttributeSet(this::getText, "inner text");
-    }
-
-    public void validateTextContains(String value) {
-        defaultValidateAttributeContains(this::getText, value, "inner text");
-    }
-
-    public void validateTextNotContains(String value) {
-        defaultValidateAttributeNotContains(this::getText, value, "inner text");
-    }
-
-    // validate HREF
-    public void validateHrefIs(String value) {
-        defaultValidateAttributeIs(this::getHref, value, "href");
-    }
-
-    public void validateHrefIsSet() {
-        defaultValidateAttributeSet(this::getHref, "href");
-    }
-
-    public void validateHrefNotSet() {
-        defaultValidateAttributeNotSet(this::getHref, "href");
-    }
-
-    // validate Target
-    public void validateTargetIs(String value) {
-        defaultValidateAttributeIs(this::getTarget, value, "target");
-    }
-
-    public void validateTargetSet() {
-        defaultValidateAttributeSet(this::getTarget, "target");
-    }
-
-    public void validateTargetNotSet() {
-        defaultValidateAttributeNotSet(this::getTarget, "target");
-    }
-
-    // validate Rel
-    public void validateRelIs(String value) {
-        defaultValidateAttributeIs(this::getRel, value, "rel");
-    }
-
-    public void validateRelSet() {
-        defaultValidateAttributeSet(this::getRel, "rel");
-    }
-
-    public void validateRelNotSet() {
-        defaultValidateAttributeNotSet(this::getRel, "rel");
     }
 }

@@ -14,10 +14,10 @@
 package solutions.bellatrix.web.infrastructure;
 
 import solutions.bellatrix.core.configuration.ConfigurationService;
-import solutions.bellatrix.web.configuration.WebSettings;
 import solutions.bellatrix.core.plugins.Plugin;
 import solutions.bellatrix.core.plugins.TestResult;
 import solutions.bellatrix.core.utilities.DebugInformation;
+import solutions.bellatrix.web.configuration.WebSettings;
 
 import java.lang.reflect.Method;
 
@@ -99,7 +99,7 @@ public class BrowserLifecyclePlugin extends Plugin {
         previousBrowserConfiguration.set(currentBrowserConfiguration.get());
     }
 
-    private Boolean shouldRestartBrowser() {
+    private boolean shouldRestartBrowser() {
         // TODO: IsBrowserStartedCorrectly getter?
         var previousConfiguration = previousBrowserConfiguration.get();
         var currentConfiguration = currentBrowserConfiguration.get();

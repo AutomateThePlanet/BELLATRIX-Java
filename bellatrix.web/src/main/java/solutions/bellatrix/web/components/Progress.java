@@ -13,9 +13,28 @@
 
 package solutions.bellatrix.web.components;
 
-public class Progress extends WebComponent {
+import solutions.bellatrix.web.components.contracts.ComponentMaxText;
+import solutions.bellatrix.web.components.contracts.ComponentText;
+import solutions.bellatrix.web.components.contracts.ComponentValue;
+
+public class Progress extends WebComponent implements ComponentMaxText, ComponentValue, ComponentText {
     @Override
     public Class<?> getComponentClass() {
         return getClass();
+    }
+
+    @Override
+    public String getMax() {
+        return defaultGetMaxAttribute();
+    }
+
+    @Override
+    public String getText() {
+        return defaultGetText();
+    }
+
+    @Override
+    public String getValue() {
+        return defaultGetValue();
     }
 }

@@ -13,12 +13,24 @@
 
 package solutions.bellatrix.web.components;
 
+import solutions.bellatrix.core.plugins.EventListener;
 import solutions.bellatrix.core.utilities.InstanceFactory;
+import solutions.bellatrix.web.components.contracts.ComponentDisabled;
+import solutions.bellatrix.web.components.contracts.ComponentReadonly;
+import solutions.bellatrix.web.components.contracts.ComponentRequired;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Select extends WebComponent {
+public class Select extends WebComponent implements ComponentDisabled, ComponentRequired, ComponentReadonly {
+    public final static EventListener<ComponentActionEventArgs> SELECTING = new EventListener<>();
+    public final static EventListener<ComponentActionEventArgs> SELECTED = new EventListener<>();
+
+    @Override
+    public Class<?> getComponentClass() {
+        return getClass();
+    }
+
     public Option GetSelected() {
         var nativeSelect = new org.openqa.selenium.support.ui.Select(findElement());
         var optionComponent = InstanceFactory.create(Option.class);
@@ -43,15 +55,25 @@ public class Select extends WebComponent {
     }
 
     public void selectByText(String text) {
-        new org.openqa.selenium.support.ui.Select(findElement()).selectByVisibleText(text);
+        defaultSelectByText(SELECTING, SELECTED, text);
     }
 
     public void selectByIndex(int index) {
-        new org.openqa.selenium.support.ui.Select(findElement()).selectByIndex(index);
+        defaultSelectByIndex(SELECTING, SELECTED, index);
     }
 
     @Override
-    public Class<?> getComponentClass() {
-        return getClass();
+    public boolean isDisabled() {
+        return defaultGetDisabledAttribute();
+    }
+
+    @Override
+    public boolean isReadonly() {
+        return defaultGetReadonlyAttribute();
+    }
+
+    @Override
+    public boolean isRequired() {
+        return defaultGetRequiredAttribute();
     }
 }

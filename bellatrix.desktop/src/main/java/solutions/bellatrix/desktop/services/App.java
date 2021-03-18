@@ -18,7 +18,7 @@ import solutions.bellatrix.desktop.infrastructure.DriverService;
 import solutions.bellatrix.desktop.pages.DesktopPage;
 
 public class App implements AutoCloseable {
-    private Boolean disposed = false;
+    private boolean disposed = false;
 
     public AppService appService() {
         return SingletonFactory.getInstance(AppService.class);

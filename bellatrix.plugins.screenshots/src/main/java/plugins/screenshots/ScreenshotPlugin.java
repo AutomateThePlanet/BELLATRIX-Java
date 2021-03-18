@@ -23,9 +23,9 @@ import java.nio.file.Paths;
 
 public abstract class ScreenshotPlugin extends Plugin {
     public static final EventListener<ScreenshotPluginEventArgs> SCREENSHOT_GENERATED = new EventListener<>();
-    private Boolean isEnabled;
+    private boolean isEnabled;
 
-    public ScreenshotPlugin(Boolean isEnabled) {
+    public ScreenshotPlugin(boolean isEnabled) {
         this.isEnabled = isEnabled;
     }
 

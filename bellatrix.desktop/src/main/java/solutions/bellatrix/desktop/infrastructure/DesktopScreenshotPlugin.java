@@ -26,12 +26,12 @@ import java.nio.file.Paths;
 import java.util.UUID;
 
 public class DesktopScreenshotPlugin extends ScreenshotPlugin {
-    public DesktopScreenshotPlugin(Boolean isEnabled) {
+    public DesktopScreenshotPlugin(boolean isEnabled) {
         super(isEnabled);
     }
 
     public static DesktopScreenshotPlugin of() {
-        Boolean isEnabled = ConfigurationService.get(DesktopSettings.class).getScreenshotsOnFailEnabled();
+        boolean isEnabled = ConfigurationService.get(DesktopSettings.class).getScreenshotsOnFailEnabled();
         return new DesktopScreenshotPlugin(isEnabled);
     }
 

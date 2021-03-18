@@ -13,13 +13,22 @@
 
 package solutions.bellatrix.web.components;
 
-public class Div extends WebComponent {
-    public String getText() {
-        return findElement().getText();
-    }
+import solutions.bellatrix.web.components.contracts.ComponentHtml;
+import solutions.bellatrix.web.components.contracts.ComponentText;
 
+public class Div extends WebComponent implements ComponentText, ComponentHtml {
     @Override
     public Class<?> getComponentClass() {
         return getClass();
+    }
+
+    @Override
+    public String getHtml() {
+        return defaultGetInnerHtmlAttribute();
+    }
+
+    @Override
+    public String getText() {
+        return defaultGetText();
     }
 }

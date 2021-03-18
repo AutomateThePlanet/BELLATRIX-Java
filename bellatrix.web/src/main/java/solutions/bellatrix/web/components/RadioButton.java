@@ -14,8 +14,11 @@
 package solutions.bellatrix.web.components;
 
 import solutions.bellatrix.core.plugins.EventListener;
+import solutions.bellatrix.web.components.contracts.ComponentChecked;
+import solutions.bellatrix.web.components.contracts.ComponentDisabled;
+import solutions.bellatrix.web.components.contracts.ComponentValue;
 
-public class RadioButton extends WebComponent {
+public class RadioButton extends WebComponent implements ComponentDisabled, ComponentValue, ComponentChecked {
     public final static EventListener<ComponentActionEventArgs> CLICKING = new EventListener<>();
     public final static EventListener<ComponentActionEventArgs> CLICKED = new EventListener<>();
 
@@ -26,5 +29,20 @@ public class RadioButton extends WebComponent {
     @Override
     public Class<?> getComponentClass() {
         return getClass();
+    }
+
+    @Override
+    public boolean isChecked() {
+        return findElement().isSelected();
+    }
+
+    @Override
+    public boolean isDisabled() {
+        return defaultGetDisabledAttribute();
+    }
+
+    @Override
+    public String getValue() {
+        return defaultGetValue();
     }
 }

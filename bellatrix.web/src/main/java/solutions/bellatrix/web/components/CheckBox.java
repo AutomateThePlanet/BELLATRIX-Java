@@ -13,15 +13,42 @@
 
 package solutions.bellatrix.web.components;
 
-public class CheckBox extends WebComponent {
+import solutions.bellatrix.core.plugins.EventListener;
+import solutions.bellatrix.web.components.contracts.ComponentChecked;
+import solutions.bellatrix.web.components.contracts.ComponentDisabled;
+import solutions.bellatrix.web.components.contracts.ComponentValue;
+
+public class CheckBox extends WebComponent implements ComponentDisabled, ComponentChecked, ComponentValue {
+    public final static EventListener<ComponentActionEventArgs> CHECKING = new EventListener<>();
+    public final static EventListener<ComponentActionEventArgs> CHECKED = new EventListener<>();
+    public final static EventListener<ComponentActionEventArgs> UNCHECKING = new EventListener<>();
+    public final static EventListener<ComponentActionEventArgs> UNCHECKED = new EventListener<>();
+
     @Override
     public Class<?> getComponentClass() {
         return getClass();
     }
 
     public void check() {
+         defaultCheck(CHECKING, CHECKED);
     }
 
     public void uncheck() {
+        defaultUncheck(UNCHECKING, UNCHECKED);
+    }
+
+    @Override
+    public boolean isChecked() {
+        return findElement().isSelected();
+    }
+
+    @Override
+    public boolean isDisabled() {
+        return false;
+    }
+
+    @Override
+    public String getValue() {
+        return null;
     }
 }

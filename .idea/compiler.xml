@@ -16,7 +16,7 @@
         <module name="bellatrix.android.tests" />
         <module name="bellatrix.layout" />
         <module name="bellatrix.desktop" />
-        <module name="BELLATRIX.Web.Tests" />
+        <module name="bellatrix.web.Tests" />
         <module name="bellatrix.ios.tests" />
         <module name="bellatrix.plugins.screenshots" />
         <module name="bellatrix.ios" />
@@ -36,7 +36,7 @@
       <module name="bellatrix.plugins.screenshots" target="15" />
       <module name="bellatrix.plugins.video" target="15" />
       <module name="bellatrix.web" target="15" />
-      <module name="BELLATRIX.Web.Tests" target="15" />
+      <module name="bellatrix.web.Tests" target="15" />
     </bytecodeTargetLevel>
   </component>
 </project>

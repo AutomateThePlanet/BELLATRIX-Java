@@ -30,4 +30,8 @@ public class Map extends PageMap {
     public Anchor getProductBoxByName(String name) {
         return create().byXPath(Anchor.class, String.format("//h2[text()='%s']/parent::a[1]", name));
     }
+
+    public Button getProductAddToCartButtonByName(String name) {
+        return create().byXPath(Button.class, String.format("//h2[text()='%s']/parent::a[1]/following-sibling::a[1]", name));
+    }
 }

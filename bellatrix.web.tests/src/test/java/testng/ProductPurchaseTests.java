@@ -19,6 +19,8 @@ import checkoutpage.CheckoutPage;
 import checkoutpage.PurchaseInfo;
 import mainpage.MainPage;
 import solutions.bellatrix.web.components.Anchor;
+import solutions.bellatrix.web.components.CheckBox;
+import solutions.bellatrix.web.components.Frame;
 import solutions.bellatrix.web.findstrategies.TextContains;
 import solutions.bellatrix.web.infrastructure.Browser;
 import solutions.bellatrix.web.infrastructure.ExecutionBrowser;
@@ -27,6 +29,20 @@ import solutions.bellatrix.web.infrastructure.testng.WebTest;
 
 @ExecutionBrowser(browser = Browser.CHROME, lifecycle = Lifecycle.REUSE_IF_STARTED)
 public class ProductPurchaseTests extends WebTest {
+    @Test
+    public void sandbox() {
+        app().navigate().to("https://www.w3schools.com/tags/tryit.asp?filename=tryhtml5_input_type_checkbox");
+        var frame = app().create().byId(Frame.class,"iframeResult");
+        app().browser().switchToFrame(frame);
+        var checkbox1 = app().create().byId(CheckBox.class,"vehicle1");
+        var checkbox2 = app().create().byId(CheckBox.class,"vehicle2");
+        var checkbox3 = app().create().byId(CheckBox.class,"vehicle3");
+        checkbox3.check();
+        checkbox1.validateIsUnchecked();
+        checkbox2.validateIsUnchecked();
+        checkbox3.validateIsChecked();
+    }
+
     @Test
     public void completePurchaseSuccessfully_first() {
         app().navigate().to("http://demos.bellatrix.solutions/");

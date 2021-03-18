@@ -21,12 +21,12 @@ import java.io.File;
 import java.util.UUID;
 
 public class WebVideoPlugin extends VideoPlugin {
-    public WebVideoPlugin(Boolean isEnabled) {
+    public WebVideoPlugin(boolean isEnabled) {
         super(isEnabled);
     }
 
     public static WebVideoPlugin of() {
-        Boolean isEnabled = ConfigurationService.get(WebSettings.class).getVideosOnFailEnabled();
+        boolean isEnabled = ConfigurationService.get(WebSettings.class).getVideosOnFailEnabled();
         return new WebVideoPlugin(isEnabled);
     }
 

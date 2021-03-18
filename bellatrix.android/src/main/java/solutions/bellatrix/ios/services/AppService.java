@@ -28,7 +28,7 @@ public class AppService extends MobileService {
             String appActivity,
             String appWaitPackage,
             String appWaitActivity,
-            Boolean stopApp) {
+            boolean stopApp) {
         try {
             getWrappedAndroidDriver().hideKeyboard();
         }
@@ -40,7 +40,7 @@ public class AppService extends MobileService {
         getWrappedAndroidDriver().startActivity(activity);
     }
 
-    public void startActivityWithIntent(String appPackage, String appActivity, String intentAction, String appWaitPackage, String appWaitActivity, String intentCategory, String intentFlags, String intentOptionalArgs, Boolean stopApp)
+    public void startActivityWithIntent(String appPackage, String appActivity, String intentAction, String appWaitPackage, String appWaitActivity, String intentCategory, String intentFlags, String intentOptionalArgs, boolean stopApp)
     {
         try {
             getWrappedAndroidDriver().hideKeyboard();
@@ -93,7 +93,7 @@ public class AppService extends MobileService {
         getWrappedAndroidDriver().removeApp(appId);
     }
 
-    public Boolean isAppInstalled(String bundleId) {
+    public boolean isAppInstalled(String bundleId) {
         try {
             return getWrappedAndroidDriver().isAppInstalled(bundleId);
         }

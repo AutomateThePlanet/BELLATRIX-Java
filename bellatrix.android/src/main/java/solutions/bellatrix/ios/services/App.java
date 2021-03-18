@@ -18,7 +18,7 @@ import solutions.bellatrix.ios.infrastructure.DriverService;
 import solutions.bellatrix.ios.pages.AndroidPage;
 
 public class App implements AutoCloseable {
-    private Boolean disposed = false;
+    private boolean disposed = false;
 
     public AppService appService() {
         return SingletonFactory.getInstance(AppService.class);

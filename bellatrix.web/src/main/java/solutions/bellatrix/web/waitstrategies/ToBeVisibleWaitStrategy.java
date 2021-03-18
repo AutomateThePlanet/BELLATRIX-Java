@@ -39,7 +39,7 @@ public class ToBeVisibleWaitStrategy extends WaitStrategy{
         waitUntil((x) -> elementIsVisible(searchContext, by));
     }
 
-    private Boolean elementIsVisible(SearchContext searchContext, By by)
+    private boolean elementIsVisible(SearchContext searchContext, By by)
     {
         var element = findElement(searchContext, by);
         try

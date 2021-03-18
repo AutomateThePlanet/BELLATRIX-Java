@@ -30,7 +30,7 @@ public class MainPage extends WebPage<Map, Asserts> {
 
     public void addRocketToShoppingCart(String rocketName) {
         open();
-        map().getProductBoxByName(rocketName).click();
+        map().getProductAddToCartButtonByName(rocketName).click();
         map().viewCartButton().click();
     }
 }

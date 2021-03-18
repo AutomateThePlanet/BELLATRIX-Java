@@ -13,9 +13,46 @@
 
 package solutions.bellatrix.web.components;
 
-public class Image extends WebComponent {
+import solutions.bellatrix.web.components.contracts.*;
+
+public class Image extends WebComponent implements ComponentSrc, ComponentHeight, ComponentWidth, ComponentLongDesc, ComponentAlt, ComponentSrcSet, ComponentSizes {
     @Override
     public Class<?> getComponentClass() {
         return getClass();
+    }
+
+    @Override
+    public String getAlt() {
+        return defaultGetAltAttribute();
+    }
+
+    @Override
+    public String getLongDesc() {
+        return defaultGetLongDescAttribute();
+    }
+
+    @Override
+    public String getSizes() {
+        return defaultGetSizesAttribute();
+    }
+
+    @Override
+    public String getSrc() {
+        return defaultGetSrcAttribute();
+    }
+
+    @Override
+    public String getSrcSet() {
+        return defaultGetSrcSetAttribute();
+    }
+
+    @Override
+    public int getHeight() {
+        return Integer.parseInt(defaultGetHeightAttribute());
+    }
+
+    @Override
+    public int getWidth() {
+        return Integer.parseInt(defaultGetWidthAttribute());
     }
 }

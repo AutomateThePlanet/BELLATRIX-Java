@@ -262,7 +262,7 @@ public class DesktopComponent extends LayoutComponentValidationsBuilder implemen
         clicked.broadcast(new ComponentActionEventArgs(this));
     }
 
-    protected Boolean defaultGetDisabledAttribute() {
+    protected boolean defaultGetDisabledAttribute() {
         var valueAttr = Optional.ofNullable(getAttribute("disabled")).orElse("false");
         return valueAttr.toLowerCase(Locale.ROOT) == "true";
     }
@@ -307,7 +307,7 @@ public class DesktopComponent extends LayoutComponentValidationsBuilder implemen
         }
     }
 
-    private void scrollToVisible(WebElement wrappedElement, Boolean shouldWait)
+    private void scrollToVisible(WebElement wrappedElement, boolean shouldWait)
     {
         SCROLLING_TO_VISIBLE.broadcast(new ComponentActionEventArgs(this));
         try {

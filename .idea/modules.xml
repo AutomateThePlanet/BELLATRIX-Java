@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/BELLATRIX.iml" filepath="$PROJECT_DIR$/BELLATRIX.iml" />
-      <module fileurl="file://$PROJECT_DIR$/bellatrix.web.tests/BELLATRIX.Web.Tests.iml" filepath="$PROJECT_DIR$/bellatrix.web.tests/BELLATRIX.Web.Tests.iml" />
       <module fileurl="file://$PROJECT_DIR$/bellatrix.android/bellatrix.android.iml" filepath="$PROJECT_DIR$/bellatrix.android/bellatrix.android.iml" />
       <module fileurl="file://$PROJECT_DIR$/bellatrix.android.tests/bellatrix.android.tests.iml" filepath="$PROJECT_DIR$/bellatrix.android.tests/bellatrix.android.tests.iml" />
       <module fileurl="file://$PROJECT_DIR$/bellatrix.api/bellatrix.api.iml" filepath="$PROJECT_DIR$/bellatrix.api/bellatrix.api.iml" />
@@ -16,6 +15,7 @@
       <module fileurl="file://$PROJECT_DIR$/bellatrix.plugins.screenshots/bellatrix.plugins.screenshots.iml" filepath="$PROJECT_DIR$/bellatrix.plugins.screenshots/bellatrix.plugins.screenshots.iml" />
       <module fileurl="file://$PROJECT_DIR$/bellatrix.plugins.video/bellatrix.plugins.video.iml" filepath="$PROJECT_DIR$/bellatrix.plugins.video/bellatrix.plugins.video.iml" />
       <module fileurl="file://$PROJECT_DIR$/bellatrix.web/bellatrix.web.iml" filepath="$PROJECT_DIR$/bellatrix.web/bellatrix.web.iml" />
+      <module fileurl="file://$PROJECT_DIR$/bellatrix.web.tests/bellatrix.web.Tests.iml" filepath="$PROJECT_DIR$/bellatrix.web.tests/bellatrix.web.Tests.iml" />
     </modules>
   </component>
 </project>

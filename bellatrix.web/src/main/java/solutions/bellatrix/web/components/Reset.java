@@ -13,9 +13,36 @@
 
 package solutions.bellatrix.web.components;
 
-public class Reset extends WebComponent {
+import solutions.bellatrix.core.plugins.EventListener;
+import solutions.bellatrix.web.components.contracts.ComponentDisabled;
+import solutions.bellatrix.web.components.contracts.ComponentText;
+import solutions.bellatrix.web.components.contracts.ComponentValue;
+
+public class Reset extends WebComponent implements ComponentDisabled, ComponentText, ComponentValue {
+    public final static EventListener<ComponentActionEventArgs> CLICKING = new EventListener<>();
+    public final static EventListener<ComponentActionEventArgs> CLICKED = new EventListener<>();
+
     @Override
     public Class<?> getComponentClass() {
         return getClass();
+    }
+
+    public void click() {
+        defaultClick(CLICKING, CLICKED);
+    }
+
+    @Override
+    public boolean isDisabled() {
+        return defaultGetDisabledAttribute();
+    }
+
+    @Override
+    public String getText() {
+        return defaultGetText();
+    }
+
+    @Override
+    public String getValue() {
+        return defaultGetValue();
     }
 }

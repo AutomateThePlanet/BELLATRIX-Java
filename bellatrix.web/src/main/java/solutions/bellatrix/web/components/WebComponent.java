@@ -20,13 +20,13 @@ import lombok.Setter;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.*;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.support.ui.Select;
 import solutions.bellatrix.core.configuration.ConfigurationService;
-import solutions.bellatrix.web.configuration.WebSettings;
 import solutions.bellatrix.core.plugins.EventListener;
 import solutions.bellatrix.core.utilities.DebugInformation;
 import solutions.bellatrix.core.utilities.InstanceFactory;
 import solutions.bellatrix.web.components.contracts.Component;
+import solutions.bellatrix.web.configuration.WebSettings;
 import solutions.bellatrix.web.findstrategies.*;
 import solutions.bellatrix.web.infrastructure.Browser;
 import solutions.bellatrix.web.infrastructure.DriverService;
@@ -42,8 +42,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
-import java.util.function.Function;
-import java.util.function.Supplier;
 
 import static org.apache.commons.lang3.StringEscapeUtils.unescapeHtml4;
 
@@ -61,6 +59,7 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
     public final static EventListener<ComponentActionEventArgs> CREATED_ELEMENT = new EventListener<>();
     public final static EventListener<ComponentActionEventArgs> CREATING_ELEMENTS = new EventListener<>();
     public final static EventListener<ComponentActionEventArgs> CREATED_ELEMENTS = new EventListener<>();
+    public final static EventListener<ComponentActionEventArgs> VALIDATED_ATTRIBUTE = new EventListener<>();
 
     @Getter @Setter(AccessLevel.PROTECTED) private WebElement wrappedElement;
     @Getter @Setter private WebElement parentWrappedElement;
@@ -313,7 +312,7 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
         return componentList;
     }
 
-    protected WebElement findElement() {
+    public WebElement findElement() {
       if (waitStrategies.stream().count() == 0) {
           waitStrategies.add(Wait.to().exists());
       }
@@ -356,15 +355,57 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
         clicked.broadcast(new ComponentActionEventArgs(this));
     }
 
+    protected void defaultCheck(EventListener<ComponentActionEventArgs> clicking, EventListener<ComponentActionEventArgs> clicked)
+    {
+        clicking.broadcast(new ComponentActionEventArgs(this));
+
+        this.toExists().toBeClickable().waitToBe();
+        if (!findElement().isSelected()) {
+            javaScriptService.execute("arguments[0].focus();arguments[0].click();", wrappedElement);
+        }
+
+        clicked.broadcast(new ComponentActionEventArgs(this));
+    }
+
+    protected void defaultUncheck(EventListener<ComponentActionEventArgs> clicking, EventListener<ComponentActionEventArgs> clicked)
+    {
+        clicking.broadcast(new ComponentActionEventArgs(this));
+
+        this.toExists().toBeClickable().waitToBe();
+        if (findElement().isSelected()) {
+            javaScriptService.execute("arguments[0].focus();arguments[0].click();", wrappedElement);
+        }
+
+        clicked.broadcast(new ComponentActionEventArgs(this));
+    }
+
     protected void setValue(EventListener<ComponentActionEventArgs> gettingValue, EventListener<ComponentActionEventArgs> gotValue, String value)
     {
         gettingValue.broadcast(new ComponentActionEventArgs(this));
-        setAttribute("value", value);
+        javaScriptService.execute(String.format("arguments[0].value = '%s';", value), findElement());
+        gotValue.broadcast(new ComponentActionEventArgs(this));
+    }
+
+    protected void defaultSelectByText(EventListener<ComponentActionEventArgs> gettingValue, EventListener<ComponentActionEventArgs> gotValue, String value)
+    {
+        gettingValue.broadcast(new ComponentActionEventArgs(this));
+        new Select(findElement()).selectByVisibleText(value);
+        gotValue.broadcast(new ComponentActionEventArgs(this));
+    }
+
+    protected void defaultSelectByIndex(EventListener<ComponentActionEventArgs> gettingValue, EventListener<ComponentActionEventArgs> gotValue, int value)
+    {
+        gettingValue.broadcast(new ComponentActionEventArgs(this));
+        new Select(findElement()).selectByIndex(value);
         gotValue.broadcast(new ComponentActionEventArgs(this));
     }
 
     protected String defaultGetValue() {
         return Optional.ofNullable(getAttribute("value")).orElse("");
+    }
+    
+    protected String defaultGetName() {
+        return Optional.ofNullable(getAttribute("name")).orElse("");
     }
 
     protected String defaultGetMaxLength() {
@@ -377,6 +418,34 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
 
     protected String defaultGetSizeAttribute() {
         return Optional.ofNullable(getAttribute("size")).orElse("");
+    }
+
+    protected String defaultGetSizesAttribute() {
+        return Optional.ofNullable(getAttribute("sizes")).orElse("");
+    }
+
+    protected String defaultGetSrcAttribute() {
+        return Optional.ofNullable(getAttribute("src")).orElse("");
+    }
+
+    protected String defaultGetSrcSetAttribute() {
+        return Optional.ofNullable(getAttribute("srcset")).orElse("");
+    }
+
+    protected String defaultGetAltAttribute() {
+        return Optional.ofNullable(getAttribute("alt")).orElse("");
+    }
+
+    protected String defaultGetColsAttribute() {
+        return Optional.ofNullable(getAttribute("cols")).orElse("");
+    }
+
+    protected String defaultGetRowsAttribute() {
+        return Optional.ofNullable(getAttribute("rows")).orElse("");
+    }
+
+    protected String defaultGetLongDescAttribute() {
+        return Optional.ofNullable(getAttribute("longdesc")).orElse("");
     }
 
     protected String defaultGetHeightAttribute() {
@@ -403,9 +472,9 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
         return Optional.ofNullable(getAttribute("rel")).orElse("");
     }
 
-    protected Boolean defaultGetDisabledAttribute() {
+    protected boolean defaultGetDisabledAttribute() {
         var valueAttr = Optional.ofNullable(getAttribute("disabled")).orElse("false");
-        return valueAttr.toLowerCase(Locale.ROOT) == "true";
+        return valueAttr.toLowerCase(Locale.ROOT).equals("true");
     }
 
     protected String defaultGetText() {
@@ -424,6 +493,10 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
         return Optional.ofNullable(getAttribute("step")).orElse("");
     }
 
+    protected String defaultGetWrapAttribute() {
+        return Optional.ofNullable(getAttribute("wrap")).orElse("");
+    }
+
     protected String defaultGetPlaceholderAttribute() {
         return Optional.ofNullable(getAttribute("placeholder")).orElse("");
     }
@@ -432,17 +505,26 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
         return Optional.ofNullable(getAttribute("accept")).orElse(null);
     }
 
-    protected Boolean defaultGetAutoCompleteAttribute() {
-        return Optional.ofNullable(getAttribute("autocomplete")).orElse("") == "on";
+    protected boolean defaultGetAutoCompleteAttribute() {
+        return Optional.ofNullable(getAttribute("autocomplete")).orElse("").equals("on");
     }
 
-    protected Boolean defaultGetReadonlyAttribute() {
+    protected boolean defaultGetSpellCheckAttribute() {
+        return Optional.ofNullable(getAttribute("spellcheck")).orElse("").equals("on");
+    }
+
+    protected boolean defaultGetReadonlyAttribute() {
         return !StringUtils.isEmpty(Optional.ofNullable(getAttribute("readonly")).orElse(""));
     }
 
-    protected Boolean defaultGetRequiredAttribute()
+    protected boolean defaultGetRequiredAttribute()
     {
         return !StringUtils.isEmpty(Optional.ofNullable(getAttribute("required")).orElse(""));
+    }
+
+    protected boolean defaultGetMultipleAttribute()
+    {
+        return !StringUtils.isEmpty(Optional.ofNullable(getAttribute("multiple")).orElse(""));
     }
 
     protected String defaultGetList() {
@@ -490,7 +572,7 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
         }
     }
 
-    private void scrollToVisible(WebElement wrappedElement, Boolean shouldWait)
+    private void scrollToVisible(WebElement wrappedElement, boolean shouldWait)
     {
         SCROLLING_TO_VISIBLE.broadcast(new ComponentActionEventArgs(this));
         try {
@@ -507,43 +589,5 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
         }
 
         SCROLLED_TO_VISIBLE.broadcast(new ComponentActionEventArgs(this));
-    }
-
-    public final static EventListener<ComponentActionEventArgs> VALIDATED_ATTRIBUTE = new EventListener<>();
-
-    protected void defaultValidateAttributeSet(Supplier<String> supplier, String attributeName) {
-        waitUntil((d) -> !StringUtils.isEmpty(supplier.get()), String.format("The control's %s shouldn't be empty but was.", attributeName));
-        VALIDATED_ATTRIBUTE.broadcast(new ComponentActionEventArgs(this, null, String.format("validate %s is empty", attributeName)));
-    }
-
-    protected void defaultValidateAttributeNotSet(Supplier<String> supplier, String attributeName) {
-        waitUntil((d) -> StringUtils.isEmpty(supplier.get()), String.format("The control's %s should be null but was '%s'.", attributeName, supplier.get()));
-        VALIDATED_ATTRIBUTE.broadcast(new ComponentActionEventArgs(this, null, String.format("validate %s is null", attributeName)));
-    }
-
-    protected void defaultValidateAttributeIs(Supplier<String> supplier, String value, String attributeName) {
-        waitUntil((d) -> supplier.get().strip().equals(value), String.format("The control's %s should be '%s' but was '%s'.", attributeName, value, supplier.get()));
-        VALIDATED_ATTRIBUTE.broadcast(new ComponentActionEventArgs(this, value, String.format("validate %s is %s", attributeName, value)));
-    }
-
-    protected void defaultValidateAttributeContains(Supplier<String> supplier, String value, String attributeName) {
-        waitUntil((d) -> supplier.get().strip().contains(value), String.format("The control's %s should contain '%s' but was '%s'.", attributeName, value, supplier.get()));
-        VALIDATED_ATTRIBUTE.broadcast(new ComponentActionEventArgs(this, value, String.format("validate %s contains %s", attributeName, value)));
-    }
-
-    protected void defaultValidateAttributeNotContains(Supplier<String> supplier, String value, String attributeName) {
-        waitUntil((d) -> !supplier.get().strip().contains(value), String.format("The control's %s shouldn't contain '%s' but was '%s'.", attributeName, value, supplier.get()));
-        VALIDATED_ATTRIBUTE.broadcast(new ComponentActionEventArgs(this, value, String.format("validate %s doesn't contain %s", attributeName, value)));
-    }
-
-    private void waitUntil(Function<SearchContext, Boolean> waitCondition, String exceptionMessage) {
-        var webDriverWait = new WebDriverWait(DriverService.getWrappedDriver(), webSettings.getTimeoutSettings().getValidationsTimeout(), webSettings.getTimeoutSettings().getSleepInterval());
-        try {
-            webDriverWait.until(waitCondition);
-        } catch (TimeoutException ex) {
-            DebugInformation.printStackTrace(ex);
-            var validationExceptionMessage = String.format("%s The test failed on URL: %s", exceptionMessage, browserService.getUrl());
-            throw new TimeoutException(validationExceptionMessage, ex);
-        }
     }
 }

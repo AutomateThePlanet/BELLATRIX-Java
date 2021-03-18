@@ -43,7 +43,7 @@ public class ToExistsWaitStrategy extends WaitStrategy {
         waitUntil(func);
     }
 
-    private <TFindStrategy extends FindStrategy> Boolean elementExists(WindowsDriver<WebElement> searchContext, TFindStrategy findStrategy)
+    private <TFindStrategy extends FindStrategy> boolean elementExists(WindowsDriver<WebElement> searchContext, TFindStrategy findStrategy)
     {
         try
         {

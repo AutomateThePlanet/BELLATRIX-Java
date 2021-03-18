@@ -28,9 +28,9 @@ import org.openqa.selenium.opera.OperaOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import solutions.bellatrix.core.configuration.ConfigurationService;
+import solutions.bellatrix.core.utilities.DebugInformation;
 import solutions.bellatrix.web.configuration.GridSettings;
 import solutions.bellatrix.web.configuration.WebSettings;
-import solutions.bellatrix.core.utilities.DebugInformation;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -148,7 +148,7 @@ public class DriverService {
 
     private static WebDriver initializeDriverRegularMode() {
         WebDriver driver = null;
-        Boolean shouldCaptureHttpTraffic = ConfigurationService.get(WebSettings.class).getShouldCaptureHttpTraffic();
+        boolean shouldCaptureHttpTraffic = ConfigurationService.get(WebSettings.class).getShouldCaptureHttpTraffic();
         int port = ProxyServer.init();
         String proxyUrl = "127.0.0.1:" + port;
         final var proxyConfig = new Proxy()
