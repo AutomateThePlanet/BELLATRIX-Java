@@ -11,19 +11,19 @@
  * limitations under the License.
  */
 
-package testng;
+package junit;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.testng.Assert;
 import solutions.bellatrix.desktop.components.Button;
 import solutions.bellatrix.desktop.components.TextField;
 import solutions.bellatrix.desktop.infrastructure.ExecutionApp;
 import solutions.bellatrix.desktop.infrastructure.Lifecycle;
-import solutions.bellatrix.desktop.infrastructure.testng.DesktopTest;
+import solutions.bellatrix.desktop.infrastructure.junit.DesktopTest;
 
 @ExecutionApp(appPath = "Microsoft.WindowsCalculator_8wekyb3d8bbwe!App", lifecycle = Lifecycle.RESTART_ON_FAIL)
-public class ProductPurchaseTests extends DesktopTest {
-    @org.junit.jupiter.api.Test
+public class CalculatorTests extends DesktopTest {
+    @Test
     public void addition() {
         app().create().byName(Button.class, "Five").click();
         app().create().byName(Button.class, "Plus").click();
@@ -31,10 +31,10 @@ public class ProductPurchaseTests extends DesktopTest {
         app().create().byName(Button.class, "Equals").click();
 
         var calculatorResult = getCalculatorResultText();
-        Assert.assertEquals(calculatorResult, "12");
+        Assertions.assertEquals(calculatorResult, "12");
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void division() {
         app().create().byAccessibilityId(Button.class, "num8Button").click();
         app().create().byAccessibilityId(Button.class, "num8Button").click();
@@ -44,10 +44,10 @@ public class ProductPurchaseTests extends DesktopTest {
         app().create().byAccessibilityId(Button.class, "equalButton").click();
 
         var calculatorResult = getCalculatorResultText();
-        Assert.assertEquals(calculatorResult, "8");
+        Assertions.assertEquals(calculatorResult, "8");
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void multiplication() {
         app().create().byXPath(Button.class, "//Button[@Name='Nine']").click();
         app().create().byXPath(Button.class, "//Button[@Name='Multiply by']").click();
@@ -55,7 +55,7 @@ public class ProductPurchaseTests extends DesktopTest {
         app().create().byXPath(Button.class, "//Button[@Name='Equals']").click();
 
         var calculatorResult = getCalculatorResultText();
-        Assert.assertEquals(calculatorResult, "81");
+        Assertions.assertEquals(calculatorResult, "81");
     }
 
     @Test
@@ -66,7 +66,7 @@ public class ProductPurchaseTests extends DesktopTest {
         app().create().byXPath(Button.class, "//Button[@AutomationId='equalButton']").click();
 
         var calculatorResult = getCalculatorResultText();
-        Assert.assertEquals(calculatorResult, "8");
+        Assertions.assertEquals(calculatorResult, "8");
     }
 
     private String getCalculatorResultText() {

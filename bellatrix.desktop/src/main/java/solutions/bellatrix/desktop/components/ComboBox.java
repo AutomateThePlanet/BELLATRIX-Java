@@ -14,29 +14,29 @@
 package solutions.bellatrix.desktop.components;
 
 import solutions.bellatrix.core.plugins.EventListener;
-import solutions.bellatrix.desktop.components.contracts.ComponentTime;
 import solutions.bellatrix.desktop.components.contracts.ComponentDisabled;
+import solutions.bellatrix.desktop.components.contracts.ComponentText;
 
-public class Time extends DesktopComponent implements ComponentDisabled, ComponentTime {
-    public final static EventListener<ComponentActionEventArgs> SETTING_TIME = new EventListener<>();
-    public final static EventListener<ComponentActionEventArgs> TIME_SET = new EventListener<>();
+public class ComboBox extends DesktopComponent implements ComponentDisabled, ComponentText {
+    public final static EventListener<ComponentActionEventArgs> SELECTING = new EventListener<>();
+    public final static EventListener<ComponentActionEventArgs> SELECTED = new EventListener<>();
+
+    public void selectByText(String value) {
+        defaultSelectByText(SELECTING, SELECTED, value);
+    }
 
     @Override
     public Class<?> getComponentClass() {
         return getClass();
     }
 
-    public void setTime(int hours, int minutes) {
-        defaultSetText(SETTING_TIME, TIME_SET, String.format("%d:%d:00", hours, minutes));
-    }
-
     @Override
-    public String getTime() {
+    public String getText() {
         return defaultGetText();
     }
 
     @Override
     public boolean isDisabled() {
-        return false;
+        return defaultGetDisabledAttribute();
     }
 }

@@ -13,9 +13,16 @@
 
 package solutions.bellatrix.desktop.components;
 
-public class Label extends DesktopComponent {
+import solutions.bellatrix.desktop.components.contracts.ComponentText;
+
+public class Label extends DesktopComponent implements ComponentText {
     @Override
     public Class<?> getComponentClass() {
         return getClass();
+    }
+
+    @Override
+    public String getText() {
+        return defaultGetText();
     }
 }

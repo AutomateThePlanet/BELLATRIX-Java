@@ -11,18 +11,18 @@
  * limitations under the License.
  */
 
-package junit;
+package testng;
 
-import org.junit.jupiter.api.Test;
 import org.testng.Assert;
+import org.testng.annotations.Test;
 import solutions.bellatrix.desktop.components.Button;
 import solutions.bellatrix.desktop.components.TextField;
 import solutions.bellatrix.desktop.infrastructure.ExecutionApp;
 import solutions.bellatrix.desktop.infrastructure.Lifecycle;
-import solutions.bellatrix.desktop.infrastructure.junit.DesktopTest;
+import solutions.bellatrix.desktop.infrastructure.testng.DesktopTest;
 
 @ExecutionApp(appPath = "Microsoft.WindowsCalculator_8wekyb3d8bbwe!App", lifecycle = Lifecycle.RESTART_ON_FAIL)
-public class ProductPurchaseTests extends DesktopTest {
+public class CalculatorTests extends DesktopTest {
     @Test
     public void addition() {
         app().create().byName(Button.class, "Five").click();

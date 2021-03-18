@@ -13,9 +13,24 @@
 
 package solutions.bellatrix.desktop.components;
 
-public class Search extends DesktopComponent {
+import solutions.bellatrix.core.plugins.EventListener;
+import solutions.bellatrix.desktop.components.contracts.ComponentDisabled;
+
+public class Expander extends DesktopComponent implements ComponentDisabled {
+    public final static EventListener<ComponentActionEventArgs> CLICKING = new EventListener<>();
+    public final static EventListener<ComponentActionEventArgs> CLICKED = new EventListener<>();
+
+    public void click() {
+        defaultClick(CLICKING, CLICKED);
+    }
+
     @Override
     public Class<?> getComponentClass() {
         return getClass();
+    }
+
+    @Override
+    public boolean isDisabled() {
+        return defaultGetDisabledAttribute();
     }
 }

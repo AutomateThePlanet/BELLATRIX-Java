@@ -11,19 +11,21 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.desktop.components.listeners;
+package solutions.bellatrix.desktop.components.contracts;
 
-import solutions.bellatrix.desktop.components.Anchor;
+import lombok.SneakyThrows;
+import solutions.bellatrix.core.utilities.SingletonFactory;
 import solutions.bellatrix.desktop.components.DesktopComponent;
 import solutions.bellatrix.desktop.components.validators.DesktopValidator;
 
-public class BddLogging {
-    private static boolean isBddLoggingTurnedOn = false;
-    public static void addPlugin() {
-        if (!isBddLoggingTurnedOn) {
-            Anchor.CLICKING.addListener((x) -> System.out.printf("clicking %s\n%n", x.getComponent().getElementName()));
-            DesktopValidator.VALIDATED_ATTRIBUTE.addListener((x) -> System.out.println(x.getMessage()));
-            isBddLoggingTurnedOn = true;
-        }
+import java.lang.reflect.Method;
+
+public interface ComponentDisabled extends Component {
+    boolean isDisabled();
+
+    @SneakyThrows
+    default void validateIsDisabled(String value) {
+        Method method = DesktopValidator.class.getDeclaredMethod("defaultValidateAttributeIs", DesktopComponent.class, String.class, String.class, String.class);
+        method.invoke(SingletonFactory.getInstance(DesktopValidator.class), (DesktopComponent)this, isDisabled(), value, "inner text");
     }
 }

@@ -29,6 +29,7 @@ import solutions.bellatrix.core.plugins.EventListener;
 import solutions.bellatrix.core.utilities.DebugInformation;
 import solutions.bellatrix.core.utilities.InstanceFactory;
 import solutions.bellatrix.desktop.components.contracts.Component;
+import solutions.bellatrix.desktop.components.contracts.ComponentVisible;
 import solutions.bellatrix.desktop.configuration.DesktopSettings;
 import solutions.bellatrix.desktop.findstrategies.*;
 import solutions.bellatrix.desktop.infrastructure.DriverService;
@@ -44,7 +45,7 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-public class DesktopComponent extends LayoutComponentValidationsBuilder implements Component {
+public class DesktopComponent extends LayoutComponentValidationsBuilder implements Component, ComponentVisible {
     public final static EventListener<ComponentActionEventArgs> HOVERING = new EventListener<>();
     public final static EventListener<ComponentActionEventArgs> HOVERED = new EventListener<>();
     public final static EventListener<ComponentActionEventArgs> SCROLLING_TO_VISIBLE = new EventListener<>();
@@ -244,7 +245,7 @@ public class DesktopComponent extends LayoutComponentValidationsBuilder implemen
           waitStrategies.clear();
       } catch (WebDriverException ex) {
           DebugInformation.printStackTrace(ex);
-          System.out.print(String.format("\n\nThe element: \n Name: '%s', \n Locator: '%s = %s', \nWas not found on the page or didn't fulfill the specified conditions.\n\n", getComponentClass().getSimpleName(), findStrategy.toString(), findStrategy.getValue()));
+          System.out.printf("\n\nThe element: \n Name: '%s', \n Locator: '%s = %s', \nWas not found on the page or didn't fulfill the specified conditions.\n\n", getComponentClass().getSimpleName(), findStrategy.toString(), findStrategy.getValue());
       }
 
         RETURNING_WRAPPED_ELEMENT.broadcast(new ComponentActionEventArgs(this));
@@ -264,7 +265,7 @@ public class DesktopComponent extends LayoutComponentValidationsBuilder implemen
 
     protected boolean defaultGetDisabledAttribute() {
         var valueAttr = Optional.ofNullable(getAttribute("disabled")).orElse("false");
-        return valueAttr.toLowerCase(Locale.ROOT) == "true";
+        return valueAttr.toLowerCase(Locale.ROOT).equals("true");
     }
 
     protected String defaultGetText() {
@@ -278,6 +279,14 @@ public class DesktopComponent extends LayoutComponentValidationsBuilder implemen
         findElement().clear();
         findElement().sendKeys(value);
 
+        valueSet.broadcast(new ComponentActionEventArgs(this));
+    }
+
+    protected void defaultSelectByText(EventListener<ComponentActionEventArgs> settingValue, EventListener<ComponentActionEventArgs> valueSet, String value) {
+        settingValue.broadcast(new ComponentActionEventArgs(this));
+        if (!defaultGetText().equals(value)) {
+            findElement().sendKeys(value);
+        }
         valueSet.broadcast(new ComponentActionEventArgs(this));
     }
 
@@ -318,49 +327,19 @@ public class DesktopComponent extends LayoutComponentValidationsBuilder implemen
                 Thread.sleep(500);
                 toExists().waitToBe();
             }
-        } catch (ElementNotInteractableException ex) {
+        } catch (ElementNotInteractableException | InterruptedException ex) {
             DebugInformation.printStackTrace(ex);
-        } catch (InterruptedException e) {
-            DebugInformation.printStackTrace(e);
         }
 
         SCROLLED_TO_VISIBLE.broadcast(new ComponentActionEventArgs(this));
     }
 
-    public final static EventListener<ComponentActionEventArgs> VALIDATED_ATTRIBUTE = new EventListener<>();
-
-    protected void defaultValidateAttributeSet(Supplier<String> supplier, String attributeName) {
-        waitUntil((d) -> !StringUtils.isEmpty(supplier.get()), String.format("The control's %s shouldn't be empty but was.", attributeName));
-        VALIDATED_ATTRIBUTE.broadcast(new ComponentActionEventArgs(this, null, String.format("validate %s is empty", attributeName)));
-    }
-
-    protected void defaultValidateAttributeNotSet(Supplier<String> supplier, String attributeName) {
-        waitUntil((d) -> StringUtils.isEmpty(supplier.get()), String.format("The control's %s should be null but was '%s'.", attributeName, supplier.get()));
-        VALIDATED_ATTRIBUTE.broadcast(new ComponentActionEventArgs(this, null, String.format("validate %s is null", attributeName)));
-    }
-
-    protected void defaultValidateAttributeIs(Supplier<String> supplier, String value, String attributeName) {
-        waitUntil((d) -> supplier.get().strip().equals(value), String.format("The control's %s should be '%s' but was '%s'.", attributeName, value, supplier.get()));
-        VALIDATED_ATTRIBUTE.broadcast(new ComponentActionEventArgs(this, value, String.format("validate %s is %s", attributeName, value)));
-    }
-
-    protected void defaultValidateAttributeContains(Supplier<String> supplier, String value, String attributeName) {
-        waitUntil((d) -> supplier.get().strip().contains(value), String.format("The control's %s should contain '%s' but was '%s'.", attributeName, value, supplier.get()));
-        VALIDATED_ATTRIBUTE.broadcast(new ComponentActionEventArgs(this, value, String.format("validate %s contains %s", attributeName, value)));
-    }
-
-    protected void defaultValidateAttributeNotContains(Supplier<String> supplier, String value, String attributeName) {
-        waitUntil((d) -> !supplier.get().strip().contains(value), String.format("The control's %s shouldn't contain '%s' but was '%s'.", attributeName, value, supplier.get()));
-        VALIDATED_ATTRIBUTE.broadcast(new ComponentActionEventArgs(this, value, String.format("validate %s doesn't contain %s", attributeName, value)));
-    }
-
-    private void waitUntil(Function<SearchContext, Boolean> waitCondition, String exceptionMessage) {
-        var webDriverWait = new WebDriverWait(DriverService.getWrappedDriver(), desktopSettings.getTimeoutSettings().getValidationsTimeout(), desktopSettings.getTimeoutSettings().getSleepInterval());
+    @Override
+    public boolean isVisible() {
         try {
-            webDriverWait.until(waitCondition);
-        } catch (TimeoutException ex) {
-            DebugInformation.printStackTrace(ex);
-            throw ex;
+            return findElement().isDisplayed();
+        } catch (WebDriverException ignored) {
+            return false;
         }
     }
 }

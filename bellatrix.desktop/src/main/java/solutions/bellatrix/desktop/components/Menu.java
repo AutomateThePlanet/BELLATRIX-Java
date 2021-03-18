@@ -13,11 +13,7 @@
 
 package solutions.bellatrix.desktop.components;
 
-public class Span extends DesktopComponent {
-    public String getText() {
-        return findElement().getText();
-    }
-
+public class Menu extends DesktopComponent {
     @Override
     public Class<?> getComponentClass() {
         return getClass();

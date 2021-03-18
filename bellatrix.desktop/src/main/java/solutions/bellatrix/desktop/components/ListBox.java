@@ -13,13 +13,16 @@
 
 package solutions.bellatrix.desktop.components;
 
-public class Div extends DesktopComponent {
-    public String getText() {
-        return findElement().getText();
-    }
+import solutions.bellatrix.desktop.components.contracts.ComponentDisabled;
 
+public class ListBox extends DesktopComponent implements ComponentDisabled {
     @Override
     public Class<?> getComponentClass() {
         return getClass();
+    }
+
+    @Override
+    public boolean isDisabled() {
+        return defaultGetDisabledAttribute();
     }
 }
