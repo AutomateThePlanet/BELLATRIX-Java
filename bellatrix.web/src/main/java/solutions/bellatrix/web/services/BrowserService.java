@@ -15,10 +15,21 @@ package solutions.bellatrix.web.services;
 
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.openqa.selenium.opera.OperaDriver;
+import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import solutions.bellatrix.core.configuration.ConfigurationService;
+import solutions.bellatrix.core.utilities.InstanceFactory;
+import solutions.bellatrix.core.utilities.SingletonFactory;
 import solutions.bellatrix.web.components.Frame;
 import solutions.bellatrix.web.configuration.WebSettings;
+import solutions.bellatrix.web.infrastructure.Browser;
+import solutions.bellatrix.web.infrastructure.BrowserConfiguration;
+import solutions.bellatrix.web.infrastructure.ExecutionBrowser;
 
 public class BrowserService extends WebService {
     private final JavascriptExecutor javascriptExecutor;
@@ -76,75 +87,71 @@ public class BrowserService extends WebService {
         getWrappedDriver().switchTo().frame(frame.findElement());
     }
 
-//    public void ClearSessionStorage() {
-//        var browserConfig = ServicesCollection.Current.Resolve < BrowserConfiguration > ();
-//        switch (browserConfig.BrowserType) {
-//            case BrowserType.NotSet:
-//                break;
-//            case BrowserType.Chrome:
-//            case BrowserType.ChromeHeadless:
-//                var chromeDriver = (ChromeDriver) WrappedDriver;
-//                chromeDriver.WebStorage.SessionStorage.Clear();
-//                break;
-//            case BrowserType.Firefox:
-//            case BrowserType.FirefoxHeadless:
-//                var firefoxDriver = (FirefoxDriver) WrappedDriver;
-//                firefoxDriver.WebStorage.SessionStorage.Clear();
-//                break;
-//            case BrowserType.InternetExplorer:
-//                var ieDriver = (InternetExplorerDriver) WrappedDriver;
-//                ieDriver.WebStorage.SessionStorage.Clear();
-//                break;
-//            case BrowserType.Edge:
-//            case BrowserType.EdgeHeadless:
-//                var edgeDriver = (EdgeDriver) WrappedDriver;
-//                edgeDriver.WebStorage.SessionStorage.Clear();
-//                break;
-//            case BrowserType.Opera:
-//                var operaDriver = (OperaDriver) WrappedDriver;
-//                operaDriver.WebStorage.SessionStorage.Clear();
-//                break;
-//            case BrowserType.Safari:
-//                var safariDriver = (SafariDriver) WrappedDriver;
-//                safariDriver.WebStorage.SessionStorage.Clear();
-//                break;
-//        }
-//    }
-//
-//    public void ClearLocalStorage() {
-//        var browserConfig = ServicesCollection.Current.Resolve < BrowserConfiguration > ();
-//        switch (browserConfig.BrowserType) {
-//            case BrowserType.NotSet:
-//                break;
-//            case BrowserType.Chrome:
-//            case BrowserType.ChromeHeadless:
-//                var chromeDriver = (ChromeDriver) WrappedDriver;
-//                chromeDriver.WebStorage.LocalStorage.Clear();
-//                break;
-//            case BrowserType.Firefox:
-//            case BrowserType.FirefoxHeadless:
-//                var firefoxDriver = (FirefoxDriver) WrappedDriver;
-//                firefoxDriver.WebStorage.LocalStorage.Clear();
-//                break;
-//            case BrowserType.InternetExplorer:
-//                var ieDriver = (InternetExplorerDriver) WrappedDriver;
-//                ieDriver.WebStorage.LocalStorage.Clear();
-//                break;
-//            case BrowserType.Edge:
-//            case BrowserType.EdgeHeadless:
-//                var edgeDriver = (EdgeDriver) WrappedDriver;
-//                edgeDriver.WebStorage.LocalStorage.Clear();
-//                break;
-//            case BrowserType.Opera:
-//                var operaDriver = (OperaDriver) WrappedDriver;
-//                operaDriver.WebStorage.LocalStorage.Clear();
-//                break;
-//            case BrowserType.Safari:
-//                var safariDriver = (SafariDriver) WrappedDriver;
-//                safariDriver.WebStorage.LocalStorage.Clear();
-//                break;
-//        }
-//    }
+    public void clearSessionStorage() {
+        var browserConfig = InstanceFactory.create(BrowserConfiguration.class);
+        switch (browserConfig.getBrowser()) {
+            case CHROME:
+            case CHROME_HEADLESS:
+                var chromeDriver = (ChromeDriver) getWrappedDriver();
+                chromeDriver.getSessionStorage().clear();
+                break;
+            case FIREFOX:
+            case FIREFOX_HEADLESS:
+                var firefoxDriver = (FirefoxDriver) getWrappedDriver();
+                firefoxDriver.getSessionStorage().clear();
+                break;
+            case INTERNET_EXPLORER:
+                var ieDriver = (InternetExplorerDriver) getWrappedDriver();
+                ((JavascriptExecutor)ieDriver).executeScript("sessionStorage.clear()");
+                break;
+            case EDGE:
+            case EDGE_HEADLESS:
+                var edgeDriver = (EdgeDriver) getWrappedDriver();
+                ((JavascriptExecutor)edgeDriver).executeScript("sessionStorage.clear()");
+                break;
+            case OPERA:
+                var operaDriver = (OperaDriver) getWrappedDriver();
+                operaDriver.getSessionStorage().clear();
+                break;
+            case SAFARI:
+                var safariDriver = (SafariDriver) getWrappedDriver();
+                ((JavascriptExecutor)safariDriver).executeScript("sessionStorage.clear()");
+                break;
+        }
+    }
+
+    public void clearLocalStorage() {
+        var browserConfig = InstanceFactory.create(BrowserConfiguration.class);
+        switch (browserConfig.getBrowser()) {
+            case CHROME:
+            case CHROME_HEADLESS:
+                var chromeDriver = (ChromeDriver) getWrappedDriver();
+                chromeDriver.getLocalStorage().clear();
+                break;
+            case FIREFOX:
+            case FIREFOX_HEADLESS:
+                var firefoxDriver = (FirefoxDriver) getWrappedDriver();
+                firefoxDriver.getLocalStorage().clear();
+                break;
+            case INTERNET_EXPLORER:
+                var ieDriver = (InternetExplorerDriver) getWrappedDriver();
+                ((JavascriptExecutor)ieDriver).executeScript("localStorage.clear()");
+                break;
+            case EDGE:
+            case EDGE_HEADLESS:
+                var edgeDriver = (EdgeDriver) getWrappedDriver();
+                ((JavascriptExecutor)edgeDriver).executeScript("localStorage.clear()");
+                break;
+            case OPERA:
+                var operaDriver = (OperaDriver) getWrappedDriver();
+                operaDriver.getLocalStorage().clear();
+                break;
+            case SAFARI:
+                var safariDriver = (SafariDriver) getWrappedDriver();
+                ((JavascriptExecutor)safariDriver).executeScript("localStorage.clear()");
+                break;
+        }
+    }
 
     public void waitForAjax() {
         long ajaxTimeout = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getWaitForAjaxTimeout();
@@ -161,7 +168,7 @@ public class BrowserService extends WebService {
         webDriverWait.until(d -> {
             String script = String.format("return performance.getEntriesByType('resource').filter(item => item.initiatorType == 'xmlhttprequest' && item.name.toLowerCase().includes('%s'))[0] !== undefined;", requestPartialUrl);
             String result = (String) javascriptExecutor.executeScript(script);
-            if (result == "True") {
+            if (result.equals("True")) {
                 return true;
             }
             return false;
