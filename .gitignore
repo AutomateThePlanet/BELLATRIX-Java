@@ -1,4 +1,14 @@
+# IntelliJ generated files
+.idea/
+*.iml
+
+# macOS resource fork
+*.DS_Store
+.AppleDouble
+.LSOverride
+
 # Compiled class file
+target/
 *.class
 
 # Log file
