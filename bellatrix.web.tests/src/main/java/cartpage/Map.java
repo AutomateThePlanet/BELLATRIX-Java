@@ -14,7 +14,10 @@
 package cartpage;
 
 
-import solutions.bellatrix.web.components.*;
+import solutions.bellatrix.web.components.Button;
+import solutions.bellatrix.web.components.Div;
+import solutions.bellatrix.web.components.Span;
+import solutions.bellatrix.web.components.TextField;
 import solutions.bellatrix.web.pages.PageMap;
 
 public class Map extends PageMap {

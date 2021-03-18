@@ -13,7 +13,7 @@
 
 package testng;
 
-import org.junit.jupiter.api.Test;
+import org.testng.annotations.Test;
 import solutions.bellatrix.ios.components.Button;
 import solutions.bellatrix.ios.infrastructure.ExecutionApp;
 import solutions.bellatrix.ios.infrastructure.Lifecycle;

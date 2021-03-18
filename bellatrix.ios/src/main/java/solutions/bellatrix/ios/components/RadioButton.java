@@ -14,17 +14,34 @@
 package solutions.bellatrix.ios.components;
 
 import solutions.bellatrix.core.plugins.EventListener;
+import solutions.bellatrix.ios.components.contracts.ComponentChecked;
+import solutions.bellatrix.ios.components.contracts.ComponentDisabled;
+import solutions.bellatrix.ios.components.contracts.ComponentText;
 
-public class RadioButton extends IOSComponent {
+public class RadioButton extends IOSComponent implements ComponentDisabled, ComponentChecked, ComponentText {
     public final static EventListener<ComponentActionEventArgs> CLICKING = new EventListener<>();
     public final static EventListener<ComponentActionEventArgs> CLICKED = new EventListener<>();
+
+    @Override
+    public Class<?> getComponentClass() {
+        return getClass();
+    }
 
     public void click() {
         defaultClick(CLICKING, CLICKED);
     }
 
+    public String getText() {
+        return defaultGetText();
+    }
+
     @Override
-    public Class<?> getComponentClass() {
-        return getClass();
+    public boolean isDisabled() {
+        return defaultGetDisabledAttribute();
+    }
+
+    @Override
+    public boolean isChecked() {
+        return defaultGetCheckedAttribute();
     }
 }

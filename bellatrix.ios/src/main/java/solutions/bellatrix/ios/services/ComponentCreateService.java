@@ -15,7 +15,6 @@ package solutions.bellatrix.ios.services;
 
 import solutions.bellatrix.core.utilities.InstanceFactory;
 import solutions.bellatrix.ios.components.IOSComponent;
-import solutions.bellatrix.ios.findstrategies.FindStrategy;
 import solutions.bellatrix.ios.findstrategies.*;
 import solutions.bellatrix.ios.infrastructure.DriverService;
 

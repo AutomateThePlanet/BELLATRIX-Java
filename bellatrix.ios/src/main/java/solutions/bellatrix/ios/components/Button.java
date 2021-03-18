@@ -14,8 +14,10 @@
 package solutions.bellatrix.ios.components;
 
 import solutions.bellatrix.core.plugins.EventListener;
+import solutions.bellatrix.ios.components.contracts.ComponentDisabled;
+import solutions.bellatrix.ios.components.contracts.ComponentText;
 
-public class Button extends IOSComponent {
+public class Button extends IOSComponent implements ComponentDisabled, ComponentText {
     public final static EventListener<ComponentActionEventArgs> CLICKING = new EventListener<>();
     public final static EventListener<ComponentActionEventArgs> CLICKED = new EventListener<>();
 
@@ -24,28 +26,16 @@ public class Button extends IOSComponent {
         return getClass();
     }
 
-    public String getText() {
-        return defaultGetText();
-    }
-
     public void click() {
         defaultClick(CLICKING, CLICKED);
     }
 
-    // validate inner text
-    public void validateTextIs(String value) {
-        defaultValidateAttributeIs(this::getText, value, "inner text");
+    public String getText() {
+        return defaultGetText();
     }
 
-    public void validateTextIsSet() {
-        defaultValidateAttributeSet(this::getText, "inner text");
-    }
-
-    public void validateTextContains(String value) {
-        defaultValidateAttributeContains(this::getText, value, "inner text");
-    }
-
-    public void validateTextNotContains(String value) {
-        defaultValidateAttributeNotContains(this::getText, value, "inner text");
+    @Override
+    public boolean isDisabled() {
+        return defaultGetDisabledAttribute();
     }
 }

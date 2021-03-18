@@ -14,7 +14,6 @@
 package solutions.bellatrix.desktop.components;
 
 import solutions.bellatrix.core.plugins.EventListener;
-import solutions.bellatrix.desktop.components.contracts.ComponentDate;
 import solutions.bellatrix.desktop.components.contracts.ComponentDisabled;
 
 public class Password extends DesktopComponent implements ComponentDisabled {

@@ -14,21 +14,29 @@
 package solutions.bellatrix.ios.components;
 
 import solutions.bellatrix.core.plugins.EventListener;
+import solutions.bellatrix.ios.components.contracts.ComponentDisabled;
+import solutions.bellatrix.ios.components.contracts.ComponentText;
 
-public class TextField extends IOSComponent {
+public class TextField extends IOSComponent implements ComponentDisabled, ComponentText {
     public final static EventListener<ComponentActionEventArgs> SETTING_TEXT = new EventListener<>();
     public final static EventListener<ComponentActionEventArgs> TEXT_SET = new EventListener<>();
+
+    @Override
+    public Class<?> getComponentClass() {
+        return getClass();
+    }
 
     public void setText(String value) {
         defaultSetText(SETTING_TEXT, TEXT_SET, value);
     }
 
+    @Override
     public String getText() {
-        return defaultGetText();
+        return defaultGetValueAttribute();
     }
 
     @Override
-    public Class<?> getComponentClass() {
-        return getClass();
+    public boolean isDisabled() {
+        return defaultGetDisabledAttribute();
     }
 }

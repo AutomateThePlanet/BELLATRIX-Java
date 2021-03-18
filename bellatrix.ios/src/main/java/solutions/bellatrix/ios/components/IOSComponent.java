@@ -19,10 +19,11 @@ import layout.LayoutComponentValidationsBuilder;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.commons.lang3.StringUtils;
-import org.openqa.selenium.*;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.ElementNotInteractableException;
+import org.openqa.selenium.Point;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.core.plugins.EventListener;
 import solutions.bellatrix.core.utilities.DebugInformation;
@@ -30,15 +31,15 @@ import solutions.bellatrix.core.utilities.InstanceFactory;
 import solutions.bellatrix.ios.components.contracts.Component;
 import solutions.bellatrix.ios.findstrategies.*;
 import solutions.bellatrix.ios.infrastructure.DriverService;
-import solutions.bellatrix.ios.services.*;
+import solutions.bellatrix.ios.services.AppService;
+import solutions.bellatrix.ios.services.ComponentCreateService;
+import solutions.bellatrix.ios.services.ComponentWaitService;
 import solutions.bellatrix.ios.waitstrategies.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
-import java.util.function.Function;
-import java.util.function.Supplier;
 
 public class IOSComponent extends LayoutComponentValidationsBuilder implements Component {
     public final static EventListener<ComponentActionEventArgs> HOVERING = new EventListener<>();
@@ -50,6 +51,7 @@ public class IOSComponent extends LayoutComponentValidationsBuilder implements C
     public final static EventListener<ComponentActionEventArgs> CREATED_ELEMENT = new EventListener<>();
     public final static EventListener<ComponentActionEventArgs> CREATING_ELEMENTS = new EventListener<>();
     public final static EventListener<ComponentActionEventArgs> CREATED_ELEMENTS = new EventListener<>();
+    public final static EventListener<ComponentActionEventArgs> VALIDATED_ATTRIBUTE = new EventListener<>();
 
     @Getter @Setter(AccessLevel.PROTECTED) private MobileElement wrappedElement;
     @Getter @Setter private MobileElement parentWrappedElement;
@@ -60,11 +62,11 @@ public class IOSComponent extends LayoutComponentValidationsBuilder implements C
     @Getter protected ComponentCreateService componentCreateService;
     @Getter protected ComponentWaitService componentWaitService;
     private List<WaitStrategy> waitStrategies;
-    private solutions.bellatrix.ios.configuration.IOSSettings IOSSettings;
+    private solutions.bellatrix.ios.configuration.IOSSettings iOSSettings;
 
     public IOSComponent() {
         this.waitStrategies = new ArrayList<>();
-        IOSSettings = ConfigurationService.get(solutions.bellatrix.ios.configuration.IOSSettings.class);
+        iOSSettings = ConfigurationService.get(solutions.bellatrix.ios.configuration.IOSSettings.class);
         appService = new AppService();
         componentCreateService = new ComponentCreateService();
         componentWaitService = new ComponentWaitService();
@@ -266,9 +268,42 @@ public class IOSComponent extends LayoutComponentValidationsBuilder implements C
         clicked.broadcast(new ComponentActionEventArgs(this));
     }
 
+    protected void defaultCheck(EventListener<ComponentActionEventArgs> checking, EventListener<ComponentActionEventArgs> checked)
+    {
+        checking.broadcast(new ComponentActionEventArgs(this));
+
+        this.toExists().toBeClickable().waitToBe();
+        if(!this.defaultGetCheckedAttribute()) {
+            findElement().click();
+        }
+
+        checked.broadcast(new ComponentActionEventArgs(this));
+    }
+
+    protected void defaultUncheck(EventListener<ComponentActionEventArgs> unchecking, EventListener<ComponentActionEventArgs> unchecked)
+    {
+        unchecking.broadcast(new ComponentActionEventArgs(this));
+
+        this.toExists().toBeClickable().waitToBe();
+        if(this.defaultGetCheckedAttribute()) {
+            findElement().click();
+        }
+
+        unchecked.broadcast(new ComponentActionEventArgs(this));
+    }
+
     protected boolean defaultGetDisabledAttribute() {
         var valueAttr = Optional.ofNullable(getAttribute("disabled")).orElse("false");
-        return valueAttr.toLowerCase(Locale.ROOT) == "true";
+        return valueAttr.toLowerCase(Locale.ROOT).equals("true");
+    }
+
+    protected boolean defaultGetCheckedAttribute() {
+        var valueAttr = Optional.ofNullable(getAttribute("checked")).orElse("false");
+        return valueAttr.toLowerCase(Locale.ROOT).equals("true");
+    }
+
+    protected String defaultGetValueAttribute() {
+        return Optional.ofNullable(findElement().getAttribute("value")).orElse("");
     }
 
     protected String defaultGetText() {
@@ -294,10 +329,10 @@ public class IOSComponent extends LayoutComponentValidationsBuilder implements C
     }
 
     private void addArtificialDelay() {
-        if (IOSSettings.getArtificialDelayBeforeAction() != 0)
+        if (iOSSettings.getArtificialDelayBeforeAction() != 0)
         {
             try {
-                Thread.sleep(IOSSettings.getArtificialDelayBeforeAction());
+                Thread.sleep(iOSSettings.getArtificialDelayBeforeAction());
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -306,7 +341,7 @@ public class IOSComponent extends LayoutComponentValidationsBuilder implements C
 
     private void scrollToMakeElementVisible(MobileElement wrappedElement) {
         // createBy default scroll down to make the element visible.
-        if (IOSSettings.getAutomaticallyScrollToVisible()) {
+        if (iOSSettings.getAutomaticallyScrollToVisible()) {
             scrollToVisible(wrappedElement, false);
         }
     }
@@ -334,42 +369,5 @@ public class IOSComponent extends LayoutComponentValidationsBuilder implements C
         }
 
         SCROLLED_TO_VISIBLE.broadcast(new ComponentActionEventArgs(this));
-    }
-
-    public final static EventListener<ComponentActionEventArgs> VALIDATED_ATTRIBUTE = new EventListener<>();
-
-    protected void defaultValidateAttributeSet(Supplier<String> supplier, String attributeName) {
-        waitUntil((d) -> !StringUtils.isEmpty(supplier.get()), String.format("The control's %s shouldn't be empty but was.", attributeName));
-        VALIDATED_ATTRIBUTE.broadcast(new ComponentActionEventArgs(this, null, String.format("validate %s is empty", attributeName)));
-    }
-
-    protected void defaultValidateAttributeNotSet(Supplier<String> supplier, String attributeName) {
-        waitUntil((d) -> StringUtils.isEmpty(supplier.get()), String.format("The control's %s should be null but was '%s'.", attributeName, supplier.get()));
-        VALIDATED_ATTRIBUTE.broadcast(new ComponentActionEventArgs(this, null, String.format("validate %s is null", attributeName)));
-    }
-
-    protected void defaultValidateAttributeIs(Supplier<String> supplier, String value, String attributeName) {
-        waitUntil((d) -> supplier.get().strip().equals(value), String.format("The control's %s should be '%s' but was '%s'.", attributeName, value, supplier.get()));
-        VALIDATED_ATTRIBUTE.broadcast(new ComponentActionEventArgs(this, value, String.format("validate %s is %s", attributeName, value)));
-    }
-
-    protected void defaultValidateAttributeContains(Supplier<String> supplier, String value, String attributeName) {
-        waitUntil((d) -> supplier.get().strip().contains(value), String.format("The control's %s should contain '%s' but was '%s'.", attributeName, value, supplier.get()));
-        VALIDATED_ATTRIBUTE.broadcast(new ComponentActionEventArgs(this, value, String.format("validate %s contains %s", attributeName, value)));
-    }
-
-    protected void defaultValidateAttributeNotContains(Supplier<String> supplier, String value, String attributeName) {
-        waitUntil((d) -> !supplier.get().strip().contains(value), String.format("The control's %s shouldn't contain '%s' but was '%s'.", attributeName, value, supplier.get()));
-        VALIDATED_ATTRIBUTE.broadcast(new ComponentActionEventArgs(this, value, String.format("validate %s doesn't contain %s", attributeName, value)));
-    }
-
-    private void waitUntil(Function<SearchContext, Boolean> waitCondition, String exceptionMessage) {
-        var webDriverWait = new WebDriverWait(DriverService.getWrappedIOSDriver(), IOSSettings.getTimeoutSettings().getValidationsTimeout(), IOSSettings.getTimeoutSettings().getSleepInterval());
-        try {
-            webDriverWait.until(waitCondition);
-        } catch (TimeoutException ex) {
-            DebugInformation.printStackTrace(ex);
-            throw ex;
-        }
     }
 }

@@ -13,9 +13,16 @@
 
 package solutions.bellatrix.ios.components;
 
-public class Label extends IOSComponent {
+import solutions.bellatrix.ios.components.contracts.ComponentText;
+
+public class Label extends IOSComponent implements ComponentText {
     @Override
     public Class<?> getComponentClass() {
         return getClass();
+    }
+
+    @Override
+    public String getText() {
+        return defaultGetText();
     }
 }
