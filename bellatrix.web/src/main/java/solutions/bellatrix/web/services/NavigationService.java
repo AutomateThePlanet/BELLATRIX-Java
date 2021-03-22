@@ -16,12 +16,16 @@ package solutions.bellatrix.web.services;
 import com.google.common.base.Strings;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import solutions.bellatrix.core.configuration.ConfigurationService;
+import solutions.bellatrix.core.plugins.EventListener;
+import solutions.bellatrix.web.components.ComponentActionEventArgs;
+import solutions.bellatrix.web.components.WebComponent;
 import solutions.bellatrix.web.configuration.WebSettings;
 
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -29,14 +33,13 @@ import static java.util.stream.Collectors.mapping;
 import static java.util.stream.Collectors.toList;
 
 public class NavigationService extends WebService {
-    // TODO: UrlNotNavigatedEvent
+    public final static EventListener<WebServiceEventArgs> URL_NOT_NAVIGATED = new EventListener<>();
 
     public void to(String url) {
         getWrappedDriver().navigate().to(url);
     }
 
-    public void NavigateToLocalPage(String filePath)
-    {
+    public void navigateToLocalPage(String filePath) {
 //        var assembly = Assembly.GetExecutingAssembly();
 //        string path = Path.GetDirectoryName(assembly.Location);
 //
@@ -71,12 +74,12 @@ public class NavigationService extends WebService {
             webDriverWait.until(d -> getWrappedDriver().getCurrentUrl().contains(partialUrl));
         } catch (Exception ex)
         {
-//            UrlNotNavigatedEvent?.Invoke(this, new UrlNotNavigatedEventArgs(ex));
+            URL_NOT_NAVIGATED.broadcast(new WebServiceEventArgs(this, partialUrl, ex.getMessage()));
             throw ex;
         }
     }
 
-    public List<String> GetQueryParameter(String parameterName) throws MalformedURLException {
+    public List<String> getQueryParameter(String parameterName) throws MalformedURLException {
         return splitQuery(getWrappedDriver().getCurrentUrl()).get(parameterName);
     }
 
@@ -99,10 +102,10 @@ public class NavigationService extends WebService {
     private AbstractMap.SimpleImmutableEntry<String, String> splitQueryParameter(String it) throws UnsupportedEncodingException {
         final int idx = it.indexOf("=");
         final String key = idx > 0 ? it.substring(0, idx) : it;
-        final String value = idx > 0 && it.length() > idx + 1 ? it.substring(idx + 1) : null;
+        final String value = idx > 0 && it.length() > idx + 1 ? it.substring(idx + 1) : "";
         return new AbstractMap.SimpleImmutableEntry<>(
-                URLDecoder.decode(key, "UTF-8"),
-                URLDecoder.decode(value, "UTF-8")
+                URLDecoder.decode(key, StandardCharsets.UTF_8),
+                URLDecoder.decode(value, StandardCharsets.UTF_8)
         );
     }
 }
