@@ -27,6 +27,8 @@ import org.openqa.selenium.opera.OperaDriver;
 import org.openqa.selenium.opera.OperaOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.safari.SafariDriver;
+import org.openqa.selenium.safari.SafariOptions;
 import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.core.utilities.DebugInformation;
 import solutions.bellatrix.web.configuration.GridSettings;
@@ -71,14 +73,14 @@ public class DriverService {
     public static WebDriver start(BrowserConfiguration configuration) {
         browserConfiguration.set(configuration);
         disposed.set(false);
-        WebDriver driver = null;
+        WebDriver driver;
         var webSettings = ConfigurationService.get(WebSettings.class);
         var executionType = webSettings.getExecutionType();
         if (executionType.equals("regular")) {
             driver = initializeDriverRegularMode();
         } else {
             var gridSettings = webSettings.getGridSettings().stream().filter(g -> g.getProviderName().equals(executionType.toLowerCase())).findFirst();
-            assert gridSettings != null : String.format("The specified execution type '%s' is not declared in the configuration", executionType);
+            assert gridSettings.isPresent() : String.format("The specified execution type '%s' is not declared in the configuration", executionType);
             driver = initializeDriverGridMode(gridSettings.get());
         }
 
@@ -127,7 +129,9 @@ public class DriverService {
                 caps.setCapability(ChromeOptions.CAPABILITY, operaOptions);
             }
             case SAFARI: {
-                throw new InvalidArgumentException("BELLATRIX doesn't support Safari.");
+                var safariOptions = new SafariOptions();
+                addGridOptions(safariOptions, gridSettings);
+                SafariOptions.fromCapabilities(safariOptions);
             }
             case INTERNET_EXPLORER: {
                 var ieOptions = new InternetExplorerOptions();
@@ -220,7 +224,11 @@ public class DriverService {
                 driver = new OperaDriver(operaOptions);
             }
             case SAFARI -> {
-               throw new InvalidArgumentException("BELLATRIX doesn't support Safari.");
+                System.setProperty("WebDriver.safari.driver","/usr/bin/safaridriver");
+                var safariOptions = new SafariOptions();
+                addDriverOptions(safariOptions);
+                if (shouldCaptureHttpTraffic) safariOptions.setProxy(proxyConfig);
+                driver = new SafariDriver(safariOptions);
             }
             case INTERNET_EXPLORER -> {
                 WebDriverManager.iedriver().setup();
