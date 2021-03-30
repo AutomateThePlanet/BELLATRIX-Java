@@ -5,7 +5,7 @@ import java.nio.file.Paths;
 public class UserHomePathNormalizer {
     public static String normalizePath(String path) {
         if (path.startsWith("user.home")) {
-            return Paths.get(getUserHomePath(), path).toString();
+            return Paths.get(getUserHomePath(), path.substring(9)).toString();
         }
 
         return path;
