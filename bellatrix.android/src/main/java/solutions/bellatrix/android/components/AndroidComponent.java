@@ -214,7 +214,7 @@ public class AndroidComponent extends LayoutComponentValidationsBuilder implemen
           waitStrategies.clear();
       } catch (WebDriverException ex) {
           DebugInformation.printStackTrace(ex);
-          System.out.print(String.format("\n\nThe element: \n Name: '%s', \n Locator: '%s = %s', \nWas not found on the page or didn't fulfill the specified conditions.\n\n", getComponentClass().getSimpleName(), findStrategy.toString(), findStrategy.getValue()));
+          System.out.print(String.format("\n\nThe element: \n Name: '%s', \n Locator: '%s', \nWas not found on the page or didn't fulfill the specified conditions.\n\n", getComponentClass().getSimpleName(), findStrategy.toString()));
       }
 
         RETURNING_WRAPPED_ELEMENT.broadcast(new ComponentActionEventArgs(this));
