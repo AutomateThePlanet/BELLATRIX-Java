@@ -5,13 +5,23 @@ import java.nio.file.Paths;
 public class UserHomePathNormalizer {
     public static String normalizePath(String path) {
         if (path.startsWith("user.home")) {
-            return Paths.get(getUserHomePath(), path.substring(9)).toString();
+            path = Paths.get(getUserHomePath(), path.substring(9)).toString();
+        }
+
+        if (RuntimeInformation.IS_MAC && RuntimeInformation.IS_UNIX) {
+            path = path.replace('\\', '/');
+        } else if (RuntimeInformation.IS_WINDOWS) {
+            path = path.replace('/', '\\');
         }
 
         return path;
     }
 
     public static String getUserHomePath() {
-        return System.getProperty("user.home");
+        String userHomePath = System.getProperty("user.home");
+        if (userHomePath.endsWith("/") || userHomePath.endsWith("\\")) {
+            userHomePath = userHomePath.substring(0, userHomePath.length() - 1);
+        }
+        return userHomePath;
     }
 }
