@@ -2,8 +2,8 @@
   "troubleshootingSettings": {
     "debugInformationEnabled": "true"
   },
-  "desktopSettings": {
-    "serviceUrl": "http://127.0.0.1:4722",
+  "androidSettings": {
+    "serviceUrl": "http://127.0.0.1:4722/wd/hub",
     "executionType": "regular",
     "defaultLifeCycle": "restart everytime time",
     "defaultDeviceName": "android25-test",
