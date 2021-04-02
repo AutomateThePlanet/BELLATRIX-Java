@@ -22,6 +22,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -35,48 +36,27 @@ public class NavigationService extends WebService {
         getWrappedDriver().navigate().to(url);
     }
 
-    public void NavigateToLocalPage(String filePath)
+    public void toLocalPage(String filePath)
     {
-//        var assembly = Assembly.GetExecutingAssembly();
-//        string path = Path.GetDirectoryName(assembly.Location);
-//
-//        string pageFilePath = Path.Combine(path ?? throw new InvalidOperationException(), filePath);
-//
-//        if (WrappedWebDriverCreateService.BrowserConfiguration.BrowserType.Equals(BrowserType.Safari) || WrappedWebDriverCreateService.BrowserConfiguration.BrowserType.Equals(BrowserType.Firefox) || WrappedWebDriverCreateService.BrowserConfiguration.BrowserType.Equals(BrowserType.FirefoxHeadless))
-//        {
-//            pageFilePath = string.Concat("file:///", pageFilePath);
-//        }
-
-//        if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
-//        {
-//            pageFilePath = pageFilePath.Replace('\\', '/').Replace("file:////", "file://////").Replace(" ", "%20");
-//        }
-//
-//        if (!WrappedWebDriverCreateService.BrowserConfiguration.BrowserType.Equals(BrowserType.Safari))
-//        {
-//            Navigate(new Uri(pageFilePath, uriKind: UriKind.Absolute));
-//        }
-//        else
-//        {
-//            Navigate(pageFilePath);
-//        }
+        URL testAppUrl = getClass().getClassLoader().getResource(filePath);
+        if (testAppUrl != null) {
+            to(testAppUrl.toString());
+        }
     }
 
     public void waitForPartialUrl(String partialUrl) {
-        try
-        {
+        try {
             long waitForPartialTimeout = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getWaitForPartialUrl();
             long sleepInterval = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getSleepInterval();
             var webDriverWait = new WebDriverWait(getWrappedDriver(), waitForPartialTimeout, sleepInterval);
             webDriverWait.until(d -> getWrappedDriver().getCurrentUrl().contains(partialUrl));
-        } catch (Exception ex)
-        {
+        } catch (Exception ex) {
 //            UrlNotNavigatedEvent?.Invoke(this, new UrlNotNavigatedEventArgs(ex));
             throw ex;
         }
     }
 
-    public List<String> GetQueryParameter(String parameterName) throws MalformedURLException {
+    public List<String> getQueryParameter(String parameterName) throws MalformedURLException {
         return splitQuery(getWrappedDriver().getCurrentUrl()).get(parameterName);
     }
 
@@ -99,10 +79,10 @@ public class NavigationService extends WebService {
     private AbstractMap.SimpleImmutableEntry<String, String> splitQueryParameter(String it) throws UnsupportedEncodingException {
         final int idx = it.indexOf("=");
         final String key = idx > 0 ? it.substring(0, idx) : it;
-        final String value = idx > 0 && it.length() > idx + 1 ? it.substring(idx + 1) : null;
+        final String value = idx > 0 && it.length() > idx + 1 ? it.substring(idx + 1) : "";
         return new AbstractMap.SimpleImmutableEntry<>(
-                URLDecoder.decode(key, "UTF-8"),
-                URLDecoder.decode(value, "UTF-8")
+                URLDecoder.decode(key, StandardCharsets.UTF_8),
+                URLDecoder.decode(value, StandardCharsets.UTF_8)
         );
     }
 }
