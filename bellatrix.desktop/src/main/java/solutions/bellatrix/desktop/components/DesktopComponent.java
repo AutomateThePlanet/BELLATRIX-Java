@@ -116,18 +116,21 @@ public class DesktopComponent extends LayoutComponentValidationsBuilder implemen
         waitStrategies.add(waitStrategy);
     }
 
+    @SuppressWarnings("unchecked")
     public <TElementType extends DesktopComponent> TElementType toExists() {
         var waitStrategy = new ToExistsWaitStrategy();
         ensureState(waitStrategy);
         return (TElementType)this;
     }
 
+    @SuppressWarnings("unchecked")
     public <TElementType extends DesktopComponent> TElementType toBeClickable() {
         var waitStrategy = new ToBeClickableWaitStrategy();
         ensureState(waitStrategy);
         return (TElementType)this;
     }
 
+    @SuppressWarnings("unchecked")
     public <TElementType extends DesktopComponent> TElementType toBeVisible() {
         var waitStrategy = new ToBeVisibleWaitStrategy();
         ensureState(waitStrategy);

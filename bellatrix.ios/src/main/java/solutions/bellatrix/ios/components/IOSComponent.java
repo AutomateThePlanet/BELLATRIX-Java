@@ -114,18 +114,21 @@ public class IOSComponent extends LayoutComponentValidationsBuilder implements C
         waitStrategies.add(waitStrategy);
     }
 
+    @SuppressWarnings("unchecked")
     public <TElementType extends IOSComponent> TElementType toExists() {
         var waitStrategy = new ToExistsWaitStrategy();
         ensureState(waitStrategy);
         return (TElementType)this;
     }
 
+    @SuppressWarnings("unchecked")
     public <TElementType extends IOSComponent> TElementType toBeClickable() {
         var waitStrategy = new ToBeClickableWaitStrategy();
         ensureState(waitStrategy);
         return (TElementType)this;
     }
 
+    @SuppressWarnings("unchecked")
     public <TElementType extends IOSComponent> TElementType toBeVisible() {
         var waitStrategy = new ToBeVisibleWaitStrategy();
         ensureState(waitStrategy);
