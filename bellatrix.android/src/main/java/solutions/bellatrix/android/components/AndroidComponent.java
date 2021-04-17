@@ -19,10 +19,7 @@ import layout.LayoutComponentValidationsBuilder;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.ElementNotInteractableException;
-import org.openqa.selenium.Point;
-import org.openqa.selenium.WebDriverException;
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import solutions.bellatrix.android.components.contracts.Component;
 import solutions.bellatrix.android.configuration.AndroidSettings;
@@ -57,7 +54,7 @@ public class AndroidComponent extends LayoutComponentValidationsBuilder implemen
     public final static EventListener<ComponentActionEventArgs> CREATED_ELEMENTS = new EventListener<>();
     public final static EventListener<ComponentActionEventArgs> VALIDATED_ATTRIBUTE = new EventListener<>();
 
-    @Getter @Setter(AccessLevel.PROTECTED) private MobileElement wrappedElement;
+    @Setter(AccessLevel.PROTECTED) private MobileElement wrappedElement;
     @Getter @Setter private MobileElement parentWrappedElement;
     @Getter @Setter private int elementIndex;
     @Getter @Setter private FindStrategy findStrategy;
@@ -75,6 +72,15 @@ public class AndroidComponent extends LayoutComponentValidationsBuilder implemen
         componentCreateService = new ComponentCreateService();
         componentWaitService = new ComponentWaitService();
         wrappedDriver = DriverService.getWrappedAndroidDriver();
+    }
+
+    public MobileElement getWrappedElement() {
+        try {
+            wrappedElement.isDisplayed(); // checking if getting property throws exception
+            return wrappedElement;
+        } catch (StaleElementReferenceException | NullPointerException ex) {
+            return findElement();
+        }
     }
 
     public String getElementName() {

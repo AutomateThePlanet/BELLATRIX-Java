@@ -13,6 +13,7 @@
 
 package solutions.bellatrix.desktop.components;
 
+import io.appium.java_client.MobileElement;
 import io.appium.java_client.windows.WindowsDriver;
 import layout.LayoutComponentValidationsBuilder;
 import lombok.AccessLevel;
@@ -51,7 +52,7 @@ public class DesktopComponent extends LayoutComponentValidationsBuilder implemen
     public final static EventListener<ComponentActionEventArgs> CREATED_ELEMENTS = new EventListener<>();
     public final static EventListener<ComponentActionEventArgs> VALIDATED_ATTRIBUTE = new EventListener<>();
 
-    @Getter @Setter(AccessLevel.PROTECTED) private WebElement wrappedElement;
+    @Setter(AccessLevel.PROTECTED) private WebElement wrappedElement;
     @Getter @Setter private WebElement parentWrappedElement;
     @Getter @Setter private int elementIndex;
     @Getter @Setter private FindStrategy findStrategy;
@@ -69,6 +70,15 @@ public class DesktopComponent extends LayoutComponentValidationsBuilder implemen
         componentCreateService = new ComponentCreateService();
         componentWaitService = new ComponentWaitService();
         wrappedDriver = DriverService.getWrappedDriver();
+    }
+
+    public WebElement getWrappedElement() {
+        try {
+            wrappedElement.isDisplayed(); // checking if getting property throws exception
+            return wrappedElement;
+        } catch (StaleElementReferenceException | NullPointerException ex) {
+            return findElement();
+        }
     }
 
     public String getElementName() {
