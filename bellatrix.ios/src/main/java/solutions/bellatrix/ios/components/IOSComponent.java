@@ -227,7 +227,7 @@ public class IOSComponent extends LayoutComponentValidationsBuilder implements C
         findElement();
         var nativeElements = findStrategy.findAllElements(wrappedElement);
         List<TComponent> componentList = new ArrayList<>();
-        for (int i = 0; i < nativeElements.stream().count(); i++) {
+        for (int i = 0; i < nativeElements.size(); i++) {
             var component = InstanceFactory.create(componentClass);
             component.setFindStrategy(findStrategy);
             component.setElementIndex(i);
@@ -240,7 +240,7 @@ public class IOSComponent extends LayoutComponentValidationsBuilder implements C
     }
 
     protected MobileElement findElement() {
-      if (waitStrategies.stream().count() == 0) {
+      if (waitStrategies.size() == 0) {
           waitStrategies.add(Wait.to().exists());
       }
 
@@ -256,7 +256,7 @@ public class IOSComponent extends LayoutComponentValidationsBuilder implements C
           waitStrategies.clear();
       } catch (WebDriverException ex) {
           DebugInformation.printStackTrace(ex);
-          System.out.print(String.format("\n\nThe element: \n Name: '%s', \n Locator: '%s = %s', \nWas not found on the page or didn't fulfill the specified conditions.\n\n", getComponentClass().getSimpleName(), findStrategy.toString(), findStrategy.getValue()));
+          System.out.printf("%n%nThe element: %n Name: '%s', %n Locator: '%s = %s', %nWas not found on the page or didn't fulfill the specified conditions.%n%n", getComponentClass().getSimpleName(), findStrategy.toString(), findStrategy.getValue());
       }
 
         RETURNING_WRAPPED_ELEMENT.broadcast(new ComponentActionEventArgs(this));
@@ -368,10 +368,8 @@ public class IOSComponent extends LayoutComponentValidationsBuilder implements C
                 Thread.sleep(500);
                 toExists().waitToBe();
             }
-        } catch (ElementNotInteractableException ex) {
+        } catch (ElementNotInteractableException | InterruptedException ex) {
             DebugInformation.printStackTrace(ex);
-        } catch (InterruptedException e) {
-            DebugInformation.printStackTrace(e);
         }
 
         SCROLLED_TO_VISIBLE.broadcast(new ComponentActionEventArgs(this));

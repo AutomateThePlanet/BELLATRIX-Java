@@ -309,7 +309,7 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
         findElement();
         var nativeElements = wrappedElement.findElements(findStrategy.convert());
         List<TComponent> componentList = new ArrayList<>();
-        for (int i = 0; i < nativeElements.stream().count(); i++) {
+        for (int i = 0; i < nativeElements.size(); i++) {
             var component = InstanceFactory.create(componentClass);
             component.setFindStrategy(findStrategy);
             component.setElementIndex(i);
@@ -322,7 +322,7 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
     }
 
     public WebElement findElement() {
-      if (waitStrategies.stream().count() == 0) {
+      if (waitStrategies.size() == 0) {
           waitStrategies.add(Wait.to().exists());
       }
 
@@ -585,10 +585,8 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
                 Thread.sleep(500);
                 toExists().waitToBe();
             }
-        } catch (ElementNotInteractableException ex) {
+        } catch (ElementNotInteractableException | InterruptedException ex) {
             DebugInformation.printStackTrace(ex);
-        } catch (InterruptedException e) {
-            DebugInformation.printStackTrace(e);
         }
 
         SCROLLED_TO_VISIBLE.broadcast(new ComponentActionEventArgs(this));

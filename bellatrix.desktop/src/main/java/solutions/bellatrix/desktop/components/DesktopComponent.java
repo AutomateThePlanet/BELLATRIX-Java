@@ -221,7 +221,7 @@ public class DesktopComponent extends LayoutComponentValidationsBuilder implemen
         findElement();
         var nativeElements = findStrategy.findAllElements(wrappedElement);
         List<TComponent> componentList = new ArrayList<>();
-        for (int i = 0; i < nativeElements.stream().count(); i++) {
+        for (int i = 0; i < nativeElements.size(); i++) {
             var component = InstanceFactory.create(componentClass);
             component.setFindStrategy(findStrategy);
             component.setElementIndex(i);
@@ -234,7 +234,7 @@ public class DesktopComponent extends LayoutComponentValidationsBuilder implemen
     }
 
     protected WebElement findElement() {
-      if (waitStrategies.stream().count() == 0) {
+      if (waitStrategies.size() == 0) {
           waitStrategies.add(Wait.to().exists());
       }
 
