@@ -38,9 +38,14 @@ public class NavigationService extends WebService {
 
     public void toLocalPage(String filePath)
     {
-        URL testAppUrl = getClass().getClassLoader().getResource(filePath);
+        URL testAppUrl = Thread.currentThread().getContextClassLoader().getResource(filePath);
         if (testAppUrl != null) {
             to(testAppUrl.toString());
+        } else {
+            testAppUrl = getClass().getClassLoader().getResource(filePath);
+            if (testAppUrl != null) {
+                to(testAppUrl.toString());
+            }
         }
     }
 
