@@ -43,7 +43,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 
-import static org.apache.commons.lang3.StringEscapeUtils.unescapeHtml4;
+import static org.apache.commons.text.StringEscapeUtils.unescapeHtml4;
 
 public class WebComponent extends LayoutComponentValidationsBuilder implements Component {
     public final static EventListener<ComponentActionEventArgs> HOVERING = new EventListener<>();
@@ -61,7 +61,7 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
     public final static EventListener<ComponentActionEventArgs> CREATED_ELEMENTS = new EventListener<>();
     public final static EventListener<ComponentActionEventArgs> VALIDATED_ATTRIBUTE = new EventListener<>();
 
-    @Getter @Setter(AccessLevel.PROTECTED) private WebElement wrappedElement;
+    @Setter(AccessLevel.PROTECTED) private WebElement wrappedElement;
     @Getter @Setter private WebElement parentWrappedElement;
     @Getter @Setter private int elementIndex;
     @Getter @Setter private FindStrategy findStrategy;
@@ -81,6 +81,15 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
         componentCreateService = new ComponentCreateService();
         componentWaitService = new ComponentWaitService();
         wrappedDriver = DriverService.getWrappedDriver();
+    }
+
+    public WebElement getWrappedElement() {
+        try {
+            wrappedElement.isDisplayed(); // checking if getting property throws exception
+            return wrappedElement;
+        } catch (StaleElementReferenceException | NullPointerException ex) {
+            return findElement();
+        }
     }
 
     public String getElementName() {
@@ -166,18 +175,21 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
         waitStrategies.add(waitStrategy);
     }
 
+    @SuppressWarnings("unchecked")
     public <TElementType extends WebComponent> TElementType toExists() {
         var waitStrategy = new ToExistsWaitStrategy();
         ensureState(waitStrategy);
         return (TElementType)this;
     }
 
+    @SuppressWarnings("unchecked")
     public <TElementType extends WebComponent> TElementType toBeClickable() {
         var waitStrategy = new ToBeClickableWaitStrategy();
         ensureState(waitStrategy);
         return (TElementType)this;
     }
 
+    @SuppressWarnings("unchecked")
     public <TElementType extends WebComponent> TElementType toBeVisible() {
         var waitStrategy = new ToBeVisibleWaitStrategy();
         ensureState(waitStrategy);
@@ -300,7 +312,7 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
         findElement();
         var nativeElements = wrappedElement.findElements(findStrategy.convert());
         List<TComponent> componentList = new ArrayList<>();
-        for (int i = 0; i < nativeElements.stream().count(); i++) {
+        for (int i = 0; i < nativeElements.size(); i++) {
             var component = InstanceFactory.create(componentClass);
             component.setFindStrategy(findStrategy);
             component.setElementIndex(i);
@@ -313,7 +325,7 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
     }
 
     public WebElement findElement() {
-      if (waitStrategies.stream().count() == 0) {
+      if (waitStrategies.size() == 0) {
           waitStrategies.add(Wait.to().exists());
       }
 
@@ -337,7 +349,7 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
           waitStrategies.clear();
       } catch (WebDriverException ex) {
           DebugInformation.printStackTrace(ex);
-          System.out.printf("\n\nThe element: \n Name: '%s', \n Locator: '%s = %s', \nWas not found on the page or didn't fulfill the specified conditions.\n\n", getComponentClass().getSimpleName(), findStrategy.toString(), findStrategy.getValue());
+          System.out.printf("%n%nThe element: %n Name: '%s', %n Locator: '%s', %nWas not found on the page or didn't fulfill the specified conditions.%n%n", getComponentClass().getSimpleName(), findStrategy.toString());
       }
 
         RETURNING_WRAPPED_ELEMENT.broadcast(new ComponentActionEventArgs(this));
@@ -365,15 +377,15 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
         clicked.broadcast(new ComponentActionEventArgs(this));
     }
 
-    protected void defaultUncheck(EventListener<ComponentActionEventArgs> clicking, EventListener<ComponentActionEventArgs> clicked) {
-        clicking.broadcast(new ComponentActionEventArgs(this));
+    protected void defaultUncheck(EventListener<ComponentActionEventArgs> checking, EventListener<ComponentActionEventArgs> checked) {
+        checking.broadcast(new ComponentActionEventArgs(this));
 
         this.toExists().toBeClickable().waitToBe();
         if (findElement().isSelected()) {
             javaScriptService.execute("arguments[0].focus();arguments[0].click();", wrappedElement);
         }
 
-        clicked.broadcast(new ComponentActionEventArgs(this));
+        checked.broadcast(new ComponentActionEventArgs(this));
     }
 
     protected void setValue(EventListener<ComponentActionEventArgs> gettingValue, EventListener<ComponentActionEventArgs> gotValue, String value) {
@@ -382,16 +394,16 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
         gotValue.broadcast(new ComponentActionEventArgs(this));
     }
 
-    protected void defaultSelectByText(EventListener<ComponentActionEventArgs> gettingValue, EventListener<ComponentActionEventArgs> gotValue, String value) {
-        gettingValue.broadcast(new ComponentActionEventArgs(this));
+    protected void defaultSelectByText(EventListener<ComponentActionEventArgs> selectingValue, EventListener<ComponentActionEventArgs> valueSelected, String value) {
+        selectingValue.broadcast(new ComponentActionEventArgs(this));
         new Select(findElement()).selectByVisibleText(value);
-        gotValue.broadcast(new ComponentActionEventArgs(this));
+        valueSelected.broadcast(new ComponentActionEventArgs(this));
     }
 
-    protected void defaultSelectByIndex(EventListener<ComponentActionEventArgs> gettingValue, EventListener<ComponentActionEventArgs> gotValue, int value) {
-        gettingValue.broadcast(new ComponentActionEventArgs(this));
+    protected void defaultSelectByIndex(EventListener<ComponentActionEventArgs> selectingValue, EventListener<ComponentActionEventArgs> valueSelected, int value) {
+        selectingValue.broadcast(new ComponentActionEventArgs(this));
         new Select(findElement()).selectByIndex(value);
-        gotValue.broadcast(new ComponentActionEventArgs(this));
+        valueSelected.broadcast(new ComponentActionEventArgs(this));
     }
 
     protected String defaultGetValue() {
@@ -576,10 +588,8 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
                 Thread.sleep(500);
                 toExists().waitToBe();
             }
-        } catch (ElementNotInteractableException ex) {
+        } catch (ElementNotInteractableException | InterruptedException ex) {
             DebugInformation.printStackTrace(ex);
-        } catch (InterruptedException e) {
-            DebugInformation.printStackTrace(e);
         }
 
         SCROLLED_TO_VISIBLE.broadcast(new ComponentActionEventArgs(this));

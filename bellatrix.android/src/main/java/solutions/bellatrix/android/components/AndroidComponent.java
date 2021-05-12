@@ -19,10 +19,7 @@ import layout.LayoutComponentValidationsBuilder;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.ElementNotInteractableException;
-import org.openqa.selenium.Point;
-import org.openqa.selenium.WebDriverException;
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import solutions.bellatrix.android.components.contracts.Component;
 import solutions.bellatrix.android.configuration.AndroidSettings;
@@ -57,7 +54,7 @@ public class AndroidComponent extends LayoutComponentValidationsBuilder implemen
     public final static EventListener<ComponentActionEventArgs> CREATED_ELEMENTS = new EventListener<>();
     public final static EventListener<ComponentActionEventArgs> VALIDATED_ATTRIBUTE = new EventListener<>();
 
-    @Getter @Setter(AccessLevel.PROTECTED) private MobileElement wrappedElement;
+    @Setter(AccessLevel.PROTECTED) private MobileElement wrappedElement;
     @Getter @Setter private MobileElement parentWrappedElement;
     @Getter @Setter private int elementIndex;
     @Getter @Setter private FindStrategy findStrategy;
@@ -75,6 +72,15 @@ public class AndroidComponent extends LayoutComponentValidationsBuilder implemen
         componentCreateService = new ComponentCreateService();
         componentWaitService = new ComponentWaitService();
         wrappedDriver = DriverService.getWrappedAndroidDriver();
+    }
+
+    public MobileElement getWrappedElement() {
+        try {
+            wrappedElement.isDisplayed(); // checking if getting property throws exception
+            return wrappedElement;
+        } catch (StaleElementReferenceException | NullPointerException ex) {
+            return findElement();
+        }
     }
 
     public String getElementName() {
@@ -112,18 +118,21 @@ public class AndroidComponent extends LayoutComponentValidationsBuilder implemen
         waitStrategies.add(waitStrategy);
     }
 
+    @SuppressWarnings("unchecked")
     public <TElementType extends AndroidComponent> TElementType toExists() {
         var waitStrategy = new ToExistsWaitStrategy();
         ensureState(waitStrategy);
         return (TElementType)this;
     }
 
+    @SuppressWarnings("unchecked")
     public <TElementType extends AndroidComponent> TElementType toBeClickable() {
         var waitStrategy = new ToBeClickableWaitStrategy();
         ensureState(waitStrategy);
         return (TElementType)this;
     }
 
+    @SuppressWarnings("unchecked")
     public <TElementType extends AndroidComponent> TElementType toBeVisible() {
         var waitStrategy = new ToBeVisibleWaitStrategy();
         ensureState(waitStrategy);
@@ -185,7 +194,7 @@ public class AndroidComponent extends LayoutComponentValidationsBuilder implemen
         findElement();
         var nativeElements = findStrategy.findAllElements(wrappedElement);
         List<TComponent> componentList = new ArrayList<>();
-        for (int i = 0; i < nativeElements.stream().count(); i++) {
+        for (int i = 0; i < nativeElements.size(); i++) {
             var component = InstanceFactory.create(componentClass);
             component.setFindStrategy(findStrategy);
             component.setElementIndex(i);
@@ -198,7 +207,7 @@ public class AndroidComponent extends LayoutComponentValidationsBuilder implemen
     }
 
     protected MobileElement findElement() {
-      if (waitStrategies.stream().count() == 0) {
+      if (waitStrategies.size() == 0) {
           waitStrategies.add(Wait.to().exists());
       }
 
@@ -214,7 +223,7 @@ public class AndroidComponent extends LayoutComponentValidationsBuilder implemen
           waitStrategies.clear();
       } catch (WebDriverException ex) {
           DebugInformation.printStackTrace(ex);
-          System.out.print(String.format("\n\nThe element: \n Name: '%s', \n Locator: '%s', \nWas not found on the page or didn't fulfill the specified conditions.\n\n", getComponentClass().getSimpleName(), findStrategy.toString()));
+          System.out.printf("%n%nThe element: %n Name: '%s', %n Locator: '%s', %nWas not found on the page or didn't fulfill the specified conditions.%n%n", getComponentClass().getSimpleName(), findStrategy.toString());
       }
 
         RETURNING_WRAPPED_ELEMENT.broadcast(new ComponentActionEventArgs(this));
@@ -222,8 +231,7 @@ public class AndroidComponent extends LayoutComponentValidationsBuilder implemen
     }
 
 
-    protected void defaultClick(EventListener<ComponentActionEventArgs> clicking, EventListener<ComponentActionEventArgs> clicked)
-    {
+    protected void defaultClick(EventListener<ComponentActionEventArgs> clicking, EventListener<ComponentActionEventArgs> clicked) {
         clicking.broadcast(new ComponentActionEventArgs(this));
 
         this.toExists().toBeClickable().waitToBe();
@@ -232,8 +240,7 @@ public class AndroidComponent extends LayoutComponentValidationsBuilder implemen
         clicked.broadcast(new ComponentActionEventArgs(this));
     }
 
-    protected void defaultCheck(EventListener<ComponentActionEventArgs> checking, EventListener<ComponentActionEventArgs> checked)
-    {
+    protected void defaultCheck(EventListener<ComponentActionEventArgs> checking, EventListener<ComponentActionEventArgs> checked) {
         checking.broadcast(new ComponentActionEventArgs(this));
 
         this.toExists().toBeClickable().waitToBe();
@@ -244,8 +251,7 @@ public class AndroidComponent extends LayoutComponentValidationsBuilder implemen
         checked.broadcast(new ComponentActionEventArgs(this));
     }
 
-    protected void defaultUncheck(EventListener<ComponentActionEventArgs> unchecking, EventListener<ComponentActionEventArgs> unchecked)
-    {
+    protected void defaultUncheck(EventListener<ComponentActionEventArgs> unchecking, EventListener<ComponentActionEventArgs> unchecked) {
         unchecking.broadcast(new ComponentActionEventArgs(this));
 
         this.toExists().toBeClickable().waitToBe();
@@ -270,8 +276,7 @@ public class AndroidComponent extends LayoutComponentValidationsBuilder implemen
         return Optional.ofNullable(findElement().getText()).orElse("");
     }
 
-    protected void defaultSetText(EventListener<ComponentActionEventArgs> settingValue, EventListener<ComponentActionEventArgs> valueSet, String value)
-    {
+    protected void defaultSetText(EventListener<ComponentActionEventArgs> settingValue, EventListener<ComponentActionEventArgs> valueSet, String value) {
         settingValue.broadcast(new ComponentActionEventArgs(this));
 
         findElement().clear();
@@ -310,22 +315,14 @@ public class AndroidComponent extends LayoutComponentValidationsBuilder implemen
     {
         SCROLLING_TO_VISIBLE.broadcast(new ComponentActionEventArgs(this));
         try {
-            //            var js = (JavascriptExecutor)driver;
-            //            Map<String, String> swipe = new HashMap<>();
-            //            swipe.put("direction", "down"); // "up", "right", "left"
-            //            swipe.put("element", element.getId());
-            //            js.executeScript("mobile:swipe", swipe);
             var action = new Actions(wrappedDriver);
             action.moveToElement(wrappedElement).perform();
-            if (shouldWait)
-            {
+            if (shouldWait) {
                 Thread.sleep(500);
                 toExists().waitToBe();
             }
-        } catch (ElementNotInteractableException ex) {
+        } catch (ElementNotInteractableException | InterruptedException ex) {
             DebugInformation.printStackTrace(ex);
-        } catch (InterruptedException e) {
-            DebugInformation.printStackTrace(e);
         }
 
         SCROLLED_TO_VISIBLE.broadcast(new ComponentActionEventArgs(this));

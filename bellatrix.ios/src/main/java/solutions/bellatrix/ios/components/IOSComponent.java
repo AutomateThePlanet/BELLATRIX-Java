@@ -19,10 +19,7 @@ import layout.LayoutComponentValidationsBuilder;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.ElementNotInteractableException;
-import org.openqa.selenium.Point;
-import org.openqa.selenium.WebDriverException;
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.core.plugins.EventListener;
@@ -53,7 +50,7 @@ public class IOSComponent extends LayoutComponentValidationsBuilder implements C
     public final static EventListener<ComponentActionEventArgs> CREATED_ELEMENTS = new EventListener<>();
     public final static EventListener<ComponentActionEventArgs> VALIDATED_ATTRIBUTE = new EventListener<>();
 
-    @Getter @Setter(AccessLevel.PROTECTED) private MobileElement wrappedElement;
+    @Setter(AccessLevel.PROTECTED) private MobileElement wrappedElement;
     @Getter @Setter private MobileElement parentWrappedElement;
     @Getter @Setter private int elementIndex;
     @Getter @Setter private FindStrategy findStrategy;
@@ -71,6 +68,15 @@ public class IOSComponent extends LayoutComponentValidationsBuilder implements C
         componentCreateService = new ComponentCreateService();
         componentWaitService = new ComponentWaitService();
         wrappedDriver = DriverService.getWrappedIOSDriver();
+    }
+
+    public MobileElement getWrappedElement() {
+        try {
+            wrappedElement.isDisplayed(); // checking if getting property throws exception
+            return wrappedElement;
+        } catch (StaleElementReferenceException | NullPointerException ex) {
+            return findElement();
+        }
     }
 
     public String getElementName() {
@@ -108,18 +114,21 @@ public class IOSComponent extends LayoutComponentValidationsBuilder implements C
         waitStrategies.add(waitStrategy);
     }
 
+    @SuppressWarnings("unchecked")
     public <TElementType extends IOSComponent> TElementType toExists() {
         var waitStrategy = new ToExistsWaitStrategy();
         ensureState(waitStrategy);
         return (TElementType)this;
     }
 
+    @SuppressWarnings("unchecked")
     public <TElementType extends IOSComponent> TElementType toBeClickable() {
         var waitStrategy = new ToBeClickableWaitStrategy();
         ensureState(waitStrategy);
         return (TElementType)this;
     }
 
+    @SuppressWarnings("unchecked")
     public <TElementType extends IOSComponent> TElementType toBeVisible() {
         var waitStrategy = new ToBeVisibleWaitStrategy();
         ensureState(waitStrategy);
@@ -221,7 +230,7 @@ public class IOSComponent extends LayoutComponentValidationsBuilder implements C
         findElement();
         var nativeElements = findStrategy.findAllElements(wrappedElement);
         List<TComponent> componentList = new ArrayList<>();
-        for (int i = 0; i < nativeElements.stream().count(); i++) {
+        for (int i = 0; i < nativeElements.size(); i++) {
             var component = InstanceFactory.create(componentClass);
             component.setFindStrategy(findStrategy);
             component.setElementIndex(i);
@@ -234,7 +243,7 @@ public class IOSComponent extends LayoutComponentValidationsBuilder implements C
     }
 
     protected MobileElement findElement() {
-      if (waitStrategies.stream().count() == 0) {
+      if (waitStrategies.size() == 0) {
           waitStrategies.add(Wait.to().exists());
       }
 
@@ -250,7 +259,7 @@ public class IOSComponent extends LayoutComponentValidationsBuilder implements C
           waitStrategies.clear();
       } catch (WebDriverException ex) {
           DebugInformation.printStackTrace(ex);
-          System.out.print(String.format("\n\nThe element: \n Name: '%s', \n Locator: '%s = %s', \nWas not found on the page or didn't fulfill the specified conditions.\n\n", getComponentClass().getSimpleName(), findStrategy.toString(), findStrategy.getValue()));
+          System.out.printf("%n%nThe element: %n Name: '%s', %n Locator: '%s = %s', %nWas not found on the page or didn't fulfill the specified conditions.%n%n", getComponentClass().getSimpleName(), findStrategy.toString(), findStrategy.getValue());
       }
 
         RETURNING_WRAPPED_ELEMENT.broadcast(new ComponentActionEventArgs(this));
@@ -362,10 +371,8 @@ public class IOSComponent extends LayoutComponentValidationsBuilder implements C
                 Thread.sleep(500);
                 toExists().waitToBe();
             }
-        } catch (ElementNotInteractableException ex) {
+        } catch (ElementNotInteractableException | InterruptedException ex) {
             DebugInformation.printStackTrace(ex);
-        } catch (InterruptedException e) {
-            DebugInformation.printStackTrace(e);
         }
 
         SCROLLED_TO_VISIBLE.broadcast(new ComponentActionEventArgs(this));

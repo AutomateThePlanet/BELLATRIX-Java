@@ -30,26 +30,12 @@ import solutions.bellatrix.web.infrastructure.testng.WebTest;
 @ExecutionBrowser(browser = Browser.CHROME, lifecycle = Lifecycle.REUSE_IF_STARTED)
 public class ProductPurchaseTests extends WebTest {
     @Test
-    public void sandbox() {
-        app().navigate().to("https://www.w3schools.com/tags/tryit.asp?filename=tryhtml5_input_type_checkbox");
-        var frame = app().create().byId(Frame.class,"iframeResult");
-        app().browser().switchToFrame(frame);
-        var checkbox1 = app().create().byId(CheckBox.class,"vehicle1");
-        var checkbox2 = app().create().byId(CheckBox.class,"vehicle2");
-        var checkbox3 = app().create().byId(CheckBox.class,"vehicle3");
-        checkbox3.check();
-        checkbox1.validateIsUnchecked();
-        checkbox2.validateIsUnchecked();
-        checkbox3.validateIsChecked();
-    }
-
-    @Test
     public void completePurchaseSuccessfully_first() {
         app().navigate().to("http://demos.bellatrix.solutions/");
         var addToCartFalcon9 = app().create().byCss(Anchor.class,"[data-product_id*='28']");
         var blogLink = app().create().by(Anchor.class, TextContains.by("Blog"));
         addToCartFalcon9.click();
-//        blogLink.layout().assertAboveOf(addToCartFalcon9);
+        blogLink.above(addToCartFalcon9);
         new MainPage().asserts().productBoxLink("", "");
     }
 
@@ -93,7 +79,7 @@ public class ProductPurchaseTests extends WebTest {
         purchaseInfo.setCompany("Space Flowers");
         purchaseInfo.setCountry("Germany");
         purchaseInfo.setAddress1("1 Willi Brandt Avenue Tiergarten");
-        purchaseInfo.setAddress2("Lьtzowplatz 17");
+        purchaseInfo.setAddress2("Lützowplatz 17");
         purchaseInfo.setCity("Berlin");
         purchaseInfo.setZip("10115");
         purchaseInfo.setPhone("+00498888999281");
