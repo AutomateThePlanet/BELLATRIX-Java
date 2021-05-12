@@ -19,7 +19,7 @@ import io.appium.java_client.android.AndroidDriver;
 import java.util.List;
 
 public class IdFindStrategy extends FindStrategy {
-    private final String CLASS_EXPRESSION = "new UiScrollable(new UiSelector()).scrollIntoView(new UiSelector().resourceId(\\\"%s\\\"));";
+    private final String ID_EXPRESSION = "new UiScrollable(new UiSelector()).scrollIntoView(new UiSelector().resourceId(\"%s\"));";
 
     public IdFindStrategy(String value)
     {
@@ -28,12 +28,12 @@ public class IdFindStrategy extends FindStrategy {
 
     @Override
     public MobileElement findElement(AndroidDriver<MobileElement> driver) {
-        return driver.findElementByAndroidUIAutomator(String.format(CLASS_EXPRESSION, getValue()));
+        return driver.findElementByAndroidUIAutomator(String.format(ID_EXPRESSION, getValue()));
     }
 
     @Override
     public List<MobileElement> findAllElements(AndroidDriver<MobileElement> driver) {
-        return driver.findElementsByAndroidUIAutomator(String.format(CLASS_EXPRESSION, getValue()));
+        return driver.findElementsByAndroidUIAutomator(String.format(ID_EXPRESSION, getValue()));
     }
 
     @Override
@@ -48,6 +48,6 @@ public class IdFindStrategy extends FindStrategy {
 
     @Override
     public String toString() {
-        return String.format("text = %s", getValue());
+        return String.format("id = %s", getValue());
     }
 }

@@ -21,6 +21,7 @@ import solutions.bellatrix.core.utilities.DebugInformation;
 import solutions.bellatrix.core.utilities.UserHomePathNormalizer;
 
 import java.lang.reflect.Method;
+import java.util.Objects;
 
 public class AppLifecyclePlugin extends Plugin {
     private static ThreadLocal<AppConfiguration> currentAppConfiguration;
@@ -121,11 +122,7 @@ public class AppLifecyclePlugin extends Plugin {
         AppConfiguration result = null;
         var classAppType = getExecutionAppClassLevel(memberInfo.getDeclaringClass());
         var methodAppType = getExecutionAppMethodLevel(memberInfo);
-        if (methodAppType != null) {
-            result = methodAppType;
-        } else if (classAppType != null) {
-            result = classAppType;
-        }
+        result = Objects.requireNonNullElse(methodAppType, classAppType);
 
         return result;
     }
@@ -157,6 +154,6 @@ public class AppLifecyclePlugin extends Plugin {
             return new AppConfiguration(true);
         }
 
-        return new AppConfiguration(executionAppAnnotation.lifecycle(), executionAppAnnotation.androidVersion(), executionAppAnnotation.deviceName(), executionAppAnnotation.appPath(), executionAppAnnotation.appPackage(), executionAppAnnotation.appActivity());
+        return new AppConfiguration(executionAppAnnotation.lifecycle(), executionAppAnnotation.androidVersion(), executionAppAnnotation.deviceName(), UserHomePathNormalizer.normalizePath(executionAppAnnotation.appPath()), executionAppAnnotation.appPackage(), executionAppAnnotation.appActivity());
     }
 }

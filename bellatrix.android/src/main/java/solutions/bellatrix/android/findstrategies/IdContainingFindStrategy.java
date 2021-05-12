@@ -19,7 +19,7 @@ import io.appium.java_client.android.AndroidDriver;
 import java.util.List;
 
 public class IdContainingFindStrategy extends FindStrategy {
-    private final String ID_CONTAINING_EXPRESSION = "new UiScrollable(new UiSelector()).scrollIntoView(new UiSelector().resourceIdMatches(\\\".*%s.*\\\"));";
+    private final String ID_CONTAINING_EXPRESSION = "new UiScrollable(new UiSelector()).scrollIntoView(new UiSelector().resourceIdMatches(\".*%s.*\"));";
 
     public IdContainingFindStrategy(String value)
     {

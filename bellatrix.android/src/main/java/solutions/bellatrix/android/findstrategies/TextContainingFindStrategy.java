@@ -19,7 +19,7 @@ import io.appium.java_client.android.AndroidDriver;
 import java.util.List;
 
 public class TextContainingFindStrategy extends FindStrategy {
-    private final String DESCRIPTION_EXPRESSION = "new UiScrollable(new UiSelector()).scrollIntoView(new UiSelector().textContains(\\\"%s\\\"));";
+    private final String TEXT_CONTAINING_EXPRESSION = "new UiScrollable(new UiSelector()).scrollIntoView(new UiSelector().textContains(\"%s\"));";
 
     public TextContainingFindStrategy(String value)
     {
@@ -28,12 +28,12 @@ public class TextContainingFindStrategy extends FindStrategy {
 
     @Override
     public MobileElement findElement(AndroidDriver<MobileElement> driver) {
-        return driver.findElementByAndroidUIAutomator(String.format(DESCRIPTION_EXPRESSION, getValue()));
+        return driver.findElementByAndroidUIAutomator(String.format(TEXT_CONTAINING_EXPRESSION, getValue()));
     }
 
     @Override
     public List<MobileElement> findAllElements(AndroidDriver<MobileElement> driver) {
-        return driver.findElementsByAndroidUIAutomator(String.format(DESCRIPTION_EXPRESSION, getValue()));
+        return driver.findElementsByAndroidUIAutomator(String.format(TEXT_CONTAINING_EXPRESSION, getValue()));
     }
 
     @Override

@@ -23,8 +23,8 @@ import org.openqa.selenium.Platform;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.core.utilities.DebugInformation;
-import solutions.bellatrix.ios.configuration.AndroidSettings;
-import solutions.bellatrix.ios.configuration.GridSettings;
+import solutions.bellatrix.android.configuration.AndroidSettings;
+import solutions.bellatrix.android.configuration.GridSettings;
 
 import java.net.MalformedURLException;
 import java.net.URL;

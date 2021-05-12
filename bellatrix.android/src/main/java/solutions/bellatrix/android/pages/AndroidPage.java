@@ -14,7 +14,7 @@
 package solutions.bellatrix.android.pages;
 
 import solutions.bellatrix.android.services.AppService;
-import solutions.bellatrix.ios.services.ComponentCreateService;
+import solutions.bellatrix.android.services.ComponentCreateService;
 
 import java.lang.reflect.ParameterizedType;
 
