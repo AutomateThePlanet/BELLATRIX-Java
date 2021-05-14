@@ -4,6 +4,14 @@
 name: Run All (TestNG) Tests
 
 on:
+  workflow_dispatch:
+      inputs:
+        logLevel:
+          description: 'Log level'     
+          required: true
+          default: 'warning'
+        tags:
+          description: 'Test scenario tags'
   push:
     branches: [ 14-may-2021-patches ]
   pull_request:
