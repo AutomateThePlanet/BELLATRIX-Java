@@ -1,0 +1,38 @@
+# This workflow will build a Java project with Maven
+# For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
+
+name: Run All (TestNG) Tests
+
+on:
+  workflow_dispatch:
+      inputs:
+        logLevel:
+          description: 'Log level'     
+          required: true
+          default: 'warning'
+        tags:
+          description: 'Test scenario tags'
+  push:
+    branches: [ 14-may-2021-patches ]
+  pull_request:
+    branches: [ 14-may-2021-patches ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        # The branch, tag or SHA to checkout. When checking out the repository that
+        # triggered a workflow, this defaults to the reference or SHA for that event.
+        # Otherwise, uses the default branch.
+        ref: '14-may-2021-patches'
+    - name: Set up JDK 15
+      uses: actions/setup-java@v2
+      with:
+        java-version: '15'
+        distribution: 'adopt'
+    - name: Build with Maven
+      run: mvn clean test
