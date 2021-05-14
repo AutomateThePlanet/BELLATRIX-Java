@@ -13,6 +13,7 @@
 
 package solutions.bellatrix.core.plugins.testng;
 
+import org.testng.ITestListener;
 import org.testng.ITestResult;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
@@ -22,15 +23,31 @@ import solutions.bellatrix.core.plugins.Plugin;
 import solutions.bellatrix.core.plugins.PluginExecutionEngine;
 import solutions.bellatrix.core.plugins.TestResult;
 
-public class BaseTest {
+import java.util.ArrayList;
+import java.util.List;
+
+public class BaseTest implements ITestListener {
+    private static final ThreadLocal<TestResult> CURRENT_TEST_RESULT = new ThreadLocal<>();
     private static final ThreadLocal<Boolean> CONFIGURATION_EXECUTED = new ThreadLocal<>();
+    private static final ThreadLocal<List<String>> ALREADY_EXECUTED_BEFORE_CLASSES = new ThreadLocal<>();
 
     public BaseTest() {
         CONFIGURATION_EXECUTED.set(false);
+        ALREADY_EXECUTED_BEFORE_CLASSES.set(new ArrayList<>());
     }
 
     public void addPlugin(Plugin plugin) {
         PluginExecutionEngine.addPlugin(plugin);
+    }
+
+    @Override
+    public void onTestSuccess(ITestResult result) {
+        CURRENT_TEST_RESULT.set(TestResult.SUCCESS);
+    }
+
+    @Override
+    public void onTestFailure(ITestResult result) {
+        CURRENT_TEST_RESULT.set(TestResult.FAILURE);
     }
 
     @BeforeClass
@@ -53,6 +70,11 @@ public class BaseTest {
     @BeforeMethod
     public void beforeMethodCore(ITestResult result) {
         try {
+            if (!ALREADY_EXECUTED_BEFORE_CLASSES.get().contains(result.getTestClass().getName())) {
+                beforeClassCore();
+                ALREADY_EXECUTED_BEFORE_CLASSES.get().add(result.getTestClass().getName());
+            }
+
             var testClass = this.getClass();
             var methodInfo = testClass.getMethod(result.getMethod().getMethodName());
             PluginExecutionEngine.preBeforeTest(convertToTestResult(result), methodInfo);
@@ -88,24 +110,19 @@ public class BaseTest {
         }
     }
 
-    protected void configure()
-    {
+    protected void configure() {
     }
 
-    protected void beforeClass()
-    {
+    protected void beforeClass() {
     }
 
-    protected void afterClass()
-    {
+    protected void afterClass() {
     }
 
-    protected void beforeMethod()
-    {
+    protected void beforeMethod() {
     }
 
-    protected void afterMethod()
-    {
+    protected void afterMethod() {
     }
 
     private TestResult convertToTestResult(ITestResult testResult) {
