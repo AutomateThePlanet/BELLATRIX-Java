@@ -13,13 +13,12 @@
 
 package solutions.bellatrix.core.plugins.junit;
 
-import org.junit.Rule;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestInfo;
+import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.TestWatcher;
-import org.junit.runner.Description;
 import solutions.bellatrix.core.plugins.Plugin;
 import solutions.bellatrix.core.plugins.PluginExecutionEngine;
 import solutions.bellatrix.core.plugins.TestResult;
@@ -27,7 +26,7 @@ import solutions.bellatrix.core.plugins.TestResult;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BaseTest {
+public class BaseTest implements TestWatcher {
     private static final ThreadLocal<TestResult> CURRENT_TEST_RESULT = new ThreadLocal<>();
     private static final ThreadLocal<Boolean> CONFIGURATION_EXECUTED = new ThreadLocal<>();
     private static final ThreadLocal<List<String>> ALREADY_EXECUTED_BEFORE_CLASSES = new ThreadLocal<>();
@@ -41,16 +40,17 @@ public class BaseTest {
         PluginExecutionEngine.addPlugin(plugin);
     }
 
-    @Rule
-    public TestWatcher watchman = new TestWatcher() {
-        protected void failed(Throwable e, Description description) {
-            CURRENT_TEST_RESULT.set(TestResult.FAILURE);
-        }
+    @Override
+    public void testSuccessful(ExtensionContext context) {
+        CURRENT_TEST_RESULT.set(TestResult.SUCCESS);
+        TestWatcher.super.testSuccessful(context);
+    }
 
-        protected void succeeded(Description description) {
-            CURRENT_TEST_RESULT.set(TestResult.SUCCESS);
-        }
-    };
+    @Override
+    public void testFailed(ExtensionContext context, Throwable cause) {
+        CURRENT_TEST_RESULT.set(TestResult.FAILURE);
+        TestWatcher.super.testFailed(context, cause);
+    }
 
     @BeforeEach
     public void beforeMethodCore(TestInfo testInfo) {
@@ -109,19 +109,15 @@ public class BaseTest {
         }
     }
 
-    protected void configure()
-    {
+    protected void configure() {
     }
 
-    protected void beforeAll()
-    {
+    protected void beforeAll() {
     }
 
-    protected void beforeMethod()
-    {
+    protected void beforeMethod() {
     }
 
-    protected void afterMethod()
-    {
+    protected void afterMethod() {
     }
 }
