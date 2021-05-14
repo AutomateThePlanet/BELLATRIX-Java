@@ -23,12 +23,4 @@
     <artifactId>bellatrix.core</artifactId>
     <version>1.0</version>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.testng</groupId>
-            <artifactId>testng</artifactId>
-            <version>7.4.0</version>
-            <scope>compile</scope>
-        </dependency>
-    </dependencies>
 </project>
