@@ -59,7 +59,7 @@ public class ProductPurchaseTests extends WebTest {
     }
 
     @Test
-    public void purchaseFalcon9WithoutFacade() throws InterruptedException {
+    public void purchaseFalcon9WithoutFacade() {
         var mainPage = app().goTo(MainPage.class);
         mainPage.addRocketToShoppingCart("Falcon 9");
 
@@ -88,7 +88,7 @@ public class ProductPurchaseTests extends WebTest {
     }
 
     @Test
-    public void purchaseSaturnVWithoutFacade() throws InterruptedException {
+    public void purchaseSaturnVWithoutFacade() {
         var mainPage = app().goTo(MainPage.class);
         mainPage.addRocketToShoppingCart("Saturn V");
 
