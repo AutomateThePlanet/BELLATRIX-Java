@@ -13,7 +13,6 @@
 
 package solutions.bellatrix.desktop.components;
 
-import io.appium.java_client.MobileElement;
 import io.appium.java_client.windows.WindowsDriver;
 import layout.LayoutComponentValidationsBuilder;
 import lombok.AccessLevel;
