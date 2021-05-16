@@ -57,7 +57,7 @@ public final class ConfigurationService {
         var gson = new Gson();
 
         try {
-            mappedObject= gson.fromJson(jsonObject, configSection);
+            mappedObject = gson.fromJson(jsonObject, configSection);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -75,6 +75,7 @@ public final class ConfigurationService {
     @SneakyThrows
     public static String getFileAsString(String fileName) {
         InputStream input = ConfigurationService.class.getResourceAsStream("/" + fileName);
+        assert input != null;
         return IOUtils.toString(input, StandardCharsets.UTF_8);
     }
 }
