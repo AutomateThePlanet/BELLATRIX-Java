@@ -30,6 +30,7 @@ public class DownloadDemoAppsPlugin extends Plugin {
     }
 
     @Override
+    @SuppressWarnings("rawtypes")
     public void preBeforeClass(Class type) {
         super.preBeforeClass(type);
         if (areDemoAppsDownloaded.get())

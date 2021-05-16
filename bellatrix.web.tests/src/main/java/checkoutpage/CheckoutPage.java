@@ -21,7 +21,7 @@ public class CheckoutPage extends WebPage<Map, Asserts> {
         return "http://demos.bellatrix.solutions/checkout/";
     }
 
-    public void fillBillingInfo(PurchaseInfo purchaseInfo) throws InterruptedException {
+    public void fillBillingInfo(PurchaseInfo purchaseInfo) {
         map().billingFirstName().setText(purchaseInfo.getFirstName());
         map().billingLastName().setText(purchaseInfo.getLastName());
         map().billingCompany().setText(purchaseInfo.getCompany());

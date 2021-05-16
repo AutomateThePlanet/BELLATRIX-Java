@@ -81,6 +81,7 @@ public abstract class LayoutComponentValidationsBuilder implements LayoutCompone
                 () -> buildFailedValidationMessage(secondLayoutComponent, LayoutOptions.RIGHT_INSIDE));
     }
 
+    @SuppressWarnings({"rawtypes", "unchecked"})
     public FinishValidationBuilder alignedVerticallyAll(LayoutComponent... layoutComponents) {
         Integer baseLineRightY = this.getLocation().getX() + this.getSize().getWidth() / 2;
         Integer baseLineLeftY = this.getLocation().getX();
@@ -99,6 +100,7 @@ public abstract class LayoutComponentValidationsBuilder implements LayoutCompone
                         buildFailedAlignValidationMessage(comparingComponentsNames, baseLineLeftY, LayoutOptions.ALIGNED_VERTICALLY_LEFT));
     }
 
+    @SuppressWarnings({"rawtypes", "unchecked"})
     public FinishValidationBuilder alignedVerticallyCentered(LayoutComponent... layoutComponents) {
         Integer baseLineRightY = this.getLocation().getX() + this.getSize().getWidth() / 2;
         var comparingComponentsNames = getLayoutComponentsNames(layoutComponents);
@@ -113,6 +115,7 @@ public abstract class LayoutComponentValidationsBuilder implements LayoutCompone
                 () -> buildFailedAlignValidationMessage(comparingComponentsNames, baseLineRightY, LayoutOptions.ALIGNED_VERTICALLY_CENTERED));
     }
 
+    @SuppressWarnings({"rawtypes", "unchecked"})
     public FinishValidationBuilder alignedVerticallyRight(LayoutComponent... layoutComponents) {
         Integer baseLineRightY = this.getLocation().getX() + this.getSize().getWidth();
         var comparingComponentsNames = getLayoutComponentsNames(layoutComponents);
@@ -127,6 +130,7 @@ public abstract class LayoutComponentValidationsBuilder implements LayoutCompone
                 () -> buildFailedAlignValidationMessage(comparingComponentsNames, baseLineRightY, LayoutOptions.ALIGNED_VERTICALLY_RIGHT));
     }
 
+    @SuppressWarnings({"rawtypes", "unchecked"})
     public FinishValidationBuilder alignedVerticallyLeft(LayoutComponent... layoutComponents) {
         Integer baseLineLeftY = this.getLocation().getX();
         var comparingComponentsNames = getLayoutComponentsNames(layoutComponents);
@@ -138,6 +142,7 @@ public abstract class LayoutComponentValidationsBuilder implements LayoutCompone
                 () -> buildFailedAlignValidationMessage(comparingComponentsNames, baseLineLeftY, LayoutOptions.ALIGNED_VERTICALLY_LEFT));
     }
 
+    @SuppressWarnings({"rawtypes", "unchecked"})
     public FinishValidationBuilder alignedHorizontallyAll(LayoutComponent... layoutComponents) {
         Integer baseLineTopY = this.getLocation().getY();
         Integer baseLineBottomY = this.getLocation().getY() + this.getSize().getHeight();
@@ -156,6 +161,7 @@ public abstract class LayoutComponentValidationsBuilder implements LayoutCompone
                         buildFailedAlignValidationMessage(comparingComponentsNames, baseLineBottomY, LayoutOptions.ALIGNED_HORIZONTALLY_BOTTOM));
     }
 
+    @SuppressWarnings({"rawtypes", "unchecked"})
     public FinishValidationBuilder alignedHorizontallyCentered(LayoutComponent... layoutComponents) {
         Integer baseLineTopY = this.getLocation().getY() + this.getSize().getHeight() / 2;
         var comparingComponentsNames = getLayoutComponentsNames(layoutComponents);
@@ -170,6 +176,7 @@ public abstract class LayoutComponentValidationsBuilder implements LayoutCompone
                 () -> buildFailedAlignValidationMessage(comparingComponentsNames, baseLineTopY, LayoutOptions.ALIGNED_HORIZONTALLY_CENTERED));
     }
 
+    @SuppressWarnings({"rawtypes", "unchecked"})
     public FinishValidationBuilder alignedHorizontallyTop(LayoutComponent... layoutComponents) {
         Integer baseLineTopY = this.getLocation().getY();
         var comparingComponentsNames = getLayoutComponentsNames(layoutComponents);
@@ -181,6 +188,7 @@ public abstract class LayoutComponentValidationsBuilder implements LayoutCompone
                 () -> buildFailedAlignValidationMessage(comparingComponentsNames, baseLineTopY, LayoutOptions.ALIGNED_HORIZONTALLY_TOP));
     }
 
+    @SuppressWarnings({"rawtypes", "unchecked"})
     public FinishValidationBuilder alignedHorizontallyBottom(LayoutComponent... layoutComponents) {
         Integer baseLineBottomY = this.getLocation().getY() + this.getSize().getHeight();
         var comparingComponentsNames = getLayoutComponentsNames(layoutComponents);
@@ -204,7 +212,7 @@ public abstract class LayoutComponentValidationsBuilder implements LayoutCompone
     }
 
     private String getLayoutComponentsNames(LayoutComponent[] layoutComponents) {
-        var comparingComponentsNames = Arrays.stream(layoutComponents).skip(0).map(x -> x.getElementName()).collect(Collectors.joining(","));
+        var comparingComponentsNames = Arrays.stream(layoutComponents).skip(0).map(LayoutComponent::getElementName).collect(Collectors.joining(","));
         return comparingComponentsNames;
     }
 

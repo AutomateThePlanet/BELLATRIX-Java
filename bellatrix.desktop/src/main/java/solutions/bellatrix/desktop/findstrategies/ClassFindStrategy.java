@@ -26,6 +26,7 @@ public class ClassFindStrategy extends FindStrategy {
     }
 
     @Override
+    @SuppressWarnings("rawtypes")
     public WebElement findElement(WindowsDriver driver) {
         return driver.findElementByClassName(getValue());
     }
@@ -42,7 +43,7 @@ public class ClassFindStrategy extends FindStrategy {
 
     @Override
     public List<WebElement> findAllElements(WebElement element) {
-        return element.findElement(By.className(getValue()));
+        return element.findElements(By.className(getValue()));
     }
 
     @Override

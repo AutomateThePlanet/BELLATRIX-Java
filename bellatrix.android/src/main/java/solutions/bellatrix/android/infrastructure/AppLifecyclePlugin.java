@@ -41,6 +41,7 @@ public class AppLifecyclePlugin extends Plugin {
     }
 
     @Override
+    @SuppressWarnings("rawtypes")
     public void preBeforeClass(Class type) {
         currentAppConfiguration.set(getExecutionAppClassLevel(type));
         if (shouldRestartApp()) {
@@ -55,6 +56,7 @@ public class AppLifecyclePlugin extends Plugin {
     }
 
     @Override
+    @SuppressWarnings("rawtypes")
     public void postAfterClass(Class type) {
         shutdownApp();
         isAppStartedDuringPreBeforeClass.set(false);
@@ -119,7 +121,7 @@ public class AppLifecyclePlugin extends Plugin {
     }
 
     private AppConfiguration getAppConfiguration(Method memberInfo) {
-        AppConfiguration result = null;
+        AppConfiguration result;
         var classAppType = getExecutionAppClassLevel(memberInfo.getDeclaringClass());
         var methodAppType = getExecutionAppMethodLevel(memberInfo);
         result = Objects.requireNonNullElse(methodAppType, classAppType);

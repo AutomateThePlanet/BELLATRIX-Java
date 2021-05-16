@@ -53,6 +53,16 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
+            <groupId>net.lightbody.bmp</groupId>
+            <artifactId>browsermob-core</artifactId>
+            <version>2.1.5</version>
+        </dependency>
+        <dependency>
+            <groupId>io.github.bonigarcia</groupId>
+            <artifactId>webdrivermanager</artifactId>
+            <version>4.2.2</version>
+        </dependency>
+        <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-text</artifactId>
         <version>1.9</version>

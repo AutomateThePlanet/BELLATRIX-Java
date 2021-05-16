@@ -27,6 +27,7 @@ public abstract class IOSPage<MapT extends PageMap, AssertsT extends PageAsserts
         return new ComponentCreateService();
     }
 
+    @SuppressWarnings("unchecked")
     public MapT map() {
         try {
             var elementsClass = (Class<MapT>)((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[0];
@@ -36,6 +37,7 @@ public abstract class IOSPage<MapT extends PageMap, AssertsT extends PageAsserts
         }
     }
 
+    @SuppressWarnings("unchecked")
     public AssertsT asserts() {
         try {
             var assertionsClass = (Class<AssertsT>)((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[1];

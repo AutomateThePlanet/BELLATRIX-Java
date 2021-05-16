@@ -19,8 +19,6 @@ import checkoutpage.PurchaseInfo;
 import mainpage.MainPage;
 import org.testng.annotations.Test;
 import solutions.bellatrix.web.components.Anchor;
-import solutions.bellatrix.web.components.CheckBox;
-import solutions.bellatrix.web.components.Frame;
 import solutions.bellatrix.web.findstrategies.TextContains;
 import solutions.bellatrix.web.infrastructure.Browser;
 import solutions.bellatrix.web.infrastructure.ExecutionBrowser;
@@ -61,7 +59,7 @@ public class ProductPurchaseTests extends WebTest {
     }
 
     @Test
-    public void purchaseFalcon9WithoutFacade() throws InterruptedException {
+    public void purchaseFalcon9WithoutFacade() {
         var mainPage = app().goTo(MainPage.class);
         mainPage.addRocketToShoppingCart("Falcon 9");
 
@@ -90,7 +88,7 @@ public class ProductPurchaseTests extends WebTest {
     }
 
     @Test
-    public void purchaseSaturnVWithoutFacade() throws InterruptedException {
+    public void purchaseSaturnVWithoutFacade() {
         var mainPage = app().goTo(MainPage.class);
         mainPage.addRocketToShoppingCart("Saturn V");
 

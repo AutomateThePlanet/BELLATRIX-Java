@@ -20,6 +20,7 @@ import solutions.bellatrix.core.utilities.DebugInformation;
 import solutions.bellatrix.web.configuration.WebSettings;
 
 import java.lang.reflect.Method;
+import java.util.Objects;
 
 public class BrowserLifecyclePlugin extends Plugin {
     private static ThreadLocal<BrowserConfiguration> currentBrowserConfiguration;
@@ -39,6 +40,7 @@ public class BrowserLifecyclePlugin extends Plugin {
     }
 
     @Override
+    @SuppressWarnings("rawtypes")
     public void preBeforeClass(Class type) {
         currentBrowserConfiguration.set(getExecutionBrowserClassLevel(type));
         if (shouldRestartBrowser()) {
@@ -53,6 +55,7 @@ public class BrowserLifecyclePlugin extends Plugin {
     }
 
     @Override
+    @SuppressWarnings("rawtypes")
     public void postAfterClass(Class type) {
         shutdownBrowser();
         isBrowserStartedDuringPreBeforeClass.set(false);
@@ -117,14 +120,10 @@ public class BrowserLifecyclePlugin extends Plugin {
     }
 
     private BrowserConfiguration getBrowserConfiguration(Method memberInfo) {
-        BrowserConfiguration result = null;
+        BrowserConfiguration result;
         var classBrowserType = getExecutionBrowserClassLevel(memberInfo.getDeclaringClass());
         var methodBrowserType = getExecutionBrowserMethodLevel(memberInfo);
-        if (methodBrowserType != null) {
-            result = methodBrowserType;
-        } else if (classBrowserType != null) {
-            result = classBrowserType;
-        }
+        result = Objects.requireNonNullElse(methodBrowserType, classBrowserType);
 
         return result;
     }
