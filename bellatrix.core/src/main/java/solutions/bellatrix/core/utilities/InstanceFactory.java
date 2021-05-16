@@ -17,34 +17,29 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
 
 public final class InstanceFactory {
+    @SuppressWarnings("unchecked")
     public static <T> T create(Class<T> classOf) {
         T obj = null;
         try {
             obj = (T)classOf.getConstructors()[0].newInstance();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
         }
         return obj;
     }
 
+    @SuppressWarnings("unchecked")
     public static <T> T create(Class<T> classOf, Object... args) {
         T obj = null;
         try {
             obj = (T)classOf.getConstructors()[0].newInstance(args);
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
         }
         return obj;
     }
 
+    @SuppressWarnings({"rawtypes", "unchecked"})
     public static <T> T createByTypeParameter(Class parameterClass, int index) {
         try {
             var elementsClass = (Class)((ParameterizedType)parameterClass.getGenericSuperclass()).getActualTypeArguments()[index];

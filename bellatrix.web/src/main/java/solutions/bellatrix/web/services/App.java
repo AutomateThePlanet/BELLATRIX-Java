@@ -13,6 +13,7 @@
 
 package solutions.bellatrix.web.services;
 
+import lombok.SneakyThrows;
 import solutions.bellatrix.core.utilities.SingletonFactory;
 import solutions.bellatrix.web.infrastructure.DriverService;
 import solutions.bellatrix.web.infrastructure.ProxyServer;
@@ -57,14 +58,17 @@ public class App implements AutoCloseable {
         DriverService.addDriverOptions(key, value);
     }
 
+    @SuppressWarnings("rawtypes")
     public <TPage extends WebPage> TPage goTo(Class<TPage> pageOf, Object... args)
     {
         var page = SingletonFactory.getInstance(pageOf, args);
+        assert page != null;
         page.open();
 
         return page;
     }
 
+    @SuppressWarnings("rawtypes")
     public <TPage extends WebPage> TPage create(Class<TPage> pageOf, Object... args)
     {
         return SingletonFactory.getInstance(pageOf, args);

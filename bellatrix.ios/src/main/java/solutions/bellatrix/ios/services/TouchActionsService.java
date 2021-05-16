@@ -23,6 +23,7 @@ import solutions.bellatrix.ios.infrastructure.DriverService;
 
 import java.time.Duration;
 
+@SuppressWarnings("rawtypes")
 public class TouchActionsService extends MobileService {
     private final MultiTouchAction wrappedMultiAction = new MultiTouchAction(DriverService.getWrappedIOSDriver());
 

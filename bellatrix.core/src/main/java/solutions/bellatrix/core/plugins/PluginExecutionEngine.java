@@ -25,7 +25,7 @@ public final class PluginExecutionEngine {
     }
 
     public static void addPlugin(Plugin plugin) {
-        if (!plugins.stream().anyMatch(p -> p.getClass().getName().equals(plugin.getClass().getName()))) {
+        if (plugins.stream().noneMatch(p -> p.getClass().getName().equals(plugin.getClass().getName()))) {
             plugins.add(plugin);
         }
     }
@@ -34,12 +34,14 @@ public final class PluginExecutionEngine {
         plugins.remove(plugin);
     }
 
+    @SuppressWarnings("rawtypes")
     public static void preBeforeClass(Class type) {
         for (var currentObserver: plugins) {
             currentObserver.preBeforeClass(type);
         }
     }
 
+    @SuppressWarnings("rawtypes")
     public static void postBeforeClass(Class type) {
         for (var currentObserver: plugins) {
             currentObserver.postBeforeClass(type);
@@ -88,12 +90,14 @@ public final class PluginExecutionEngine {
         }
     }
 
+    @SuppressWarnings("rawtypes")
     public static void preAfterClass(Class type) {
         for (var currentObserver: plugins) {
             currentObserver.preAfterClass(type);
         }
     }
 
+    @SuppressWarnings("rawtypes")
     public static void postAfterClass(Class type) {
         for (var currentObserver: plugins) {
             currentObserver.postAfterClass(type);
