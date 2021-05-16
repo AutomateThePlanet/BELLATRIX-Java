@@ -24,12 +24,9 @@ import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.core.utilities.InstanceFactory;
-import solutions.bellatrix.core.utilities.SingletonFactory;
 import solutions.bellatrix.web.components.Frame;
 import solutions.bellatrix.web.configuration.WebSettings;
-import solutions.bellatrix.web.infrastructure.Browser;
 import solutions.bellatrix.web.infrastructure.BrowserConfiguration;
-import solutions.bellatrix.web.infrastructure.ExecutionBrowser;
 
 public class BrowserService extends WebService {
     private final JavascriptExecutor javascriptExecutor;
