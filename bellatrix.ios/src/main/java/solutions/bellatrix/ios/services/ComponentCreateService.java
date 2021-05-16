@@ -113,7 +113,7 @@ public class ComponentCreateService extends MobileService {
     public <TComponent extends IOSComponent, TFindStrategy extends FindStrategy> List<TComponent> allBy(Class<TComponent> componentClass, TFindStrategy findStrategy) {
         var nativeElements = findStrategy.findAllElements(DriverService.getWrappedIOSDriver());
         List<TComponent> componentList = new ArrayList<>();
-        for (int i = 0; i < nativeElements.stream().count(); i++) {
+        for (int i = 0; i < nativeElements.size(); i++) {
             var component = InstanceFactory.create(componentClass);
             component.setFindStrategy(findStrategy);
             component.setElementIndex(i);
