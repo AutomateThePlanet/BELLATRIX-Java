@@ -42,7 +42,7 @@ public class NameFindStrategy extends FindStrategy {
 
     @Override
     public List<WebElement> findAllElements(WebElement element) {
-        return element.findElement(By.name(getValue()));
+        return element.findElements(By.name(getValue()));
     }
 
     @Override
