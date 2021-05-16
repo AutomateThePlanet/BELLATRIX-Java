@@ -13,15 +13,14 @@
 
 package cartpage;
 
-import org.testng.Assert;
 import solutions.bellatrix.web.pages.PageAsserts;
 
 public class Asserts extends PageAsserts<Map> {
     public void couponAppliedSuccessfully() {
-        Assert.assertEquals(map().messageAlert().getText(), "Coupon code applied successfully.");
+        map().messageAlert().validateTextIs("Coupon code applied successfully.");
     }
 
     public void totalPrice(String expectedPrice) {
-        Assert.assertEquals(map().totalSpan().getText(), expectedPrice);
+        map().totalSpan().validateTextIs(expectedPrice);
     }
 }
