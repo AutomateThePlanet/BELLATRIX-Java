@@ -17,6 +17,7 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestInfo;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.TestWatcher;
 import solutions.bellatrix.core.plugins.Plugin;
@@ -26,8 +27,9 @@ import solutions.bellatrix.core.plugins.TestResult;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BaseTest implements TestWatcher {
-    private static final ThreadLocal<TestResult> CURRENT_TEST_RESULT = new ThreadLocal<>();
+@ExtendWith(TestResultListener.class)
+public class BaseTest {
+    static final ThreadLocal<TestResult> CURRENT_TEST_RESULT = new ThreadLocal<>();
     private static final ThreadLocal<Boolean> CONFIGURATION_EXECUTED = new ThreadLocal<>();
     private static final ThreadLocal<List<String>> ALREADY_EXECUTED_BEFORE_CLASSES = new ThreadLocal<>();
 
@@ -40,27 +42,17 @@ public class BaseTest implements TestWatcher {
         PluginExecutionEngine.addPlugin(plugin);
     }
 
-    @Override
-    public void testSuccessful(ExtensionContext context) {
-        CURRENT_TEST_RESULT.set(TestResult.SUCCESS);
-        TestWatcher.super.testSuccessful(context);
-    }
-
-    @Override
-    public void testFailed(ExtensionContext context, Throwable cause) {
-        CURRENT_TEST_RESULT.set(TestResult.FAILURE);
-        TestWatcher.super.testFailed(context, cause);
-    }
-
     @BeforeEach
     public void beforeMethodCore(TestInfo testInfo) {
         try {
+            assert testInfo.getTestClass().isPresent();
             if (!ALREADY_EXECUTED_BEFORE_CLASSES.get().contains(testInfo.getTestClass().get().getName())) {
                 beforeClassCore();
                 ALREADY_EXECUTED_BEFORE_CLASSES.get().add(testInfo.getTestClass().get().getName());
             }
 
             var testClass = this.getClass();
+            assert testInfo.getTestMethod().isPresent();
             var methodInfo = testClass.getMethod(testInfo.getTestMethod().get().getName());
             PluginExecutionEngine.preBeforeTest(CURRENT_TEST_RESULT.get(), methodInfo);
             beforeMethod();
@@ -89,6 +81,7 @@ public class BaseTest implements TestWatcher {
     public void afterMethodCore(TestInfo testInfo) {
         try {
             var testClass = this.getClass();
+            assert testInfo.getTestMethod().isPresent();
             var methodInfo = testClass.getMethod(testInfo.getTestMethod().get().getName());
             PluginExecutionEngine.preAfterTest(CURRENT_TEST_RESULT.get(), methodInfo);
             afterMethod();
@@ -102,8 +95,10 @@ public class BaseTest implements TestWatcher {
     public static void afterClassCore(TestInfo testInfo) {
         try {
             var testClass = testInfo.getTestClass();
-            PluginExecutionEngine.preAfterClass(testClass.get());
-            PluginExecutionEngine.postAfterClass(testClass.get());
+            if (testClass.isPresent()) {
+                PluginExecutionEngine.preAfterClass(testClass.get());
+                PluginExecutionEngine.postAfterClass(testClass.get());
+            }
         } catch (Exception e) {
             PluginExecutionEngine.afterClassFailed(e);
         }
