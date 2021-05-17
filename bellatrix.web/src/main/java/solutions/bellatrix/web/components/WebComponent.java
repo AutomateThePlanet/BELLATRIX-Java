@@ -360,7 +360,7 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
         clicking.broadcast(new ComponentActionEventArgs(this));
 
         this.toExists().toBeClickable().waitToBe();
-        javaScriptService.execute("arguments[0].focus();arguments[0].click();", wrappedElement);
+        javaScriptService.execute("arguments[0].focus();arguments[0].click();arguments[0].dispatchEvent(new Event('click'));", wrappedElement);
 
         clicked.broadcast(new ComponentActionEventArgs(this));
     }
@@ -370,7 +370,7 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
 
         this.toExists().toBeClickable().waitToBe();
         if (!findElement().isSelected()) {
-            javaScriptService.execute("arguments[0].focus();arguments[0].click();", wrappedElement);
+            javaScriptService.execute("arguments[0].focus();arguments[0].click();arguments[0].dispatchEvent(new Event('click'));", wrappedElement);
         }
 
         clicked.broadcast(new ComponentActionEventArgs(this));
@@ -381,7 +381,7 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
 
         this.toExists().toBeClickable().waitToBe();
         if (findElement().isSelected()) {
-            javaScriptService.execute("arguments[0].focus();arguments[0].click();", wrappedElement);
+            javaScriptService.execute("arguments[0].focus();arguments[0].click();arguments[0].dispatchEvent(new Event('click'));", wrappedElement);
         }
 
         checked.broadcast(new ComponentActionEventArgs(this));
@@ -545,6 +545,7 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
     {
         settingValue.broadcast(new ComponentActionEventArgs(this));
 
+        findElement().click();
         findElement().clear();
         findElement().sendKeys(value);
 
