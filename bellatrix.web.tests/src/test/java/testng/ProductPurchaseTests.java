@@ -34,7 +34,7 @@ public class ProductPurchaseTests extends WebTest {
         var blogLink = app().create().by(Anchor.class, TextContains.by("Blog"));
         addToCartFalcon9.click();
         blogLink.above(addToCartFalcon9);
-        new MainPage().asserts().productBoxLink("", "");
+        new MainPage().asserts().productBoxLink("Falcon 9", "http://demos.bellatrix.solutions/product/falcon-9/");
     }
 
     @Test

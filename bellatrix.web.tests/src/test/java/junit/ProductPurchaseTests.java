@@ -20,9 +20,12 @@ import mainpage.MainPage;
 import org.junit.jupiter.api.Test;
 import solutions.bellatrix.web.components.Anchor;
 import solutions.bellatrix.web.findstrategies.TextContains;
+import solutions.bellatrix.web.infrastructure.Browser;
+import solutions.bellatrix.web.infrastructure.ExecutionBrowser;
+import solutions.bellatrix.web.infrastructure.Lifecycle;
 import solutions.bellatrix.web.infrastructure.junit.WebTest;
 
-//@ExecutionBrowser(browser = Browser.CHROME, lifecycle = Lifecycle.REUSE_IF_STARTED)
+@ExecutionBrowser(browser = Browser.CHROME, lifecycle = Lifecycle.REUSE_IF_STARTED)
 public class ProductPurchaseTests extends WebTest {
     @Test
     public void completePurchaseSuccessfully_first() {
@@ -30,19 +33,8 @@ public class ProductPurchaseTests extends WebTest {
         var addToCartFalcon9 = app().create().byCss(Anchor.class,"[data-product_id*='28']");
         var blogLink = app().create().by(Anchor.class, TextContains.by("Blog"));
         addToCartFalcon9.click();
-
-        blogLink.below(addToCartFalcon9).greaterThan(30).validate();
-        blogLink.above(addToCartFalcon9).validate();
-
-        blogLink.height().equal(10).validate();
-
-
-        blogLink.width().greaterThanOrEqual(10).validate();
-        blogLink.inside(addToCartFalcon9).validate();
-        blogLink.topInside(addToCartFalcon9).greaterThan(5).validate();
-        blogLink.alignedHorizontallyTop(addToCartFalcon9, addToCartFalcon9).validate();
-
-        new MainPage().asserts().productBoxLink("", "");
+        blogLink.above(addToCartFalcon9);
+        new MainPage().asserts().productBoxLink("Falcon 9", "http://demos.bellatrix.solutions/product/falcon-9/");
     }
 
     @Test
@@ -67,7 +59,7 @@ public class ProductPurchaseTests extends WebTest {
     }
 
     @Test
-    public void purchaseFalcon9WithoutFacade() throws InterruptedException {
+    public void purchaseFalcon9WithoutFacade() {
         var mainPage = app().goTo(MainPage.class);
         mainPage.addRocketToShoppingCart("Falcon 9");
 
@@ -96,7 +88,7 @@ public class ProductPurchaseTests extends WebTest {
     }
 
     @Test
-    public void purchaseSaturnVWithoutFacade() throws InterruptedException {
+    public void purchaseSaturnVWithoutFacade() {
         var mainPage = app().goTo(MainPage.class);
         mainPage.addRocketToShoppingCart("Saturn V");
 
