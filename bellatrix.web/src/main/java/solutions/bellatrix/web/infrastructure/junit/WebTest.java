@@ -32,7 +32,7 @@ public class WebTest extends BaseTest {
         addPlugin(BrowserLifecyclePlugin.of());
         addPlugin(WebScreenshotPlugin.of());
         addPlugin(WebVideoPlugin.of());
-        BddLogging.addPlugin();
-        HighlightElements.addPlugin();
+        addListener(BddLogging.class);
+        addListener(HighlightElements.class);
     }
 }

@@ -281,15 +281,14 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
         if (currentBrowser == Browser.CHROME_HEADLESS || currentBrowser == Browser.EDGE_HEADLESS) return;
 
         try {
-            var nativeElement = wrappedElement;
-            var originalElementBorder = nativeElement.getCssValue("background-color");
-            javaScriptService.execute("arguments[0].style.background='yellow'; return;", nativeElement);
+            var originalElementBorder = getWrappedElement().getCssValue("background-color");
+            javaScriptService.execute("arguments[0].style.background='yellow'; return;", getWrappedElement());
 
             var runnable = new Runnable() {
                 @SneakyThrows
                 public void run() {
                     Thread.sleep(100);
-                    javaScriptService.execute("arguments[0].style.background='" + originalElementBorder + "'; return;", nativeElement);
+                    javaScriptService.execute("arguments[0].style.background='" + originalElementBorder + "'; return;", getWrappedElement());
                 }
             };
             new Thread(runnable).start();

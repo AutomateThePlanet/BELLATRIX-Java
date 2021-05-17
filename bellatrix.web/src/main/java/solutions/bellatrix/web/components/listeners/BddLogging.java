@@ -13,12 +13,15 @@
 
 package solutions.bellatrix.web.components.listeners;
 
+import solutions.bellatrix.core.plugins.Listener;
 import solutions.bellatrix.web.components.Anchor;
 import solutions.bellatrix.web.components.WebComponent;
 
-public class BddLogging {
+public class BddLogging extends Listener {
     private static boolean isBddLoggingTurnedOn = false;
-    public static void addPlugin() {
+
+    @Override
+    public void addListener() {
         if (!isBddLoggingTurnedOn) {
             Anchor.CLICKING.addListener((x) -> System.out.printf("clicking %s%n", x.getComponent().getElementName()));
             WebComponent.VALIDATED_ATTRIBUTE.addListener((x) -> System.out.println(x.getMessage()));

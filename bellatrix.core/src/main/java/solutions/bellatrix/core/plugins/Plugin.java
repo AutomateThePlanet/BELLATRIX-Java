@@ -15,7 +15,7 @@ package solutions.bellatrix.core.plugins;
 
 import java.lang.reflect.Method;
 
-public class Plugin {
+public abstract class Plugin {
     public Plugin() {
         PluginExecutionEngine.addPlugin(this);
     }

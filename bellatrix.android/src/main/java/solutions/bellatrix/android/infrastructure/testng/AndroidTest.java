@@ -33,6 +33,6 @@ public class AndroidTest extends BaseTest {
         addPlugin(MobileScreenshotPlugin.of());
         addPlugin(MobileVideoPlugin.of());
         addPlugin(DownloadDemoAppsPlugin.of());
-        BddLogging.addPlugin();
+        addListener(BddLogging.class);
     }
 }

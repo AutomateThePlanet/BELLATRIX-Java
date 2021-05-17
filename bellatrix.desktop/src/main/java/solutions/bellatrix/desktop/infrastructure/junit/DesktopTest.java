@@ -33,6 +33,6 @@ public class DesktopTest extends BaseTest {
         addPlugin(DesktopScreenshotPlugin.of());
         addPlugin(DesktopVideoPlugin.of());
         addPlugin(DownloadDemoAppsPlugin.of());
-        BddLogging.addPlugin();
+        addListener(BddLogging.class);
     }
 }
