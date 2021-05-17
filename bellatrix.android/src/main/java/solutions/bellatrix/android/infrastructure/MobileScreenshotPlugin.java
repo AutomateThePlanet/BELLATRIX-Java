@@ -20,6 +20,7 @@ import org.openqa.selenium.TakesScreenshot;
 import plugins.screenshots.ScreenshotPlugin;
 import solutions.bellatrix.android.configuration.AndroidSettings;
 import solutions.bellatrix.core.configuration.ConfigurationService;
+import solutions.bellatrix.core.utilities.UserHomePathNormalizer;
 
 import java.io.File;
 import java.nio.file.Paths;
@@ -46,10 +47,7 @@ public class MobileScreenshotPlugin extends ScreenshotPlugin {
     @Override
     protected String getOutputFolder() {
         String saveLocation = ConfigurationService.get(AndroidSettings.class).getScreenshotsSaveLocation();
-        if (saveLocation.startsWith("user.home")) {
-            var userHomeDir = System.getProperty("user.home");
-            saveLocation = saveLocation.replace("user.home", userHomeDir);
-        }
+        saveLocation = UserHomePathNormalizer.normalizePath(saveLocation);
 
         var directory = new File(saveLocation);
         if (! directory.exists()){

@@ -15,6 +15,7 @@ package solutions.bellatrix.web.infrastructure;
 
 import plugins.video.VideoPlugin;
 import solutions.bellatrix.core.configuration.ConfigurationService;
+import solutions.bellatrix.core.utilities.UserHomePathNormalizer;
 import solutions.bellatrix.web.configuration.WebSettings;
 
 import java.io.File;
@@ -33,10 +34,7 @@ public class WebVideoPlugin extends VideoPlugin {
     @Override
     protected String getOutputFolder() {
         String saveLocation = ConfigurationService.get(WebSettings.class).getVideosSaveLocation();
-        if (saveLocation.startsWith("user.home")) {
-            var userHomeDir = System.getProperty("user.home");
-            saveLocation = saveLocation.replace("user.home", userHomeDir);
-        }
+        saveLocation = UserHomePathNormalizer.normalizePath(saveLocation);
 
         var directory = new File(saveLocation);
         if (! directory.exists()){
