@@ -27,7 +27,7 @@
             <groupId>solutions.bellatrix</groupId>
             <artifactId>bellatrix.android</artifactId>
             <version>1.0</version>
-            <scope>test</scope>
         </dependency>
     </dependencies>
+
 </project>
