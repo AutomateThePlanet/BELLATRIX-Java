@@ -18,6 +18,7 @@ import solutions.bellatrix.core.utilities.SingletonFactory;
 import solutions.bellatrix.ios.components.IOSComponent;
 import solutions.bellatrix.ios.validations.ComponentValidator;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 public interface ComponentText extends Component {
@@ -25,19 +26,32 @@ public interface ComponentText extends Component {
 
     @SneakyThrows
     default void validateTextIs(String value) {
-        Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIs", IOSComponent.class, String.class, String.class, String.class);
-        method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (IOSComponent)this, getText(), value, "text");
+        try {
+            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIs", IOSComponent.class, String.class, String.class, String.class);
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (IOSComponent) this, getText(), value, "text");
+        } catch (InvocationTargetException e) {
+            throw e.getCause();
+        }
     }
 
     @SneakyThrows
     default void validateTextContains(String value) {
-        Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeContains", IOSComponent.class, String.class, String.class, String.class);
-        method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (IOSComponent)this, getText(), value, "text");
+        try {
+            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeContains", IOSComponent.class, String.class, String.class, String.class);
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (IOSComponent) this, getText(), value, "text");
+        } catch (InvocationTargetException e) {
+            throw e.getCause();
+        }
     }
 
     @SneakyThrows
     default void validateTextNotContains(String value) {
-        Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeNotContains", IOSComponent.class, String.class, String.class, String.class);
-        method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (IOSComponent)this, getText(), value, "text");
+        try {
+            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeNotContains", IOSComponent.class, String.class, String.class, String.class);
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (IOSComponent) this, getText(), value, "text");
+        } catch (
+                InvocationTargetException e) {
+            throw e.getCause();
+        }
     }
 }

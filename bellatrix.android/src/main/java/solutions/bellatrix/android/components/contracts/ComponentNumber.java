@@ -18,6 +18,7 @@ import solutions.bellatrix.android.components.AndroidComponent;
 import solutions.bellatrix.android.validations.ComponentValidator;
 import solutions.bellatrix.core.utilities.SingletonFactory;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 public interface ComponentNumber extends Component {
@@ -25,7 +26,12 @@ public interface ComponentNumber extends Component {
 
     @SneakyThrows
     default void validateNumberIs(Number value) {
-        Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIs", AndroidComponent.class, Number.class, Number.class, String.class);
-        method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (AndroidComponent)this, getNumber(), value, "number");
+        try {
+            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIs", AndroidComponent.class, Number.class, Number.class, String.class);
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (AndroidComponent) this, getNumber(), value, "number");
+        } catch (
+                InvocationTargetException e) {
+            throw e.getCause();
+        }
     }
 }
