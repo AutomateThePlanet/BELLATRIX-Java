@@ -25,10 +25,6 @@ public class DownloadDemoAppsPlugin extends Plugin {
         areDemoAppsDownloaded = new ThreadLocal<>();
     }
 
-    public static DownloadDemoAppsPlugin of() {
-        return new DownloadDemoAppsPlugin();
-    }
-
     @Override
     @SuppressWarnings("rawtypes")
     public void preBeforeClass(Class type) {

@@ -35,10 +35,6 @@ public class BrowserLifecyclePlugin extends Plugin {
         isBrowserStartedCorrectly = new ThreadLocal<>();
     }
 
-    public static BrowserLifecyclePlugin of() {
-        return new BrowserLifecyclePlugin();
-    }
-
     @Override
     @SuppressWarnings("rawtypes")
     public void preBeforeClass(Class type) {

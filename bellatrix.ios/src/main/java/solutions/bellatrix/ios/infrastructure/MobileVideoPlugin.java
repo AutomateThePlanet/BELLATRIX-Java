@@ -22,13 +22,8 @@ import java.io.File;
 import java.util.UUID;
 
 public class MobileVideoPlugin extends VideoPlugin {
-    public MobileVideoPlugin(boolean isEnabled) {
-        super(isEnabled);
-    }
-
-    public static MobileVideoPlugin of() {
-        boolean isEnabled = ConfigurationService.get(IOSSettings.class).getVideosOnFailEnabled();
-        return new MobileVideoPlugin(isEnabled);
+    public MobileVideoPlugin() {
+        super(ConfigurationService.get(IOSSettings.class).getVideosOnFailEnabled());
     }
 
     @Override

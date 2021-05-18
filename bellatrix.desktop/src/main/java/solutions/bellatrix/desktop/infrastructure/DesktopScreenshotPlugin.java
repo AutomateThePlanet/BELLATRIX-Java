@@ -26,20 +26,15 @@ import java.nio.file.Paths;
 import java.util.UUID;
 
 public class DesktopScreenshotPlugin extends ScreenshotPlugin {
-    public DesktopScreenshotPlugin(boolean isEnabled) {
-        super(isEnabled);
-    }
-
-    public static DesktopScreenshotPlugin of() {
-        boolean isEnabled = ConfigurationService.get(DesktopSettings.class).getScreenshotsOnFailEnabled();
-        return new DesktopScreenshotPlugin(isEnabled);
+    public DesktopScreenshotPlugin() {
+        super(ConfigurationService.get(DesktopSettings.class).getScreenshotsOnFailEnabled());
     }
 
     @Override
     @SneakyThrows
     protected void takeScreenshot( String screenshotSaveDir, String filename) {
         File screenshot = ((TakesScreenshot) DriverService.getWrappedDriver()).getScreenshotAs(OutputType.FILE);
-        var destFile = new File(Paths.get(screenshotSaveDir, filename).toString() + ".png");
+        var destFile = new File(Paths.get(screenshotSaveDir, filename) + ".png");
         FileUtils.copyFile(screenshot, destFile);
     }
 

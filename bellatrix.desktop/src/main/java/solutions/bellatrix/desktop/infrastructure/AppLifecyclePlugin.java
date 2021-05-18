@@ -36,10 +36,6 @@ public class AppLifecyclePlugin extends Plugin {
         isAppStartedCorrectly = new ThreadLocal<>();
     }
 
-    public static AppLifecyclePlugin of() {
-        return new AppLifecyclePlugin();
-    }
-
     @Override
     @SuppressWarnings("rawtypes")
     public void preBeforeClass(Class type) {

@@ -22,13 +22,8 @@ import java.io.File;
 import java.util.UUID;
 
 public class DesktopVideoPlugin extends VideoPlugin {
-    public DesktopVideoPlugin(boolean isEnabled) {
-        super(isEnabled);
-    }
-
-    public static DesktopVideoPlugin of() {
-        boolean isEnabled = ConfigurationService.get(DesktopSettings.class).getVideosOnFailEnabled();
-        return new DesktopVideoPlugin(isEnabled);
+    public DesktopVideoPlugin() {
+        super(ConfigurationService.get(DesktopSettings.class).getVideosOnFailEnabled());
     }
 
     @Override

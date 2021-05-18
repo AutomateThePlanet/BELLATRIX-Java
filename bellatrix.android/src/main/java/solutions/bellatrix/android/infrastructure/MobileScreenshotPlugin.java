@@ -27,20 +27,15 @@ import java.nio.file.Paths;
 import java.util.UUID;
 
 public class MobileScreenshotPlugin extends ScreenshotPlugin {
-    public MobileScreenshotPlugin(boolean isEnabled) {
-        super(isEnabled);
-    }
-
-    public static MobileScreenshotPlugin of() {
-        boolean isEnabled = ConfigurationService.get(AndroidSettings.class).getScreenshotsOnFailEnabled();
-        return new MobileScreenshotPlugin(isEnabled);
+    public MobileScreenshotPlugin() {
+        super(ConfigurationService.get(AndroidSettings.class).getScreenshotsOnFailEnabled());
     }
 
     @Override
     @SneakyThrows
     protected void takeScreenshot( String screenshotSaveDir, String filename) {
         File screenshot = ((TakesScreenshot) DriverService.getWrappedAndroidDriver()).getScreenshotAs(OutputType.FILE);
-        var destFile = new File(Paths.get(screenshotSaveDir, filename).toString() + ".png");
+        var destFile = new File(Paths.get(screenshotSaveDir, filename) + ".png");
         FileUtils.copyFile(screenshot, destFile);
     }
 

@@ -28,10 +28,10 @@ public class IOSTest extends BaseTest {
 
     @Override
     protected void configure() {
-        addPlugin(AppLifecyclePlugin.of());
-        addPlugin(MobileScreenshotPlugin.of());
-        addPlugin(MobileVideoPlugin.of());
-        addPlugin(DownloadDemoAppsPlugin.of());
+        addPlugin(AppLifecyclePlugin.class);
+        addPlugin(MobileScreenshotPlugin.class);
+        addPlugin(MobileVideoPlugin.class);
+        addPlugin(DownloadDemoAppsPlugin.class);
         addListener(BddLogging.class);
     }
 }

@@ -22,13 +22,8 @@ import java.io.File;
 import java.util.UUID;
 
 public class WebVideoPlugin extends VideoPlugin {
-    public WebVideoPlugin(boolean isEnabled) {
-        super(isEnabled);
-    }
-
-    public static WebVideoPlugin of() {
-        boolean isEnabled = ConfigurationService.get(WebSettings.class).getVideosOnFailEnabled();
-        return new WebVideoPlugin(isEnabled);
+    public WebVideoPlugin() {
+        super(ConfigurationService.get(WebSettings.class).getVideosOnFailEnabled());
     }
 
     @Override

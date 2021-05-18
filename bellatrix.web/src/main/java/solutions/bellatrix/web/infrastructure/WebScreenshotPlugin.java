@@ -27,13 +27,8 @@ import java.nio.file.Paths;
 import java.util.UUID;
 
 public class WebScreenshotPlugin extends ScreenshotPlugin {
-    public WebScreenshotPlugin(boolean isEnabled) {
-        super(isEnabled);
-    }
-
-    public static WebScreenshotPlugin of() {
-        boolean isEnabled = ConfigurationService.get(WebSettings.class).getScreenshotsOnFailEnabled();
-        return new WebScreenshotPlugin(isEnabled);
+    public WebScreenshotPlugin() {
+        super(ConfigurationService.get(WebSettings.class).getScreenshotsOnFailEnabled());
     }
 
     @Override

@@ -29,9 +29,9 @@ public class WebTest extends BaseTest {
 
     @Override
     protected void configure() {
-        addPlugin(BrowserLifecyclePlugin.of());
-        addPlugin(WebScreenshotPlugin.of());
-        addPlugin(WebVideoPlugin.of());
+        addPlugin(BrowserLifecyclePlugin.class);
+        addPlugin(WebScreenshotPlugin.class);
+        addPlugin(WebVideoPlugin.class);
         addListener(BddLogging.class);
         addListener(HighlightElements.class);
     }
