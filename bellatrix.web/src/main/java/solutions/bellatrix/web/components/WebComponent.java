@@ -101,7 +101,7 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
     }
 
     public void scrollToVisible() {
-        scrollToVisible(findElement(), false);
+        scrollToVisible(getWrappedElement(), false);
     }
 
     public void setAttribute(String name, String value) {
@@ -113,13 +113,13 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
     public void focus() {
         FOCUSING.broadcast(new ComponentActionEventArgs(this));
         javaScriptService.execute("window.focus();");
-        javaScriptService.execute("arguments[0].focus();", findElement());
+        javaScriptService.execute("arguments[0].focus();", getWrappedElement());
         FOCUSED.broadcast(new ComponentActionEventArgs(this));
     }
 
     public void hover() {
         HOVERING.broadcast(new ComponentActionEventArgs(this));
-        javaScriptService.execute("arguments[0].onmouseover();", findElement());
+        javaScriptService.execute("arguments[0].onmouseover();", getWrappedElement());
         HOVERED.broadcast(new ComponentActionEventArgs(this));
     }
 
@@ -128,11 +128,11 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
     }
 
     public Point getLocation() {
-        return findElement().getLocation();
+        return getWrappedElement().getLocation();
     }
 
     public Dimension getSize() {
-        return findElement().getSize();
+        return getWrappedElement().getSize();
     }
 
     public String getTitle() {
@@ -164,11 +164,11 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
     }
 
     public String getAttribute(String name) {
-        return findElement().getAttribute(name);
+        return getWrappedElement().getAttribute(name);
     }
 
     public String getCssValue(String propertyName) {
-        return findElement().getCssValue(propertyName);
+        return getWrappedElement().getCssValue(propertyName);
     }
 
     public void ensureState(WaitStrategy waitStrategy) {
@@ -283,12 +283,15 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
         try {
             var originalElementBorder = getWrappedElement().getCssValue("background-color");
             javaScriptService.execute("arguments[0].style.background='yellow'; return;", getWrappedElement());
+            Thread.sleep(100);
 
             var runnable = new Runnable() {
                 @SneakyThrows
                 public void run() {
+                    try {
+                        javaScriptService.execute("arguments[0].style.background='" + originalElementBorder + "'; return;", getWrappedElement());
+                    } catch (NoSuchSessionException | NullPointerException ignored) {}
                     Thread.sleep(100);
-                    javaScriptService.execute("arguments[0].style.background='" + originalElementBorder + "'; return;", getWrappedElement());
                 }
             };
             new Thread(runnable).start();
@@ -369,7 +372,7 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
         clicking.broadcast(new ComponentActionEventArgs(this));
 
         this.toExists().toBeClickable().waitToBe();
-        if (!findElement().isSelected()) {
+        if (!getWrappedElement().isSelected()) {
             javaScriptService.execute("arguments[0].focus();arguments[0].click();arguments[0].dispatchEvent(new Event('click'));", wrappedElement);
         }
 
@@ -380,7 +383,7 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
         checking.broadcast(new ComponentActionEventArgs(this));
 
         this.toExists().toBeClickable().waitToBe();
-        if (findElement().isSelected()) {
+        if (getWrappedElement().isSelected()) {
             javaScriptService.execute("arguments[0].focus();arguments[0].click();arguments[0].dispatchEvent(new Event('click'));", wrappedElement);
         }
 
@@ -389,26 +392,26 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
 
     protected void setValue(EventListener<ComponentActionEventArgs> gettingValue, EventListener<ComponentActionEventArgs> gotValue, String value) {
         gettingValue.broadcast(new ComponentActionEventArgs(this));
-        javaScriptService.execute(String.format("arguments[0].value = '%s';", value), findElement());
+        javaScriptService.execute(String.format("arguments[0].value = '%s';", value), getWrappedElement());
         gotValue.broadcast(new ComponentActionEventArgs(this));
     }
 
     protected void defaultSelectByText(EventListener<ComponentActionEventArgs> selectingValue, EventListener<ComponentActionEventArgs> valueSelected, String value) {
         selectingValue.broadcast(new ComponentActionEventArgs(this));
-        new Select(findElement()).selectByVisibleText(value);
+        new Select(getWrappedElement()).selectByVisibleText(value);
         valueSelected.broadcast(new ComponentActionEventArgs(this));
     }
 
     protected void defaultSelectByIndex(EventListener<ComponentActionEventArgs> selectingValue, EventListener<ComponentActionEventArgs> valueSelected, int value) {
         selectingValue.broadcast(new ComponentActionEventArgs(this));
-        new Select(findElement()).selectByIndex(value);
+        new Select(getWrappedElement()).selectByIndex(value);
         valueSelected.broadcast(new ComponentActionEventArgs(this));
     }
 
     protected String defaultGetValue() {
         return Optional.ofNullable(getAttribute("value")).orElse("");
     }
-    
+
     protected String defaultGetName() {
         return Optional.ofNullable(getAttribute("name")).orElse("");
     }
@@ -483,7 +486,7 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
     }
 
     protected String defaultGetText() {
-        return Optional.ofNullable(findElement().getText()).orElse("");
+        return Optional.ofNullable(getWrappedElement().getText()).orElse("");
     }
 
     protected String defaultGetMinAttribute() {
@@ -545,9 +548,9 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
     {
         settingValue.broadcast(new ComponentActionEventArgs(this));
 
-        findElement().click();
-        findElement().clear();
-        findElement().sendKeys(value);
+        getWrappedElement().click();
+        getWrappedElement().clear();
+        getWrappedElement().sendKeys(value);
 
         valueSet.broadcast(new ComponentActionEventArgs(this));
     }
