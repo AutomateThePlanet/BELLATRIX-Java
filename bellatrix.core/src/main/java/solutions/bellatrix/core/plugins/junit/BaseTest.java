@@ -19,7 +19,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.api.extension.ExtendWith;
 import solutions.bellatrix.core.plugins.*;
+import sun.misc.Unsafe;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +32,15 @@ public class BaseTest extends UsesPlugins {
     private static final ThreadLocal<List<String>> ALREADY_EXECUTED_BEFORE_CLASSES = new ThreadLocal<>();
 
     public BaseTest() {
+        try {
+            Field theUnsafe = Unsafe.class.getDeclaredField("theUnsafe");
+            theUnsafe.setAccessible(true);
+            Unsafe u = (Unsafe) theUnsafe.get(null);
+
+            Class<?> cls = Class.forName("jdk.internal.module.IllegalAccessLogger");
+            Field logger = cls.getDeclaredField("logger");
+            u.putObjectVolatile(cls, u.staticFieldOffset(logger), null);
+        } catch (Exception ignored) {}
         CONFIGURATION_EXECUTED.set(false);
         ALREADY_EXECUTED_BEFORE_CLASSES.set(new ArrayList<>());
     }
