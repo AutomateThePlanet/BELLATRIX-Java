@@ -14,20 +14,18 @@
 package solutions.bellatrix.core.plugins;
 
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public final class PluginExecutionEngine {
-    private final static List<Plugin> plugins;
+    private final static Set<Plugin> plugins;
 
     static {
-        plugins = new ArrayList<>();
+        plugins = new HashSet<>();
     }
 
     public static void addPlugin(Plugin plugin) {
-        if (plugins.stream().noneMatch(p -> p.getClass().getName().equals(plugin.getClass().getName()))) {
-            plugins.add(plugin);
-        }
+        plugins.add(plugin);
     }
 
     public static void removePlugin(Plugin plugin) {
