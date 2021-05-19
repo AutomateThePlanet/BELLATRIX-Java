@@ -37,7 +37,7 @@ public class AppLifecyclePlugin extends Plugin {
     }
 
     @Override
-        public void preBeforeClass(Class type) {
+    public void preBeforeClass(Class type) {
         CURRENT_APP_CONFIGURATION.set(getExecutionAppClassLevel(type));
         if (shouldRestartApp()) {
             restartApp();
@@ -51,7 +51,7 @@ public class AppLifecyclePlugin extends Plugin {
     }
 
     @Override
-        public void postAfterClass(Class type) {
+    public void postAfterClass(Class type) {
         shutdownApp();
         IS_APP_STARTED_DURING_PRE_BEFORE_CLASS.set(false);
         super.preAfterClass(type);

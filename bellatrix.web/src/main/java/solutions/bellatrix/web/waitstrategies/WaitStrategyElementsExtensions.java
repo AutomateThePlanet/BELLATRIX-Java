@@ -15,7 +15,6 @@ package solutions.bellatrix.web.waitstrategies;
 
 import solutions.bellatrix.web.components.WebComponent;
 
-
 public class WaitStrategyElementsExtensions {
     public static WebComponent toExists1(WebComponent element) {
         var waitStrategy = new ToExistWaitStrategy();

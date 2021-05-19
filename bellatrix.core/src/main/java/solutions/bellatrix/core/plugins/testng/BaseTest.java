@@ -22,7 +22,6 @@ import sun.misc.Unsafe;
 
 import java.lang.reflect.Field;
 
-
 @Listeners(TestResultListener.class)
 public class BaseTest extends UsesPlugins {
     static final ThreadLocal<TestResult> CURRENT_TEST_RESULT = new ThreadLocal<>();

@@ -17,7 +17,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
 
 public final class InstanceFactory {
-        public static <T> T create(Class<T> classOf) {
+    public static <T> T create(Class<T> classOf) {
         T obj = null;
         try {
             obj = (T)classOf.getConstructors()[0].newInstance();
@@ -27,7 +27,7 @@ public final class InstanceFactory {
         return obj;
     }
 
-        public static <T> T create(Class<T> classOf, Object... args) {
+    public static <T> T create(Class<T> classOf, Object... args) {
         T obj = null;
         try {
             obj = (T)classOf.getConstructors()[0].newInstance(args);
@@ -37,7 +37,7 @@ public final class InstanceFactory {
         return obj;
     }
 
-        public static <T> T createByTypeParameter(Class parameterClass, int index) {
+    public static <T> T createByTypeParameter(Class parameterClass, int index) {
         try {
             var elementsClass = (Class)((ParameterizedType)parameterClass.getGenericSuperclass()).getActualTypeArguments()[index];
             return (T)elementsClass.getDeclaredConstructor().newInstance();

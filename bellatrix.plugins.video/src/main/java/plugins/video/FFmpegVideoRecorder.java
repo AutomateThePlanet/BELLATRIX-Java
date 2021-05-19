@@ -30,7 +30,6 @@ public class FFmpegVideoRecorder implements AutoCloseable {
             } else {
                 Runtime.getRuntime().exec("killall ffmpeg_linux");
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -52,7 +51,6 @@ public class FFmpegVideoRecorder implements AutoCloseable {
                 var videoFilePathWithExtension = String.format("%s.mp4", FilenameUtils.removeExtension(videoFullPath));
                 Runtime.getRuntime().exec(recorderFile + " -f x11grab" + " -framerate 30" + String.format(" -i :0.0+100,200 %s", videoFilePathWithExtension));
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }

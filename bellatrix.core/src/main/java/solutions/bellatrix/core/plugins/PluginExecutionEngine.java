@@ -32,13 +32,13 @@ public final class PluginExecutionEngine {
         PLUGINS.remove(plugin);
     }
 
-        public static void preBeforeClass(Class type) {
+    public static void preBeforeClass(Class type) {
         for (var currentObserver : PLUGINS) {
             currentObserver.preBeforeClass(type);
         }
     }
 
-        public static void postBeforeClass(Class type) {
+    public static void postBeforeClass(Class type) {
         for (var currentObserver : PLUGINS) {
             currentObserver.postBeforeClass(type);
         }
@@ -86,13 +86,13 @@ public final class PluginExecutionEngine {
         }
     }
 
-        public static void preAfterClass(Class type) {
+    public static void preAfterClass(Class type) {
         for (var currentObserver : PLUGINS) {
             currentObserver.preAfterClass(type);
         }
     }
 
-        public static void postAfterClass(Class type) {
+    public static void postAfterClass(Class type) {
         for (var currentObserver : PLUGINS) {
             currentObserver.postAfterClass(type);
         }

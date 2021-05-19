@@ -17,12 +17,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.SearchContext;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import solutions.bellatrix.core.configuration.ConfigurationService;
+import solutions.bellatrix.core.utilities.Log;
 import solutions.bellatrix.ios.components.ComponentActionEventArgs;
 import solutions.bellatrix.ios.components.IOSComponent;
 import solutions.bellatrix.ios.configuration.IOSSettings;
 import solutions.bellatrix.ios.infrastructure.DriverService;
-import solutions.bellatrix.core.configuration.ConfigurationService;
-import solutions.bellatrix.core.utilities.Log;
 
 import java.util.function.Function;
 

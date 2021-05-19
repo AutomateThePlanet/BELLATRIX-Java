@@ -176,19 +176,19 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
         waitStrategies.add(waitStrategy);
     }
 
-        public <TElementType extends WebComponent> TElementType toExist() {
+    public <TElementType extends WebComponent> TElementType toExist() {
         var waitStrategy = new ToExistWaitStrategy();
         ensureState(waitStrategy);
         return (TElementType)this;
     }
 
-        public <TElementType extends WebComponent> TElementType toBeClickable() {
+    public <TElementType extends WebComponent> TElementType toBeClickable() {
         var waitStrategy = new ToBeClickableWaitStrategy();
         ensureState(waitStrategy);
         return (TElementType)this;
     }
 
-        public <TElementType extends WebComponent> TElementType toBeVisible() {
+    public <TElementType extends WebComponent> TElementType toBeVisible() {
         var waitStrategy = new ToBeVisibleWaitStrategy();
         ensureState(waitStrategy);
         return (TElementType)this;
@@ -294,7 +294,6 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
                 }
             };
             new Thread(runnable).start();
-
         } catch (Exception ignored) {
         }
     }
@@ -361,7 +360,6 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
         RETURNING_WRAPPED_ELEMENT.broadcast(new ComponentActionEventArgs(this));
         return wrappedElement;
     }
-
 
     protected void defaultClick(EventListener<ComponentActionEventArgs> clicking, EventListener<ComponentActionEventArgs> clicked) {
         clicking.broadcast(new ComponentActionEventArgs(this));

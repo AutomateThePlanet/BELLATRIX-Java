@@ -33,7 +33,7 @@ public class MobileVideoPlugin extends VideoPlugin {
 
         var directory = new File(saveLocation);
 
-        if(directory.mkdirs()) {
+        if (directory.mkdirs()) {
             return saveLocation;
         }
 

@@ -15,7 +15,6 @@ package solutions.bellatrix.desktop.waitstrategies;
 
 import solutions.bellatrix.desktop.components.DesktopComponent;
 
-
 public class WaitStrategyElementsExtensions {
     public static DesktopComponent toExists1(DesktopComponent element) {
         var waitStrategy = new ToExistWaitStrategy();

@@ -42,7 +42,6 @@ public abstract class VideoPlugin extends Plugin {
                 var videoSaveDir = getOutputFolder();
                 var videoFileName = getUniqueFileName(memberInfo.getName());
                 takeVideo(videoSaveDir, videoFileName);
-
             } catch (Exception e) {
                 // ignore since it is failing often because of bugs in Remote driver for Chrome
                 e.printStackTrace();

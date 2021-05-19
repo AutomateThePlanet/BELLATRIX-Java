@@ -13,7 +13,6 @@
 
 package cartpage;
 
-
 import solutions.bellatrix.web.components.Button;
 import solutions.bellatrix.web.components.Div;
 import solutions.bellatrix.web.components.Span;

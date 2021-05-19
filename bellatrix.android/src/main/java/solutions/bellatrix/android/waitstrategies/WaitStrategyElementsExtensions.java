@@ -15,7 +15,6 @@ package solutions.bellatrix.android.waitstrategies;
 
 import solutions.bellatrix.android.components.AndroidComponent;
 
-
 public class WaitStrategyElementsExtensions {
     public static AndroidComponent toExists1(AndroidComponent element) {
         var waitStrategy = new ToExistWaitStrategy();

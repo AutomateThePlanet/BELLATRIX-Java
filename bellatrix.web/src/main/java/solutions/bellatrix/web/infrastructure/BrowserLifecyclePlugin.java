@@ -36,7 +36,7 @@ public class BrowserLifecyclePlugin extends Plugin {
     }
 
     @Override
-        public void preBeforeClass(Class type) {
+    public void preBeforeClass(Class type) {
         CURRENT_BROWSER_CONFIGURATION.set(getExecutionBrowserClassLevel(type));
         if (shouldRestartBrowser()) {
             restartBrowser();
@@ -50,7 +50,7 @@ public class BrowserLifecyclePlugin extends Plugin {
     }
 
     @Override
-        public void postAfterClass(Class type) {
+    public void postAfterClass(Class type) {
         shutdownBrowser();
         IS_BROWSER_STARTED_DURING_PRE_BEFORE_CLASS.set(false);
         super.preAfterClass(type);

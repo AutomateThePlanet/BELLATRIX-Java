@@ -81,7 +81,7 @@ public abstract class LayoutComponentValidationsBuilder implements LayoutCompone
                 () -> buildFailedValidationMessage(secondLayoutComponent, LayoutOptions.RIGHT_INSIDE));
     }
 
-        public FinishValidationBuilder alignedVerticallyAll(LayoutComponent... layoutComponents) {
+    public FinishValidationBuilder alignedVerticallyAll(LayoutComponent... layoutComponents) {
         Integer baseLineRightY = this.getLocation().getX() + this.getSize().getWidth() / 2;
         Integer baseLineLeftY = this.getLocation().getX();
         var comparingComponentsNames = getLayoutComponentsNames(layoutComponents);
@@ -99,7 +99,7 @@ public abstract class LayoutComponentValidationsBuilder implements LayoutCompone
                         buildFailedAlignValidationMessage(comparingComponentsNames, baseLineLeftY, LayoutOptions.ALIGNED_VERTICALLY_LEFT));
     }
 
-        public FinishValidationBuilder alignedVerticallyCentered(LayoutComponent... layoutComponents) {
+    public FinishValidationBuilder alignedVerticallyCentered(LayoutComponent... layoutComponents) {
         Integer baseLineRightY = this.getLocation().getX() + this.getSize().getWidth() / 2;
         var comparingComponentsNames = getLayoutComponentsNames(layoutComponents);
         Predicate combinedPredicate = (s) -> true;
@@ -113,7 +113,7 @@ public abstract class LayoutComponentValidationsBuilder implements LayoutCompone
                 () -> buildFailedAlignValidationMessage(comparingComponentsNames, baseLineRightY, LayoutOptions.ALIGNED_VERTICALLY_CENTERED));
     }
 
-        public FinishValidationBuilder alignedVerticallyRight(LayoutComponent... layoutComponents) {
+    public FinishValidationBuilder alignedVerticallyRight(LayoutComponent... layoutComponents) {
         Integer baseLineRightY = this.getLocation().getX() + this.getSize().getWidth();
         var comparingComponentsNames = getLayoutComponentsNames(layoutComponents);
         Predicate combinedPredicate = (s) -> true;
@@ -127,7 +127,7 @@ public abstract class LayoutComponentValidationsBuilder implements LayoutCompone
                 () -> buildFailedAlignValidationMessage(comparingComponentsNames, baseLineRightY, LayoutOptions.ALIGNED_VERTICALLY_RIGHT));
     }
 
-        public FinishValidationBuilder alignedVerticallyLeft(LayoutComponent... layoutComponents) {
+    public FinishValidationBuilder alignedVerticallyLeft(LayoutComponent... layoutComponents) {
         Integer baseLineLeftY = this.getLocation().getX();
         var comparingComponentsNames = getLayoutComponentsNames(layoutComponents);
         Predicate combinedPredicate = (s) -> true;
@@ -138,7 +138,7 @@ public abstract class LayoutComponentValidationsBuilder implements LayoutCompone
                 () -> buildFailedAlignValidationMessage(comparingComponentsNames, baseLineLeftY, LayoutOptions.ALIGNED_VERTICALLY_LEFT));
     }
 
-        public FinishValidationBuilder alignedHorizontallyAll(LayoutComponent... layoutComponents) {
+    public FinishValidationBuilder alignedHorizontallyAll(LayoutComponent... layoutComponents) {
         Integer baseLineTopY = this.getLocation().getY();
         Integer baseLineBottomY = this.getLocation().getY() + this.getSize().getHeight();
         var comparingComponentsNames = getLayoutComponentsNames(layoutComponents);
@@ -156,7 +156,7 @@ public abstract class LayoutComponentValidationsBuilder implements LayoutCompone
                         buildFailedAlignValidationMessage(comparingComponentsNames, baseLineBottomY, LayoutOptions.ALIGNED_HORIZONTALLY_BOTTOM));
     }
 
-        public FinishValidationBuilder alignedHorizontallyCentered(LayoutComponent... layoutComponents) {
+    public FinishValidationBuilder alignedHorizontallyCentered(LayoutComponent... layoutComponents) {
         Integer baseLineTopY = this.getLocation().getY() + this.getSize().getHeight() / 2;
         var comparingComponentsNames = getLayoutComponentsNames(layoutComponents);
         Predicate combinedPredicate = (s) -> true;
@@ -170,7 +170,7 @@ public abstract class LayoutComponentValidationsBuilder implements LayoutCompone
                 () -> buildFailedAlignValidationMessage(comparingComponentsNames, baseLineTopY, LayoutOptions.ALIGNED_HORIZONTALLY_CENTERED));
     }
 
-        public FinishValidationBuilder alignedHorizontallyTop(LayoutComponent... layoutComponents) {
+    public FinishValidationBuilder alignedHorizontallyTop(LayoutComponent... layoutComponents) {
         Integer baseLineTopY = this.getLocation().getY();
         var comparingComponentsNames = getLayoutComponentsNames(layoutComponents);
         Predicate combinedPredicate = (s) -> true;
@@ -181,7 +181,7 @@ public abstract class LayoutComponentValidationsBuilder implements LayoutCompone
                 () -> buildFailedAlignValidationMessage(comparingComponentsNames, baseLineTopY, LayoutOptions.ALIGNED_HORIZONTALLY_TOP));
     }
 
-        public FinishValidationBuilder alignedHorizontallyBottom(LayoutComponent... layoutComponents) {
+    public FinishValidationBuilder alignedHorizontallyBottom(LayoutComponent... layoutComponents) {
         Integer baseLineBottomY = this.getLocation().getY() + this.getSize().getHeight();
         var comparingComponentsNames = getLayoutComponentsNames(layoutComponents);
         Predicate combinedPredicate = (s) -> true;

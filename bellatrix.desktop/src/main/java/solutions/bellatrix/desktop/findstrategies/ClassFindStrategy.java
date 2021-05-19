@@ -25,7 +25,7 @@ public class ClassFindStrategy extends FindStrategy {
     }
 
     @Override
-        public WebElement findElement(WindowsDriver driver) {
+    public WebElement findElement(WindowsDriver driver) {
         return driver.findElementByClassName(getValue());
     }
 

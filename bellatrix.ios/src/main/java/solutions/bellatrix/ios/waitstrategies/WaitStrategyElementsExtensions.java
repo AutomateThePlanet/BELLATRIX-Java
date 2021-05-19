@@ -15,7 +15,6 @@ package solutions.bellatrix.ios.waitstrategies;
 
 import solutions.bellatrix.ios.components.IOSComponent;
 
-
 public class WaitStrategyElementsExtensions {
     public static IOSComponent toExists1(IOSComponent element) {
         var waitStrategy = new ToExistWaitStrategy();

@@ -13,7 +13,6 @@
 
 package mainpage;
 
-
 import solutions.bellatrix.web.pages.WebPage;
 
 public class MainPage extends WebPage<Map, Asserts> {

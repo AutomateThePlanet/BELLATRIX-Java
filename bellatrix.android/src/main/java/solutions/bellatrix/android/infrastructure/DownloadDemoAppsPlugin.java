@@ -26,7 +26,7 @@ public class DownloadDemoAppsPlugin extends Plugin {
     }
 
     @Override
-        public void preBeforeClass(Class type) {
+    public void preBeforeClass(Class type) {
         super.preBeforeClass(type);
         if (ARE_DEMO_APPS_DOWNLOADED.get())
             return;
