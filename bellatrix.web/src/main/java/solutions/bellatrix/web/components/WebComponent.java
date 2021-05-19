@@ -354,7 +354,7 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
             waitStrategies.clear();
         } catch (WebDriverException ex) {
             Log.error("%n%nThe component: %n" +
-                            "     Name: \"\u001B[1m%s\u001B[0m\"%n" +
+                            "     Type: \"\u001B[1m%s\u001B[0m\"%n" +
                             "  Locator: \"\u001B[1m%s\u001B[0m\"%n" +
                             "Was not found on the page or didn't fulfill the specified conditions.%n%n",
                     getComponentClass().getSimpleName(), findStrategy.toString());
@@ -398,21 +398,21 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
     }
 
     protected void setValue(EventListener<ComponentActionEventArgs> gettingValue, EventListener<ComponentActionEventArgs> gotValue, String value) {
-        gettingValue.broadcast(new ComponentActionEventArgs(this));
+        gettingValue.broadcast(new ComponentActionEventArgs(this, value));
         javaScriptService.execute(String.format("arguments[0].value = '%s';", value), getWrappedElement());
-        gotValue.broadcast(new ComponentActionEventArgs(this));
+        gotValue.broadcast(new ComponentActionEventArgs(this, value));
     }
 
     protected void defaultSelectByText(EventListener<ComponentActionEventArgs> selectingValue, EventListener<ComponentActionEventArgs> valueSelected, String value) {
-        selectingValue.broadcast(new ComponentActionEventArgs(this));
+        selectingValue.broadcast(new ComponentActionEventArgs(this, value));
         new Select(getWrappedElement()).selectByVisibleText(value);
-        valueSelected.broadcast(new ComponentActionEventArgs(this));
+        valueSelected.broadcast(new ComponentActionEventArgs(this, value));
     }
 
     protected void defaultSelectByIndex(EventListener<ComponentActionEventArgs> selectingValue, EventListener<ComponentActionEventArgs> valueSelected, int value) {
-        selectingValue.broadcast(new ComponentActionEventArgs(this));
+        selectingValue.broadcast(new ComponentActionEventArgs(this, "index: " + value));
         new Select(getWrappedElement()).selectByIndex(value);
-        valueSelected.broadcast(new ComponentActionEventArgs(this));
+        valueSelected.broadcast(new ComponentActionEventArgs(this, "index: " + value));
     }
 
     protected String defaultGetValue() {
