@@ -18,7 +18,7 @@ import solutions.bellatrix.desktop.services.ComponentCreateService;
 
 import java.lang.reflect.ParameterizedType;
 
-public abstract class DesktopPage<MapT extends PageMap, AssertsT extends PageAsserts<MapT>>  {
+public abstract class DesktopPage<MapT extends PageMap, AssertsT extends PageAsserts<MapT>> {
     public AppService appService() {
         return new AppService();
     }

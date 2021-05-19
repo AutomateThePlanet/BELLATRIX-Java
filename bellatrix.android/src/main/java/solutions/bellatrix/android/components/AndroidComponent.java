@@ -122,21 +122,21 @@ public class AndroidComponent extends LayoutComponentValidationsBuilder implemen
     public <TElementType extends AndroidComponent> TElementType toExists() {
         var waitStrategy = new ToExistWaitStrategy();
         ensureState(waitStrategy);
-        return (TElementType) this;
+        return (TElementType)this;
     }
 
     @SuppressWarnings("unchecked")
     public <TElementType extends AndroidComponent> TElementType toBeClickable() {
         var waitStrategy = new ToBeClickableWaitStrategy();
         ensureState(waitStrategy);
-        return (TElementType) this;
+        return (TElementType)this;
     }
 
     @SuppressWarnings("unchecked")
     public <TElementType extends AndroidComponent> TElementType toBeVisible() {
         var waitStrategy = new ToBeVisibleWaitStrategy();
         ensureState(waitStrategy);
-        return (TElementType) this;
+        return (TElementType)this;
     }
 
     public <TElementType extends AndroidComponent, TWaitStrategy extends WaitStrategy> TElementType to(Class<TWaitStrategy> waitClass, TElementType element) {

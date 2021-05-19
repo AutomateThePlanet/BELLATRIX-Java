@@ -36,8 +36,7 @@ public class NavigationService extends WebService {
         getWrappedDriver().navigate().to(url);
     }
 
-    public void toLocalPage(String filePath)
-    {
+    public void toLocalPage(String filePath) {
         URL testAppUrl = Thread.currentThread().getContextClassLoader().getResource(filePath);
         if (testAppUrl != null) {
             to(testAppUrl.toString());

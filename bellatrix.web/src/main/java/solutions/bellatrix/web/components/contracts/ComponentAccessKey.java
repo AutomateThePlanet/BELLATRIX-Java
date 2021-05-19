@@ -28,7 +28,7 @@ public interface ComponentAccessKey extends Component {
     default void validateAccessKeyIs(String value) {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIs", WebComponent.class, String.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getAccessKey(), value, "accesskey");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getAccessKey(), value, "accesskey");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -38,7 +38,7 @@ public interface ComponentAccessKey extends Component {
     default void validateAccessKeyIsSet() {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIsSet", WebComponent.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getAccessKey(), "accesskey");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getAccessKey(), "accesskey");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -48,7 +48,7 @@ public interface ComponentAccessKey extends Component {
     default void validateAccessKeyNotSet() {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeNotSet", WebComponent.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getAccessKey(), "accesskey");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getAccessKey(), "accesskey");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }

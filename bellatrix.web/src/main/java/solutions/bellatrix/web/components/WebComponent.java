@@ -180,21 +180,21 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
     public <TElementType extends WebComponent> TElementType toExist() {
         var waitStrategy = new ToExistWaitStrategy();
         ensureState(waitStrategy);
-        return (TElementType) this;
+        return (TElementType)this;
     }
 
     @SuppressWarnings("unchecked")
     public <TElementType extends WebComponent> TElementType toBeClickable() {
         var waitStrategy = new ToBeClickableWaitStrategy();
         ensureState(waitStrategy);
-        return (TElementType) this;
+        return (TElementType)this;
     }
 
     @SuppressWarnings("unchecked")
     public <TElementType extends WebComponent> TElementType toBeVisible() {
         var waitStrategy = new ToBeVisibleWaitStrategy();
         ensureState(waitStrategy);
-        return (TElementType) this;
+        return (TElementType)this;
     }
 
     public <TElementType extends WebComponent, TWaitStrategy extends WaitStrategy> TElementType to(Class<TWaitStrategy> waitClass, TElementType element) {
@@ -354,9 +354,9 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
             waitStrategies.clear();
         } catch (WebDriverException ex) {
             Log.error("%n%nThe component: %n" +
-                    "     Name: \"\u001B[1m%s\u001B[0m\"%n" +
-                    "  Locator: \"\u001B[1m%s\u001B[0m\"%n" +
-                    "Was not found on the page or didn't fulfill the specified conditions.%n%n",
+                            "     Name: \"\u001B[1m%s\u001B[0m\"%n" +
+                            "  Locator: \"\u001B[1m%s\u001B[0m\"%n" +
+                            "Was not found on the page or didn't fulfill the specified conditions.%n%n",
                     getComponentClass().getSimpleName(), findStrategy.toString());
             throw ex;
         }
@@ -550,13 +550,13 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
     }
 
     protected void defaultSetText(EventListener<ComponentActionEventArgs> settingValue, EventListener<ComponentActionEventArgs> valueSet, String value) {
-        settingValue.broadcast(new ComponentActionEventArgs(this));
+        settingValue.broadcast(new ComponentActionEventArgs(this, value));
 
         getWrappedElement().click();
         getWrappedElement().clear();
         getWrappedElement().sendKeys(value);
 
-        valueSet.broadcast(new ComponentActionEventArgs(this));
+        valueSet.broadcast(new ComponentActionEventArgs(this, value));
     }
 
     private WebElement findNativeElement() {

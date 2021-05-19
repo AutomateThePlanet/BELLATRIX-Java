@@ -14,8 +14,7 @@
 package solutions.bellatrix.web.components.listeners;
 
 import solutions.bellatrix.core.plugins.Listener;
-import solutions.bellatrix.web.components.Anchor;
-import solutions.bellatrix.web.components.WebComponent;
+import solutions.bellatrix.web.components.*;
 
 public class BddLogging extends Listener {
     private static boolean isBddLoggingTurnedOn = false;
@@ -24,6 +23,16 @@ public class BddLogging extends Listener {
     public void addListener() {
         if (!isBddLoggingTurnedOn) {
             Anchor.CLICKING.addListener((x) -> System.out.printf("clicking %s%n", x.getComponent().getElementName()));
+            Button.CLICKING.addListener((x) -> System.out.printf("clicking %s%n", x.getComponent().getElementName()));
+            CheckBox.CHECKING.addListener((x) -> System.out.printf("checking %s%n", x.getComponent().getElementName()));
+            CheckBox.UNCHECKING.addListener((x) -> System.out.printf("unchecking %s%n", x.getComponent().getElementName()));
+            ColorInput.SETTING_COLOR.addListener((x) -> System.out.printf("setting '%s' in %s%n", x.getActionValue(), x.getComponent().getElementName()));
+            DateInput.SETTING_DATE.addListener((x) -> System.out.printf("setting '%s' in %s%n", x.getActionValue(), x.getComponent().getElementName()));
+            DateTimeInput.SETTING_TIME.addListener((x) -> System.out.printf("setting '%s' in %s%n", x.getActionValue(), x.getComponent().getElementName()));
+            EmailInput.SETTING_EMAIL.addListener((x) -> System.out.printf("typing '%s' in %s%n", x.getActionValue(), x.getComponent().getElementName()));
+            FileInput.UPLOADING.addListener((x) -> System.out.printf("uploading '%s' to %s%n", x.getActionValue(), x.getComponent().getElementName()));
+            Reset.CLICKING.addListener((x) -> System.out.printf("clicking %s%n", x.getComponent().getElementName()));
+            RadioButton.CLICKING.addListener((x) -> System.out.printf("clicking %s%n", x.getComponent().getElementName()));
             WebComponent.VALIDATED_ATTRIBUTE.addListener((x) -> System.out.println(x.getMessage()));
             isBddLoggingTurnedOn = true;
         }

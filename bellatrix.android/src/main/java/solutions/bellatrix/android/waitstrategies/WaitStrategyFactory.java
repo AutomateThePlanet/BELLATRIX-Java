@@ -13,9 +13,9 @@
 
 package solutions.bellatrix.android.waitstrategies;
 
-import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.android.configuration.AndroidSettings;
 import solutions.bellatrix.android.configuration.TimeoutSettings;
+import solutions.bellatrix.core.configuration.ConfigurationService;
 
 public class WaitStrategyFactory {
     private final TimeoutSettings timeoutSettings;

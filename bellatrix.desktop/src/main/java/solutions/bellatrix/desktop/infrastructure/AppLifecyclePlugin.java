@@ -126,7 +126,7 @@ public class AppLifecyclePlugin extends Plugin {
     }
 
     private AppConfiguration getExecutionAppMethodLevel(Method memberInfo) {
-        var executionAppAnnotation = (ExecutionApp) memberInfo.getDeclaredAnnotation(ExecutionApp.class);
+        var executionAppAnnotation = (ExecutionApp)memberInfo.getDeclaredAnnotation(ExecutionApp.class);
         if (executionAppAnnotation == null) {
             return null;
         }
@@ -135,7 +135,7 @@ public class AppLifecyclePlugin extends Plugin {
     }
 
     private AppConfiguration getExecutionAppClassLevel(Class<?> type) {
-        var executionAppAnnotation = (ExecutionApp) type.getDeclaredAnnotation(ExecutionApp.class);
+        var executionAppAnnotation = (ExecutionApp)type.getDeclaredAnnotation(ExecutionApp.class);
         if (executionAppAnnotation == null) {
             var defaultAppPath = ConfigurationService.get(DesktopSettings.class).getDefaultAppPath();
             defaultAppPath = UserHomePathNormalizer.normalizePath(defaultAppPath);

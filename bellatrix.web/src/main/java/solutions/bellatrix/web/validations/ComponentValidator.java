@@ -17,9 +17,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.SearchContext;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.Assert;
 import solutions.bellatrix.core.configuration.ConfigurationService;
-import solutions.bellatrix.core.utilities.DebugInformation;
 import solutions.bellatrix.core.utilities.Log;
 import solutions.bellatrix.web.components.ComponentActionEventArgs;
 import solutions.bellatrix.web.components.WebComponent;
@@ -64,22 +62,22 @@ public class ComponentValidator {
     }
 
     public void defaultValidateAttributeContains(WebComponent component, String property, String value, String attributeName) {
-        waitUntil((d) -> property.strip().contains(value), String.format("The %s (%s)'s %s should contain '%s' but was '%s'.", component.getComponentClass().getSimpleName(), component.getFindStrategy(), attributeName, value, property), component, attributeName,  value, property, "contain");
+        waitUntil((d) -> property.strip().contains(value), String.format("The %s (%s)'s %s should contain '%s' but was '%s'.", component.getComponentClass().getSimpleName(), component.getFindStrategy(), attributeName, value, property), component, attributeName, value, property, "contain");
         WebComponent.VALIDATED_ATTRIBUTE.broadcast(new ComponentActionEventArgs(component, value, String.format("validate %s (%s) %s contains '%s'", component.getComponentClass().getSimpleName(), component.getFindStrategy(), attributeName, value)));
     }
 
     public void defaultValidateAttributeNotContains(WebComponent component, String property, String value, String attributeName) {
-        waitUntil((d) -> !property.strip().contains(value), String.format("The %s (%s)'s %s shouldn't contain '%s' but was '%s'.", component.getComponentClass().getSimpleName(), component.getFindStrategy(), attributeName, value, property), component, attributeName,  value, property, "not contain");
+        waitUntil((d) -> !property.strip().contains(value), String.format("The %s (%s)'s %s shouldn't contain '%s' but was '%s'.", component.getComponentClass().getSimpleName(), component.getFindStrategy(), attributeName, value, property), component, attributeName, value, property, "not contain");
         WebComponent.VALIDATED_ATTRIBUTE.broadcast(new ComponentActionEventArgs(component, value, String.format("validate %s (%s) %s doesn't contain '%s'", component.getComponentClass().getSimpleName(), component.getFindStrategy(), attributeName, value)));
     }
 
     public void defaultValidateAttributeTrue(WebComponent component, boolean property, String attributeName) {
-        waitUntil((d) -> property, String.format("The %s (%s) should be '%s' but wasn't.", component.getComponentClass().getSimpleName(), component.getFindStrategy(), attributeName), component, attributeName,  "true", "false", "be");
+        waitUntil((d) -> property, String.format("The %s (%s) should be '%s' but wasn't.", component.getComponentClass().getSimpleName(), component.getFindStrategy(), attributeName), component, attributeName, "true", "false", "be");
         WebComponent.VALIDATED_ATTRIBUTE.broadcast(new ComponentActionEventArgs(component, null, String.format("validate %s (%s) is %s", component.getComponentClass().getSimpleName(), component.getFindStrategy(), attributeName)));
     }
 
     public void defaultValidateAttributeFalse(WebComponent component, boolean property, String attributeName) {
-        waitUntil((d) -> !property, String.format("The %s (%s) should be '%s' but was.", component.getComponentClass().getSimpleName(), component.getFindStrategy(), attributeName), component, attributeName,  "false", "true", "be");
+        waitUntil((d) -> !property, String.format("The %s (%s) should be '%s' but was.", component.getComponentClass().getSimpleName(), component.getFindStrategy(), attributeName), component, attributeName, "false", "true", "be");
         WebComponent.VALIDATED_ATTRIBUTE.broadcast(new ComponentActionEventArgs(component, null, String.format("validate %s (%s) not %s", component.getComponentClass().getSimpleName(), component.getFindStrategy(), attributeName)));
     }
 

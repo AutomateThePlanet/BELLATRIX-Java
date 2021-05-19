@@ -15,7 +15,9 @@ package solutions.bellatrix.core.plugins.testng;
 
 import org.testng.ITestResult;
 import org.testng.annotations.*;
-import solutions.bellatrix.core.plugins.*;
+import solutions.bellatrix.core.plugins.PluginExecutionEngine;
+import solutions.bellatrix.core.plugins.TestResult;
+import solutions.bellatrix.core.plugins.UsesPlugins;
 import sun.misc.Unsafe;
 
 import java.lang.reflect.Field;
@@ -30,7 +32,7 @@ public class BaseTest extends UsesPlugins {
         try {
             Field theUnsafe = Unsafe.class.getDeclaredField("theUnsafe");
             theUnsafe.setAccessible(true);
-            Unsafe u = (Unsafe) theUnsafe.get(null);
+            Unsafe u = (Unsafe)theUnsafe.get(null);
 
             Class<?> cls = Class.forName("jdk.internal.module.IllegalAccessLogger");
             Field logger = cls.getDeclaredField("logger");

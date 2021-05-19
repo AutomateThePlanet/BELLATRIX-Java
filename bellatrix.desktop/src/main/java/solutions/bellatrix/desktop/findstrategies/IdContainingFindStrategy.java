@@ -22,8 +22,7 @@ import java.util.List;
 public class IdContainingFindStrategy extends FindStrategy {
     private final String XPATH_CONTAINING_EXPRESSION = "//*[contains(@id, '%s')]";
 
-    public IdContainingFindStrategy(String value)
-    {
+    public IdContainingFindStrategy(String value) {
         super(value);
     }
 

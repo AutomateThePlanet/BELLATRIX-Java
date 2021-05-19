@@ -24,7 +24,7 @@ public class JavaScriptService extends WebService {
 
     public JavaScriptService() {
         super();
-        javascriptExecutor = (JavascriptExecutor) getWrappedDriver();
+        javascriptExecutor = (JavascriptExecutor)getWrappedDriver();
     }
 
     public Object execute(String script) {
@@ -47,7 +47,7 @@ public class JavaScriptService extends WebService {
     public String execute(String script, Object... args) {
         try {
             var result = (String)javascriptExecutor.executeScript(script, args);
-            return result ;
+            return result;
         } catch (Exception ex) {
             DebugInformation.printStackTrace(ex);
             return "";

@@ -28,7 +28,7 @@ public interface ComponentSelected extends Component {
     default void validateIsSelected() {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeTrue", AndroidComponent.class, boolean.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (AndroidComponent) this, isSelected(), "selected");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (AndroidComponent)this, isSelected(), "selected");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -38,7 +38,7 @@ public interface ComponentSelected extends Component {
     default void validateNotSelected() {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeFalse", AndroidComponent.class, boolean.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (AndroidComponent) this, isSelected(), "selected");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (AndroidComponent)this, isSelected(), "selected");
         } catch (
                 InvocationTargetException e) {
             throw e.getCause();

@@ -5,7 +5,7 @@ import org.jetbrains.annotations.NotNull;
 public class Log {
     static private final Object lock = new Object();
 
-    public static void info(@NotNull String format, Object ... args) {
+    public static void info(@NotNull String format, Object... args) {
         Thread waitThread = new Thread(Log::staticWait);
         Thread printThread = new Thread(() -> {
             String info = String.format(format, args);
@@ -15,7 +15,7 @@ public class Log {
         waitThread.start();
     }
 
-    public static void error(@NotNull String format, Object ... args) {
+    public static void error(@NotNull String format, Object... args) {
         Thread waitThread = new Thread(Log::staticWait);
         Thread printThread = new Thread(() -> {
             String error = String.format(format, args);

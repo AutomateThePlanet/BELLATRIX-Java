@@ -28,7 +28,7 @@ public interface ComponentHtmlClass extends Component {
     default void validateClassIs(String value) {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIs", WebComponent.class, String.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getHtmlClass(), value, "class");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getHtmlClass(), value, "class");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -38,7 +38,7 @@ public interface ComponentHtmlClass extends Component {
     default void validateClassIsSet() {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIsSet", WebComponent.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getHtmlClass(), "class");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getHtmlClass(), "class");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -48,7 +48,7 @@ public interface ComponentHtmlClass extends Component {
     default void validateClassNotSet() {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeNotSet", WebComponent.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getHtmlClass(), "class");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getHtmlClass(), "class");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -58,7 +58,7 @@ public interface ComponentHtmlClass extends Component {
     default void validateClassContains(String value) {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeContains", WebComponent.class, String.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getHtmlClass(), value, "class");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getHtmlClass(), value, "class");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -68,7 +68,7 @@ public interface ComponentHtmlClass extends Component {
     default void validateClassNotContains(String value) {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeNotContains", WebComponent.class, String.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getHtmlClass(), value, "class");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getHtmlClass(), value, "class");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }

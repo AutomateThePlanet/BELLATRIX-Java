@@ -31,8 +31,7 @@ public class AppService extends MobileService {
             boolean stopApp) {
         try {
             getWrappedAndroidDriver().hideKeyboard();
-        }
-        catch (Exception ignore) {}
+        } catch (Exception ignore) {}
         var activity = new Activity(appPackage, appActivity);
         activity.setAppWaitActivity(appWaitActivity);
         activity.setAppWaitPackage(appWaitPackage);
@@ -40,12 +39,10 @@ public class AppService extends MobileService {
         getWrappedAndroidDriver().startActivity(activity);
     }
 
-    public void startActivityWithIntent(String appPackage, String appActivity, String intentAction, String appWaitPackage, String appWaitActivity, String intentCategory, String intentFlags, String intentOptionalArgs, boolean stopApp)
-    {
+    public void startActivityWithIntent(String appPackage, String appActivity, String intentAction, String appWaitPackage, String appWaitActivity, String intentCategory, String intentFlags, String intentOptionalArgs, boolean stopApp) {
         try {
             getWrappedAndroidDriver().hideKeyboard();
-        }
-        catch (Exception ignore) {}
+        } catch (Exception ignore) {}
         var activity = new Activity(appPackage, appActivity);
         activity.setAppWaitActivity(appWaitActivity);
         activity.setAppWaitPackage(appWaitPackage);
@@ -80,8 +77,7 @@ public class AppService extends MobileService {
         getWrappedAndroidDriver().resetApp();
     }
 
-    public void installApp(String appPath)
-    {
+    public void installApp(String appPath) {
         if (RuntimeInformation.IS_MAC) {
             appPath = appPath.replace('\\', '/');
         }
@@ -96,8 +92,7 @@ public class AppService extends MobileService {
     public boolean isAppInstalled(String bundleId) {
         try {
             return getWrappedAndroidDriver().isAppInstalled(bundleId);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             return false;
         }
     }

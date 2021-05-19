@@ -28,7 +28,7 @@ public interface ComponentStep extends Component {
     default void validateStepIsSet() {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeNotNull", WebComponent.class, Object.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getStep(), "step");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getStep(), "step");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -38,7 +38,7 @@ public interface ComponentStep extends Component {
     default void validateStepNotSet() {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIsNull", WebComponent.class, Object.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getStep(), "step");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getStep(), "step");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -48,7 +48,7 @@ public interface ComponentStep extends Component {
     default void validateStepIs(Number value) {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIs", WebComponent.class, Number.class, Number.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getStep(), value, "step");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getStep(), value, "step");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }

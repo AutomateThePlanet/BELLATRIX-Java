@@ -30,7 +30,7 @@ public class CheckBox extends WebComponent implements ComponentDisabled, Compone
     }
 
     public void check() {
-         defaultCheck(CHECKING, CHECKED);
+        defaultCheck(CHECKING, CHECKED);
     }
 
     public void uncheck() {

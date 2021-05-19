@@ -28,7 +28,7 @@ public interface ComponentHeight extends Component {
     default void validateHeightIsSet() {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeNotNull", WebComponent.class, Object.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getHeight(), "height");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getHeight(), "height");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -38,7 +38,7 @@ public interface ComponentHeight extends Component {
     default void validateHeightNotSet() {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIsNull", WebComponent.class, Object.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getHeight(), "height");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getHeight(), "height");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -48,7 +48,7 @@ public interface ComponentHeight extends Component {
     default void validateHeightIs(int value) {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIs", WebComponent.class, Number.class, Number.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getHeight(), value, "height");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getHeight(), value, "height");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }

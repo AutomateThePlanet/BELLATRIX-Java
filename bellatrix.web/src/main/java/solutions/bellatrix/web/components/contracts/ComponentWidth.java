@@ -28,7 +28,7 @@ public interface ComponentWidth extends Component {
     default void validateWidthIsSet() {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeNotNull", WebComponent.class, Object.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getWidth(), "width");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getWidth(), "width");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -38,7 +38,7 @@ public interface ComponentWidth extends Component {
     default void validateWidthNotSet() {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIsNull", WebComponent.class, Object.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getWidth(), "width");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getWidth(), "width");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -48,7 +48,7 @@ public interface ComponentWidth extends Component {
     default void validateWidthIs(int value) {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIs", WebComponent.class, Number.class, Number.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getWidth(), value, "width");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getWidth(), value, "width");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }

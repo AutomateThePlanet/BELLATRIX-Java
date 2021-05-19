@@ -28,7 +28,7 @@ public interface ComponentLang extends Component {
     default void validateLangIs(String value) {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIs", WebComponent.class, String.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getLang(), value, "lang");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getLang(), value, "lang");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -38,7 +38,7 @@ public interface ComponentLang extends Component {
     default void validateLangIsSet() {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIsSet", WebComponent.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getLang(), "lang");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getLang(), "lang");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -48,7 +48,7 @@ public interface ComponentLang extends Component {
     default void validateLangNotSet() {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeNotSet", WebComponent.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getLang(), "lang");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getLang(), "lang");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }

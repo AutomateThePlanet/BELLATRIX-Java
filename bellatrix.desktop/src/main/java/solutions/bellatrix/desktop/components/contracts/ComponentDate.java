@@ -28,7 +28,7 @@ public interface ComponentDate extends Component {
     default void validateDateIs(String value) {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIs", DesktopComponent.class, String.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (DesktopComponent) this, getDate(), value, "date");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (DesktopComponent)this, getDate(), value, "date");
         } catch (
                 InvocationTargetException e) {
             throw e.getCause();
@@ -39,7 +39,7 @@ public interface ComponentDate extends Component {
     default void validateDateContains(String value) {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeContains", DesktopComponent.class, String.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (DesktopComponent) this, getDate(), value, "date");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (DesktopComponent)this, getDate(), value, "date");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -49,7 +49,7 @@ public interface ComponentDate extends Component {
     default void validateDateNotContains(String value) {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeNotContains", DesktopComponent.class, String.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (DesktopComponent) this, getDate(), value, "date");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (DesktopComponent)this, getDate(), value, "date");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }

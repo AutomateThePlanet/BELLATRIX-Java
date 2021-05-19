@@ -28,7 +28,7 @@ public interface ComponentMin extends Component {
     default void validateMinIsSet() {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeNotNull", WebComponent.class, Object.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getMin(), "min");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getMin(), "min");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -38,7 +38,7 @@ public interface ComponentMin extends Component {
     default void validateMinNotSet() {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIsNull", WebComponent.class, Object.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getMin(), "min");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getMin(), "min");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -48,7 +48,7 @@ public interface ComponentMin extends Component {
     default void validateMinIs(Number value) {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIs", WebComponent.class, Number.class, Number.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getMin(), value, "min");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getMin(), value, "min");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }

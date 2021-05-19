@@ -28,7 +28,7 @@ public interface ComponentSpellCheck extends Component {
     default void validateSpellCheckOn() {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeTrue", WebComponent.class, boolean.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, isSpellCheck(), "spellcheck");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, isSpellCheck(), "spellcheck");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -38,7 +38,7 @@ public interface ComponentSpellCheck extends Component {
     default void validateSpellCheckOff() {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeFalse", WebComponent.class, boolean.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, isSpellCheck(), "spellcheck");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, isSpellCheck(), "spellcheck");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }

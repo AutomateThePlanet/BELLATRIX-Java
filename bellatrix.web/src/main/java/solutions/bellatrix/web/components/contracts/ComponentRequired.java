@@ -28,7 +28,7 @@ public interface ComponentRequired extends Component {
     default void validateIsRequired() {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeTrue", WebComponent.class, boolean.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, isRequired(), "required");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, isRequired(), "required");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -38,7 +38,7 @@ public interface ComponentRequired extends Component {
     default void validateNotRequired() {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeFalse", WebComponent.class, boolean.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, isRequired(), "required");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, isRequired(), "required");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }

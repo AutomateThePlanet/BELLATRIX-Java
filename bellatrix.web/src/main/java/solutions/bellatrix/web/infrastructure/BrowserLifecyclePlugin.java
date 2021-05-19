@@ -125,7 +125,7 @@ public class BrowserLifecyclePlugin extends Plugin {
     }
 
     private BrowserConfiguration getExecutionBrowserMethodLevel(Method memberInfo) {
-        var executionBrowserAnnotation = (ExecutionBrowser) memberInfo.getDeclaredAnnotation(ExecutionBrowser.class);
+        var executionBrowserAnnotation = (ExecutionBrowser)memberInfo.getDeclaredAnnotation(ExecutionBrowser.class);
         if (executionBrowserAnnotation == null) {
             return null;
         }
@@ -134,7 +134,7 @@ public class BrowserLifecyclePlugin extends Plugin {
     }
 
     private BrowserConfiguration getExecutionBrowserClassLevel(Class<?> type) {
-        var executionBrowserAnnotation = (ExecutionBrowser) type.getDeclaredAnnotation(ExecutionBrowser.class);
+        var executionBrowserAnnotation = (ExecutionBrowser)type.getDeclaredAnnotation(ExecutionBrowser.class);
         if (executionBrowserAnnotation == null) {
             var defaultBrowser = Browser.fromText(ConfigurationService.get(WebSettings.class).getDefaultBrowser());
             var defaultLifecycle = Lifecycle.fromText(ConfigurationService.get(WebSettings.class).getDefaultLifeCycle());

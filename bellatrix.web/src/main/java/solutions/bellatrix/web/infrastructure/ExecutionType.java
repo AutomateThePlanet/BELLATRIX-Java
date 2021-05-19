@@ -11,7 +11,9 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.web.infrastructure;public enum ExecutionType {
+package solutions.bellatrix.web.infrastructure;
+
+public enum ExecutionType {
     REGULAR,
     GRID,
     SAUCE_LABS,

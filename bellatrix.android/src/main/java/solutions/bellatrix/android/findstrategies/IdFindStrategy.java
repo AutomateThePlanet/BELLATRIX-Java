@@ -21,8 +21,7 @@ import java.util.List;
 public class IdFindStrategy extends FindStrategy {
     private final String ID_EXPRESSION = "new UiScrollable(new UiSelector()).scrollIntoView(new UiSelector().resourceId(\"%s\"));";
 
-    public IdFindStrategy(String value)
-    {
+    public IdFindStrategy(String value) {
         super(value);
     }
 

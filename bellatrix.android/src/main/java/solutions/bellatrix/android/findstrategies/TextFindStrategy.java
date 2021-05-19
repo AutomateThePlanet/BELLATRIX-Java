@@ -21,8 +21,7 @@ import java.util.List;
 public class TextFindStrategy extends FindStrategy {
     private final String TEXT_EXPRESSION = "new UiScrollable(new UiSelector()).scrollIntoView(new UiSelector().text(\"%s\"));";
 
-    public TextFindStrategy(String value)
-    {
+    public TextFindStrategy(String value) {
         super(value);
     }
 

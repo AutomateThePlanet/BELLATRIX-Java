@@ -21,8 +21,7 @@ import java.util.List;
 public class ValueContainingFindStrategy extends FindStrategy {
     private final String DESCRIPTION_EXPRESSION = "//*[contains(@value, '%s')]";
 
-    public ValueContainingFindStrategy(String value)
-    {
+    public ValueContainingFindStrategy(String value) {
         super(value);
     }
 

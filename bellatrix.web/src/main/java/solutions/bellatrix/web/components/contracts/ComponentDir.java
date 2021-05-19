@@ -28,7 +28,7 @@ public interface ComponentDir extends Component {
     default void validateDirIs(String value) {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIs", WebComponent.class, String.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getDir(), value, "dir");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getDir(), value, "dir");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -38,7 +38,7 @@ public interface ComponentDir extends Component {
     default void validateDirIsSet() {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIsSet", WebComponent.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getDir(), "dir");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getDir(), "dir");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -48,7 +48,7 @@ public interface ComponentDir extends Component {
     default void validateDirNotSet() {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeNotSet", WebComponent.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getDir(), "dir");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getDir(), "dir");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }

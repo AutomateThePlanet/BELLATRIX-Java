@@ -32,7 +32,7 @@ public class DesktopVideoPlugin extends VideoPlugin {
         saveLocation = UserHomePathNormalizer.normalizePath(saveLocation);
 
         var directory = new File(saveLocation);
-        if (! directory.exists()){
+        if (!directory.exists()) {
             directory.mkdirs();
         }
 

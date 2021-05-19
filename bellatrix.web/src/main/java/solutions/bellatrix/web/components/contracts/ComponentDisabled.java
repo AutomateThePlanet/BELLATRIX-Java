@@ -28,7 +28,7 @@ public interface ComponentDisabled extends Component {
     default void validateIsDisabled(String value) {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeTrue", WebComponent.class, boolean.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, isDisabled(), "disabled");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, isDisabled(), "disabled");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -38,7 +38,7 @@ public interface ComponentDisabled extends Component {
     default void validateNotDisabled() {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeFalse", WebComponent.class, boolean.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, isDisabled(), "disabled");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, isDisabled(), "disabled");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }

@@ -28,7 +28,7 @@ public interface ComponentAlt extends Component {
     default void validateAltIs(String value) {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIs", WebComponent.class, String.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getAlt(), value, "alt");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getAlt(), value, "alt");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -38,7 +38,7 @@ public interface ComponentAlt extends Component {
     default void validateAltIsSet() {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIsSet", WebComponent.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getAlt(), "alt");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getAlt(), "alt");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -48,7 +48,7 @@ public interface ComponentAlt extends Component {
     default void validateAltNotSet() {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeNotSet", WebComponent.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getAlt(), "alt");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getAlt(), "alt");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }

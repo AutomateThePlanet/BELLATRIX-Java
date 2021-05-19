@@ -21,8 +21,7 @@ import java.util.List;
 public class ClassFindStrategy extends FindStrategy {
     private final String CLASS_EXPRESSION = "new UiScrollable(new UiSelector()).scrollIntoView(new UiSelector().className(\"%s\"));";
 
-    public ClassFindStrategy(String value)
-    {
+    public ClassFindStrategy(String value) {
         super(value);
     }
 

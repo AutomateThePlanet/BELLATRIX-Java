@@ -28,7 +28,7 @@ public interface ComponentTitle extends Component {
     default void validateTitleIs(String value) {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIs", WebComponent.class, String.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getTitle(), value, "title");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getTitle(), value, "title");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -38,7 +38,7 @@ public interface ComponentTitle extends Component {
     default void validateTitleIsSet() {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIsSet", WebComponent.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getTitle(), "title");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getTitle(), "title");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -48,7 +48,7 @@ public interface ComponentTitle extends Component {
     default void validateTitleNotSet() {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeNotSet", WebComponent.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getTitle(), "title");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getTitle(), "title");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -58,7 +58,7 @@ public interface ComponentTitle extends Component {
     default void validateTitleContains(String value) {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeContains", WebComponent.class, String.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getTitle(), value, "title");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getTitle(), value, "title");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -68,7 +68,7 @@ public interface ComponentTitle extends Component {
     default void validateTitleNotContains(String value) {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeNotContains", WebComponent.class, String.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getTitle(), value, "title");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getTitle(), value, "title");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }

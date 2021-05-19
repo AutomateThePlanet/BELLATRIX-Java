@@ -34,76 +34,76 @@ public final class PluginExecutionEngine {
 
     @SuppressWarnings("rawtypes")
     public static void preBeforeClass(Class type) {
-        for (var currentObserver: plugins) {
+        for (var currentObserver : plugins) {
             currentObserver.preBeforeClass(type);
         }
     }
 
     @SuppressWarnings("rawtypes")
     public static void postBeforeClass(Class type) {
-        for (var currentObserver: plugins) {
+        for (var currentObserver : plugins) {
             currentObserver.postBeforeClass(type);
         }
     }
 
     public static void beforeClassFailed(Exception e) {
-        for (var currentObserver: plugins) {
+        for (var currentObserver : plugins) {
             currentObserver.beforeClassFailed(e);
         }
     }
 
     public static void preBeforeTest(TestResult result, Method memberInfo) {
-        for (var currentObserver: plugins) {
+        for (var currentObserver : plugins) {
             currentObserver.preBeforeTest(result, memberInfo);
         }
     }
 
     public static void postBeforeTest(TestResult result, Method memberInfo) {
-        for (var currentObserver: plugins) {
+        for (var currentObserver : plugins) {
             currentObserver.postBeforeTest(result, memberInfo);
         }
     }
 
     public static void beforeTestFailed(Exception e) {
-        for (var currentObserver: plugins) {
+        for (var currentObserver : plugins) {
             currentObserver.beforeTestFailed(e);
         }
     }
 
     public static void preAfterTest(TestResult result, Method memberInfo) {
-        for (var currentObserver: plugins) {
+        for (var currentObserver : plugins) {
             currentObserver.preAfterTest(result, memberInfo);
         }
     }
 
     public static void postAfterTest(TestResult result, Method memberInfo) {
-        for (var currentObserver: plugins) {
+        for (var currentObserver : plugins) {
             currentObserver.postAfterTest(result, memberInfo);
         }
     }
 
     public static void afterTestFailed(Exception e) {
-        for (var currentObserver: plugins) {
+        for (var currentObserver : plugins) {
             currentObserver.afterTestFailed(e);
         }
     }
 
     @SuppressWarnings("rawtypes")
     public static void preAfterClass(Class type) {
-        for (var currentObserver: plugins) {
+        for (var currentObserver : plugins) {
             currentObserver.preAfterClass(type);
         }
     }
 
     @SuppressWarnings("rawtypes")
     public static void postAfterClass(Class type) {
-        for (var currentObserver: plugins) {
+        for (var currentObserver : plugins) {
             currentObserver.postAfterClass(type);
         }
     }
 
     public static void afterClassFailed(Exception e) {
-        for (var currentObserver: plugins) {
+        for (var currentObserver : plugins) {
             currentObserver.afterClassFailed(e);
         }
     }

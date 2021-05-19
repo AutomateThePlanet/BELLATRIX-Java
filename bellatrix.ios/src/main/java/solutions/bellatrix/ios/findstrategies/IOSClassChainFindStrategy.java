@@ -19,8 +19,7 @@ import io.appium.java_client.ios.IOSDriver;
 import java.util.List;
 
 public class IOSClassChainFindStrategy extends FindStrategy {
-    public IOSClassChainFindStrategy(String value)
-    {
+    public IOSClassChainFindStrategy(String value) {
         super(value);
     }
 

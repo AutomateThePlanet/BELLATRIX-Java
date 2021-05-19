@@ -21,8 +21,7 @@ import java.util.List;
 public class DescriptionFindStrategy extends FindStrategy {
     private final String DESCRIPTION_EXPRESSION = "new UiScrollable(new UiSelector()).scrollIntoView(new UiSelector().description(\"%s\"));";
 
-    public DescriptionFindStrategy(String value)
-    {
+    public DescriptionFindStrategy(String value) {
         super(value);
     }
 

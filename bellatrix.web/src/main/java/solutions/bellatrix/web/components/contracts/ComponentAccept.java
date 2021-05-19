@@ -28,7 +28,7 @@ public interface ComponentAccept extends Component {
     default void validateAcceptIs(String value) {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIs", WebComponent.class, String.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getAccept(), value, "accept");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getAccept(), value, "accept");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -38,7 +38,7 @@ public interface ComponentAccept extends Component {
     default void validateAcceptIsSet() {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIsSet", WebComponent.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getAccept(), "accept");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getAccept(), "accept");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -48,7 +48,7 @@ public interface ComponentAccept extends Component {
     default void validateAcceptNotSet() {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeNotSet", WebComponent.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getAccept(), "accept");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getAccept(), "accept");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }

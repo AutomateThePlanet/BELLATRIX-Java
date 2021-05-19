@@ -19,8 +19,7 @@ import io.appium.java_client.ios.IOSDriver;
 import java.util.List;
 
 public class IdFindStrategy extends FindStrategy {
-    public IdFindStrategy(String value)
-    {
+    public IdFindStrategy(String value) {
         super(value);
     }
 

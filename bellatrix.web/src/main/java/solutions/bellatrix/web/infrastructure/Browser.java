@@ -28,7 +28,7 @@ public enum Browser {
 
     private String value;
 
-    Browser(String value){
+    Browser(String value) {
         this.value = value;
     }
 

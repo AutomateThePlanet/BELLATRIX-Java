@@ -15,6 +15,7 @@ package layout;
 
 public class LayoutValidationsBddLogging {
     private static boolean isBddLoggingTurnedOn = false;
+
     public static void addPlugin() {
         if (!isBddLoggingTurnedOn) {
             FinishValidationBuilder.VALIDATED_COMPONENT_LAYOUT.addListener((x) -> System.out.println(x.getMessage()));

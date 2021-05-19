@@ -20,8 +20,7 @@ import org.openqa.selenium.WebElement;
 import java.util.List;
 
 public class ClassFindStrategy extends FindStrategy {
-    public ClassFindStrategy(String value)
-    {
+    public ClassFindStrategy(String value) {
         super(value);
     }
 

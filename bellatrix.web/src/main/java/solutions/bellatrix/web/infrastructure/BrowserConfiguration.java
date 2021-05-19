@@ -39,12 +39,15 @@ public class BrowserConfiguration {
     public int getWidth() {
         return width;
     }
+
     public int getHeight() {
         return height;
     }
+
     public int getVersion() {
         return version;
     }
+
     public Platform getPlatform() {
         return platform;
     }

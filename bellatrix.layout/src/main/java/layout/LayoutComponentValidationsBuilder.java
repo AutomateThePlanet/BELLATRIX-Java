@@ -167,7 +167,7 @@ public abstract class LayoutComponentValidationsBuilder implements LayoutCompone
         var comparingComponentsNames = getLayoutComponentsNames(layoutComponents);
         Predicate combinedPredicate = (s) -> true;
         Arrays.stream(layoutComponents).forEach(c -> {
-            var bottomY = c.getLocation().getY()+ c.getSize().getHeight() / 2;
+            var bottomY = c.getLocation().getY() + c.getSize().getHeight() / 2;
             combinedPredicate.and((r) -> baseLineTopY.equals(bottomY));
         });
 
@@ -194,7 +194,7 @@ public abstract class LayoutComponentValidationsBuilder implements LayoutCompone
         var comparingComponentsNames = getLayoutComponentsNames(layoutComponents);
         Predicate combinedPredicate = (s) -> true;
         Arrays.stream(layoutComponents).forEach(c -> {
-            var bottomY = c.getLocation().getY()+ c.getSize().getHeight();
+            var bottomY = c.getLocation().getY() + c.getSize().getHeight();
             combinedPredicate.and((r) -> baseLineBottomY.equals(bottomY));
         });
 

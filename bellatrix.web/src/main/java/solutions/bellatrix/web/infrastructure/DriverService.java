@@ -224,7 +224,7 @@ public class DriverService {
                 driver = new OperaDriver(operaOptions);
             }
             case SAFARI -> {
-                System.setProperty("webdriver.safari.driver","/usr/bin/safaridriver");
+                System.setProperty("webdriver.safari.driver", "/usr/bin/safaridriver");
                 var safariOptions = new SafariOptions();
                 addDriverOptions(safariOptions);
                 if (shouldCaptureHttpTraffic) safariOptions.setProxy(proxyConfig);
@@ -243,10 +243,10 @@ public class DriverService {
     }
 
     private static <TOption extends MutableCapabilities> void addGridOptions(TOption options, GridSettings gridSettings) {
-        for (var entry:gridSettings.getArguments()) {
-            for (var c:entry.entrySet()) {
+        for (var entry : gridSettings.getArguments()) {
+            for (var c : entry.entrySet()) {
                 if (c.getKey().startsWith("env_")) {
-                    var envValue = System.getProperty(c.getKey().replace("env_", "")) ;
+                    var envValue = System.getProperty(c.getKey().replace("env_", ""));
                     options.setCapability(c.getKey(), envValue);
                 } else {
                     options.setCapability(c.getKey(), c.getValue());
@@ -256,7 +256,7 @@ public class DriverService {
     }
 
     private static <TOption extends MutableCapabilities> void addDriverOptions(TOption chromeOptions) {
-        for (var optionKey:browserConfiguration.get().driverOptions.keySet()) {
+        for (var optionKey : browserConfiguration.get().driverOptions.keySet()) {
             chromeOptions.setCapability(optionKey, browserConfiguration.get().driverOptions.get(optionKey));
         }
     }

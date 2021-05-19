@@ -30,6 +30,6 @@ public class TempFileWriter {
         try (var bw = new BufferedWriter(new FileWriter(tempFile.toFile()))) {
             bw.write(fileContent);
         }
-        return  tempFile.toFile();
+        return tempFile.toFile();
     }
 }

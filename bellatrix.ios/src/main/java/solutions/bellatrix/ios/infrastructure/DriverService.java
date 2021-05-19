@@ -116,10 +116,10 @@ public class DriverService {
     }
 
     private static <TOption extends MutableCapabilities> void addGridOptions(TOption options, GridSettings gridSettings) {
-        for (var entry:gridSettings.getArguments()) {
-            for (var c:entry.entrySet()) {
+        for (var entry : gridSettings.getArguments()) {
+            for (var c : entry.entrySet()) {
                 if (c.getKey().startsWith("env_")) {
-                    var envValue = System.getProperty(c.getKey().replace("env_", "")) ;
+                    var envValue = System.getProperty(c.getKey().replace("env_", ""));
                     options.setCapability(c.getKey(), envValue);
                 } else {
                     options.setCapability(c.getKey(), c.getValue());
@@ -129,7 +129,7 @@ public class DriverService {
     }
 
     private static <TOption extends MutableCapabilities> void addDriverOptions(TOption chromeOptions) {
-        for (var optionKey:appConfiguration.get().appiumOptions.keySet()) {
+        for (var optionKey : appConfiguration.get().appiumOptions.keySet()) {
             chromeOptions.setCapability(optionKey, appConfiguration.get().appiumOptions.get(optionKey));
         }
     }

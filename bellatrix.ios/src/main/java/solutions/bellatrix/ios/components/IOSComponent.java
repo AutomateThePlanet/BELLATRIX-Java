@@ -243,32 +243,31 @@ public class IOSComponent extends LayoutComponentValidationsBuilder implements C
     }
 
     protected MobileElement findElement() {
-      if (waitStrategies.size() == 0) {
-          waitStrategies.add(Wait.to().exist());
-      }
+        if (waitStrategies.size() == 0) {
+            waitStrategies.add(Wait.to().exist());
+        }
 
-      try {
-          for (var waitStrategy:waitStrategies) {
-              componentWaitService.wait(this, waitStrategy);
-          }
+        try {
+            for (var waitStrategy : waitStrategies) {
+                componentWaitService.wait(this, waitStrategy);
+            }
 
-          wrappedElement = findNativeElement();
-          scrollToMakeElementVisible(wrappedElement);
-          addArtificialDelay();
+            wrappedElement = findNativeElement();
+            scrollToMakeElementVisible(wrappedElement);
+            addArtificialDelay();
 
-          waitStrategies.clear();
-      } catch (WebDriverException ex) {
-          DebugInformation.printStackTrace(ex);
-          System.out.printf("%n%nThe element: %n Name: '%s', %n Locator: '%s = %s', %nWas not found on the page or didn't fulfill the specified conditions.%n%n", getComponentClass().getSimpleName(), findStrategy.toString(), findStrategy.getValue());
-      }
+            waitStrategies.clear();
+        } catch (WebDriverException ex) {
+            DebugInformation.printStackTrace(ex);
+            System.out.printf("%n%nThe element: %n Name: '%s', %n Locator: '%s = %s', %nWas not found on the page or didn't fulfill the specified conditions.%n%n", getComponentClass().getSimpleName(), findStrategy.toString(), findStrategy.getValue());
+        }
 
         RETURNING_WRAPPED_ELEMENT.broadcast(new ComponentActionEventArgs(this));
         return wrappedElement;
     }
 
 
-    protected void defaultClick(EventListener<ComponentActionEventArgs> clicking, EventListener<ComponentActionEventArgs> clicked)
-    {
+    protected void defaultClick(EventListener<ComponentActionEventArgs> clicking, EventListener<ComponentActionEventArgs> clicked) {
         clicking.broadcast(new ComponentActionEventArgs(this));
 
         this.toExists().toBeClickable().waitToBe();
@@ -277,24 +276,22 @@ public class IOSComponent extends LayoutComponentValidationsBuilder implements C
         clicked.broadcast(new ComponentActionEventArgs(this));
     }
 
-    protected void defaultCheck(EventListener<ComponentActionEventArgs> checking, EventListener<ComponentActionEventArgs> checked)
-    {
+    protected void defaultCheck(EventListener<ComponentActionEventArgs> checking, EventListener<ComponentActionEventArgs> checked) {
         checking.broadcast(new ComponentActionEventArgs(this));
 
         this.toExists().toBeClickable().waitToBe();
-        if(!this.defaultGetCheckedAttribute()) {
+        if (!this.defaultGetCheckedAttribute()) {
             findElement().click();
         }
 
         checked.broadcast(new ComponentActionEventArgs(this));
     }
 
-    protected void defaultUncheck(EventListener<ComponentActionEventArgs> unchecking, EventListener<ComponentActionEventArgs> unchecked)
-    {
+    protected void defaultUncheck(EventListener<ComponentActionEventArgs> unchecking, EventListener<ComponentActionEventArgs> unchecked) {
         unchecking.broadcast(new ComponentActionEventArgs(this));
 
         this.toExists().toBeClickable().waitToBe();
-        if(this.defaultGetCheckedAttribute()) {
+        if (this.defaultGetCheckedAttribute()) {
             findElement().click();
         }
 
@@ -319,8 +316,7 @@ public class IOSComponent extends LayoutComponentValidationsBuilder implements C
         return Optional.ofNullable(findElement().getText()).orElse("");
     }
 
-    protected void defaultSetText(EventListener<ComponentActionEventArgs> settingValue, EventListener<ComponentActionEventArgs> valueSet, String value)
-    {
+    protected void defaultSetText(EventListener<ComponentActionEventArgs> settingValue, EventListener<ComponentActionEventArgs> valueSet, String value) {
         settingValue.broadcast(new ComponentActionEventArgs(this));
 
         findElement().clear();
@@ -338,8 +334,7 @@ public class IOSComponent extends LayoutComponentValidationsBuilder implements C
     }
 
     private void addArtificialDelay() {
-        if (iOSSettings.getArtificialDelayBeforeAction() != 0)
-        {
+        if (iOSSettings.getArtificialDelayBeforeAction() != 0) {
             try {
                 Thread.sleep(iOSSettings.getArtificialDelayBeforeAction());
             } catch (InterruptedException e) {
@@ -355,8 +350,7 @@ public class IOSComponent extends LayoutComponentValidationsBuilder implements C
         }
     }
 
-    private void scrollToVisible(MobileElement wrappedElement, boolean shouldWait)
-    {
+    private void scrollToVisible(MobileElement wrappedElement, boolean shouldWait) {
         SCROLLING_TO_VISIBLE.broadcast(new ComponentActionEventArgs(this));
         try {
             //            var js = (JavascriptExecutor)driver;
@@ -366,8 +360,7 @@ public class IOSComponent extends LayoutComponentValidationsBuilder implements C
             //            js.executeScript("mobile:swipe", swipe);
             var action = new Actions(wrappedDriver);
             action.moveToElement(wrappedElement).perform();
-            if (shouldWait)
-            {
+            if (shouldWait) {
                 Thread.sleep(500);
                 toExists().waitToBe();
             }

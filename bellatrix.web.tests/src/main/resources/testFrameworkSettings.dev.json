@@ -17,7 +17,6 @@
     "screenshotsSaveLocation": "user.home\\BELLATRIX\\Screenshots",
     "videosOnFailEnabled": "false",
     "videosSaveLocation": "user.home\\BELLATRIX\\Videos",
-
     "timeoutSettings": {
       "elementWaitTimeout": "1",
       "pageLoadTimeout": "30",
@@ -38,68 +37,68 @@
     },
     "gridSettings": [
       {
-        "providerName" : "saucelabs",
-        "url" : "http://ondemand.saucelabs.com:80/wd/hub",
-        "arguments" : [
+        "providerName": "saucelabs",
+        "url": "http://ondemand.saucelabs.com:80/wd/hub",
+        "arguments": [
           {
-            "screenResolution" : "1280x800",
-            "recordVideo" : "true",
-            "recordScreenshots" : "true",
-            "username" : "myUserName",
-            "accessKey" : "myPass",
-            "name" : "bellatrix_run"
+            "screenResolution": "1280x800",
+            "recordVideo": "true",
+            "recordScreenshots": "true",
+            "username": "myUserName",
+            "accessKey": "myPass",
+            "name": "bellatrix_run"
           }
         ]
       },
       {
-        "providerName" : "browserstack",
-        "url" : "http://hub-cloud.browserstack.com/wd/hub/",
-        "arguments" : [
+        "providerName": "browserstack",
+        "url": "http://hub-cloud.browserstack.com/wd/hub/",
+        "arguments": [
           {
-            "resolution" : "1280x800",
-            "browserstack.video" : "true",
-            "browserstack.networkLogs" : "true",
-            "browserstack.debug" : "true",
-            "browserstack.console" : "errors",
-            "browserstack.user" : "myUserName",
-            "browserstack.key" : "myPass",
-            "build" : "bellatrix_run"
+            "resolution": "1280x800",
+            "browserstack.video": "true",
+            "browserstack.networkLogs": "true",
+            "browserstack.debug": "true",
+            "browserstack.console": "errors",
+            "browserstack.user": "myUserName",
+            "browserstack.key": "myPass",
+            "build": "bellatrix_run"
           }
         ]
       },
       {
-        "providerName" : "crossbrowsertesting",
-        "url" : "http://hub.crossbrowsertesting.com:80/wd/hub",
-        "arguments" : [
+        "providerName": "crossbrowsertesting",
+        "url": "http://hub.crossbrowsertesting.com:80/wd/hub",
+        "arguments": [
           {
-            "screen_resolution" : "1280x800",
-            "record_video" : "true",
-            "record_network" : "true",
-            "username" : "myUserName",
-            "password" : "myPass",
-            "name" : "bellatrix_run"
+            "screen_resolution": "1280x800",
+            "record_video": "true",
+            "record_network": "true",
+            "username": "myUserName",
+            "password": "myPass",
+            "name": "bellatrix_run"
           }
         ]
       },
       {
-        "providerName" : "selenoid",
-        "url" : "http://127.0.0.1:4444/wd/hub",
-        "arguments" : [
+        "providerName": "selenoid",
+        "url": "http://127.0.0.1:4444/wd/hub",
+        "arguments": [
           {
-            "screenResolution" : "1280x800",
-            "enableVNC" : "true",
-            "enableVideo" : "true",
-            "enableLog" : "true",
-            "name" : "bellatrix_run"
+            "screenResolution": "1280x800",
+            "enableVNC": "true",
+            "enableVideo": "true",
+            "enableLog": "true",
+            "name": "bellatrix_run"
           }
         ]
       },
       {
-        "providerName" : "grid",
-        "url" : "http://127.0.0.1:4444/wd/hub",
-        "arguments" : [
+        "providerName": "grid",
+        "url": "http://127.0.0.1:4444/wd/hub",
+        "arguments": [
           {
-            "name" : "bellatrix_run"
+            "name": "bellatrix_run"
           }
         ]
       }

@@ -18,7 +18,7 @@ import solutions.bellatrix.ios.services.ComponentCreateService;
 
 import java.lang.reflect.ParameterizedType;
 
-public abstract class AppSection<MapT extends PageMap, AssertionsT extends PageAsserts<MapT>>  {
+public abstract class AppSection<MapT extends PageMap, AssertionsT extends PageAsserts<MapT>> {
     public AppService browser() {
         return new AppService();
     }

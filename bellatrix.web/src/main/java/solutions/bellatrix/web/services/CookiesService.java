@@ -22,8 +22,7 @@ public class CookiesService extends WebService {
         getWrappedDriver().manage().addCookie(new Cookie(cookieName, cookieValue, path));
     }
 
-    public void addCookie(Cookie cookieToAdd)
-    {
+    public void addCookie(Cookie cookieToAdd) {
         getWrappedDriver().manage().addCookie(cookieToAdd);
     }
 

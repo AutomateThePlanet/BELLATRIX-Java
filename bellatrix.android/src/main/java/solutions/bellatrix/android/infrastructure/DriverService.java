@@ -21,10 +21,10 @@ import lombok.SneakyThrows;
 import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.Platform;
 import org.openqa.selenium.remote.DesiredCapabilities;
-import solutions.bellatrix.core.configuration.ConfigurationService;
-import solutions.bellatrix.core.utilities.DebugInformation;
 import solutions.bellatrix.android.configuration.AndroidSettings;
 import solutions.bellatrix.android.configuration.GridSettings;
+import solutions.bellatrix.core.configuration.ConfigurationService;
+import solutions.bellatrix.core.utilities.DebugInformation;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -119,10 +119,10 @@ public class DriverService {
     }
 
     private static <TOption extends MutableCapabilities> void addGridOptions(TOption options, GridSettings gridSettings) {
-        for (var entry:gridSettings.getArguments()) {
-            for (var c:entry.entrySet()) {
+        for (var entry : gridSettings.getArguments()) {
+            for (var c : entry.entrySet()) {
                 if (c.getKey().startsWith("env_")) {
-                    var envValue = System.getProperty(c.getKey().replace("env_", "")) ;
+                    var envValue = System.getProperty(c.getKey().replace("env_", ""));
                     options.setCapability(c.getKey(), envValue);
                 } else {
                     options.setCapability(c.getKey(), c.getValue());
@@ -132,7 +132,7 @@ public class DriverService {
     }
 
     private static <TOption extends MutableCapabilities> void addDriverOptions(TOption chromeOptions) {
-        for (var optionKey:appConfiguration.get().appiumOptions.keySet()) {
+        for (var optionKey : appConfiguration.get().appiumOptions.keySet()) {
             chromeOptions.setCapability(optionKey, appConfiguration.get().appiumOptions.get(optionKey));
         }
     }

@@ -19,8 +19,7 @@ import io.appium.java_client.ios.IOSDriver;
 import java.util.List;
 
 public class IOSNsPredicateFindStrategy extends FindStrategy {
-    public IOSNsPredicateFindStrategy(String value)
-    {
+    public IOSNsPredicateFindStrategy(String value) {
         super(value);
     }
 
