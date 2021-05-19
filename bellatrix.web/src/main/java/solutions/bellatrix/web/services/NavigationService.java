@@ -14,11 +14,11 @@
 package solutions.bellatrix.web.services;
 
 import com.google.common.base.Strings;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.web.configuration.WebSettings;
 
-import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLDecoder;
@@ -36,8 +36,7 @@ public class NavigationService extends WebService {
         getWrappedDriver().navigate().to(url);
     }
 
-    public void toLocalPage(String filePath)
-    {
+    public void toLocalPage(String filePath) {
         URL testAppUrl = Thread.currentThread().getContextClassLoader().getResource(filePath);
         if (testAppUrl != null) {
             to(testAppUrl.toString());
@@ -55,8 +54,8 @@ public class NavigationService extends WebService {
             long sleepInterval = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getSleepInterval();
             var webDriverWait = new WebDriverWait(getWrappedDriver(), waitForPartialTimeout, sleepInterval);
             webDriverWait.until(d -> getWrappedDriver().getCurrentUrl().contains(partialUrl));
-        } catch (Exception ex) {
-//            UrlNotNavigatedEvent?.Invoke(this, new UrlNotNavigatedEventArgs(ex));
+        } catch (TimeoutException ex) {
+            // TODO: UrlNotNavigatedEvent?.Invoke(this, new UrlNotNavigatedEventArgs(ex));
             throw ex;
         }
     }
@@ -70,18 +69,11 @@ public class NavigationService extends WebService {
             return Collections.emptyMap();
         }
         return Arrays.stream(new URL(url).getQuery().split("&"))
-                .map(it -> {
-                    try {
-                        return splitQueryParameter(it);
-                    } catch (UnsupportedEncodingException e) {
-                        e.printStackTrace();
-                    }
-                    return null;
-                })
+                .map(this::splitQueryParameter)
                 .collect(Collectors.groupingBy(AbstractMap.SimpleImmutableEntry::getKey, LinkedHashMap::new, mapping(Map.Entry::getValue, toList())));
     }
 
-    private AbstractMap.SimpleImmutableEntry<String, String> splitQueryParameter(String it) throws UnsupportedEncodingException {
+    private AbstractMap.SimpleImmutableEntry<String, String> splitQueryParameter(String it) {
         final int idx = it.indexOf("=");
         final String key = idx > 0 ? it.substring(0, idx) : it;
         final String value = idx > 0 && it.length() > idx + 1 ? it.substring(idx + 1) : "";

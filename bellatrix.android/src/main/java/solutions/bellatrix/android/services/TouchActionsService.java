@@ -23,7 +23,6 @@ import solutions.bellatrix.android.infrastructure.DriverService;
 
 import java.time.Duration;
 
-@SuppressWarnings("rawtypes")
 public class TouchActionsService extends MobileService {
     private final MultiTouchAction wrappedMultiAction = new MultiTouchAction(DriverService.getWrappedAndroidDriver());
 

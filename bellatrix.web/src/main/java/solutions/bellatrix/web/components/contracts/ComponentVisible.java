@@ -28,7 +28,7 @@ public interface ComponentVisible extends Component {
     default void validateIsVisible() {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeTrue", WebComponent.class, boolean.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, isVisible(), "visible");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, isVisible(), "visible");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -38,7 +38,7 @@ public interface ComponentVisible extends Component {
     default void validateNotVisible() {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeFalse", WebComponent.class, boolean.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, isVisible(), "visible");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, isVisible(), "visible");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }

@@ -30,7 +30,7 @@ public interface ComponentMonth extends Component {
     default void validateMonthIs(String value) {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIs", WebComponent.class, String.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getMonth(), value, "month");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getMonth(), value, "month");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }

@@ -28,7 +28,7 @@ public interface ComponentWrap extends Component {
     default void validateWrapIsSet() {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeNotNull", WebComponent.class, Object.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getWrap(), "wrap");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getWrap(), "wrap");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -38,7 +38,7 @@ public interface ComponentWrap extends Component {
     default void validateWrapNotSet() {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIsNull", WebComponent.class, Object.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getWrap(), "wrap");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getWrap(), "wrap");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -48,7 +48,7 @@ public interface ComponentWrap extends Component {
     default void validateWrapIs(int value) {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIs", WebComponent.class, Number.class, Number.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getWrap(), value, "wrap");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getWrap(), value, "wrap");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }

@@ -20,8 +20,7 @@ import org.openqa.selenium.By;
 import java.util.List;
 
 public class NameFindStrategy extends FindStrategy {
-    public NameFindStrategy(String value)
-    {
+    public NameFindStrategy(String value) {
         super(value);
     }
 

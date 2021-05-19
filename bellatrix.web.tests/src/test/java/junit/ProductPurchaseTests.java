@@ -30,7 +30,7 @@ public class ProductPurchaseTests extends WebTest {
     @Test
     public void completePurchaseSuccessfully_first() {
         app().navigate().to("http://demos.bellatrix.solutions/");
-        var addToCartFalcon9 = app().create().byCss(Anchor.class,"[data-product_id*='28']");
+        var addToCartFalcon9 = app().create().byCss(Anchor.class, "[data-product_id*='28']");
         var blogLink = app().create().by(Anchor.class, TextContains.by("Blog"));
         addToCartFalcon9.click();
         blogLink.above(addToCartFalcon9);
@@ -40,7 +40,7 @@ public class ProductPurchaseTests extends WebTest {
     @Test
     public void completePurchaseSuccessfully_second() {
         app().navigate().to("http://demos.bellatrix.solutions/");
-        var addToCartFalcon9 = app().create().byCss(Anchor.class,"[data-product_id*='28']");
+        var addToCartFalcon9 = app().create().byCss(Anchor.class, "[data-product_id*='28']");
         addToCartFalcon9.click();
     }
 

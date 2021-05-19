@@ -28,7 +28,7 @@ public interface ComponentTime extends Component {
     default void validateTimeIs(String value) {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIs", DesktopComponent.class, String.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (DesktopComponent) this, getTime(), value, "time");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (DesktopComponent)this, getTime(), value, "time");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -38,7 +38,7 @@ public interface ComponentTime extends Component {
     default void validateTimeContains(String value) {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeContains", DesktopComponent.class, String.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (DesktopComponent) this, getTime(), value, "time");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (DesktopComponent)this, getTime(), value, "time");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -48,7 +48,7 @@ public interface ComponentTime extends Component {
     default void validateTimeNotContains(String value) {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeNotContains", DesktopComponent.class, String.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (DesktopComponent) this, getTime(), value, "time");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (DesktopComponent)this, getTime(), value, "time");
         } catch (
                 InvocationTargetException e) {
             throw e.getCause();

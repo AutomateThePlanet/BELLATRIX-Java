@@ -36,6 +36,7 @@ import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.core.plugins.EventListener;
 import solutions.bellatrix.core.utilities.DebugInformation;
 import solutions.bellatrix.core.utilities.InstanceFactory;
+import solutions.bellatrix.core.utilities.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,12 +59,12 @@ public class AndroidComponent extends LayoutComponentValidationsBuilder implemen
     @Getter @Setter private MobileElement parentWrappedElement;
     @Getter @Setter private int elementIndex;
     @Getter @Setter private FindStrategy findStrategy;
-    @Getter private AndroidDriver<MobileElement> wrappedDriver;
-    @Getter protected AppService appService;
-    @Getter protected ComponentCreateService componentCreateService;
-    @Getter protected ComponentWaitService componentWaitService;
-    private List<WaitStrategy> waitStrategies;
-    private AndroidSettings androidSettings;
+    @Getter private final AndroidDriver<MobileElement> wrappedDriver;
+    @Getter protected final AppService appService;
+    @Getter protected final ComponentCreateService componentCreateService;
+    @Getter protected final ComponentWaitService componentWaitService;
+    private final List<WaitStrategy> waitStrategies;
+    private final AndroidSettings androidSettings;
 
     public AndroidComponent() {
         this.waitStrategies = new ArrayList<>();
@@ -83,7 +84,7 @@ public class AndroidComponent extends LayoutComponentValidationsBuilder implemen
         }
     }
 
-    public String getElementName() {
+    public String getComponentName() {
         return String.format("%s (%s)", getComponentClass().getSimpleName(), findStrategy.toString());
     }
 
@@ -118,21 +119,18 @@ public class AndroidComponent extends LayoutComponentValidationsBuilder implemen
         waitStrategies.add(waitStrategy);
     }
 
-    @SuppressWarnings("unchecked")
     public <TElementType extends AndroidComponent> TElementType toExists() {
-        var waitStrategy = new ToExistsWaitStrategy();
+        var waitStrategy = new ToExistWaitStrategy();
         ensureState(waitStrategy);
         return (TElementType)this;
     }
 
-    @SuppressWarnings("unchecked")
     public <TElementType extends AndroidComponent> TElementType toBeClickable() {
         var waitStrategy = new ToBeClickableWaitStrategy();
         ensureState(waitStrategy);
         return (TElementType)this;
     }
 
-    @SuppressWarnings("unchecked")
     public <TElementType extends AndroidComponent> TElementType toBeVisible() {
         var waitStrategy = new ToBeVisibleWaitStrategy();
         ensureState(waitStrategy);
@@ -207,29 +205,32 @@ public class AndroidComponent extends LayoutComponentValidationsBuilder implemen
     }
 
     protected MobileElement findElement() {
-      if (waitStrategies.size() == 0) {
-          waitStrategies.add(Wait.to().exists());
-      }
+        if (waitStrategies.size() == 0) {
+            waitStrategies.add(Wait.to().exist());
+        }
 
-      try {
-          for (var waitStrategy:waitStrategies) {
-              componentWaitService.wait(this, waitStrategy);
-          }
+        try {
+            for (var waitStrategy : waitStrategies) {
+                componentWaitService.wait(this, waitStrategy);
+            }
 
-          wrappedElement = findNativeElement();
-          scrollToMakeElementVisible(wrappedElement);
-          addArtificialDelay();
+            wrappedElement = findNativeElement();
+            scrollToMakeElementVisible(wrappedElement);
+            addArtificialDelay();
 
-          waitStrategies.clear();
-      } catch (WebDriverException ex) {
-          DebugInformation.printStackTrace(ex);
-          System.out.printf("%n%nThe element: %n Name: '%s', %n Locator: '%s', %nWas not found on the page or didn't fulfill the specified conditions.%n%n", getComponentClass().getSimpleName(), findStrategy.toString());
-      }
+            waitStrategies.clear();
+        } catch (WebDriverException ex) {
+            Log.error("%n%nThe component: %n" +
+                            "     Type: \"\u001B[1m%s\u001B[0m\"%n" +
+                            "  Locator: \"\u001B[1m%s\u001B[0m\"%n" +
+                            "Was not found on the page or didn't fulfill the specified conditions.%n%n",
+                    getComponentClass().getSimpleName(), findStrategy.toString());
+            throw ex;
+        }
 
         RETURNING_WRAPPED_ELEMENT.broadcast(new ComponentActionEventArgs(this));
         return wrappedElement;
     }
-
 
     protected void defaultClick(EventListener<ComponentActionEventArgs> clicking, EventListener<ComponentActionEventArgs> clicked) {
         clicking.broadcast(new ComponentActionEventArgs(this));
@@ -244,7 +245,7 @@ public class AndroidComponent extends LayoutComponentValidationsBuilder implemen
         checking.broadcast(new ComponentActionEventArgs(this));
 
         this.toExists().toBeClickable().waitToBe();
-        if(!this.defaultGetCheckedAttribute()) {
+        if (!this.defaultGetCheckedAttribute()) {
             findElement().click();
         }
 
@@ -255,7 +256,7 @@ public class AndroidComponent extends LayoutComponentValidationsBuilder implemen
         unchecking.broadcast(new ComponentActionEventArgs(this));
 
         this.toExists().toBeClickable().waitToBe();
-        if(this.defaultGetCheckedAttribute()) {
+        if (this.defaultGetCheckedAttribute()) {
             findElement().click();
         }
 
@@ -294,8 +295,7 @@ public class AndroidComponent extends LayoutComponentValidationsBuilder implemen
     }
 
     private void addArtificialDelay() {
-        if (androidSettings.getArtificialDelayBeforeAction() != 0)
-        {
+        if (androidSettings.getArtificialDelayBeforeAction() != 0) {
             try {
                 Thread.sleep(androidSettings.getArtificialDelayBeforeAction());
             } catch (InterruptedException e) {
@@ -311,8 +311,7 @@ public class AndroidComponent extends LayoutComponentValidationsBuilder implemen
         }
     }
 
-    private void scrollToVisible(MobileElement wrappedElement, boolean shouldWait)
-    {
+    private void scrollToVisible(MobileElement wrappedElement, boolean shouldWait) {
         SCROLLING_TO_VISIBLE.broadcast(new ComponentActionEventArgs(this));
         try {
             var action = new Actions(wrappedDriver);

@@ -30,7 +30,7 @@ public interface ComponentPhone extends Component {
     default void validatePasswordIs(String value) {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIs", WebComponent.class, String.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getPhone(), value, "phone");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getPhone(), value, "phone");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -40,7 +40,7 @@ public interface ComponentPhone extends Component {
     default void validatePasswordContains(String value) {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeContains", WebComponent.class, String.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getPhone(), value, "phone");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getPhone(), value, "phone");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -50,7 +50,7 @@ public interface ComponentPhone extends Component {
     default void validatePasswordNotContains(String value) {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeNotContains", WebComponent.class, String.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getPhone(), value, "phone");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getPhone(), value, "phone");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }

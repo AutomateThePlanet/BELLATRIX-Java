@@ -28,7 +28,7 @@ public interface ComponentSrcSet extends Component {
     default void validateSrcSetIs(String value) {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIs", WebComponent.class, String.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getSrcSet(), value, "srcset");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getSrcSet(), value, "srcset");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -38,7 +38,7 @@ public interface ComponentSrcSet extends Component {
     default void validateSrcSetIsSet() {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIsSet", WebComponent.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getSrcSet(), "srcset");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getSrcSet(), "srcset");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -48,7 +48,7 @@ public interface ComponentSrcSet extends Component {
     default void validateSrcSetNotSet() {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeNotSet", WebComponent.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getSrcSet(), "srcset");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getSrcSet(), "srcset");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -58,7 +58,7 @@ public interface ComponentSrcSet extends Component {
     default void validateSrcSetContains(String value) {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeContains", WebComponent.class, String.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getSrcSet(), value, "srcset");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getSrcSet(), value, "srcset");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -68,7 +68,7 @@ public interface ComponentSrcSet extends Component {
     default void validateSrcSetNotContains(String value) {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeNotContains", WebComponent.class, String.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getSrcSet(), value, "srcset");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getSrcSet(), value, "srcset");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }

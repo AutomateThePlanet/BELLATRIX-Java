@@ -40,39 +40,39 @@ import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
 public class DriverService {
-    private static ThreadLocal<Boolean> disposed;
-    private static ThreadLocal<BrowserConfiguration> browserConfiguration;
-    private static ThreadLocal<HashMap<String, String>> customDriverOptions;
-    private static ThreadLocal<WebDriver> wrappedDriver;
+    private static final ThreadLocal<Boolean> DISPOSED;
+    private static final ThreadLocal<BrowserConfiguration> BROWSER_CONFIGURATION;
+    private static final ThreadLocal<HashMap<String, String>> CUSTOM_DRIVER_OPTIONS;
+    private static final ThreadLocal<WebDriver> WRAPPED_DRIVER;
 
     static {
-        disposed = new ThreadLocal<>();
-        customDriverOptions = new ThreadLocal<>();
-        customDriverOptions.set(new HashMap<>());
-        browserConfiguration = new ThreadLocal<>();
-        wrappedDriver = new ThreadLocal<>();
-        disposed.set(false);
+        DISPOSED = new ThreadLocal<>();
+        CUSTOM_DRIVER_OPTIONS = new ThreadLocal<>();
+        CUSTOM_DRIVER_OPTIONS.set(new HashMap<>());
+        BROWSER_CONFIGURATION = new ThreadLocal<>();
+        WRAPPED_DRIVER = new ThreadLocal<>();
+        DISPOSED.set(false);
     }
 
     public static HashMap<String, String> getCustomDriverOptions() {
-        return customDriverOptions.get();
+        return CUSTOM_DRIVER_OPTIONS.get();
     }
 
     public static void addDriverOptions(String key, String value) {
-        customDriverOptions.get().put(key, value);
+        CUSTOM_DRIVER_OPTIONS.get().put(key, value);
     }
 
     public static WebDriver getWrappedDriver() {
-        return wrappedDriver.get();
+        return WRAPPED_DRIVER.get();
     }
 
     public static BrowserConfiguration getBrowserConfiguration() {
-        return browserConfiguration.get();
+        return BROWSER_CONFIGURATION.get();
     }
 
     public static WebDriver start(BrowserConfiguration configuration) {
-        browserConfiguration.set(configuration);
-        disposed.set(false);
+        BROWSER_CONFIGURATION.set(configuration);
+        DISPOSED.set(false);
         WebDriver driver;
         var webSettings = ConfigurationService.get(WebSettings.class);
         var executionType = webSettings.getExecutionType();
@@ -88,24 +88,24 @@ public class DriverService {
         driver.manage().timeouts().setScriptTimeout(ConfigurationService.get(WebSettings.class).getTimeoutSettings().getScriptTimeout(), TimeUnit.SECONDS);
         driver.manage().window().maximize();
         changeWindowSize(driver);
-        wrappedDriver.set(driver);
+        WRAPPED_DRIVER.set(driver);
 
         return driver;
     }
 
     private static WebDriver initializeDriverGridMode(GridSettings gridSettings) {
         var caps = new DesiredCapabilities();
-        if (browserConfiguration.get().getPlatform() != Platform.ANY) {
-            caps.setCapability("platform", browserConfiguration.get().getPlatform());
+        if (BROWSER_CONFIGURATION.get().getPlatform() != Platform.ANY) {
+            caps.setCapability("platform", BROWSER_CONFIGURATION.get().getPlatform());
         }
 
-        if (browserConfiguration.get().getVersion() != 0) {
-            caps.setCapability("version", browserConfiguration.get().getVersion());
+        if (BROWSER_CONFIGURATION.get().getVersion() != 0) {
+            caps.setCapability("version", BROWSER_CONFIGURATION.get().getVersion());
         } else {
             caps.setCapability("version", "latest");
         }
 
-        switch (browserConfiguration.get().getBrowser()) {
+        switch (BROWSER_CONFIGURATION.get().getBrowser()) {
             case CHROME_HEADLESS:
             case CHROME: {
                 var chromeOptions = new ChromeOptions();
@@ -118,7 +118,7 @@ public class DriverService {
                 addGridOptions(firefoxOptions, gridSettings);
                 caps.setCapability(ChromeOptions.CAPABILITY, firefoxOptions);
             }
-            case EDGE, EDGE_HEADLESS: {
+            case EDGE: {
                 var edgeOptions = new EdgeOptions();
                 addGridOptions(edgeOptions, gridSettings);
                 caps.setCapability(ChromeOptions.CAPABILITY, edgeOptions);
@@ -160,7 +160,7 @@ public class DriverService {
                 .setSslProxy(proxyUrl)
                 .setFtpProxy(proxyUrl);
 
-        switch (browserConfiguration.get().getBrowser()) {
+        switch (BROWSER_CONFIGURATION.get().getBrowser()) {
             case CHROME -> {
                 WebDriverManager.chromedriver().setup();
                 var chromeOptions = new ChromeOptions();
@@ -202,20 +202,14 @@ public class DriverService {
                 driver = new FirefoxDriver(firefoxHeadlessOptions);
             }
             case EDGE -> {
+
                 WebDriverManager.edgedriver().setup();
                 var edgeOptions = new EdgeOptions();
                 addDriverOptions(edgeOptions);
                 if (shouldCaptureHttpTraffic) edgeOptions.setProxy(proxyConfig);
                 driver = new EdgeDriver(edgeOptions);
             }
-            case EDGE_HEADLESS -> {
-                WebDriverManager.edgedriver().setup();
-                var edgeOptions = new EdgeOptions();
-                addDriverOptions(edgeOptions);
-                edgeOptions.setCapability("headless", true);
-                if (shouldCaptureHttpTraffic) edgeOptions.setProxy(proxyConfig);
-                driver = new EdgeDriver(edgeOptions);
-            }
+            // case EDGE_HEADLESS
             case OPERA -> {
                 WebDriverManager.operadriver().setup();
                 var operaOptions = new OperaOptions();
@@ -224,7 +218,7 @@ public class DriverService {
                 driver = new OperaDriver(operaOptions);
             }
             case SAFARI -> {
-                System.setProperty("webdriver.safari.driver","/usr/bin/safaridriver");
+                System.setProperty("webdriver.safari.driver", "/usr/bin/safaridriver");
                 var safariOptions = new SafariOptions();
                 addDriverOptions(safariOptions);
                 if (shouldCaptureHttpTraffic) safariOptions.setProxy(proxyConfig);
@@ -243,10 +237,10 @@ public class DriverService {
     }
 
     private static <TOption extends MutableCapabilities> void addGridOptions(TOption options, GridSettings gridSettings) {
-        for (var entry:gridSettings.getArguments()) {
-            for (var c:entry.entrySet()) {
+        for (var entry : gridSettings.getArguments()) {
+            for (var c : entry.entrySet()) {
                 if (c.getKey().startsWith("env_")) {
-                    var envValue = System.getProperty(c.getKey().replace("env_", "")) ;
+                    var envValue = System.getProperty(c.getKey().replace("env_", ""));
                     options.setCapability(c.getKey(), envValue);
                 } else {
                     options.setCapability(c.getKey(), c.getValue());
@@ -256,8 +250,8 @@ public class DriverService {
     }
 
     private static <TOption extends MutableCapabilities> void addDriverOptions(TOption chromeOptions) {
-        for (var optionKey:browserConfiguration.get().driverOptions.keySet()) {
-            chromeOptions.setCapability(optionKey, browserConfiguration.get().driverOptions.get(optionKey));
+        for (var optionKey : BROWSER_CONFIGURATION.get().driverOptions.keySet()) {
+            chromeOptions.setCapability(optionKey, BROWSER_CONFIGURATION.get().driverOptions.get(optionKey));
         }
     }
 
@@ -270,17 +264,17 @@ public class DriverService {
     }
 
     public static void close() {
-        if (disposed.get()) {
+        if (DISPOSED.get()) {
             return;
         }
 
-        if (wrappedDriver.get() != null) {
-            wrappedDriver.get().close();
-            customDriverOptions.get().clear();
+        if (WRAPPED_DRIVER.get() != null) {
+            WRAPPED_DRIVER.get().close();
+            CUSTOM_DRIVER_OPTIONS.get().clear();
         }
 
         ProxyServer.close();
 
-        disposed.set(true);
+        DISPOSED.set(true);
     }
 }

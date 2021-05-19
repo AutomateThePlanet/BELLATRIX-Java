@@ -19,10 +19,9 @@ import io.appium.java_client.android.AndroidDriver;
 import java.util.List;
 
 public class DescriptionFindStrategy extends FindStrategy {
-    private final String DESCRIPTION_EXPRESSION = "new UiScrollable(new UiSelector()).scrollIntoView(new UiSelector().description(\"%s\"));";
+    private static final String DESCRIPTION_EXPRESSION = "new UiScrollable(new UiSelector()).scrollIntoView(new UiSelector().description(\"%s\"));";
 
-    public DescriptionFindStrategy(String value)
-    {
+    public DescriptionFindStrategy(String value) {
         super(value);
     }
 

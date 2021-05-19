@@ -11,9 +11,14 @@
  * limitations under the License.
  */
 
-package cartInfosection;
+package solutions.bellatrix.core.utilities;
 
-import solutions.bellatrix.web.pages.PageAsserts;
+import lombok.Getter;
 
-public class Asserts extends PageAsserts<Map> {
+public class LoggerActionEventArgs {
+    @Getter private final String entry;
+
+    public LoggerActionEventArgs(String entry) {
+        this.entry = entry;
+    }
 }

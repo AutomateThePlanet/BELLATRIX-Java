@@ -28,7 +28,7 @@ public interface ComponentOn extends Component {
     default void validateIsOn() {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeTrue", IOSComponent.class, boolean.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (IOSComponent) this, isOn(), "on");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (IOSComponent)this, isOn(), "on");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -38,7 +38,7 @@ public interface ComponentOn extends Component {
     default void validateIsOff() {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeTrue", IOSComponent.class, boolean.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (IOSComponent) this, !isOn(), "off");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (IOSComponent)this, !isOn(), "off");
         } catch (
                 InvocationTargetException e) {
             throw e.getCause();

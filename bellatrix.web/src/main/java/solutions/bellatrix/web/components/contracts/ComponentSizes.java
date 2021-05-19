@@ -28,7 +28,7 @@ public interface ComponentSizes extends Component {
     default void validateSizesIs(String value) {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIs", WebComponent.class, String.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getSizes(), value, "sizes");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getSizes(), value, "sizes");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -38,7 +38,7 @@ public interface ComponentSizes extends Component {
     default void validateSizesIsSet() {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIsSet", WebComponent.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getSizes(), "sizes");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getSizes(), "sizes");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -48,7 +48,7 @@ public interface ComponentSizes extends Component {
     default void validateSizesNotSet() {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeNotSet", WebComponent.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getSizes(), "sizes");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getSizes(), "sizes");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -58,7 +58,7 @@ public interface ComponentSizes extends Component {
     default void validateSizesContains(String value) {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeContains", WebComponent.class, String.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getSizes(), value, "sizes");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getSizes(), value, "sizes");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -68,7 +68,7 @@ public interface ComponentSizes extends Component {
     default void validateSizesNotContains(String value) {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeNotContains", WebComponent.class, String.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getSizes(), value, "sizes");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getSizes(), value, "sizes");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }

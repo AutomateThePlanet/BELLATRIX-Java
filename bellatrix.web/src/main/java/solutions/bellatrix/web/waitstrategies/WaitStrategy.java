@@ -36,14 +36,12 @@ public abstract class WaitStrategy {
 
     public abstract void waitUntil(SearchContext searchContext, By by);
 
-    protected void waitUntil(Function<SearchContext, Boolean> waitCondition)
-    {
-        var webDriverWait = new WebDriverWait(DriverService.getWrappedDriver(), timeoutInterval, sleepInterval);
+    protected void waitUntil(Function<SearchContext, Boolean> waitCondition) {
+        var webDriverWait = new WebDriverWait(DriverService.getWrappedDriver(), timeoutInterval, sleepInterval * 1000);
         webDriverWait.until(waitCondition);
     }
 
-    protected WebElement findElement(SearchContext searchContext, By by)
-    {
+    protected WebElement findElement(SearchContext searchContext, By by) {
         var element = searchContext.findElement(by);
         return element;
     }

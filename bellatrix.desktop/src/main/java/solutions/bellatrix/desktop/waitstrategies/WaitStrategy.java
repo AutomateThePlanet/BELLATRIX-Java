@@ -38,14 +38,12 @@ public abstract class WaitStrategy {
 
     public abstract <TFindStrategy extends FindStrategy> void waitUntil(TFindStrategy findStrategy);
 
-    protected void waitUntil(Function<WebDriver, Boolean> waitCondition)
-    {
+    protected void waitUntil(Function<WebDriver, Boolean> waitCondition) {
         var webDriverWait = new WebDriverWait(DriverService.getWrappedDriver(), timeoutInterval, sleepInterval);
         webDriverWait.until(waitCondition);
     }
 
-    protected WebElement findElement(SearchContext searchContext, By by)
-    {
+    protected WebElement findElement(SearchContext searchContext, By by) {
         var element = searchContext.findElement(by);
         return element;
     }

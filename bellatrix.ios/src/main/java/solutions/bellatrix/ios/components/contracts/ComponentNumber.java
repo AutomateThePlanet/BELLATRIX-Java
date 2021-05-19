@@ -28,7 +28,7 @@ public interface ComponentNumber extends Component {
     default void validateNumberIs(Number value) {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIs", IOSComponent.class, Number.class, Number.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (IOSComponent) this, getNumber(), value, "number");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (IOSComponent)this, getNumber(), value, "number");
         } catch (
                 InvocationTargetException e) {
             throw e.getCause();

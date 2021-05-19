@@ -28,7 +28,7 @@ public interface ComponentPlaceholder extends Component {
     default void validatePlaceholderIs(String value) {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIs", WebComponent.class, String.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getPlaceholder(), value, "placeholder");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getPlaceholder(), value, "placeholder");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -38,7 +38,7 @@ public interface ComponentPlaceholder extends Component {
     default void validatePlaceholderIsSet() {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIsSet", WebComponent.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getPlaceholder(), "placeholder");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getPlaceholder(), "placeholder");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -48,7 +48,7 @@ public interface ComponentPlaceholder extends Component {
     default void validatePlaceholderNotSet() {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeNotSet", WebComponent.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getPlaceholder(), "placeholder");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getPlaceholder(), "placeholder");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -58,7 +58,7 @@ public interface ComponentPlaceholder extends Component {
     default void validatePlaceholderContains(String value) {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeContains", WebComponent.class, String.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getPlaceholder(), value, "placeholder");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getPlaceholder(), value, "placeholder");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -68,7 +68,7 @@ public interface ComponentPlaceholder extends Component {
     default void validatePlaceholderNotContains(String value) {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeNotContains", WebComponent.class, String.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getPlaceholder(), value, "placeholder");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getPlaceholder(), value, "placeholder");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }

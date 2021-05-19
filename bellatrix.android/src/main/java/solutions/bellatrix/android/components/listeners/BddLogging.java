@@ -23,7 +23,7 @@ public class BddLogging extends Listener {
     @Override
     public void addListener() {
         if (!isBddLoggingTurnedOn) {
-            Button.CLICKING.addListener((x) -> System.out.printf("clicking %s%n", x.getComponent().getElementName()));
+            Button.CLICKING.addListener((x) -> System.out.printf("clicking %s%n", x.getComponent().getComponentName()));
             AndroidComponent.VALIDATED_ATTRIBUTE.addListener((x) -> System.out.println(x.getMessage()));
             isBddLoggingTurnedOn = true;
         }

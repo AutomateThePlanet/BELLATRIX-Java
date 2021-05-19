@@ -14,6 +14,7 @@
 package solutions.bellatrix.web.services;
 
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.NoSuchSessionException;
 import org.openqa.selenium.WebElement;
 import solutions.bellatrix.core.utilities.DebugInformation;
 import solutions.bellatrix.web.components.WebComponent;
@@ -23,7 +24,7 @@ public class JavaScriptService extends WebService {
 
     public JavaScriptService() {
         super();
-        javascriptExecutor = (JavascriptExecutor) getWrappedDriver();
+        javascriptExecutor = (JavascriptExecutor)getWrappedDriver();
     }
 
     public Object execute(String script) {
@@ -46,7 +47,7 @@ public class JavaScriptService extends WebService {
     public String execute(String script, Object... args) {
         try {
             var result = (String)javascriptExecutor.executeScript(script, args);
-            return result ;
+            return result;
         } catch (Exception ex) {
             DebugInformation.printStackTrace(ex);
             return "";
@@ -62,6 +63,8 @@ public class JavaScriptService extends WebService {
         try {
             var result = (String)javascriptExecutor.executeScript(script, nativeElement);
             return result;
+        } catch (NoSuchSessionException ex) {
+            return "";
         } catch (Exception ex) {
             DebugInformation.printStackTrace(ex);
             return "";

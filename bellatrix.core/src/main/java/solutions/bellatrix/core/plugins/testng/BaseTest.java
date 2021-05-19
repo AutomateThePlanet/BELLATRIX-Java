@@ -15,8 +15,12 @@ package solutions.bellatrix.core.plugins.testng;
 
 import org.testng.ITestResult;
 import org.testng.annotations.*;
-import solutions.bellatrix.core.plugins.*;
+import solutions.bellatrix.core.plugins.PluginExecutionEngine;
+import solutions.bellatrix.core.plugins.TestResult;
+import solutions.bellatrix.core.plugins.UsesPlugins;
+import sun.misc.Unsafe;
 
+import java.lang.reflect.Field;
 
 @Listeners(TestResultListener.class)
 public class BaseTest extends UsesPlugins {
@@ -24,6 +28,15 @@ public class BaseTest extends UsesPlugins {
     private static final ThreadLocal<Boolean> CONFIGURATION_EXECUTED = new ThreadLocal<>();
 
     public BaseTest() {
+        try {
+            Field theUnsafe = Unsafe.class.getDeclaredField("theUnsafe");
+            theUnsafe.setAccessible(true);
+            Unsafe u = (Unsafe)theUnsafe.get(null);
+
+            Class<?> cls = Class.forName("jdk.internal.module.IllegalAccessLogger");
+            Field logger = cls.getDeclaredField("logger");
+            u.putObjectVolatile(cls, u.staticFieldOffset(logger), null);
+        } catch (Exception ignored) {}
         CONFIGURATION_EXECUTED.set(false);
     }
 

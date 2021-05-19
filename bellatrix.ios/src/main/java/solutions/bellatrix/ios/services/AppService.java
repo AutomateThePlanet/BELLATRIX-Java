@@ -42,8 +42,7 @@ public class AppService extends MobileService {
         getWrappedIOSDriver().resetApp();
     }
 
-    public void installApp(String appPath)
-    {
+    public void installApp(String appPath) {
         if (RuntimeInformation.IS_MAC) {
             appPath = appPath.replace('\\', '/');
         }
@@ -58,8 +57,7 @@ public class AppService extends MobileService {
     public boolean isAppInstalled(String bundleId) {
         try {
             return getWrappedIOSDriver().isAppInstalled(bundleId);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             return false;
         }
     }

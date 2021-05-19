@@ -30,7 +30,7 @@ public interface ComponentUrl extends Component {
     default void validateUrlIs(String value) {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIs", WebComponent.class, String.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getUrl(), value, "URL");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getUrl(), value, "URL");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -40,7 +40,7 @@ public interface ComponentUrl extends Component {
     default void validateUrlIsContains(String value) {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeContains", WebComponent.class, String.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getUrl(), value, "URL");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getUrl(), value, "URL");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -50,7 +50,7 @@ public interface ComponentUrl extends Component {
     default void validateUrlNotContains(String value) {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeNotContains", WebComponent.class, String.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getUrl(), value, "URL");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getUrl(), value, "URL");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }

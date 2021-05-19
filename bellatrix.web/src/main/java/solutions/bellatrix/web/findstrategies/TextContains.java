@@ -16,8 +16,7 @@ package solutions.bellatrix.web.findstrategies;
 import org.openqa.selenium.By;
 
 public class TextContains extends FindStrategy {
-    public TextContains(String value)
-    {
+    public TextContains(String value) {
         super(value);
     }
 

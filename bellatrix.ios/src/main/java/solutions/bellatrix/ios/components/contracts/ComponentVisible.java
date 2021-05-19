@@ -28,7 +28,7 @@ public interface ComponentVisible extends Component {
     default void validateIsSelected() {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeTrue", IOSComponent.class, boolean.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (IOSComponent) this, isVisible(), "visible");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (IOSComponent)this, isVisible(), "visible");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -38,7 +38,7 @@ public interface ComponentVisible extends Component {
     default void validateNotSelected() {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeFalse", IOSComponent.class, boolean.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (IOSComponent) this, isVisible(), "visible");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (IOSComponent)this, isVisible(), "visible");
         } catch (
                 InvocationTargetException e) {
             throw e.getCause();

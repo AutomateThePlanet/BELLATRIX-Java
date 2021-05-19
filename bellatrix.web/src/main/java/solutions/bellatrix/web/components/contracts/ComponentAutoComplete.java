@@ -28,7 +28,7 @@ public interface ComponentAutoComplete extends Component {
     default void validateAutoCompleteOn() {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeTrue", WebComponent.class, boolean.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, isAutoComplete(), "autocomplete");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, isAutoComplete(), "autocomplete");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -38,7 +38,7 @@ public interface ComponentAutoComplete extends Component {
     default void validateAutoCompleteOff() {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeFalse", WebComponent.class, boolean.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, isAutoComplete(), "autocomplete");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, isAutoComplete(), "autocomplete");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }

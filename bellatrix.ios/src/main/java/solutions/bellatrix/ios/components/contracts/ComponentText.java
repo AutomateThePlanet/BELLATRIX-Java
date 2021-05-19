@@ -28,7 +28,7 @@ public interface ComponentText extends Component {
     default void validateTextIs(String value) {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIs", IOSComponent.class, String.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (IOSComponent) this, getText(), value, "text");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (IOSComponent)this, getText(), value, "text");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -38,7 +38,7 @@ public interface ComponentText extends Component {
     default void validateTextContains(String value) {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeContains", IOSComponent.class, String.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (IOSComponent) this, getText(), value, "text");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (IOSComponent)this, getText(), value, "text");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -48,7 +48,7 @@ public interface ComponentText extends Component {
     default void validateTextNotContains(String value) {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeNotContains", IOSComponent.class, String.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (IOSComponent) this, getText(), value, "text");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (IOSComponent)this, getText(), value, "text");
         } catch (
                 InvocationTargetException e) {
             throw e.getCause();

@@ -32,7 +32,7 @@ public enum Lifecycle {
     RESTART_EVERY_TIME("restart_every_time"),
     RESTART_ON_FAIL("restart_on_fail");
 
-    private String text;
+    private final String text;
 
     Lifecycle(String text) {
         this.text = text;

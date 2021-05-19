@@ -28,7 +28,7 @@ public interface ComponentStyle extends Component {
     default void validateStyleIs(String value) {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIs", WebComponent.class, String.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getStyle(), value, "style");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getStyle(), value, "style");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -38,7 +38,7 @@ public interface ComponentStyle extends Component {
     default void validateStyleIsSet() {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIsSet", WebComponent.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getStyle(), "style");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getStyle(), "style");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -48,7 +48,7 @@ public interface ComponentStyle extends Component {
     default void validateStyleNotSet() {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeNotSet", WebComponent.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getStyle(), "style");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getStyle(), "style");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -58,7 +58,7 @@ public interface ComponentStyle extends Component {
     default void validateStyleContains(String value) {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeContains", WebComponent.class, String.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getStyle(), value, "style");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getStyle(), value, "style");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -68,7 +68,7 @@ public interface ComponentStyle extends Component {
     default void validateStyleNotContains(String value) {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeNotContains", WebComponent.class, String.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getStyle(), value, "style");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getStyle(), value, "style");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }

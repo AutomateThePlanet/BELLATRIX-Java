@@ -32,7 +32,7 @@ public class SeekBar extends AndroidComponent implements ComponentDisabled {
         int end = findElement().getSize().getWidth();
         int y = findElement().getLocation().getY();
         var touchActionsService = new TouchActionsService();
-        int moveTo = (int)(((double) percentage / 100) * end);
+        int moveTo = (int)(((double)percentage / 100) * end);
         touchActionsService.press(moveTo, y).release().perform();
 
         PERCENTAGE_SET.broadcast(new ComponentActionEventArgs(this, percentage.toString()));

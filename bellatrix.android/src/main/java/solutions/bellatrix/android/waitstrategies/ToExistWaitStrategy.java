@@ -23,18 +23,18 @@ import solutions.bellatrix.core.configuration.ConfigurationService;
 
 import java.util.function.Function;
 
-public class ToExistsWaitStrategy extends WaitStrategy {
-    public ToExistsWaitStrategy() {
+public class ToExistWaitStrategy extends WaitStrategy {
+    public ToExistWaitStrategy() {
         timeoutInterval = ConfigurationService.get(AndroidSettings.class).getTimeoutSettings().getElementToExistTimeout();
         sleepInterval = ConfigurationService.get(AndroidSettings.class).getTimeoutSettings().getSleepInterval();
     }
 
-    public ToExistsWaitStrategy(long timeoutIntervalSeconds, long sleepIntervalSeconds) {
-       super(timeoutIntervalSeconds, sleepIntervalSeconds);
+    public ToExistWaitStrategy(long timeoutIntervalSeconds, long sleepIntervalSeconds) {
+        super(timeoutIntervalSeconds, sleepIntervalSeconds);
     }
 
-    public static ToExistsWaitStrategy of() {
-        return new ToExistsWaitStrategy();
+    public static ToExistWaitStrategy of() {
+        return new ToExistWaitStrategy();
     }
 
     @Override
@@ -43,15 +43,11 @@ public class ToExistsWaitStrategy extends WaitStrategy {
         waitUntil(func);
     }
 
-    private <TFindStrategy extends FindStrategy> Boolean elementExists(AndroidDriver<MobileElement> searchContext, TFindStrategy findStrategy)
-    {
-        try
-        {
+    private <TFindStrategy extends FindStrategy> Boolean elementExists(AndroidDriver<MobileElement> searchContext, TFindStrategy findStrategy) {
+        try {
             var element = findStrategy.findElement(searchContext);
             return element != null;
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             return false;
         }
     }

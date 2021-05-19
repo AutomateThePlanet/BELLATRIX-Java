@@ -32,8 +32,9 @@ public class MobileVideoPlugin extends VideoPlugin {
         saveLocation = UserHomePathNormalizer.normalizePath(saveLocation);
 
         var directory = new File(saveLocation);
-        if (! directory.exists()){
-            directory.mkdirs();
+
+        if (directory.mkdirs()) {
+            return saveLocation;
         }
 
         return saveLocation;

@@ -24,88 +24,86 @@ import java.lang.reflect.Method;
 import java.util.Objects;
 
 public class AppLifecyclePlugin extends Plugin {
-    private static ThreadLocal<AppConfiguration> currentAppConfiguration;
-    private static ThreadLocal<AppConfiguration> previousAppConfiguration;
-    private static ThreadLocal<Boolean> isAppStartedDuringPreBeforeClass;
-    private static ThreadLocal<Boolean> isAppStartedCorrectly;
+    private static final ThreadLocal<AppConfiguration> CURRENT_APP_CONFIGURATION;
+    private static final ThreadLocal<AppConfiguration> PREVIOUS_APP_CONFIGURATION;
+    private static final ThreadLocal<Boolean> IS_APP_STARTED_DURING_PRE_BEFORE_CLASS;
+    private static final ThreadLocal<Boolean> IS_APP_STARTED_CORRECTLY;
 
     static {
-        currentAppConfiguration = new ThreadLocal<>();
-        previousAppConfiguration = new ThreadLocal<>();
-        isAppStartedDuringPreBeforeClass = new ThreadLocal<>();
-        isAppStartedCorrectly = new ThreadLocal<>();
+        CURRENT_APP_CONFIGURATION = new ThreadLocal<>();
+        PREVIOUS_APP_CONFIGURATION = new ThreadLocal<>();
+        IS_APP_STARTED_DURING_PRE_BEFORE_CLASS = new ThreadLocal<>();
+        IS_APP_STARTED_CORRECTLY = new ThreadLocal<>();
     }
 
     @Override
-    @SuppressWarnings("rawtypes")
     public void preBeforeClass(Class type) {
-        currentAppConfiguration.set(getExecutionAppClassLevel(type));
+        CURRENT_APP_CONFIGURATION.set(getExecutionAppClassLevel(type));
         if (shouldRestartApp()) {
             restartApp();
             // TODO: maybe we can simplify and remove this parameter.
-            isAppStartedDuringPreBeforeClass.set(true);
+            IS_APP_STARTED_DURING_PRE_BEFORE_CLASS.set(true);
         } else {
-            isAppStartedDuringPreBeforeClass.set(false);
+            IS_APP_STARTED_DURING_PRE_BEFORE_CLASS.set(false);
         }
 
         super.preBeforeClass(type);
     }
 
     @Override
-    @SuppressWarnings("rawtypes")
     public void postAfterClass(Class type) {
         shutdownApp();
-        isAppStartedDuringPreBeforeClass.set(false);
+        IS_APP_STARTED_DURING_PRE_BEFORE_CLASS.set(false);
         super.preAfterClass(type);
     }
 
     @Override
     public void preBeforeTest(TestResult testResult, Method memberInfo) {
-        currentAppConfiguration.set(getAppConfiguration(memberInfo));
+        CURRENT_APP_CONFIGURATION.set(getAppConfiguration(memberInfo));
 
-        if (!isAppStartedDuringPreBeforeClass.get()) {
+        if (!IS_APP_STARTED_DURING_PRE_BEFORE_CLASS.get()) {
             if (shouldRestartApp()) {
                 restartApp();
             }
         }
 
-        isAppStartedDuringPreBeforeClass.set(false);
+        IS_APP_STARTED_DURING_PRE_BEFORE_CLASS.set(false);
     }
 
     @Override
     public void postAfterTest(TestResult testResult, Method memberInfo) {
-        if (currentAppConfiguration.get().getLifecycle() ==
+        if (CURRENT_APP_CONFIGURATION.get().getLifecycle() ==
                 Lifecycle.RESTART_ON_FAIL && testResult == TestResult.FAILURE) {
             shutdownApp();
-            isAppStartedDuringPreBeforeClass.set(false);
+            IS_APP_STARTED_DURING_PRE_BEFORE_CLASS.set(false);
         }
     }
 
     private void shutdownApp() {
         DriverService.close();
-        previousAppConfiguration.set(null);
+        PREVIOUS_APP_CONFIGURATION.set(null);
     }
 
     private void restartApp() {
         shutdownApp();
         try {
-            DriverService.start(currentAppConfiguration.get());
-            isAppStartedCorrectly.set(true);
+            DriverService.start(CURRENT_APP_CONFIGURATION.get());
+            IS_APP_STARTED_CORRECTLY.set(true);
         } catch (Exception ex) {
             DebugInformation.printStackTrace(ex);
-            isAppStartedCorrectly.set(false);
+            IS_APP_STARTED_CORRECTLY.set(false);
         }
 
-        previousAppConfiguration.set(currentAppConfiguration.get());
+        PREVIOUS_APP_CONFIGURATION.set(CURRENT_APP_CONFIGURATION.get());
     }
 
     private boolean shouldRestartApp() {
         // TODO: IsAppStartedCorrectly getter?
-        var previousConfiguration = previousAppConfiguration.get();
-        var currentConfiguration = currentAppConfiguration.get();
+        var previousConfiguration = PREVIOUS_APP_CONFIGURATION.get();
+        var currentConfiguration = CURRENT_APP_CONFIGURATION.get();
         if (previousConfiguration == null) {
             return true;
-        } else if (!isAppStartedCorrectly.get()) {
+        } else if (!IS_APP_STARTED_CORRECTLY.get()) {
             return true;
         } else if (!previousConfiguration.equals(currentConfiguration)) {
             return true;
@@ -126,7 +124,7 @@ public class AppLifecyclePlugin extends Plugin {
     }
 
     private AppConfiguration getExecutionAppMethodLevel(Method memberInfo) {
-        var executionAppAnnotation = (ExecutionApp) memberInfo.getDeclaredAnnotation(ExecutionApp.class);
+        var executionAppAnnotation = (ExecutionApp)memberInfo.getDeclaredAnnotation(ExecutionApp.class);
         if (executionAppAnnotation == null) {
             return null;
         }
@@ -135,7 +133,7 @@ public class AppLifecyclePlugin extends Plugin {
     }
 
     private AppConfiguration getExecutionAppClassLevel(Class<?> type) {
-        var executionAppAnnotation = (ExecutionApp) type.getDeclaredAnnotation(ExecutionApp.class);
+        var executionAppAnnotation = (ExecutionApp)type.getDeclaredAnnotation(ExecutionApp.class);
         if (executionAppAnnotation == null) {
             var defaultAppPath = ConfigurationService.get(DesktopSettings.class).getDefaultAppPath();
             defaultAppPath = UserHomePathNormalizer.normalizePath(defaultAppPath);

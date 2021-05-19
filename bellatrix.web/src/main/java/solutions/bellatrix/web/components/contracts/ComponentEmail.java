@@ -30,7 +30,7 @@ public interface ComponentEmail extends Component {
     default void validateEmailIs(String value) {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIs", WebComponent.class, String.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getEmail(), value, "email");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getEmail(), value, "email");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -40,7 +40,7 @@ public interface ComponentEmail extends Component {
     default void validateEmailContains(String value) {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeContains", WebComponent.class, String.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getEmail(), value, "email");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getEmail(), value, "email");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -50,7 +50,7 @@ public interface ComponentEmail extends Component {
     default void validateEmailNotContains(String value) {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeNotContains", WebComponent.class, String.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getEmail(), value, "email");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getEmail(), value, "email");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }

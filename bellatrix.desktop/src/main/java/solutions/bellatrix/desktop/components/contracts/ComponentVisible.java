@@ -28,7 +28,7 @@ public interface ComponentVisible extends Component {
     default void validateIsSelected() {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeTrue", DesktopComponent.class, boolean.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (DesktopComponent) this, isVisible(), "visible");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (DesktopComponent)this, isVisible(), "visible");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -38,7 +38,7 @@ public interface ComponentVisible extends Component {
     default void validateNotSelected() {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeFalse", DesktopComponent.class, boolean.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (DesktopComponent) this, isVisible(), "visible");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (DesktopComponent)this, isVisible(), "visible");
         } catch (
                 InvocationTargetException e) {
             throw e.getCause();

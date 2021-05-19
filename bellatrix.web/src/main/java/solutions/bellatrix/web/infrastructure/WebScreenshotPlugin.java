@@ -33,7 +33,7 @@ public class WebScreenshotPlugin extends ScreenshotPlugin {
 
     @Override
     @SneakyThrows
-    protected void takeScreenshot( String screenshotSaveDir, String filename) {
+    protected void takeScreenshot(String screenshotSaveDir, String filename) {
         var screenshot = new AShot()
                 .shootingStrategy(ShootingStrategies.viewportPasting(100))
                 .takeScreenshot(DriverService.getWrappedDriver());
@@ -47,8 +47,8 @@ public class WebScreenshotPlugin extends ScreenshotPlugin {
         saveLocation = UserHomePathNormalizer.normalizePath(saveLocation);
 
         var directory = new File(saveLocation);
-        if (! directory.exists()){
-            directory.mkdirs();
+        if (directory.mkdirs()) {
+            return saveLocation;
         }
 
         return saveLocation;

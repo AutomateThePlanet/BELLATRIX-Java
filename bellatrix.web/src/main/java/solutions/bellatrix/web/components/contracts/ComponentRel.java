@@ -28,7 +28,7 @@ public interface ComponentRel extends Component {
     default void validateRelIs(String value) {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIs", WebComponent.class, String.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getRel(), value, "rel");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getRel(), value, "rel");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -38,7 +38,7 @@ public interface ComponentRel extends Component {
     default void validateRelIsSet() {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIsSet", WebComponent.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getRel(), "rel");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getRel(), "rel");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -48,7 +48,7 @@ public interface ComponentRel extends Component {
     default void validateRelNotSet() {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeNotSet", WebComponent.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getRel(), "rel");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getRel(), "rel");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }

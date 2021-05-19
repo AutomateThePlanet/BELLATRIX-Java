@@ -28,7 +28,7 @@ public interface ComponentChecked extends Component {
     default void validateIsChecked() {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeTrue", WebComponent.class, boolean.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, isChecked(), "checked");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, isChecked(), "checked");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -38,7 +38,7 @@ public interface ComponentChecked extends Component {
     default void validateIsUnchecked() {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeTrue", WebComponent.class, boolean.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, !isChecked(), "unchecked");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, !isChecked(), "unchecked");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }

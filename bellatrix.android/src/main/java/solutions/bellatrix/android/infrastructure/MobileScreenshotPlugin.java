@@ -33,8 +33,8 @@ public class MobileScreenshotPlugin extends ScreenshotPlugin {
 
     @Override
     @SneakyThrows
-    protected void takeScreenshot( String screenshotSaveDir, String filename) {
-        File screenshot = ((TakesScreenshot) DriverService.getWrappedAndroidDriver()).getScreenshotAs(OutputType.FILE);
+    protected void takeScreenshot(String screenshotSaveDir, String filename) {
+        File screenshot = ((TakesScreenshot)DriverService.getWrappedAndroidDriver()).getScreenshotAs(OutputType.FILE);
         var destFile = new File(Paths.get(screenshotSaveDir, filename) + ".png");
         FileUtils.copyFile(screenshot, destFile);
     }
@@ -45,8 +45,8 @@ public class MobileScreenshotPlugin extends ScreenshotPlugin {
         saveLocation = UserHomePathNormalizer.normalizePath(saveLocation);
 
         var directory = new File(saveLocation);
-        if (! directory.exists()){
-            directory.mkdirs();
+        if (directory.mkdirs()) {
+            return saveLocation;
         }
 
         return saveLocation;

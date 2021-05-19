@@ -30,7 +30,7 @@ public interface ComponentRange extends Component {
     default void validateRangeIs(Number value) {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIs", WebComponent.class, Number.class, Number.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getRange(), value, "date");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getRange(), value, "date");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }

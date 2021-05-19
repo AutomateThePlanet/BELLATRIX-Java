@@ -25,6 +25,7 @@ import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.core.plugins.EventListener;
 import solutions.bellatrix.core.utilities.DebugInformation;
 import solutions.bellatrix.core.utilities.InstanceFactory;
+import solutions.bellatrix.core.utilities.Log;
 import solutions.bellatrix.ios.components.contracts.Component;
 import solutions.bellatrix.ios.findstrategies.*;
 import solutions.bellatrix.ios.infrastructure.DriverService;
@@ -54,12 +55,12 @@ public class IOSComponent extends LayoutComponentValidationsBuilder implements C
     @Getter @Setter private MobileElement parentWrappedElement;
     @Getter @Setter private int elementIndex;
     @Getter @Setter private FindStrategy findStrategy;
-    @Getter private IOSDriver<MobileElement> wrappedDriver;
-    @Getter protected AppService appService;
-    @Getter protected ComponentCreateService componentCreateService;
-    @Getter protected ComponentWaitService componentWaitService;
-    private List<WaitStrategy> waitStrategies;
-    private solutions.bellatrix.ios.configuration.IOSSettings iOSSettings;
+    @Getter private final IOSDriver<MobileElement> wrappedDriver;
+    @Getter protected final AppService appService;
+    @Getter protected final ComponentCreateService componentCreateService;
+    @Getter protected final ComponentWaitService componentWaitService;
+    private final List<WaitStrategy> waitStrategies;
+    private final solutions.bellatrix.ios.configuration.IOSSettings iOSSettings;
 
     public IOSComponent() {
         this.waitStrategies = new ArrayList<>();
@@ -79,7 +80,7 @@ public class IOSComponent extends LayoutComponentValidationsBuilder implements C
         }
     }
 
-    public String getElementName() {
+    public String getComponentName() {
         return String.format("%s (%s)", getComponentClass().getSimpleName(), findStrategy.toString());
     }
 
@@ -114,21 +115,18 @@ public class IOSComponent extends LayoutComponentValidationsBuilder implements C
         waitStrategies.add(waitStrategy);
     }
 
-    @SuppressWarnings("unchecked")
     public <TElementType extends IOSComponent> TElementType toExists() {
-        var waitStrategy = new ToExistsWaitStrategy();
+        var waitStrategy = new ToExistWaitStrategy();
         ensureState(waitStrategy);
         return (TElementType)this;
     }
 
-    @SuppressWarnings("unchecked")
     public <TElementType extends IOSComponent> TElementType toBeClickable() {
         var waitStrategy = new ToBeClickableWaitStrategy();
         ensureState(waitStrategy);
         return (TElementType)this;
     }
 
-    @SuppressWarnings("unchecked")
     public <TElementType extends IOSComponent> TElementType toBeVisible() {
         var waitStrategy = new ToBeVisibleWaitStrategy();
         ensureState(waitStrategy);
@@ -243,32 +241,34 @@ public class IOSComponent extends LayoutComponentValidationsBuilder implements C
     }
 
     protected MobileElement findElement() {
-      if (waitStrategies.size() == 0) {
-          waitStrategies.add(Wait.to().exists());
-      }
+        if (waitStrategies.size() == 0) {
+            waitStrategies.add(Wait.to().exist());
+        }
 
-      try {
-          for (var waitStrategy:waitStrategies) {
-              componentWaitService.wait(this, waitStrategy);
-          }
+        try {
+            for (var waitStrategy : waitStrategies) {
+                componentWaitService.wait(this, waitStrategy);
+            }
 
-          wrappedElement = findNativeElement();
-          scrollToMakeElementVisible(wrappedElement);
-          addArtificialDelay();
+            wrappedElement = findNativeElement();
+            scrollToMakeElementVisible(wrappedElement);
+            addArtificialDelay();
 
-          waitStrategies.clear();
-      } catch (WebDriverException ex) {
-          DebugInformation.printStackTrace(ex);
-          System.out.printf("%n%nThe element: %n Name: '%s', %n Locator: '%s = %s', %nWas not found on the page or didn't fulfill the specified conditions.%n%n", getComponentClass().getSimpleName(), findStrategy.toString(), findStrategy.getValue());
-      }
+            waitStrategies.clear();
+        } catch (WebDriverException ex) {
+            Log.error("%n%nThe component: %n" +
+                            "     Type: \"\u001B[1m%s\u001B[0m\"%n" +
+                            "  Locator: \"\u001B[1m%s\u001B[0m\"%n" +
+                            "Was not found on the page or didn't fulfill the specified conditions.%n%n",
+                    getComponentClass().getSimpleName(), findStrategy.toString());
+            throw ex;
+        }
 
         RETURNING_WRAPPED_ELEMENT.broadcast(new ComponentActionEventArgs(this));
         return wrappedElement;
     }
 
-
-    protected void defaultClick(EventListener<ComponentActionEventArgs> clicking, EventListener<ComponentActionEventArgs> clicked)
-    {
+    protected void defaultClick(EventListener<ComponentActionEventArgs> clicking, EventListener<ComponentActionEventArgs> clicked) {
         clicking.broadcast(new ComponentActionEventArgs(this));
 
         this.toExists().toBeClickable().waitToBe();
@@ -277,24 +277,22 @@ public class IOSComponent extends LayoutComponentValidationsBuilder implements C
         clicked.broadcast(new ComponentActionEventArgs(this));
     }
 
-    protected void defaultCheck(EventListener<ComponentActionEventArgs> checking, EventListener<ComponentActionEventArgs> checked)
-    {
+    protected void defaultCheck(EventListener<ComponentActionEventArgs> checking, EventListener<ComponentActionEventArgs> checked) {
         checking.broadcast(new ComponentActionEventArgs(this));
 
         this.toExists().toBeClickable().waitToBe();
-        if(!this.defaultGetCheckedAttribute()) {
+        if (!this.defaultGetCheckedAttribute()) {
             findElement().click();
         }
 
         checked.broadcast(new ComponentActionEventArgs(this));
     }
 
-    protected void defaultUncheck(EventListener<ComponentActionEventArgs> unchecking, EventListener<ComponentActionEventArgs> unchecked)
-    {
+    protected void defaultUncheck(EventListener<ComponentActionEventArgs> unchecking, EventListener<ComponentActionEventArgs> unchecked) {
         unchecking.broadcast(new ComponentActionEventArgs(this));
 
         this.toExists().toBeClickable().waitToBe();
-        if(this.defaultGetCheckedAttribute()) {
+        if (this.defaultGetCheckedAttribute()) {
             findElement().click();
         }
 
@@ -319,8 +317,7 @@ public class IOSComponent extends LayoutComponentValidationsBuilder implements C
         return Optional.ofNullable(findElement().getText()).orElse("");
     }
 
-    protected void defaultSetText(EventListener<ComponentActionEventArgs> settingValue, EventListener<ComponentActionEventArgs> valueSet, String value)
-    {
+    protected void defaultSetText(EventListener<ComponentActionEventArgs> settingValue, EventListener<ComponentActionEventArgs> valueSet, String value) {
         settingValue.broadcast(new ComponentActionEventArgs(this));
 
         findElement().clear();
@@ -338,8 +335,7 @@ public class IOSComponent extends LayoutComponentValidationsBuilder implements C
     }
 
     private void addArtificialDelay() {
-        if (iOSSettings.getArtificialDelayBeforeAction() != 0)
-        {
+        if (iOSSettings.getArtificialDelayBeforeAction() != 0) {
             try {
                 Thread.sleep(iOSSettings.getArtificialDelayBeforeAction());
             } catch (InterruptedException e) {
@@ -355,19 +351,13 @@ public class IOSComponent extends LayoutComponentValidationsBuilder implements C
         }
     }
 
-    private void scrollToVisible(MobileElement wrappedElement, boolean shouldWait)
-    {
+    private void scrollToVisible(MobileElement wrappedElement, boolean shouldWait) {
+        // Not tested
         SCROLLING_TO_VISIBLE.broadcast(new ComponentActionEventArgs(this));
         try {
-            //            var js = (JavascriptExecutor)driver;
-            //            Map<String, String> swipe = new HashMap<>();
-            //            swipe.put("direction", "down"); // "up", "right", "left"
-            //            swipe.put("element", element.getId());
-            //            js.executeScript("mobile:swipe", swipe);
             var action = new Actions(wrappedDriver);
             action.moveToElement(wrappedElement).perform();
-            if (shouldWait)
-            {
+            if (shouldWait) {
                 Thread.sleep(500);
                 toExists().waitToBe();
             }

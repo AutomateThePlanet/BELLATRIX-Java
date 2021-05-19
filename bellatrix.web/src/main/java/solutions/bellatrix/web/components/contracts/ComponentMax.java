@@ -28,7 +28,7 @@ public interface ComponentMax extends Component {
     default void validateMaxIsSet() {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeNotNull", WebComponent.class, Object.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getMax(), "max");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getMax(), "max");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -38,7 +38,7 @@ public interface ComponentMax extends Component {
     default void validateMaxNotSet() {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIsNull", WebComponent.class, Object.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getMax(), "max");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getMax(), "max");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -48,7 +48,7 @@ public interface ComponentMax extends Component {
     default void validateMaxIs(Number value) {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIs", WebComponent.class, Number.class, Number.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getMax(), value, "max");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getMax(), value, "max");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }

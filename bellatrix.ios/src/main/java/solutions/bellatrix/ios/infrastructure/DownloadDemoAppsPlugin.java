@@ -19,17 +19,16 @@ import solutions.bellatrix.core.utilities.FileDownloader;
 import solutions.bellatrix.ios.configuration.IOSSettings;
 
 public class DownloadDemoAppsPlugin extends Plugin {
-    private static ThreadLocal<Boolean> areDemoAppsDownloaded;
+    private static final ThreadLocal<Boolean> ARE_DEMO_APPS_DOWNLOADED;
 
     static {
-        areDemoAppsDownloaded = new ThreadLocal<>();
+        ARE_DEMO_APPS_DOWNLOADED = new ThreadLocal<>();
     }
 
     @Override
-    @SuppressWarnings("rawtypes")
     public void preBeforeClass(Class type) {
         super.preBeforeClass(type);
-        if (areDemoAppsDownloaded.get())
+        if (ARE_DEMO_APPS_DOWNLOADED.get())
             return;
         var shouldDownloadDemoApps = ConfigurationService.get(IOSSettings.class).getDownloadDemoApps();
         if (shouldDownloadDemoApps) {

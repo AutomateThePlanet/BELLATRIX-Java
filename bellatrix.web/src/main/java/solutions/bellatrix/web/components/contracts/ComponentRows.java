@@ -28,7 +28,7 @@ public interface ComponentRows extends Component {
     default void validateRowsIsSet() {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeNotNull", WebComponent.class, Object.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getRows(), "rows");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getRows(), "rows");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -38,7 +38,7 @@ public interface ComponentRows extends Component {
     default void validateRowsNotSet() {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIsNull", WebComponent.class, Object.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getRows(), "rows");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getRows(), "rows");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -48,7 +48,7 @@ public interface ComponentRows extends Component {
     default void validateRowsIs(int value) {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIs", WebComponent.class, Number.class, Number.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getRows(), value, "rows");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getRows(), value, "rows");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }

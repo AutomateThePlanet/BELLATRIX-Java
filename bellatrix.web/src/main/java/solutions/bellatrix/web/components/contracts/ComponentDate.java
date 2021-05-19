@@ -30,7 +30,7 @@ public interface ComponentDate extends Component {
     default void validateDateIs(String value) {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIs", WebComponent.class, String.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getDate(), value, "date");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getDate(), value, "date");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }

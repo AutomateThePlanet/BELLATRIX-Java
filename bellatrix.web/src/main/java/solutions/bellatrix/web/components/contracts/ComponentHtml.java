@@ -28,7 +28,7 @@ public interface ComponentHtml extends Component {
     default void validateHtmlIs(String value) {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIs", WebComponent.class, String.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getHtml(), value, "inner HTML");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getHtml(), value, "inner HTML");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -38,7 +38,7 @@ public interface ComponentHtml extends Component {
     default void validateHtmlContains(String value) {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeContains", WebComponent.class, String.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getHtml(), value, "inner HTML");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getHtml(), value, "inner HTML");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -48,7 +48,7 @@ public interface ComponentHtml extends Component {
     default void validateHtmlNotContains(String value) {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeNotContains", WebComponent.class, String.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getHtml(), value, "inner HTML");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getHtml(), value, "inner HTML");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }

@@ -28,7 +28,7 @@ public interface ComponentTabIndex extends Component {
     default void validateTabIndexIs(String value) {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIs", WebComponent.class, String.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getTabIndex(), value, "tabindex");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getTabIndex(), value, "tabindex");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -38,7 +38,7 @@ public interface ComponentTabIndex extends Component {
     default void validateTabIndexIsSet() {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIsSet", WebComponent.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getTabIndex(), "tabindex");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getTabIndex(), "tabindex");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -48,7 +48,7 @@ public interface ComponentTabIndex extends Component {
     default void validateTabIndexNotSet() {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeNotSet", WebComponent.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getTabIndex(), "tabindex");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getTabIndex(), "tabindex");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }

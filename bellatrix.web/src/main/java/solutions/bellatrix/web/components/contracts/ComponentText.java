@@ -28,7 +28,7 @@ public interface ComponentText extends Component {
     default void validateTextIs(String value) {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIs", WebComponent.class, String.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getText(), value, "inner text");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getText(), value, "inner text");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -38,7 +38,7 @@ public interface ComponentText extends Component {
     default void validateTextContains(String value) {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeContains", WebComponent.class, String.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getText(), value, "inner text");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getText(), value, "inner text");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -48,7 +48,7 @@ public interface ComponentText extends Component {
     default void validateTextNotContains(String value) {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeNotContains", WebComponent.class, String.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getText(), value, "inner text");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getText(), value, "inner text");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -58,7 +58,7 @@ public interface ComponentText extends Component {
     default void validateTextIsSet() {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIsSet", WebComponent.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getText(), "inner text");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getText(), "inner text");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }

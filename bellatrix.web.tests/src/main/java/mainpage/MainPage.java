@@ -13,7 +13,6 @@
 
 package mainpage;
 
-
 import solutions.bellatrix.web.pages.WebPage;
 
 public class MainPage extends WebPage<Map, Asserts> {
@@ -25,7 +24,7 @@ public class MainPage extends WebPage<Map, Asserts> {
 
     @Override
     protected void waitForPageLoad() {
-        map().addToCartFalcon9().toExists().waitToBe();
+        map().addToCartFalcon9().toExist().waitToBe();
     }
 
     public void addRocketToShoppingCart(String rocketName) {

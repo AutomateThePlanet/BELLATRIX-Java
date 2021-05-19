@@ -30,7 +30,7 @@ public interface ComponentWeek extends Component {
     default void validateWeekIs(String value) {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIs", WebComponent.class, String.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getWeek(), value, "week");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getWeek(), value, "week");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }

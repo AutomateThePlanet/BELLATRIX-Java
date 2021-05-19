@@ -19,8 +19,7 @@ import io.appium.java_client.android.AndroidDriver;
 import java.util.List;
 
 public class AndroidUIAutomatorFindStrategy extends FindStrategy {
-    public AndroidUIAutomatorFindStrategy(String value)
-    {
+    public AndroidUIAutomatorFindStrategy(String value) {
         super(value);
     }
 

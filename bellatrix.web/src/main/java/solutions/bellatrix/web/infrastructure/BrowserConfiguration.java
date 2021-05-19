@@ -18,13 +18,13 @@ import org.openqa.selenium.Platform;
 import java.util.HashMap;
 
 public class BrowserConfiguration {
-    private Browser browser;
-    private Lifecycle lifecycle;
+    private final Browser browser;
+    private final Lifecycle lifecycle;
     private int height;
     private int width;
     private int version;
     private Platform platform;
-    HashMap<String, String> driverOptions;
+    final HashMap<String, String> driverOptions;
 
     public HashMap<String, String> getDriverOptions() {
         return driverOptions;
@@ -39,12 +39,15 @@ public class BrowserConfiguration {
     public int getWidth() {
         return width;
     }
+
     public int getHeight() {
         return height;
     }
+
     public int getVersion() {
         return version;
     }
+
     public Platform getPlatform() {
         return platform;
     }

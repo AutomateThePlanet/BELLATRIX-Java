@@ -28,7 +28,7 @@ public interface ComponentMinLength extends Component {
     default void validateMinLengthIsSet() {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeNotNull", WebComponent.class, Object.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getMinLength(), "min length");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getMinLength(), "min length");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -38,7 +38,7 @@ public interface ComponentMinLength extends Component {
     default void validateMinLengthNotSet() {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIsNull", WebComponent.class, Object.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getMinLength(), "min length");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getMinLength(), "min length");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -48,7 +48,7 @@ public interface ComponentMinLength extends Component {
     default void validateMinLengthIs(int value) {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIs", WebComponent.class, Number.class, Number.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getMinLength(), value, "min length");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getMinLength(), value, "min length");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }

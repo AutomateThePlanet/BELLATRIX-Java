@@ -25,18 +25,22 @@ public interface ComponentSelected extends Component {
     boolean isSelected();
 
     @SneakyThrows
-    default void validateIsSelected() {try{
-        Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeTrue", DesktopComponent.class, boolean.class, String.class);
-        method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (DesktopComponent)this, isSelected(), "selected");
-    } catch (InvocationTargetException e) {
-        throw e.getCause();
-    }}
+    default void validateIsSelected() {
+        try {
+            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeTrue", DesktopComponent.class, boolean.class, String.class);
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (DesktopComponent)this, isSelected(), "selected");
+        } catch (InvocationTargetException e) {
+            throw e.getCause();
+        }
+    }
 
     @SneakyThrows
-    default void validateNotSelected() {try{
-        Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeFalse", DesktopComponent.class, boolean.class, String.class);
-        method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (DesktopComponent)this, isSelected(), "selected");
-    } catch (InvocationTargetException e) {
-        throw e.getCause();
-    }}
+    default void validateNotSelected() {
+        try {
+            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeFalse", DesktopComponent.class, boolean.class, String.class);
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (DesktopComponent)this, isSelected(), "selected");
+        } catch (InvocationTargetException e) {
+            throw e.getCause();
+        }
+    }
 }

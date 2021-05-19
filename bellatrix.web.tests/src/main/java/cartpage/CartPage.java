@@ -23,7 +23,7 @@ public class CartPage extends WebPage<Map, Asserts> {
 
     @Override
     protected void waitForPageLoad() {
-        map().couponCodeTextField().toExists().waitToBe();
+        map().couponCodeTextField().toExist().waitToBe();
     }
 
     public void applyCoupon(String coupon) {

@@ -28,7 +28,7 @@ public interface ComponentDate extends Component {
     default void validateDateIs(String value) {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIs", AndroidComponent.class, String.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (AndroidComponent) this, getDate(), value, "date");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (AndroidComponent)this, getDate(), value, "date");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -38,7 +38,7 @@ public interface ComponentDate extends Component {
     default void validateDateContains(String value) {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeContains", AndroidComponent.class, String.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (AndroidComponent) this, getDate(), value, "date");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (AndroidComponent)this, getDate(), value, "date");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -48,7 +48,7 @@ public interface ComponentDate extends Component {
     default void validateDateNotContains(String value) {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeNotContains", AndroidComponent.class, String.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (AndroidComponent) this, getDate(), value, "date");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (AndroidComponent)this, getDate(), value, "date");
         } catch (
                 InvocationTargetException e) {
             throw e.getCause();

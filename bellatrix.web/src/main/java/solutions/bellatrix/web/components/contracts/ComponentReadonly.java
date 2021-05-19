@@ -28,7 +28,7 @@ public interface ComponentReadonly extends Component {
     default void validateIsReadonly() {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeTrue", WebComponent.class, boolean.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, isReadonly(), "readonly");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, isReadonly(), "readonly");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -38,7 +38,7 @@ public interface ComponentReadonly extends Component {
     default void validateNotReadonly() {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeFalse", WebComponent.class, boolean.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, isReadonly(), "readonly");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, isReadonly(), "readonly");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }

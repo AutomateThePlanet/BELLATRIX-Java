@@ -17,6 +17,7 @@ import cartpage.CartPage;
 import checkoutpage.CheckoutPage;
 import checkoutpage.PurchaseInfo;
 import mainpage.MainPage;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import solutions.bellatrix.web.components.Anchor;
 import solutions.bellatrix.web.findstrategies.TextContains;
@@ -25,22 +26,23 @@ import solutions.bellatrix.web.infrastructure.ExecutionBrowser;
 import solutions.bellatrix.web.infrastructure.Lifecycle;
 import solutions.bellatrix.web.infrastructure.testng.WebTest;
 
-@ExecutionBrowser(browser = Browser.FIREFOX, lifecycle = Lifecycle.REUSE_IF_STARTED)
+@ExecutionBrowser(browser = Browser.EDGE, lifecycle = Lifecycle.REUSE_IF_STARTED)
 public class ProductPurchaseTests extends WebTest {
     @Test
     public void completePurchaseSuccessfully_first() {
         app().navigate().to("http://demos.bellatrix.solutions/");
-        var addToCartFalcon9 = app().create().byCss(Anchor.class,"[data-product_id*='28']");
+        var addToCartFalcon9 = app().create().byCss(Anchor.class, "[data-product_id*='28']");
         var blogLink = app().create().by(Anchor.class, TextContains.by("Blog"));
         addToCartFalcon9.click();
         blogLink.above(addToCartFalcon9);
-        new MainPage().asserts().productBoxLink("Falcon 9", "http://demos.bellatrix.solutions/product/falcon-9/");
+        new MainPage().asserts().productBoxLink("Falcon 9", "http://demos.bellatrix.solutions/product/falcon-99/");
     }
 
     @Test
+    @Ignore
     public void completePurchaseSuccessfully_second() {
         app().navigate().to("http://demos.bellatrix.solutions/");
-        var addToCartFalcon9 = app().create().byCss(Anchor.class,"[data-product_id*='28']");
+        var addToCartFalcon9 = app().create().byCss(Anchor.class, "[data-product_id*='28']");
         addToCartFalcon9.click();
     }
 
@@ -48,10 +50,11 @@ public class ProductPurchaseTests extends WebTest {
     public void falcon9LinkAddsCorrectProduct() {
         var mainPage = app().goTo(MainPage.class);
 
-        mainPage.asserts().productBoxLink("Falcon 9", "http://demos.bellatrix.solutions/product/falcon-9/");
+        mainPage.asserts().productBoxLink("Falcon 9", "http://demos.bellatrix.solutions/product/falcon-99/");
     }
 
     @Test
+    @Ignore
     public void saturnVLinkAddsCorrectProduct() {
         var mainPage = app().goTo(MainPage.class);
 
@@ -88,6 +91,7 @@ public class ProductPurchaseTests extends WebTest {
     }
 
     @Test
+    @Ignore
     public void purchaseSaturnVWithoutFacade() {
         var mainPage = app().goTo(MainPage.class);
         mainPage.addRocketToShoppingCart("Saturn V");

@@ -24,6 +24,7 @@ import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.core.plugins.EventListener;
 import solutions.bellatrix.core.utilities.DebugInformation;
 import solutions.bellatrix.core.utilities.InstanceFactory;
+import solutions.bellatrix.core.utilities.Log;
 import solutions.bellatrix.desktop.components.contracts.Component;
 import solutions.bellatrix.desktop.components.contracts.ComponentVisible;
 import solutions.bellatrix.desktop.configuration.DesktopSettings;
@@ -55,12 +56,12 @@ public class DesktopComponent extends LayoutComponentValidationsBuilder implemen
     @Getter @Setter private WebElement parentWrappedElement;
     @Getter @Setter private int elementIndex;
     @Getter @Setter private FindStrategy findStrategy;
-    @Getter private WindowsDriver<WebElement> wrappedDriver;
-    @Getter protected AppService appService;
-    @Getter protected ComponentCreateService componentCreateService;
-    @Getter protected ComponentWaitService componentWaitService;
-    private List<WaitStrategy> waitStrategies;
-    private DesktopSettings desktopSettings;
+    @Getter private final WindowsDriver<WebElement> wrappedDriver;
+    @Getter protected final AppService appService;
+    @Getter protected final ComponentCreateService componentCreateService;
+    @Getter protected final ComponentWaitService componentWaitService;
+    private final List<WaitStrategy> waitStrategies;
+    private final DesktopSettings desktopSettings;
 
     public DesktopComponent() {
         this.waitStrategies = new ArrayList<>();
@@ -80,7 +81,7 @@ public class DesktopComponent extends LayoutComponentValidationsBuilder implemen
         }
     }
 
-    public String getElementName() {
+    public String getComponentName() {
         return String.format("%s (%s)", getComponentClass().getSimpleName(), findStrategy.toString());
     }
 
@@ -115,21 +116,18 @@ public class DesktopComponent extends LayoutComponentValidationsBuilder implemen
         waitStrategies.add(waitStrategy);
     }
 
-    @SuppressWarnings("unchecked")
     public <TElementType extends DesktopComponent> TElementType toExists() {
-        var waitStrategy = new ToExistsWaitStrategy();
+        var waitStrategy = new ToExistWaitStrategy();
         ensureState(waitStrategy);
         return (TElementType)this;
     }
 
-    @SuppressWarnings("unchecked")
     public <TElementType extends DesktopComponent> TElementType toBeClickable() {
         var waitStrategy = new ToBeClickableWaitStrategy();
         ensureState(waitStrategy);
         return (TElementType)this;
     }
 
-    @SuppressWarnings("unchecked")
     public <TElementType extends DesktopComponent> TElementType toBeVisible() {
         var waitStrategy = new ToBeVisibleWaitStrategy();
         ensureState(waitStrategy);
@@ -236,32 +234,34 @@ public class DesktopComponent extends LayoutComponentValidationsBuilder implemen
     }
 
     protected WebElement findElement() {
-      if (waitStrategies.size() == 0) {
-          waitStrategies.add(Wait.to().exists());
-      }
+        if (waitStrategies.size() == 0) {
+            waitStrategies.add(Wait.to().exist());
+        }
 
-      try {
-          for (var waitStrategy:waitStrategies) {
-              componentWaitService.wait(this, waitStrategy);
-          }
+        try {
+            for (var waitStrategy : waitStrategies) {
+                componentWaitService.wait(this, waitStrategy);
+            }
 
-          wrappedElement = findNativeElement();
-          scrollToMakeElementVisible(wrappedElement);
-          addArtificialDelay();
+            wrappedElement = findNativeElement();
+            scrollToMakeElementVisible(wrappedElement);
+            addArtificialDelay();
 
-          waitStrategies.clear();
-      } catch (WebDriverException ex) {
-          DebugInformation.printStackTrace(ex);
-          System.out.printf("\n\nThe element: \n Name: '%s', \n Locator: '%s = %s', \nWas not found on the page or didn't fulfill the specified conditions.\n\n", getComponentClass().getSimpleName(), findStrategy.toString(), findStrategy.getValue());
-      }
+            waitStrategies.clear();
+        } catch (WebDriverException ex) {
+            Log.error("%n%nThe component: %n" +
+                            "     Type: \"\u001B[1m%s\u001B[0m\"%n" +
+                            "  Locator: \"\u001B[1m%s\u001B[0m\"%n" +
+                            "Was not found on the page or didn't fulfill the specified conditions.%n%n",
+                    getComponentClass().getSimpleName(), findStrategy.toString());
+            throw ex;
+        }
 
         RETURNING_WRAPPED_ELEMENT.broadcast(new ComponentActionEventArgs(this));
         return wrappedElement;
     }
 
-
-    protected void defaultClick(EventListener<ComponentActionEventArgs> clicking, EventListener<ComponentActionEventArgs> clicked)
-    {
+    protected void defaultClick(EventListener<ComponentActionEventArgs> clicking, EventListener<ComponentActionEventArgs> clicked) {
         clicking.broadcast(new ComponentActionEventArgs(this));
 
         this.toExists().toBeClickable().waitToBe();
@@ -279,8 +279,7 @@ public class DesktopComponent extends LayoutComponentValidationsBuilder implemen
         return Optional.ofNullable(findElement().getText()).orElse("");
     }
 
-    protected void defaultSetText(EventListener<ComponentActionEventArgs> settingValue, EventListener<ComponentActionEventArgs> valueSet, String value)
-    {
+    protected void defaultSetText(EventListener<ComponentActionEventArgs> settingValue, EventListener<ComponentActionEventArgs> valueSet, String value) {
         settingValue.broadcast(new ComponentActionEventArgs(this));
 
         findElement().clear();
@@ -306,8 +305,7 @@ public class DesktopComponent extends LayoutComponentValidationsBuilder implemen
     }
 
     private void addArtificialDelay() {
-        if (desktopSettings.getArtificialDelayBeforeAction() != 0)
-        {
+        if (desktopSettings.getArtificialDelayBeforeAction() != 0) {
             try {
                 Thread.sleep(desktopSettings.getArtificialDelayBeforeAction());
             } catch (InterruptedException e) {
@@ -323,14 +321,12 @@ public class DesktopComponent extends LayoutComponentValidationsBuilder implemen
         }
     }
 
-    private void scrollToVisible(WebElement wrappedElement, boolean shouldWait)
-    {
+    private void scrollToVisible(WebElement wrappedElement, boolean shouldWait) {
         SCROLLING_TO_VISIBLE.broadcast(new ComponentActionEventArgs(this));
         try {
             var action = new Actions(wrappedDriver);
             action.moveToElement(wrappedElement).perform();
-            if (shouldWait)
-            {
+            if (shouldWait) {
                 Thread.sleep(500);
                 toExists().waitToBe();
             }

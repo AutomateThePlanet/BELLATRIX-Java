@@ -29,7 +29,7 @@ public final class ConfigurationService {
     private static String environment;
 
     public static <T> T get(Class<T> configSection) {
-        T mappedObject = null;
+        T mappedObject = (T)new Object();
         if (environment == null) {
             String environmentOverride = System.getProperty("environment");
             if (environmentOverride == null) {
@@ -42,8 +42,7 @@ public final class ConfigurationService {
                 }
 
                 environment = p.getProperty("environment");
-            }
-           else {
+            } else {
                 environment = environmentOverride;
             }
         }
@@ -65,8 +64,7 @@ public final class ConfigurationService {
         return mappedObject;
     }
 
-    public static String getSectionName(Class<?> configSection)
-    {
+    public static String getSectionName(Class<?> configSection) {
         var sb = new StringBuilder(configSection.getSimpleName());
         sb.setCharAt(0, Character.toLowerCase(sb.charAt(0)));
         return sb.toString();

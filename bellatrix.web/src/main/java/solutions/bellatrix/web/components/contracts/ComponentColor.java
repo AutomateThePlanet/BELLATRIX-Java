@@ -30,7 +30,7 @@ public interface ComponentColor extends Component {
     default void validateColorIs(String value) {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIs", WebComponent.class, String.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, getColor(), value, "color");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getColor(), value, "color");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }

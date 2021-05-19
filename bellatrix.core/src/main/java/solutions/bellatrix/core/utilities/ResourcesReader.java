@@ -25,6 +25,9 @@ public class ResourcesReader {
     @SneakyThrows
     public static String getFileAsString(Class<?> moduleClass, String fileName) {
         InputStream input = moduleClass.getResourceAsStream("/" + fileName);
+        if (input == null) {
+            input = InputStream.nullInputStream();
+        }
         return IOUtils.toString(input, StandardCharsets.UTF_8);
     }
 }
