@@ -208,7 +208,7 @@ public class AndroidComponent extends LayoutComponentValidationsBuilder implemen
 
     protected MobileElement findElement() {
       if (waitStrategies.size() == 0) {
-          waitStrategies.add(Wait.to().exists());
+          waitStrategies.add(Wait.to().exist());
       }
 
       try {

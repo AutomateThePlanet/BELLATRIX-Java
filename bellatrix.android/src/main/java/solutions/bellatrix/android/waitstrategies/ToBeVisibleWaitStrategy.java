@@ -32,7 +32,7 @@ public class ToBeVisibleWaitStrategy extends WaitStrategy {
     }
 
     public ToBeVisibleWaitStrategy(long timeoutIntervalSeconds, long sleepIntervalSeconds) {
-       super(timeoutIntervalSeconds, sleepIntervalSeconds);
+        super(timeoutIntervalSeconds, sleepIntervalSeconds);
     }
 
     public static ToBeVisibleWaitStrategy of() {
@@ -45,19 +45,11 @@ public class ToBeVisibleWaitStrategy extends WaitStrategy {
         waitUntil(func);
     }
 
-    private <TFindStrategy extends FindStrategy> Boolean elementIsVisible(AndroidDriver<MobileElement> searchContext, TFindStrategy findStrategy)
-    {
+    private <TFindStrategy extends FindStrategy> Boolean elementIsVisible(AndroidDriver<MobileElement> searchContext, TFindStrategy findStrategy) {
         var element = findStrategy.findElement(searchContext);
-        try
-        {
+        try {
             return element != null && element.isDisplayed();
-        }
-        catch (StaleElementReferenceException e)
-        {
-            return false;
-        }
-        catch (NoSuchElementException e)
-        {
+        } catch (StaleElementReferenceException | NoSuchElementException e) {
             return false;
         }
     }

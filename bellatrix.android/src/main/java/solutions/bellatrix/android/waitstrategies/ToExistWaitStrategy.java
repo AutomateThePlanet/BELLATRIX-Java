@@ -30,7 +30,7 @@ public class ToExistWaitStrategy extends WaitStrategy {
     }
 
     public ToExistWaitStrategy(long timeoutIntervalSeconds, long sleepIntervalSeconds) {
-       super(timeoutIntervalSeconds, sleepIntervalSeconds);
+        super(timeoutIntervalSeconds, sleepIntervalSeconds);
     }
 
     public static ToExistWaitStrategy of() {
@@ -43,15 +43,11 @@ public class ToExistWaitStrategy extends WaitStrategy {
         waitUntil(func);
     }
 
-    private <TFindStrategy extends FindStrategy> Boolean elementExists(AndroidDriver<MobileElement> searchContext, TFindStrategy findStrategy)
-    {
-        try
-        {
+    private <TFindStrategy extends FindStrategy> Boolean elementExists(AndroidDriver<MobileElement> searchContext, TFindStrategy findStrategy) {
+        try {
             var element = findStrategy.findElement(searchContext);
             return element != null;
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             return false;
         }
     }

@@ -20,14 +20,14 @@ import org.openqa.selenium.StaleElementReferenceException;
 import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.web.configuration.WebSettings;
 
-public class ToBeVisibleWaitStrategy extends WaitStrategy{
+public class ToBeVisibleWaitStrategy extends WaitStrategy {
     public ToBeVisibleWaitStrategy() {
         timeoutInterval = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getElementToBeVisibleTimeout();
         sleepInterval = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getSleepInterval();
     }
 
     public ToBeVisibleWaitStrategy(long timeoutIntervalSeconds, long sleepIntervalSeconds) {
-       super(timeoutIntervalSeconds, sleepIntervalSeconds);
+        super(timeoutIntervalSeconds, sleepIntervalSeconds);
     }
 
     public static ToBeVisibleWaitStrategy of() {
@@ -39,19 +39,11 @@ public class ToBeVisibleWaitStrategy extends WaitStrategy{
         waitUntil((x) -> elementIsVisible(searchContext, by));
     }
 
-    private boolean elementIsVisible(SearchContext searchContext, By by)
-    {
+    private boolean elementIsVisible(SearchContext searchContext, By by) {
         var element = findElement(searchContext, by);
-        try
-        {
+        try {
             return element != null && element.isDisplayed();
-        }
-        catch (StaleElementReferenceException e)
-        {
-            return false;
-        }
-        catch (NoSuchElementException e)
-        {
+        } catch (StaleElementReferenceException | NoSuchElementException e) {
             return false;
         }
     }

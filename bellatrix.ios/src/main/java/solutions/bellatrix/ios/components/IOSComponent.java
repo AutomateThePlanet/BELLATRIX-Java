@@ -244,7 +244,7 @@ public class IOSComponent extends LayoutComponentValidationsBuilder implements C
 
     protected MobileElement findElement() {
       if (waitStrategies.size() == 0) {
-          waitStrategies.add(Wait.to().exists());
+          waitStrategies.add(Wait.to().exist());
       }
 
       try {

@@ -237,7 +237,7 @@ public class DesktopComponent extends LayoutComponentValidationsBuilder implemen
 
     protected WebElement findElement() {
       if (waitStrategies.size() == 0) {
-          waitStrategies.add(Wait.to().exists());
+          waitStrategies.add(Wait.to().exist());
       }
 
       try {

@@ -26,7 +26,7 @@ public class ToExistWaitStrategy extends WaitStrategy {
     }
 
     public ToExistWaitStrategy(long timeoutIntervalSeconds, long sleepIntervalSeconds) {
-       super(timeoutIntervalSeconds, sleepIntervalSeconds);
+        super(timeoutIntervalSeconds, sleepIntervalSeconds);
     }
 
     public static ToExistWaitStrategy of() {
@@ -38,15 +38,11 @@ public class ToExistWaitStrategy extends WaitStrategy {
         waitUntil((x) -> elementExists(searchContext, by));
     }
 
-    private boolean elementExists(SearchContext searchContext, By by)
-    {
-        try
-        {
+    private boolean elementExists(SearchContext searchContext, By by) {
+        try {
             var element = findElement(searchContext, by);
             return element != null;
-        }
-        catch (NoSuchElementException e)
-        {
+        } catch (NoSuchElementException e) {
             return false;
         }
     }
