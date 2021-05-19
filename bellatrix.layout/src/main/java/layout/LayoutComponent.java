@@ -17,7 +17,7 @@ import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 
 public interface LayoutComponent {
-    String getElementName();
+    String getComponentName();
     Point getLocation();
     Dimension getSize();
 }

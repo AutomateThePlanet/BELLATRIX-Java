@@ -23,88 +23,86 @@ import java.lang.reflect.Method;
 import java.util.Objects;
 
 public class BrowserLifecyclePlugin extends Plugin {
-    private static ThreadLocal<BrowserConfiguration> currentBrowserConfiguration;
-    private static ThreadLocal<BrowserConfiguration> previousBrowserConfiguration;
-    private static ThreadLocal<Boolean> isBrowserStartedDuringPreBeforeClass;
-    private static ThreadLocal<Boolean> isBrowserStartedCorrectly;
+    private static final ThreadLocal<BrowserConfiguration> CURRENT_BROWSER_CONFIGURATION;
+    private static final ThreadLocal<BrowserConfiguration> PREVIOUS_BROWSER_CONFIGURATION;
+    private static final ThreadLocal<Boolean> IS_BROWSER_STARTED_DURING_PRE_BEFORE_CLASS;
+    private static final ThreadLocal<Boolean> IS_BROWSER_STARTED_CORRECTLY;
 
     static {
-        currentBrowserConfiguration = new ThreadLocal<>();
-        previousBrowserConfiguration = new ThreadLocal<>();
-        isBrowserStartedDuringPreBeforeClass = new ThreadLocal<>();
-        isBrowserStartedCorrectly = new ThreadLocal<>();
+        CURRENT_BROWSER_CONFIGURATION = new ThreadLocal<>();
+        PREVIOUS_BROWSER_CONFIGURATION = new ThreadLocal<>();
+        IS_BROWSER_STARTED_DURING_PRE_BEFORE_CLASS = new ThreadLocal<>();
+        IS_BROWSER_STARTED_CORRECTLY = new ThreadLocal<>();
     }
 
     @Override
-    @SuppressWarnings("rawtypes")
-    public void preBeforeClass(Class type) {
-        currentBrowserConfiguration.set(getExecutionBrowserClassLevel(type));
+        public void preBeforeClass(Class type) {
+        CURRENT_BROWSER_CONFIGURATION.set(getExecutionBrowserClassLevel(type));
         if (shouldRestartBrowser()) {
             restartBrowser();
             // TODO: maybe we can simplify and remove this parameter.
-            isBrowserStartedDuringPreBeforeClass.set(true);
+            IS_BROWSER_STARTED_DURING_PRE_BEFORE_CLASS.set(true);
         } else {
-            isBrowserStartedDuringPreBeforeClass.set(false);
+            IS_BROWSER_STARTED_DURING_PRE_BEFORE_CLASS.set(false);
         }
 
         super.preBeforeClass(type);
     }
 
     @Override
-    @SuppressWarnings("rawtypes")
-    public void postAfterClass(Class type) {
+        public void postAfterClass(Class type) {
         shutdownBrowser();
-        isBrowserStartedDuringPreBeforeClass.set(false);
+        IS_BROWSER_STARTED_DURING_PRE_BEFORE_CLASS.set(false);
         super.preAfterClass(type);
     }
 
     @Override
     public void preBeforeTest(TestResult testResult, Method memberInfo) {
-        currentBrowserConfiguration.set(getBrowserConfiguration(memberInfo));
+        CURRENT_BROWSER_CONFIGURATION.set(getBrowserConfiguration(memberInfo));
 
-        if (!isBrowserStartedDuringPreBeforeClass.get()) {
+        if (!IS_BROWSER_STARTED_DURING_PRE_BEFORE_CLASS.get()) {
             if (shouldRestartBrowser()) {
                 restartBrowser();
             }
         }
 
-        isBrowserStartedDuringPreBeforeClass.set(false);
+        IS_BROWSER_STARTED_DURING_PRE_BEFORE_CLASS.set(false);
     }
 
     @Override
     public void postAfterTest(TestResult testResult, Method memberInfo) {
-        if (currentBrowserConfiguration.get().getLifecycle() ==
+        if (CURRENT_BROWSER_CONFIGURATION.get().getLifecycle() ==
                 Lifecycle.RESTART_ON_FAIL && testResult == TestResult.FAILURE) {
             shutdownBrowser();
-            isBrowserStartedDuringPreBeforeClass.set(false);
+            IS_BROWSER_STARTED_DURING_PRE_BEFORE_CLASS.set(false);
         }
     }
 
     private void shutdownBrowser() {
         DriverService.close();
-        previousBrowserConfiguration.set(null);
+        PREVIOUS_BROWSER_CONFIGURATION.set(null);
     }
 
     private void restartBrowser() {
         shutdownBrowser();
         try {
-            DriverService.start(currentBrowserConfiguration.get());
-            isBrowserStartedCorrectly.set(true);
+            DriverService.start(CURRENT_BROWSER_CONFIGURATION.get());
+            IS_BROWSER_STARTED_CORRECTLY.set(true);
         } catch (Exception ex) {
             DebugInformation.printStackTrace(ex);
-            isBrowserStartedCorrectly.set(false);
+            IS_BROWSER_STARTED_CORRECTLY.set(false);
         }
 
-        previousBrowserConfiguration.set(currentBrowserConfiguration.get());
+        PREVIOUS_BROWSER_CONFIGURATION.set(CURRENT_BROWSER_CONFIGURATION.get());
     }
 
     private boolean shouldRestartBrowser() {
         // TODO: IsBrowserStartedCorrectly getter?
-        var previousConfiguration = previousBrowserConfiguration.get();
-        var currentConfiguration = currentBrowserConfiguration.get();
+        var previousConfiguration = PREVIOUS_BROWSER_CONFIGURATION.get();
+        var currentConfiguration = CURRENT_BROWSER_CONFIGURATION.get();
         if (previousConfiguration == null) {
             return true;
-        } else if (!isBrowserStartedCorrectly.get()) {
+        } else if (!IS_BROWSER_STARTED_CORRECTLY.get()) {
             return true;
         } else if (!previousConfiguration.equals(currentConfiguration)) {
             return true;

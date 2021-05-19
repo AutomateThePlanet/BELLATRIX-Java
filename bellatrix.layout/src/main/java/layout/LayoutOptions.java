@@ -36,7 +36,7 @@ public enum LayoutOptions {
 
     private final String name;
 
-    private LayoutOptions(String s) {
+    LayoutOptions(String s) {
         name = s;
     }
 

@@ -66,13 +66,13 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
     @Getter @Setter private WebElement parentWrappedElement;
     @Getter @Setter private int elementIndex;
     @Getter @Setter private FindStrategy findStrategy;
-    @Getter private WebDriver wrappedDriver;
+    @Getter private final WebDriver wrappedDriver;
     @Getter protected JavaScriptService javaScriptService;
     @Getter protected BrowserService browserService;
     @Getter protected ComponentCreateService componentCreateService;
     @Getter protected ComponentWaitService componentWaitService;
-    private List<WaitStrategy> waitStrategies;
-    private WebSettings webSettings;
+    private final List<WaitStrategy> waitStrategies;
+    private final WebSettings webSettings;
 
     public WebComponent() {
         waitStrategies = new ArrayList<>();
@@ -93,7 +93,7 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
         }
     }
 
-    public String getElementName() {
+    public String getComponentName() {
         return String.format("%s (%s)", getComponentClass().getSimpleName(), findStrategy.toString());
     }
 
@@ -176,22 +176,19 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
         waitStrategies.add(waitStrategy);
     }
 
-    @SuppressWarnings("unchecked")
-    public <TElementType extends WebComponent> TElementType toExist() {
+        public <TElementType extends WebComponent> TElementType toExist() {
         var waitStrategy = new ToExistWaitStrategy();
         ensureState(waitStrategy);
         return (TElementType)this;
     }
 
-    @SuppressWarnings("unchecked")
-    public <TElementType extends WebComponent> TElementType toBeClickable() {
+        public <TElementType extends WebComponent> TElementType toBeClickable() {
         var waitStrategy = new ToBeClickableWaitStrategy();
         ensureState(waitStrategy);
         return (TElementType)this;
     }
 
-    @SuppressWarnings("unchecked")
-    public <TElementType extends WebComponent> TElementType toBeVisible() {
+        public <TElementType extends WebComponent> TElementType toBeVisible() {
         var waitStrategy = new ToBeVisibleWaitStrategy();
         ensureState(waitStrategy);
         return (TElementType)this;
@@ -279,7 +276,7 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
 
     public void highlight() {
         var currentBrowser = DriverService.getBrowserConfiguration().getBrowser();
-        if (currentBrowser == Browser.CHROME_HEADLESS || currentBrowser == Browser.EDGE_HEADLESS) return;
+        if (currentBrowser == Browser.CHROME_HEADLESS) return;
 
         try {
             var originalElementBorder = getWrappedElement().getCssValue("background-color");

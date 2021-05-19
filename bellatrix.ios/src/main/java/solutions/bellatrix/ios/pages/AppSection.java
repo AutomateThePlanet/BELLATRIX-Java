@@ -27,8 +27,7 @@ public abstract class AppSection<MapT extends PageMap, AssertionsT extends PageA
         return new ComponentCreateService();
     }
 
-    @SuppressWarnings("unchecked")
-    public MapT map() {
+        public MapT map() {
         try {
             var elementsClass = (Class<MapT>)((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[0];
             return elementsClass.getDeclaredConstructor().newInstance();
@@ -37,8 +36,7 @@ public abstract class AppSection<MapT extends PageMap, AssertionsT extends PageA
         }
     }
 
-    @SuppressWarnings("unchecked")
-    public AssertionsT asserts() {
+        public AssertionsT asserts() {
         try {
             var assertionsClass = (Class<AssertionsT>)((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[1];
             return assertionsClass.getDeclaredConstructor().newInstance();

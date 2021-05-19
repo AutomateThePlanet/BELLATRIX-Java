@@ -22,7 +22,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ExecutionApp {
     Lifecycle lifecycle() default Lifecycle.RESTART_EVERY_TIME;
-    String IOSVersion() default "";
+    String iOSVersion() default "";
     boolean isMobileWebTest() default false;
     String deviceName() default "";
     String appPath() default "";

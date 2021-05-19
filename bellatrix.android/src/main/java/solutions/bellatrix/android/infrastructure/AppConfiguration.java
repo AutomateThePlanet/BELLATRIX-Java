@@ -28,7 +28,7 @@ public class AppConfiguration {
     @Getter private String appPackage;
     @Getter private String appActivity;
     @Getter private String androidVersion;
-    @Getter private Boolean isMobileWebExecution;
+    @Getter private final Boolean isMobileWebExecution;
     @Getter HashMap<String, String> appiumOptions;
 
     public AppConfiguration(boolean isMobileWebExecution) {

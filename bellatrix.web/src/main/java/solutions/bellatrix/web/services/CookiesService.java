@@ -34,11 +34,11 @@ public class CookiesService extends WebService {
         getWrappedDriver().manage().deleteCookieNamed(cookieName);
     }
 
-    public Set<Cookie> GetAllCookies() {
+    public Set<Cookie> getAllCookies() {
         return getWrappedDriver().manage().getCookies();
     }
 
-    public Cookie GetCookie(String cookieName) {
+    public Cookie getCookie(String cookieName) {
         return getWrappedDriver().manage().getCookieNamed(cookieName);
     }
 }

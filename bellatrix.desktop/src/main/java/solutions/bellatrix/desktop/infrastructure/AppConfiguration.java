@@ -16,8 +16,8 @@ package solutions.bellatrix.desktop.infrastructure;
 import java.util.HashMap;
 
 public class AppConfiguration {
-    private String appPath;
-    private Lifecycle lifecycle;
+    private final String appPath;
+    private final Lifecycle lifecycle;
     private int height;
     private int width;
     HashMap<String, String> appiumOptions;

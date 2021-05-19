@@ -31,7 +31,7 @@ public class Select extends WebComponent implements ComponentDisabled, Component
         return getClass();
     }
 
-    public Option GetSelected() {
+    public Option getSelected() {
         var nativeSelect = new org.openqa.selenium.support.ui.Select(findElement());
         var optionComponent = InstanceFactory.create(Option.class);
         optionComponent.setFindStrategy(getFindStrategy());

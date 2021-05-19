@@ -11,18 +11,16 @@
  * limitations under the License.
  */
 
-package cartInfosection;
+package cartinfosection_rename;
 
-import solutions.bellatrix.web.components.Anchor;
-import solutions.bellatrix.web.components.Span;
-import solutions.bellatrix.web.pages.PageMap;
+import solutions.bellatrix.web.pages.WebSection;
 
-public class Map extends PageMap {
-    public Anchor cartIcon() {
-        return create().byClass(Anchor.class, "cart-contents");
+public class CartInfoSection extends WebSection<Map, Asserts> {
+    public String getCurrentAmount() {
+        return map().cartAmount().getText();
     }
 
-    public Span cartAmount() {
-        return create().byClass(Span.class, "amount");
+    public void openCart() {
+        map().cartIcon().click();
     }
 }

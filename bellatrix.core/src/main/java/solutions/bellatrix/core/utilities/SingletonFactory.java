@@ -26,8 +26,7 @@ public class SingletonFactory {
     private SingletonFactory() {
     }
 
-    @SuppressWarnings("unchecked")
-    public static <T> T getInstance(Class<T> classOf, Object... initargs) {
+        public static <T> T getInstance(Class<T> classOf, Object... initargs) {
         try {
             if (!SINGLETON_FACTORY.mapHolder.containsKey(classOf.getName())) {
 

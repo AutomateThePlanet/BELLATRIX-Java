@@ -18,8 +18,8 @@ import org.openqa.selenium.Platform;
 import java.util.HashMap;
 
 public class BrowserConfiguration {
-    private Browser browser;
-    private Lifecycle lifecycle;
+    private final Browser browser;
+    private final Lifecycle lifecycle;
     private int height;
     private int width;
     private int version;

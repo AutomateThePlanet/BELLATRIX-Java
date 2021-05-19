@@ -21,12 +21,12 @@ public enum Browser {
     FIREFOX("firefox"),
     FIREFOX_HEADLESS("firefox"),
     EDGE("edge"),
-    EDGE_HEADLESS("edge"),
+    // EDGE_HEADLESS("edge"), // Unsupported by Selenium 3, Selenium 4 has support
     OPERA("opera"),
     SAFARI("safari"),
     INTERNET_EXPLORER("ie");
 
-    private String value;
+    private final String value;
 
     Browser(String value) {
         this.value = value;

@@ -58,12 +58,12 @@ public class AndroidComponent extends LayoutComponentValidationsBuilder implemen
     @Getter @Setter private MobileElement parentWrappedElement;
     @Getter @Setter private int elementIndex;
     @Getter @Setter private FindStrategy findStrategy;
-    @Getter private AndroidDriver<MobileElement> wrappedDriver;
+    @Getter private final AndroidDriver<MobileElement> wrappedDriver;
     @Getter protected AppService appService;
     @Getter protected ComponentCreateService componentCreateService;
     @Getter protected ComponentWaitService componentWaitService;
-    private List<WaitStrategy> waitStrategies;
-    private AndroidSettings androidSettings;
+    private final List<WaitStrategy> waitStrategies;
+    private final AndroidSettings androidSettings;
 
     public AndroidComponent() {
         this.waitStrategies = new ArrayList<>();
@@ -83,7 +83,7 @@ public class AndroidComponent extends LayoutComponentValidationsBuilder implemen
         }
     }
 
-    public String getElementName() {
+    public String getComponentName() {
         return String.format("%s (%s)", getComponentClass().getSimpleName(), findStrategy.toString());
     }
 
@@ -118,22 +118,19 @@ public class AndroidComponent extends LayoutComponentValidationsBuilder implemen
         waitStrategies.add(waitStrategy);
     }
 
-    @SuppressWarnings("unchecked")
-    public <TElementType extends AndroidComponent> TElementType toExists() {
+        public <TElementType extends AndroidComponent> TElementType toExists() {
         var waitStrategy = new ToExistWaitStrategy();
         ensureState(waitStrategy);
         return (TElementType)this;
     }
 
-    @SuppressWarnings("unchecked")
-    public <TElementType extends AndroidComponent> TElementType toBeClickable() {
+        public <TElementType extends AndroidComponent> TElementType toBeClickable() {
         var waitStrategy = new ToBeClickableWaitStrategy();
         ensureState(waitStrategy);
         return (TElementType)this;
     }
 
-    @SuppressWarnings("unchecked")
-    public <TElementType extends AndroidComponent> TElementType toBeVisible() {
+        public <TElementType extends AndroidComponent> TElementType toBeVisible() {
         var waitStrategy = new ToBeVisibleWaitStrategy();
         ensureState(waitStrategy);
         return (TElementType)this;

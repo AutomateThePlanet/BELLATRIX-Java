@@ -11,9 +11,18 @@
  * limitations under the License.
  */
 
-package cartInfosection;
+package cartinfosection_rename;
 
-import solutions.bellatrix.web.pages.PageAsserts;
+import solutions.bellatrix.web.components.Anchor;
+import solutions.bellatrix.web.components.Span;
+import solutions.bellatrix.web.pages.PageMap;
 
-public class Asserts extends PageAsserts<Map> {
+public class Map extends PageMap {
+    public Anchor cartIcon() {
+        return create().byClass(Anchor.class, "cart-contents");
+    }
+
+    public Span cartAmount() {
+        return create().byClass(Span.class, "amount");
+    }
 }

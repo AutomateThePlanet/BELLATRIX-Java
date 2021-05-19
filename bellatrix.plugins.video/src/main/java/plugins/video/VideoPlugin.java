@@ -27,7 +27,7 @@ public abstract class VideoPlugin extends Plugin {
     public static final EventListener<VideoPluginEventArgs> VIDEO_GENERATED = new EventListener<>();
     private static final FFmpegVideoRecorder FMPEG_VIDEO_RECORDER = new FFmpegVideoRecorder();
     private static final ThreadLocal<String> VIDEO_FULL_PATH = new ThreadLocal<>();
-    private boolean isEnabled;
+    private final boolean isEnabled;
 
     public VideoPlugin(boolean isEnabled) {
         this.isEnabled = isEnabled;

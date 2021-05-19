@@ -19,7 +19,7 @@ import io.appium.java_client.android.AndroidDriver;
 import java.util.List;
 
 public class TextFindStrategy extends FindStrategy {
-    private final String TEXT_EXPRESSION = "new UiScrollable(new UiSelector()).scrollIntoView(new UiSelector().text(\"%s\"));";
+    private static final String TEXT_EXPRESSION = "new UiScrollable(new UiSelector()).scrollIntoView(new UiSelector().text(\"%s\"));";
 
     public TextFindStrategy(String value) {
         super(value);

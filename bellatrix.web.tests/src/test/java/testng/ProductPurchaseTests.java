@@ -26,7 +26,7 @@ import solutions.bellatrix.web.infrastructure.ExecutionBrowser;
 import solutions.bellatrix.web.infrastructure.Lifecycle;
 import solutions.bellatrix.web.infrastructure.testng.WebTest;
 
-@ExecutionBrowser(browser = Browser.EDGE_HEADLESS, lifecycle = Lifecycle.REUSE_IF_STARTED)
+@ExecutionBrowser(browser = Browser.EDGE, lifecycle = Lifecycle.REUSE_IF_STARTED)
 public class ProductPurchaseTests extends WebTest {
     @Test
     public void completePurchaseSuccessfully_first() {

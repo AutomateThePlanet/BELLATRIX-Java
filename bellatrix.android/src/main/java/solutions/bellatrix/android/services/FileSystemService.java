@@ -18,7 +18,7 @@ import lombok.SneakyThrows;
 import java.io.File;
 
 public class FileSystemService extends MobileService {
-    public byte[] PullFile(String pathOnDevice) {
+    public byte[] pullFile(String pathOnDevice) {
         byte[] result = getWrappedAndroidDriver().pullFile(pathOnDevice);
         return result;
     }

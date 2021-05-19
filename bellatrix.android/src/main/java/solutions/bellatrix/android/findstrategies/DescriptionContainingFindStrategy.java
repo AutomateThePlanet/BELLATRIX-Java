@@ -19,7 +19,7 @@ import io.appium.java_client.android.AndroidDriver;
 import java.util.List;
 
 public class DescriptionContainingFindStrategy extends FindStrategy {
-    private final String DESCRIPTION_CONTAINING_EXPRESSION = "new UiScrollable(new UiSelector()).scrollIntoView(new UiSelector().descriptionContains(\"%s\"));";
+    private static final String DESCRIPTION_CONTAINING_EXPRESSION = "new UiScrollable(new UiSelector()).scrollIntoView(new UiSelector().descriptionContains(\"%s\"));";
 
     public DescriptionContainingFindStrategy(String value) {
         super(value);

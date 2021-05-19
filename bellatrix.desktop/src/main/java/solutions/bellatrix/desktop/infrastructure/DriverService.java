@@ -29,39 +29,39 @@ import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
 public class DriverService {
-    private static ThreadLocal<Boolean> disposed;
-    private static ThreadLocal<AppConfiguration> appConfiguration;
-    private static ThreadLocal<HashMap<String, String>> customDriverOptions;
-    private static ThreadLocal<WindowsDriver<WebElement>> wrappedDriver;
+    private static final ThreadLocal<Boolean> DISPOSED;
+    private static final ThreadLocal<AppConfiguration> APP_CONFIGURATION;
+    private static final ThreadLocal<HashMap<String, String>> CUSTOM_DRIVER_OPTIONS;
+    private static final ThreadLocal<WindowsDriver<WebElement>> WRAPPED_DRIVER;
 
     static {
-        disposed = new ThreadLocal<>();
-        customDriverOptions = new ThreadLocal<>();
-        customDriverOptions.set(new HashMap<>());
-        appConfiguration = new ThreadLocal<>();
-        wrappedDriver = new ThreadLocal<>();
-        disposed.set(false);
+        DISPOSED = new ThreadLocal<>();
+        CUSTOM_DRIVER_OPTIONS = new ThreadLocal<>();
+        CUSTOM_DRIVER_OPTIONS.set(new HashMap<>());
+        APP_CONFIGURATION = new ThreadLocal<>();
+        WRAPPED_DRIVER = new ThreadLocal<>();
+        DISPOSED.set(false);
     }
 
     public static HashMap<String, String> getCustomDriverOptions() {
-        return customDriverOptions.get();
+        return CUSTOM_DRIVER_OPTIONS.get();
     }
 
     public static void addDriverOptions(String key, String value) {
-        customDriverOptions.get().put(key, value);
+        CUSTOM_DRIVER_OPTIONS.get().put(key, value);
     }
 
     public static WindowsDriver<WebElement> getWrappedDriver() {
-        return wrappedDriver.get();
+        return WRAPPED_DRIVER.get();
     }
 
     public static AppConfiguration getAppConfiguration() {
-        return appConfiguration.get();
+        return APP_CONFIGURATION.get();
     }
 
     public static WindowsDriver<WebElement> start(AppConfiguration configuration) {
-        appConfiguration.set(configuration);
-        disposed.set(false);
+        APP_CONFIGURATION.set(configuration);
+        DISPOSED.set(false);
         WindowsDriver<WebElement> driver = null;
         var desktopSettings = ConfigurationService.get(DesktopSettings.class);
         var executionType = desktopSettings.getExecutionType();
@@ -69,14 +69,14 @@ public class DriverService {
             driver = initializeDriverRegularMode(desktopSettings.getServiceUrl());
         } else {
             var gridSettings = desktopSettings.getGridSettings().stream().filter(g -> g.getProviderName().equals(executionType.toLowerCase())).findFirst();
-            assert gridSettings != null : String.format("The specified execution type '%s' is not declared in the configuration", executionType);
+            assert gridSettings.isPresent() : String.format("The specified execution type '%s' is not declared in the configuration", executionType);
             driver = initializeDriverGridMode(gridSettings.get());
         }
 
         driver.manage().timeouts().implicitlyWait(desktopSettings.getTimeoutSettings().getImplicitWaitTimeout(), TimeUnit.SECONDS);
         driver.manage().window().maximize();
         changeWindowSize(driver);
-        wrappedDriver.set(driver);
+        WRAPPED_DRIVER.set(driver);
 
         return driver;
     }
@@ -88,7 +88,7 @@ public class DriverService {
 
         WindowsDriver<WebElement> driver = null;
         try {
-            driver = new WindowsDriver<WebElement>(new URL(gridSettings.getUrl()), caps);
+            driver = new WindowsDriver<>(new URL(gridSettings.getUrl()), caps);
         } catch (MalformedURLException e) {
             DebugInformation.printStackTrace(e);
         }
@@ -104,7 +104,7 @@ public class DriverService {
         caps.setCapability("platformName", "Windows");
         caps.setCapability("appWorkingDir", new File(getAppConfiguration().getAppPath()).getParent());
         addDriverOptions(caps);
-        var driver = new WindowsDriver<WebElement>(new URL(serviceUrl), caps);
+        var driver = new WindowsDriver<>(new URL(serviceUrl), caps);
 
         return driver;
     }
@@ -123,8 +123,8 @@ public class DriverService {
     }
 
     private static <TOption extends MutableCapabilities> void addDriverOptions(TOption chromeOptions) {
-        for (var optionKey : appConfiguration.get().appiumOptions.keySet()) {
-            chromeOptions.setCapability(optionKey, appConfiguration.get().appiumOptions.get(optionKey));
+        for (var optionKey : APP_CONFIGURATION.get().appiumOptions.keySet()) {
+            chromeOptions.setCapability(optionKey, APP_CONFIGURATION.get().appiumOptions.get(optionKey));
         }
     }
 
@@ -137,15 +137,15 @@ public class DriverService {
     }
 
     public static void close() {
-        if (disposed.get()) {
+        if (DISPOSED.get()) {
             return;
         }
 
-        if (wrappedDriver.get() != null) {
-            wrappedDriver.get().close();
-            customDriverOptions.get().clear();
+        if (WRAPPED_DRIVER.get() != null) {
+            WRAPPED_DRIVER.get().close();
+            CUSTOM_DRIVER_OPTIONS.get().clear();
         }
 
-        disposed.set(true);
+        DISPOSED.set(true);
     }
 }

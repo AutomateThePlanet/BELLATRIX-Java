@@ -11,16 +11,9 @@
  * limitations under the License.
  */
 
-package cartInfosection;
+package cartinfosection_rename;
 
-import solutions.bellatrix.web.pages.WebSection;
+import solutions.bellatrix.web.pages.PageAsserts;
 
-public class CartInfoSection extends WebSection<Map, Asserts> {
-    public String getCurrentAmount() {
-        return map().cartAmount().getText();
-    }
-
-    public void openCart() {
-        map().cartIcon().click();
-    }
+public class Asserts extends PageAsserts<Map> {
 }

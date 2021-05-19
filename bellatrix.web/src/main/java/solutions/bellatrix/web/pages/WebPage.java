@@ -28,8 +28,7 @@ public abstract class WebPage<MapT extends PageMap, AssertsT extends PageAsserts
         return new ComponentCreateService();
     }
 
-    @SuppressWarnings("unchecked")
-    public MapT map() {
+        public MapT map() {
         try {
             var elementsClass = (Class<MapT>)((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[0];
             return elementsClass.getDeclaredConstructor().newInstance();
@@ -38,8 +37,7 @@ public abstract class WebPage<MapT extends PageMap, AssertsT extends PageAsserts
         }
     }
 
-    @SuppressWarnings("unchecked")
-    public AssertsT asserts() {
+        public AssertsT asserts() {
         try {
             var assertionsClass = (Class<AssertsT>)((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[1];
             return assertionsClass.getDeclaredConstructor().newInstance();

@@ -20,12 +20,10 @@ public abstract class Plugin {
         PluginExecutionEngine.addPlugin(this);
     }
 
-    @SuppressWarnings("rawtypes")
-    public void preBeforeClass(Class type) {
+        public void preBeforeClass(Class type) {
     }
 
-    @SuppressWarnings("rawtypes")
-    public void postBeforeClass(Class type) {
+        public void postBeforeClass(Class type) {
     }
 
     public void beforeClassFailed(Exception e) {
@@ -49,12 +47,10 @@ public abstract class Plugin {
     public void afterTestFailed(Exception e) {
     }
 
-    @SuppressWarnings("rawtypes")
-    public void preAfterClass(Class type) {
+        public void preAfterClass(Class type) {
     }
 
-    @SuppressWarnings("rawtypes")
-    public void postAfterClass(Class type) {
+        public void postAfterClass(Class type) {
     }
 
     public void afterClassFailed(Exception e) {

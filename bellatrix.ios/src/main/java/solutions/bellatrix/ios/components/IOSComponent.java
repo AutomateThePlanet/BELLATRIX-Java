@@ -33,10 +33,7 @@ import solutions.bellatrix.ios.services.ComponentCreateService;
 import solutions.bellatrix.ios.services.ComponentWaitService;
 import solutions.bellatrix.ios.waitstrategies.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Optional;
+import java.util.*;
 
 public class IOSComponent extends LayoutComponentValidationsBuilder implements Component {
     public final static EventListener<ComponentActionEventArgs> HOVERING = new EventListener<>();
@@ -54,12 +51,12 @@ public class IOSComponent extends LayoutComponentValidationsBuilder implements C
     @Getter @Setter private MobileElement parentWrappedElement;
     @Getter @Setter private int elementIndex;
     @Getter @Setter private FindStrategy findStrategy;
-    @Getter private IOSDriver<MobileElement> wrappedDriver;
+    @Getter private final IOSDriver<MobileElement> wrappedDriver;
     @Getter protected AppService appService;
     @Getter protected ComponentCreateService componentCreateService;
     @Getter protected ComponentWaitService componentWaitService;
-    private List<WaitStrategy> waitStrategies;
-    private solutions.bellatrix.ios.configuration.IOSSettings iOSSettings;
+    private final List<WaitStrategy> waitStrategies;
+    private final solutions.bellatrix.ios.configuration.IOSSettings iOSSettings;
 
     public IOSComponent() {
         this.waitStrategies = new ArrayList<>();
@@ -79,7 +76,7 @@ public class IOSComponent extends LayoutComponentValidationsBuilder implements C
         }
     }
 
-    public String getElementName() {
+    public String getComponentName() {
         return String.format("%s (%s)", getComponentClass().getSimpleName(), findStrategy.toString());
     }
 
@@ -114,22 +111,19 @@ public class IOSComponent extends LayoutComponentValidationsBuilder implements C
         waitStrategies.add(waitStrategy);
     }
 
-    @SuppressWarnings("unchecked")
-    public <TElementType extends IOSComponent> TElementType toExists() {
+        public <TElementType extends IOSComponent> TElementType toExists() {
         var waitStrategy = new ToExistWaitStrategy();
         ensureState(waitStrategy);
         return (TElementType)this;
     }
 
-    @SuppressWarnings("unchecked")
-    public <TElementType extends IOSComponent> TElementType toBeClickable() {
+        public <TElementType extends IOSComponent> TElementType toBeClickable() {
         var waitStrategy = new ToBeClickableWaitStrategy();
         ensureState(waitStrategy);
         return (TElementType)this;
     }
 
-    @SuppressWarnings("unchecked")
-    public <TElementType extends IOSComponent> TElementType toBeVisible() {
+        public <TElementType extends IOSComponent> TElementType toBeVisible() {
         var waitStrategy = new ToBeVisibleWaitStrategy();
         ensureState(waitStrategy);
         return (TElementType)this;
@@ -351,13 +345,9 @@ public class IOSComponent extends LayoutComponentValidationsBuilder implements C
     }
 
     private void scrollToVisible(MobileElement wrappedElement, boolean shouldWait) {
+        // Not tested
         SCROLLING_TO_VISIBLE.broadcast(new ComponentActionEventArgs(this));
         try {
-            //            var js = (JavascriptExecutor)driver;
-            //            Map<String, String> swipe = new HashMap<>();
-            //            swipe.put("direction", "down"); // "up", "right", "left"
-            //            swipe.put("element", element.getId());
-            //            js.executeScript("mobile:swipe", swipe);
             var action = new Actions(wrappedDriver);
             action.moveToElement(wrappedElement).perform();
             if (shouldWait) {

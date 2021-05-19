@@ -4,7 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import solutions.bellatrix.core.plugins.EventListener;
 
 public class Log {
-    static private final Object lock = new Object();
+    private static final Object LOCK = new Object();
     public final static EventListener<LoggerActionEventArgs> LOGGED_ENTRY = new EventListener<>();
     public final static EventListener<LoggerActionEventArgs> LOGGED_INFO = new EventListener<>();
     public final static EventListener<LoggerActionEventArgs> LOGGED_ERROR = new EventListener<>();
@@ -35,9 +35,9 @@ public class Log {
     }
 
     private static void staticWait() {
-        synchronized (lock) {
+        synchronized (LOCK) {
             try {
-                lock.wait();
+                LOCK.wait();
             } catch (InterruptedException e) {
                 DebugInformation.printStackTrace(e);
             }
@@ -45,8 +45,8 @@ public class Log {
     }
 
     private static void staticNotify() {
-        synchronized (lock) {
-            lock.notify();
+        synchronized (LOCK) {
+            LOCK.notify();
         }
     }
 }

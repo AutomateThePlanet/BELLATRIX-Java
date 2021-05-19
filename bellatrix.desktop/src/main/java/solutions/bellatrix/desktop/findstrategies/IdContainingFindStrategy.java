@@ -20,7 +20,7 @@ import org.openqa.selenium.WebElement;
 import java.util.List;
 
 public class IdContainingFindStrategy extends FindStrategy {
-    private final String XPATH_CONTAINING_EXPRESSION = "//*[contains(@id, '%s')]";
+    private static final String XPATH_CONTAINING_EXPRESSION = "//*[contains(@id, '%s')]";
 
     public IdContainingFindStrategy(String value) {
         super(value);

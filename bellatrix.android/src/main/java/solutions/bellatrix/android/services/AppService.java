@@ -23,7 +23,7 @@ public class AppService extends MobileService {
         return getWrappedAndroidDriver().currentActivity();
     }
 
-    public void StartActivity(
+    public void startActivity(
             String appPackage,
             String appActivity,
             String appWaitPackage,

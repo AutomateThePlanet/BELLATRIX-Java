@@ -55,12 +55,12 @@ public class DesktopComponent extends LayoutComponentValidationsBuilder implemen
     @Getter @Setter private WebElement parentWrappedElement;
     @Getter @Setter private int elementIndex;
     @Getter @Setter private FindStrategy findStrategy;
-    @Getter private WindowsDriver<WebElement> wrappedDriver;
+    @Getter private final WindowsDriver<WebElement> wrappedDriver;
     @Getter protected AppService appService;
     @Getter protected ComponentCreateService componentCreateService;
     @Getter protected ComponentWaitService componentWaitService;
-    private List<WaitStrategy> waitStrategies;
-    private DesktopSettings desktopSettings;
+    private final List<WaitStrategy> waitStrategies;
+    private final DesktopSettings desktopSettings;
 
     public DesktopComponent() {
         this.waitStrategies = new ArrayList<>();
@@ -80,7 +80,7 @@ public class DesktopComponent extends LayoutComponentValidationsBuilder implemen
         }
     }
 
-    public String getElementName() {
+    public String getComponentName() {
         return String.format("%s (%s)", getComponentClass().getSimpleName(), findStrategy.toString());
     }
 
@@ -115,22 +115,19 @@ public class DesktopComponent extends LayoutComponentValidationsBuilder implemen
         waitStrategies.add(waitStrategy);
     }
 
-    @SuppressWarnings("unchecked")
-    public <TElementType extends DesktopComponent> TElementType toExists() {
+        public <TElementType extends DesktopComponent> TElementType toExists() {
         var waitStrategy = new ToExistWaitStrategy();
         ensureState(waitStrategy);
         return (TElementType)this;
     }
 
-    @SuppressWarnings("unchecked")
-    public <TElementType extends DesktopComponent> TElementType toBeClickable() {
+        public <TElementType extends DesktopComponent> TElementType toBeClickable() {
         var waitStrategy = new ToBeClickableWaitStrategy();
         ensureState(waitStrategy);
         return (TElementType)this;
     }
 
-    @SuppressWarnings("unchecked")
-    public <TElementType extends DesktopComponent> TElementType toBeVisible() {
+        public <TElementType extends DesktopComponent> TElementType toBeVisible() {
         var waitStrategy = new ToBeVisibleWaitStrategy();
         ensureState(waitStrategy);
         return (TElementType)this;

@@ -29,7 +29,7 @@ public class Screen implements LayoutComponent {
     }
 
     @Override
-    public String getElementName() {
+    public String getComponentName() {
         return "Screen";
     }
 

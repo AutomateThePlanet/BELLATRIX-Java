@@ -31,39 +31,39 @@ import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
 public class DriverService {
-    private static ThreadLocal<Boolean> disposed;
-    private static ThreadLocal<AppConfiguration> appConfiguration;
-    private static ThreadLocal<HashMap<String, String>> customDriverOptions;
-    private static ThreadLocal<IOSDriver<MobileElement>> wrappedIOSDriver;
+    private static final ThreadLocal<Boolean> DISPOSED;
+    private static final ThreadLocal<AppConfiguration> APP_CONFIGURATION;
+    private static final ThreadLocal<HashMap<String, String>> CUSTOM_DRIVER_OPTIONS;
+    private static final ThreadLocal<IOSDriver<MobileElement>> WRAPPED_IOS_DRIVER;
 
     static {
-        disposed = new ThreadLocal<>();
-        customDriverOptions = new ThreadLocal<>();
-        customDriverOptions.set(new HashMap<>());
-        appConfiguration = new ThreadLocal<>();
-        wrappedIOSDriver = new ThreadLocal<>();
-        disposed.set(false);
+        DISPOSED = new ThreadLocal<>();
+        CUSTOM_DRIVER_OPTIONS = new ThreadLocal<>();
+        CUSTOM_DRIVER_OPTIONS.set(new HashMap<>());
+        APP_CONFIGURATION = new ThreadLocal<>();
+        WRAPPED_IOS_DRIVER = new ThreadLocal<>();
+        DISPOSED.set(false);
     }
 
     public static HashMap<String, String> getCustomDriverOptions() {
-        return customDriverOptions.get();
+        return CUSTOM_DRIVER_OPTIONS.get();
     }
 
     public static void addDriverOptions(String key, String value) {
-        customDriverOptions.get().put(key, value);
+        CUSTOM_DRIVER_OPTIONS.get().put(key, value);
     }
 
     public static IOSDriver<MobileElement> getWrappedIOSDriver() {
-        return wrappedIOSDriver.get();
+        return WRAPPED_IOS_DRIVER.get();
     }
 
     public static AppConfiguration getAppConfiguration() {
-        return appConfiguration.get();
+        return APP_CONFIGURATION.get();
     }
 
     public static IOSDriver<MobileElement> start(AppConfiguration configuration) {
-        appConfiguration.set(configuration);
-        disposed.set(false);
+        APP_CONFIGURATION.set(configuration);
+        DISPOSED.set(false);
         IOSDriver<MobileElement> driver = null;
         var IOSSettings = ConfigurationService.get(solutions.bellatrix.ios.configuration.IOSSettings.class);
         var executionType = IOSSettings.getExecutionType();
@@ -71,12 +71,12 @@ public class DriverService {
             driver = initializeDriverRegularMode(IOSSettings.getServiceUrl());
         } else {
             var gridSettings = IOSSettings.getGridSettings().stream().filter(g -> g.getProviderName().equals(executionType.toLowerCase())).findFirst();
-            assert gridSettings != null : String.format("The specified execution type '%s' is not declared in the configuration", executionType);
+            assert gridSettings.isPresent() : String.format("The specified execution type '%s' is not declared in the configuration", executionType);
             driver = initializeDriverGridMode(gridSettings.get());
         }
 
         driver.manage().timeouts().implicitlyWait(IOSSettings.getTimeoutSettings().getImplicitWaitTimeout(), TimeUnit.SECONDS);
-        wrappedIOSDriver.set(driver);
+        WRAPPED_IOS_DRIVER.set(driver);
 
         return driver;
     }
@@ -88,7 +88,7 @@ public class DriverService {
 
         IOSDriver<MobileElement> driver = null;
         try {
-            driver = new IOSDriver<MobileElement>(new URL(gridSettings.getUrl()), caps);
+            driver = new IOSDriver<>(new URL(gridSettings.getUrl()), caps);
         } catch (MalformedURLException e) {
             DebugInformation.printStackTrace(e);
         }
@@ -129,21 +129,21 @@ public class DriverService {
     }
 
     private static <TOption extends MutableCapabilities> void addDriverOptions(TOption chromeOptions) {
-        for (var optionKey : appConfiguration.get().appiumOptions.keySet()) {
-            chromeOptions.setCapability(optionKey, appConfiguration.get().appiumOptions.get(optionKey));
+        for (var optionKey : APP_CONFIGURATION.get().appiumOptions.keySet()) {
+            chromeOptions.setCapability(optionKey, APP_CONFIGURATION.get().appiumOptions.get(optionKey));
         }
     }
 
     public static void close() {
-        if (disposed.get()) {
+        if (DISPOSED.get()) {
             return;
         }
 
-        if (wrappedIOSDriver.get() != null) {
-            wrappedIOSDriver.get().close();
-            customDriverOptions.get().clear();
+        if (WRAPPED_IOS_DRIVER.get() != null) {
+            WRAPPED_IOS_DRIVER.get().close();
+            CUSTOM_DRIVER_OPTIONS.get().clear();
         }
 
-        disposed.set(true);
+        DISPOSED.set(true);
     }
 }

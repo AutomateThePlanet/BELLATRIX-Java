@@ -16,7 +16,7 @@ package searchsection;
 import solutions.bellatrix.web.pages.WebSection;
 
 public class SearchSection extends WebSection<Map, Asserts> {
-    public void searchForItem(String searchText) throws InterruptedException {
+    public void searchForItem(String searchText) {
         map().searchField().setText(searchText);
     }
 }

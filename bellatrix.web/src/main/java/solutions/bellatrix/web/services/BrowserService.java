@@ -87,66 +87,62 @@ public class BrowserService extends WebService {
     public void clearSessionStorage() {
         var browserConfig = InstanceFactory.create(BrowserConfiguration.class);
         switch (browserConfig.getBrowser()) {
-            case CHROME:
-            case CHROME_HEADLESS:
+            case CHROME, CHROME_HEADLESS -> {
                 var chromeDriver = (ChromeDriver)getWrappedDriver();
                 chromeDriver.getSessionStorage().clear();
-                break;
-            case FIREFOX:
-            case FIREFOX_HEADLESS:
+            }
+            case FIREFOX, FIREFOX_HEADLESS -> {
                 var firefoxDriver = (FirefoxDriver)getWrappedDriver();
                 firefoxDriver.getSessionStorage().clear();
-                break;
-            case INTERNET_EXPLORER:
+            }
+            case INTERNET_EXPLORER -> {
                 var ieDriver = (InternetExplorerDriver)getWrappedDriver();
                 ((JavascriptExecutor)ieDriver).executeScript("sessionStorage.clear()");
-                break;
-            case EDGE:
-            case EDGE_HEADLESS:
+            }
+            case EDGE -> {
+                // case EDGE_HEADLESS:
                 var edgeDriver = (EdgeDriver)getWrappedDriver();
                 ((JavascriptExecutor)edgeDriver).executeScript("sessionStorage.clear()");
-                break;
-            case OPERA:
+            }
+            case OPERA -> {
                 var operaDriver = (OperaDriver)getWrappedDriver();
                 operaDriver.getSessionStorage().clear();
-                break;
-            case SAFARI:
+            }
+            case SAFARI -> {
                 var safariDriver = (SafariDriver)getWrappedDriver();
                 ((JavascriptExecutor)safariDriver).executeScript("sessionStorage.clear()");
-                break;
+            }
         }
     }
 
     public void clearLocalStorage() {
         var browserConfig = InstanceFactory.create(BrowserConfiguration.class);
         switch (browserConfig.getBrowser()) {
-            case CHROME:
-            case CHROME_HEADLESS:
+            case CHROME, CHROME_HEADLESS -> {
                 var chromeDriver = (ChromeDriver)getWrappedDriver();
                 chromeDriver.getLocalStorage().clear();
-                break;
-            case FIREFOX:
-            case FIREFOX_HEADLESS:
+            }
+            case FIREFOX, FIREFOX_HEADLESS -> {
                 var firefoxDriver = (FirefoxDriver)getWrappedDriver();
                 firefoxDriver.getLocalStorage().clear();
-                break;
-            case INTERNET_EXPLORER:
+            }
+            case INTERNET_EXPLORER -> {
                 var ieDriver = (InternetExplorerDriver)getWrappedDriver();
                 ((JavascriptExecutor)ieDriver).executeScript("localStorage.clear()");
-                break;
-            case EDGE:
-            case EDGE_HEADLESS:
+            }
+            case EDGE -> {
+                // case EDGE_HEADLESS:
                 var edgeDriver = (EdgeDriver)getWrappedDriver();
                 ((JavascriptExecutor)edgeDriver).executeScript("localStorage.clear()");
-                break;
-            case OPERA:
+            }
+            case OPERA -> {
                 var operaDriver = (OperaDriver)getWrappedDriver();
                 operaDriver.getLocalStorage().clear();
-                break;
-            case SAFARI:
+            }
+            case SAFARI -> {
                 var safariDriver = (SafariDriver)getWrappedDriver();
                 ((JavascriptExecutor)safariDriver).executeScript("localStorage.clear()");
-                break;
+            }
         }
     }
 

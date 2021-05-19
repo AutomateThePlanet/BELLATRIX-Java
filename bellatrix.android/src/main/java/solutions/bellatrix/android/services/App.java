@@ -56,8 +56,7 @@ public class App implements AutoCloseable {
         DriverService.addDriverOptions(key, value);
     }
 
-    @SuppressWarnings("rawtypes")
-    public <TPage extends AndroidPage> TPage create(Class<TPage> pageOf, Object... args) {
+        public <TPage extends AndroidPage> TPage create(Class<TPage> pageOf, Object... args) {
         return SingletonFactory.getInstance(pageOf, args);
     }
 
