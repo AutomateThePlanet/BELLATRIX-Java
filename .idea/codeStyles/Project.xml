@@ -1,5 +1,10 @@
 <component name="ProjectCodeStyleConfiguration">
   <code_scheme name="Project" version="173">
+    <Markdown>
+      <option name="MAX_LINES_AROUND_HEADER" value="0" />
+      <option name="MAX_LINES_AROUND_BLOCK_ELEMENTS" value="0" />
+      <option name="MAX_LINES_BETWEEN_PARAGRAPHS" value="0" />
+    </Markdown>
     <Properties>
       <option name="KEEP_BLANK_LINES" value="true" />
     </Properties>
