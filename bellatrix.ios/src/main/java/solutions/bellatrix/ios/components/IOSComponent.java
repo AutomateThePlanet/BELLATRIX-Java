@@ -116,7 +116,7 @@ public class IOSComponent extends LayoutComponentValidationsBuilder implements C
 
     @SuppressWarnings("unchecked")
     public <TElementType extends IOSComponent> TElementType toExists() {
-        var waitStrategy = new ToExistsWaitStrategy();
+        var waitStrategy = new ToExistWaitStrategy();
         ensureState(waitStrategy);
         return (TElementType)this;
     }

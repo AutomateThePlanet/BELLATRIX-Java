@@ -14,12 +14,12 @@
 package solutions.bellatrix.ios.waitstrategies;
 
 public class WaitStrategyFactory {
-    public ToExistsWaitStrategy exists() {
-        return new ToExistsWaitStrategy(30, 2);
+    public ToExistWaitStrategy exists() {
+        return new ToExistWaitStrategy(30, 2);
     }
 
-    public ToExistsWaitStrategy exists(int timeoutInterval, int sleepInterval) {
-        return new ToExistsWaitStrategy(timeoutInterval, sleepInterval);
+    public ToExistWaitStrategy exists(int timeoutInterval, int sleepInterval) {
+        return new ToExistWaitStrategy(timeoutInterval, sleepInterval);
     }
 
     public ToBeVisibleWaitStrategy beVisible(int timeoutInterval, int sleepInterval) {

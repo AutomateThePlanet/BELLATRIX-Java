@@ -120,7 +120,7 @@ public class AndroidComponent extends LayoutComponentValidationsBuilder implemen
 
     @SuppressWarnings("unchecked")
     public <TElementType extends AndroidComponent> TElementType toExists() {
-        var waitStrategy = new ToExistsWaitStrategy();
+        var waitStrategy = new ToExistWaitStrategy();
         ensureState(waitStrategy);
         return (TElementType)this;
     }

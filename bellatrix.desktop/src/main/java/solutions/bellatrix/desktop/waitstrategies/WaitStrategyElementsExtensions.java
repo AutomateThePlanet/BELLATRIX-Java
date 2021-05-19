@@ -18,13 +18,13 @@ import solutions.bellatrix.desktop.components.DesktopComponent;
 
 public class WaitStrategyElementsExtensions {
     public static DesktopComponent toExists1(DesktopComponent element) {
-        var waitStrategy = new ToExistsWaitStrategy();
+        var waitStrategy = new ToExistWaitStrategy();
         element.ensureState(waitStrategy);
         return element;
     }
 
     public static DesktopComponent toExists1(DesktopComponent element, int timeoutInterval, int sleepInterval) {
-        var waitStrategy = new ToExistsWaitStrategy(timeoutInterval, sleepInterval);
+        var waitStrategy = new ToExistWaitStrategy(timeoutInterval, sleepInterval);
         element.ensureState(waitStrategy);
         return element;
     }

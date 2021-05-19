@@ -18,13 +18,13 @@ import solutions.bellatrix.android.components.AndroidComponent;
 
 public class WaitStrategyElementsExtensions {
     public static AndroidComponent toExists1(AndroidComponent element) {
-        var waitStrategy = new ToExistsWaitStrategy();
+        var waitStrategy = new ToExistWaitStrategy();
         element.ensureState(waitStrategy);
         return element;
     }
 
     public static AndroidComponent toExists1(AndroidComponent element, int timeoutInterval, int sleepInterval) {
-        var waitStrategy = new ToExistsWaitStrategy(timeoutInterval, sleepInterval);
+        var waitStrategy = new ToExistWaitStrategy(timeoutInterval, sleepInterval);
         element.ensureState(waitStrategy);
         return element;
     }

@@ -25,6 +25,7 @@ import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.core.plugins.EventListener;
 import solutions.bellatrix.core.utilities.DebugInformation;
 import solutions.bellatrix.core.utilities.InstanceFactory;
+import solutions.bellatrix.core.utilities.Log;
 import solutions.bellatrix.web.components.contracts.Component;
 import solutions.bellatrix.web.configuration.WebSettings;
 import solutions.bellatrix.web.findstrategies.*;
@@ -61,20 +62,32 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
     public final static EventListener<ComponentActionEventArgs> CREATED_ELEMENTS = new EventListener<>();
     public final static EventListener<ComponentActionEventArgs> VALIDATED_ATTRIBUTE = new EventListener<>();
 
-    @Setter(AccessLevel.PROTECTED) private WebElement wrappedElement;
-    @Getter @Setter private WebElement parentWrappedElement;
-    @Getter @Setter private int elementIndex;
-    @Getter @Setter private FindStrategy findStrategy;
-    @Getter private WebDriver wrappedDriver;
-    @Getter protected JavaScriptService javaScriptService;
-    @Getter protected BrowserService browserService;
-    @Getter protected ComponentCreateService componentCreateService;
-    @Getter protected ComponentWaitService componentWaitService;
+    @Setter(AccessLevel.PROTECTED)
+    private WebElement wrappedElement;
+    @Getter
+    @Setter
+    private WebElement parentWrappedElement;
+    @Getter
+    @Setter
+    private int elementIndex;
+    @Getter
+    @Setter
+    private FindStrategy findStrategy;
+    @Getter
+    private WebDriver wrappedDriver;
+    @Getter
+    protected JavaScriptService javaScriptService;
+    @Getter
+    protected BrowserService browserService;
+    @Getter
+    protected ComponentCreateService componentCreateService;
+    @Getter
+    protected ComponentWaitService componentWaitService;
     private List<WaitStrategy> waitStrategies;
     private WebSettings webSettings;
 
     public WebComponent() {
-        this.waitStrategies = new ArrayList<>();
+        waitStrategies = new ArrayList<>();
         webSettings = ConfigurationService.get(WebSettings.class);
         javaScriptService = new JavaScriptService();
         browserService = new BrowserService();
@@ -176,24 +189,24 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
     }
 
     @SuppressWarnings("unchecked")
-    public <TElementType extends WebComponent> TElementType toExists() {
-        var waitStrategy = new ToExistsWaitStrategy();
+    public <TElementType extends WebComponent> TElementType toExist() {
+        var waitStrategy = new ToExistWaitStrategy();
         ensureState(waitStrategy);
-        return (TElementType)this;
+        return (TElementType) this;
     }
 
     @SuppressWarnings("unchecked")
     public <TElementType extends WebComponent> TElementType toBeClickable() {
         var waitStrategy = new ToBeClickableWaitStrategy();
         ensureState(waitStrategy);
-        return (TElementType)this;
+        return (TElementType) this;
     }
 
     @SuppressWarnings("unchecked")
     public <TElementType extends WebComponent> TElementType toBeVisible() {
         var waitStrategy = new ToBeVisibleWaitStrategy();
         ensureState(waitStrategy);
-        return (TElementType)this;
+        return (TElementType) this;
     }
 
     public <TElementType extends WebComponent, TWaitStrategy extends WaitStrategy> TElementType to(Class<TWaitStrategy> waitClass, TElementType element) {
@@ -290,13 +303,15 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
                 public void run() {
                     try {
                         javaScriptService.execute("arguments[0].style.background='" + originalElementBorder + "'; return;", getWrappedElement());
-                    } catch (NoSuchSessionException | NullPointerException ignored) {}
+                    } catch (NoSuchSessionException | NullPointerException ignored) {
+                    }
                     Thread.sleep(100);
                 }
             };
             new Thread(runnable).start();
 
-        } catch (Exception ignored) { }
+        } catch (Exception ignored) {
+        }
     }
 
     protected <TComponent extends WebComponent, TFindStrategy extends FindStrategy> TComponent create(Class<TComponent> componentClass, TFindStrategy findStrategy) {
@@ -327,32 +342,36 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
     }
 
     public WebElement findElement() {
-      if (waitStrategies.size() == 0) {
-          waitStrategies.add(Wait.to().exists());
-      }
+        if (waitStrategies.size() == 0) {
+            waitStrategies.add(Wait.to().exist(webSettings.getTimeoutSettings().getElementWaitTimeout(), webSettings.getTimeoutSettings().getSleepInterval()));
+        }
 
-      try {
-          for (var waitStrategy:waitStrategies) {
-              componentWaitService.wait(this, waitStrategy);
-          }
+        try {
+            for (var waitStrategy : waitStrategies) {
+                componentWaitService.wait(this, waitStrategy);
+            }
 
-          wrappedElement = findNativeElement();
-          scrollToMakeElementVisible(wrappedElement);
-          if (webSettings.getWaitUntilReadyOnElementFound()) {
-              browserService.waitForAjax();
-          }
+            wrappedElement = findNativeElement();
+            scrollToMakeElementVisible(wrappedElement);
+            if (webSettings.getWaitUntilReadyOnElementFound()) {
+                browserService.waitForAjax();
+            }
 
-          if (webSettings.getWaitForAngular()) {
-              browserService.waitForAngular();
-          }
+            if (webSettings.getWaitForAngular()) {
+                browserService.waitForAngular();
+            }
 
-          addArtificialDelay();
+            addArtificialDelay();
 
-          waitStrategies.clear();
-      } catch (WebDriverException ex) {
-          DebugInformation.printStackTrace(ex);
-          System.out.printf("%n%nThe element: %n Name: '%s', %n Locator: '%s', %nWas not found on the page or didn't fulfill the specified conditions.%n%n", getComponentClass().getSimpleName(), findStrategy.toString());
-      }
+            waitStrategies.clear();
+        } catch (WebDriverException ex) {
+            Log.error("%n%nThe component: %n" +
+                    "     Name: \"\u001B[1m%s\u001B[0m\"%n" +
+                    "  Locator: \"\u001B[1m%s\u001B[0m\"%n" +
+                    "Was not found on the page or didn't fulfill the specified conditions.%n%n",
+                    getComponentClass().getSimpleName(), findStrategy.toString());
+            throw ex;
+        }
 
         RETURNING_WRAPPED_ELEMENT.broadcast(new ComponentActionEventArgs(this));
         return wrappedElement;
@@ -362,7 +381,7 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
     protected void defaultClick(EventListener<ComponentActionEventArgs> clicking, EventListener<ComponentActionEventArgs> clicked) {
         clicking.broadcast(new ComponentActionEventArgs(this));
 
-        this.toExists().toBeClickable().waitToBe();
+        this.toExist().toBeClickable().waitToBe();
         javaScriptService.execute("arguments[0].focus();arguments[0].click();arguments[0].dispatchEvent(new Event('click'));", wrappedElement);
 
         clicked.broadcast(new ComponentActionEventArgs(this));
@@ -371,7 +390,7 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
     protected void defaultCheck(EventListener<ComponentActionEventArgs> clicking, EventListener<ComponentActionEventArgs> clicked) {
         clicking.broadcast(new ComponentActionEventArgs(this));
 
-        this.toExists().toBeClickable().waitToBe();
+        this.toExist().toBeClickable().waitToBe();
         if (!getWrappedElement().isSelected()) {
             javaScriptService.execute("arguments[0].focus();arguments[0].click();arguments[0].dispatchEvent(new Event('click'));", wrappedElement);
         }
@@ -382,7 +401,7 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
     protected void defaultUncheck(EventListener<ComponentActionEventArgs> checking, EventListener<ComponentActionEventArgs> checked) {
         checking.broadcast(new ComponentActionEventArgs(this));
 
-        this.toExists().toBeClickable().waitToBe();
+        this.toExist().toBeClickable().waitToBe();
         if (getWrappedElement().isSelected()) {
             javaScriptService.execute("arguments[0].focus();arguments[0].click();arguments[0].dispatchEvent(new Event('click'));", wrappedElement);
         }
@@ -525,13 +544,11 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
         return !StringUtils.isEmpty(Optional.ofNullable(getAttribute("readonly")).orElse(""));
     }
 
-    protected boolean defaultGetRequiredAttribute()
-    {
+    protected boolean defaultGetRequiredAttribute() {
         return !StringUtils.isEmpty(Optional.ofNullable(getAttribute("required")).orElse(""));
     }
 
-    protected boolean defaultGetMultipleAttribute()
-    {
+    protected boolean defaultGetMultipleAttribute() {
         return !StringUtils.isEmpty(Optional.ofNullable(getAttribute("multiple")).orElse(""));
     }
 
@@ -544,8 +561,7 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
         return unescapeHtml4(URLDecoder.decode(Optional.ofNullable(getAttribute("href")).orElse(""), StandardCharsets.UTF_8.name()));
     }
 
-    protected void defaultSetText(EventListener<ComponentActionEventArgs> settingValue, EventListener<ComponentActionEventArgs> valueSet, String value)
-    {
+    protected void defaultSetText(EventListener<ComponentActionEventArgs> settingValue, EventListener<ComponentActionEventArgs> valueSet, String value) {
         settingValue.broadcast(new ComponentActionEventArgs(this));
 
         getWrappedElement().click();
@@ -564,8 +580,7 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
     }
 
     private void addArtificialDelay() {
-        if (webSettings.getArtificialDelayBeforeAction() != 0)
-        {
+        if (webSettings.getArtificialDelayBeforeAction() != 0) {
             try {
                 Thread.sleep(webSettings.getArtificialDelayBeforeAction());
             } catch (InterruptedException e) {
@@ -581,15 +596,13 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
         }
     }
 
-    private void scrollToVisible(WebElement wrappedElement, boolean shouldWait)
-    {
+    private void scrollToVisible(WebElement wrappedElement, boolean shouldWait) {
         SCROLLING_TO_VISIBLE.broadcast(new ComponentActionEventArgs(this));
         try {
             javaScriptService.execute("arguments[0].scrollIntoView(true);", wrappedElement);
-            if (shouldWait)
-            {
+            if (shouldWait) {
                 Thread.sleep(500);
-                toExists().waitToBe();
+                toExist().waitToBe();
             }
         } catch (ElementNotInteractableException | InterruptedException ex) {
             DebugInformation.printStackTrace(ex);

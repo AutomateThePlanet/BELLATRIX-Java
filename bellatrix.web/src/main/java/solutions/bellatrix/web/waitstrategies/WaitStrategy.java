@@ -38,7 +38,7 @@ public abstract class WaitStrategy {
 
     protected void waitUntil(Function<SearchContext, Boolean> waitCondition)
     {
-        var webDriverWait = new WebDriverWait(DriverService.getWrappedDriver(), timeoutInterval, sleepInterval);
+        var webDriverWait = new WebDriverWait(DriverService.getWrappedDriver(), timeoutInterval, sleepInterval * 1000);
         webDriverWait.until(waitCondition);
     }
 

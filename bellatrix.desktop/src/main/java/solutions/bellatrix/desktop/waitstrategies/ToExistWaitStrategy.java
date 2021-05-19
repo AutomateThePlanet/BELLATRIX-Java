@@ -11,39 +11,39 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.android.waitstrategies;
+package solutions.bellatrix.desktop.waitstrategies;
 
-import io.appium.java_client.MobileElement;
-import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.windows.WindowsDriver;
 import org.openqa.selenium.WebDriver;
-import solutions.bellatrix.android.configuration.AndroidSettings;
-import solutions.bellatrix.android.findstrategies.FindStrategy;
-import solutions.bellatrix.android.infrastructure.DriverService;
+import org.openqa.selenium.WebElement;
 import solutions.bellatrix.core.configuration.ConfigurationService;
+import solutions.bellatrix.desktop.configuration.DesktopSettings;
+import solutions.bellatrix.desktop.findstrategies.FindStrategy;
+import solutions.bellatrix.desktop.infrastructure.DriverService;
 
 import java.util.function.Function;
 
-public class ToExistsWaitStrategy extends WaitStrategy {
-    public ToExistsWaitStrategy() {
-        timeoutInterval = ConfigurationService.get(AndroidSettings.class).getTimeoutSettings().getElementToExistTimeout();
-        sleepInterval = ConfigurationService.get(AndroidSettings.class).getTimeoutSettings().getSleepInterval();
+public class ToExistWaitStrategy extends WaitStrategy {
+    public ToExistWaitStrategy() {
+        timeoutInterval = ConfigurationService.get(DesktopSettings.class).getTimeoutSettings().getElementToExistTimeout();
+        sleepInterval = ConfigurationService.get(DesktopSettings.class).getTimeoutSettings().getSleepInterval();
     }
 
-    public ToExistsWaitStrategy(long timeoutIntervalSeconds, long sleepIntervalSeconds) {
+    public ToExistWaitStrategy(long timeoutIntervalSeconds, long sleepIntervalSeconds) {
        super(timeoutIntervalSeconds, sleepIntervalSeconds);
     }
 
-    public static ToExistsWaitStrategy of() {
-        return new ToExistsWaitStrategy();
+    public static ToExistWaitStrategy of() {
+        return new ToExistWaitStrategy();
     }
 
     @Override
     public <TFindStrategy extends FindStrategy> void waitUntil(TFindStrategy findStrategy) {
-        Function<WebDriver, Boolean> func = (w) -> elementExists(DriverService.getWrappedAndroidDriver(), findStrategy);
+        Function<WebDriver, Boolean> func = (w) -> elementExists(DriverService.getWrappedDriver(), findStrategy);
         waitUntil(func);
     }
 
-    private <TFindStrategy extends FindStrategy> Boolean elementExists(AndroidDriver<MobileElement> searchContext, TFindStrategy findStrategy)
+    private <TFindStrategy extends FindStrategy> boolean elementExists(WindowsDriver<WebElement> searchContext, TFindStrategy findStrategy)
     {
         try
         {

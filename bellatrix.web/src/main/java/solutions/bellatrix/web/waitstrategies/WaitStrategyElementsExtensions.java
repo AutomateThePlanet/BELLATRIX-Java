@@ -18,13 +18,13 @@ import solutions.bellatrix.web.components.WebComponent;
 
 public class WaitStrategyElementsExtensions {
     public static WebComponent toExists1(WebComponent element) {
-        var waitStrategy = new ToExistsWaitStrategy();
+        var waitStrategy = new ToExistWaitStrategy();
         element.ensureState(waitStrategy);
         return element;
     }
 
     public static WebComponent toExists1(WebComponent element, int timeoutInterval, int sleepInterval) {
-        var waitStrategy = new ToExistsWaitStrategy(timeoutInterval, sleepInterval);
+        var waitStrategy = new ToExistWaitStrategy(timeoutInterval, sleepInterval);
         element.ensureState(waitStrategy);
         return element;
     }

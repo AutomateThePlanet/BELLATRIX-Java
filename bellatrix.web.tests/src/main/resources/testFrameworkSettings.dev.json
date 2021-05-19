@@ -19,22 +19,22 @@
     "videosSaveLocation": "user.home\\BELLATRIX\\Videos",
 
     "timeoutSettings": {
-      "elementWaitTimeout": "30",
+      "elementWaitTimeout": "1",
       "pageLoadTimeout": "30",
       "scriptTimeout": "1",
       "waitForAjaxTimeout": "30",
       "sleepInterval": "1",
-      "waitUntilReadyTimeout": "30",
-      "waitForJavaScriptAnimationsTimeout": "30",
-      "waitForAngularTimeout": "30",
-      "waitForPartialUrl": "30",
-      "validationsTimeout": "30",
-      "elementToBeVisibleTimeout": "30",
-      "elementToExistTimeout": "30",
-      "elementToNotExistTimeout": "30",
-      "elementToBeClickableTimeout": "30",
-      "elementNotToBeVisibleTimeout": "30",
-      "elementToHaveContentTimeout": "15"
+      "waitUntilReadyTimeout": "5",
+      "waitForJavaScriptAnimationsTimeout": "5",
+      "waitForAngularTimeout": "5",
+      "waitForPartialUrl": "5",
+      "validationsTimeout": "5",
+      "elementToBeVisibleTimeout": "5",
+      "elementToExistTimeout": "5",
+      "elementToNotExistTimeout": "5",
+      "elementToBeClickableTimeout": "5",
+      "elementNotToBeVisibleTimeout": "5",
+      "elementToHaveContentTimeout": "5"
     },
     "gridSettings": [
       {

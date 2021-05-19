@@ -18,13 +18,13 @@ import solutions.bellatrix.ios.components.IOSComponent;
 
 public class WaitStrategyElementsExtensions {
     public static IOSComponent toExists1(IOSComponent element) {
-        var waitStrategy = new ToExistsWaitStrategy();
+        var waitStrategy = new ToExistWaitStrategy();
         element.ensureState(waitStrategy);
         return element;
     }
 
     public static IOSComponent toExists1(IOSComponent element, int timeoutInterval, int sleepInterval) {
-        var waitStrategy = new ToExistsWaitStrategy(timeoutInterval, sleepInterval);
+        var waitStrategy = new ToExistWaitStrategy(timeoutInterval, sleepInterval);
         element.ensureState(waitStrategy);
         return element;
     }
