@@ -25,6 +25,7 @@ import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.core.plugins.EventListener;
 import solutions.bellatrix.core.utilities.DebugInformation;
 import solutions.bellatrix.core.utilities.InstanceFactory;
+import solutions.bellatrix.core.utilities.Log;
 import solutions.bellatrix.ios.components.contracts.Component;
 import solutions.bellatrix.ios.findstrategies.*;
 import solutions.bellatrix.ios.infrastructure.DriverService;
@@ -33,7 +34,10 @@ import solutions.bellatrix.ios.services.ComponentCreateService;
 import solutions.bellatrix.ios.services.ComponentWaitService;
 import solutions.bellatrix.ios.waitstrategies.*;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Optional;
 
 public class IOSComponent extends LayoutComponentValidationsBuilder implements Component {
     public final static EventListener<ComponentActionEventArgs> HOVERING = new EventListener<>();
@@ -52,9 +56,9 @@ public class IOSComponent extends LayoutComponentValidationsBuilder implements C
     @Getter @Setter private int elementIndex;
     @Getter @Setter private FindStrategy findStrategy;
     @Getter private final IOSDriver<MobileElement> wrappedDriver;
-    @Getter protected AppService appService;
-    @Getter protected ComponentCreateService componentCreateService;
-    @Getter protected ComponentWaitService componentWaitService;
+    @Getter protected final AppService appService;
+    @Getter protected final ComponentCreateService componentCreateService;
+    @Getter protected final ComponentWaitService componentWaitService;
     private final List<WaitStrategy> waitStrategies;
     private final solutions.bellatrix.ios.configuration.IOSSettings iOSSettings;
 
@@ -111,19 +115,19 @@ public class IOSComponent extends LayoutComponentValidationsBuilder implements C
         waitStrategies.add(waitStrategy);
     }
 
-        public <TElementType extends IOSComponent> TElementType toExists() {
+    public <TElementType extends IOSComponent> TElementType toExists() {
         var waitStrategy = new ToExistWaitStrategy();
         ensureState(waitStrategy);
         return (TElementType)this;
     }
 
-        public <TElementType extends IOSComponent> TElementType toBeClickable() {
+    public <TElementType extends IOSComponent> TElementType toBeClickable() {
         var waitStrategy = new ToBeClickableWaitStrategy();
         ensureState(waitStrategy);
         return (TElementType)this;
     }
 
-        public <TElementType extends IOSComponent> TElementType toBeVisible() {
+    public <TElementType extends IOSComponent> TElementType toBeVisible() {
         var waitStrategy = new ToBeVisibleWaitStrategy();
         ensureState(waitStrategy);
         return (TElementType)this;
@@ -252,14 +256,17 @@ public class IOSComponent extends LayoutComponentValidationsBuilder implements C
 
             waitStrategies.clear();
         } catch (WebDriverException ex) {
-            DebugInformation.printStackTrace(ex);
-            System.out.printf("%n%nThe element: %n Name: '%s', %n Locator: '%s = %s', %nWas not found on the page or didn't fulfill the specified conditions.%n%n", getComponentClass().getSimpleName(), findStrategy.toString(), findStrategy.getValue());
+            Log.error("%n%nThe component: %n" +
+                            "     Type: \"\u001B[1m%s\u001B[0m\"%n" +
+                            "  Locator: \"\u001B[1m%s\u001B[0m\"%n" +
+                            "Was not found on the page or didn't fulfill the specified conditions.%n%n",
+                    getComponentClass().getSimpleName(), findStrategy.toString());
+            throw ex;
         }
 
         RETURNING_WRAPPED_ELEMENT.broadcast(new ComponentActionEventArgs(this));
         return wrappedElement;
     }
-
 
     protected void defaultClick(EventListener<ComponentActionEventArgs> clicking, EventListener<ComponentActionEventArgs> clicked) {
         clicking.broadcast(new ComponentActionEventArgs(this));

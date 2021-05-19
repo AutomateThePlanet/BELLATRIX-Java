@@ -67,10 +67,10 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
     @Getter @Setter private int elementIndex;
     @Getter @Setter private FindStrategy findStrategy;
     @Getter private final WebDriver wrappedDriver;
-    @Getter protected JavaScriptService javaScriptService;
-    @Getter protected BrowserService browserService;
-    @Getter protected ComponentCreateService componentCreateService;
-    @Getter protected ComponentWaitService componentWaitService;
+    @Getter protected final JavaScriptService javaScriptService;
+    @Getter protected final BrowserService browserService;
+    @Getter protected final ComponentCreateService componentCreateService;
+    @Getter protected final ComponentWaitService componentWaitService;
     private final List<WaitStrategy> waitStrategies;
     private final WebSettings webSettings;
 

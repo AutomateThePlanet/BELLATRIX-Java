@@ -29,7 +29,7 @@ public final class ConfigurationService {
     private static String environment;
 
     public static <T> T get(Class<T> configSection) {
-        T mappedObject = null;
+        T mappedObject = (T)new Object();
         if (environment == null) {
             String environmentOverride = System.getProperty("environment");
             if (environmentOverride == null) {

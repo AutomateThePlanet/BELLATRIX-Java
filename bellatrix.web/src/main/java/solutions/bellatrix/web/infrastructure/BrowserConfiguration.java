@@ -24,7 +24,7 @@ public class BrowserConfiguration {
     private int width;
     private int version;
     private Platform platform;
-    HashMap<String, String> driverOptions;
+    final HashMap<String, String> driverOptions;
 
     public HashMap<String, String> getDriverOptions() {
         return driverOptions;

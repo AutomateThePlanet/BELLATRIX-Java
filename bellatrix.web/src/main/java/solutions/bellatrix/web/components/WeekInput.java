@@ -72,7 +72,7 @@ public class WeekInput extends WebComponent implements ComponentDisabled, Compon
 
     @Override
     public void setWeek(int year, int weekNumber) {
-
+        defaultSetWeek(year, weekNumber);
     }
 
     protected void defaultSetWeek(int year, int weekNumber) {

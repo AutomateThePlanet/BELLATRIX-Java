@@ -62,7 +62,7 @@ public class DriverService {
     public static WindowsDriver<WebElement> start(AppConfiguration configuration) {
         APP_CONFIGURATION.set(configuration);
         DISPOSED.set(false);
-        WindowsDriver<WebElement> driver = null;
+        WindowsDriver<WebElement> driver;
         var desktopSettings = ConfigurationService.get(DesktopSettings.class);
         var executionType = desktopSettings.getExecutionType();
         if (executionType.equals("regular")) {

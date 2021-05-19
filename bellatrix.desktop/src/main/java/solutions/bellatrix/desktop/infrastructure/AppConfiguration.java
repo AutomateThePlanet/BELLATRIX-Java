@@ -20,7 +20,7 @@ public class AppConfiguration {
     private final Lifecycle lifecycle;
     private int height;
     private int width;
-    HashMap<String, String> appiumOptions;
+    final HashMap<String, String> appiumOptions;
 
     public HashMap<String, String> getAppiumOptions() {
         return appiumOptions;

@@ -47,8 +47,8 @@ public class DesktopScreenshotPlugin extends ScreenshotPlugin {
         }
 
         var directory = new File(saveLocation);
-        if (!directory.exists()) {
-            directory.mkdirs();
+        if (directory.mkdirs()) {
+            return saveLocation;
         }
 
         return saveLocation;

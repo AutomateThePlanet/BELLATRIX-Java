@@ -65,7 +65,7 @@ public class DriverService {
     public static AndroidDriver<MobileElement> start(AppConfiguration configuration) {
         APP_CONFIGURATION.set(configuration);
         DISPOSED.set(false);
-        AndroidDriver<MobileElement> driver = null;
+        AndroidDriver<MobileElement> driver;
         var androidSettings = ConfigurationService.get(AndroidSettings.class);
         var executionType = androidSettings.getExecutionType();
         if (executionType.equals("regular")) {

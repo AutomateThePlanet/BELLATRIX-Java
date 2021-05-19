@@ -14,6 +14,7 @@
 package solutions.bellatrix.web.services;
 
 import com.google.common.base.Strings;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.web.configuration.WebSettings;
@@ -53,8 +54,8 @@ public class NavigationService extends WebService {
             long sleepInterval = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getSleepInterval();
             var webDriverWait = new WebDriverWait(getWrappedDriver(), waitForPartialTimeout, sleepInterval);
             webDriverWait.until(d -> getWrappedDriver().getCurrentUrl().contains(partialUrl));
-        } catch (Exception ex) {
-//            UrlNotNavigatedEvent?.Invoke(this, new UrlNotNavigatedEventArgs(ex));
+        } catch (TimeoutException ex) {
+            // TODO: UrlNotNavigatedEvent?.Invoke(this, new UrlNotNavigatedEventArgs(ex));
             throw ex;
         }
     }

@@ -64,7 +64,7 @@ public class DriverService {
     public static IOSDriver<MobileElement> start(AppConfiguration configuration) {
         APP_CONFIGURATION.set(configuration);
         DISPOSED.set(false);
-        IOSDriver<MobileElement> driver = null;
+        IOSDriver<MobileElement> driver;
         var IOSSettings = ConfigurationService.get(solutions.bellatrix.ios.configuration.IOSSettings.class);
         var executionType = IOSSettings.getExecutionType();
         if (executionType.equals("regular")) {
