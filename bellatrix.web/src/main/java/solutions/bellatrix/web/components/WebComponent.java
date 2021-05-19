@@ -62,27 +62,15 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
     public final static EventListener<ComponentActionEventArgs> CREATED_ELEMENTS = new EventListener<>();
     public final static EventListener<ComponentActionEventArgs> VALIDATED_ATTRIBUTE = new EventListener<>();
 
-    @Setter(AccessLevel.PROTECTED)
-    private WebElement wrappedElement;
-    @Getter
-    @Setter
-    private WebElement parentWrappedElement;
-    @Getter
-    @Setter
-    private int elementIndex;
-    @Getter
-    @Setter
-    private FindStrategy findStrategy;
-    @Getter
-    private WebDriver wrappedDriver;
-    @Getter
-    protected JavaScriptService javaScriptService;
-    @Getter
-    protected BrowserService browserService;
-    @Getter
-    protected ComponentCreateService componentCreateService;
-    @Getter
-    protected ComponentWaitService componentWaitService;
+    @Setter(AccessLevel.PROTECTED) private WebElement wrappedElement;
+    @Getter @Setter private WebElement parentWrappedElement;
+    @Getter @Setter private int elementIndex;
+    @Getter @Setter private FindStrategy findStrategy;
+    @Getter private WebDriver wrappedDriver;
+    @Getter protected JavaScriptService javaScriptService;
+    @Getter protected BrowserService browserService;
+    @Getter protected ComponentCreateService componentCreateService;
+    @Getter protected ComponentWaitService componentWaitService;
     private List<WaitStrategy> waitStrategies;
     private WebSettings webSettings;
 

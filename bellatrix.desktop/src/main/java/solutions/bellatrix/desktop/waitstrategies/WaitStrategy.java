@@ -25,10 +25,8 @@ import solutions.bellatrix.desktop.infrastructure.DriverService;
 import java.util.function.Function;
 
 public abstract class WaitStrategy {
-    @Getter
-    protected long timeoutInterval;
-    @Getter
-    protected long sleepInterval;
+    @Getter protected long timeoutInterval;
+    @Getter protected long sleepInterval;
 
     public WaitStrategy() {
     }
