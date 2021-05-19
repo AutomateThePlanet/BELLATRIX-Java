@@ -11,7 +11,7 @@
  * limitations under the License.
  */
 
-package cartinfosection_rename;
+package cartinfosection;
 
 import solutions.bellatrix.web.pages.PageAsserts;
 
