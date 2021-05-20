@@ -23,7 +23,7 @@ import java.lang.reflect.Method;
 import java.util.function.Supplier;
 
 public interface ComponentWrap extends Component {
-    Integer getWrap();
+    int getWrap();
 
     @SneakyThrows
     default void validateWrapIsSet() {

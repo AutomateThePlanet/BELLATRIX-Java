@@ -81,7 +81,7 @@ public class TextArea extends WebComponent implements ComponentText, ComponentVa
     }
 
     @Override
-    public Integer getRows() {
+    public int getRows() {
         return Integer.parseInt(defaultGetRowsAttribute());
     }
 
@@ -96,7 +96,7 @@ public class TextArea extends WebComponent implements ComponentText, ComponentVa
     }
 
     @Override
-    public Integer getWrap() {
+    public int getWrap() {
         return Integer.parseInt(defaultGetWrapAttribute());
     }
 }

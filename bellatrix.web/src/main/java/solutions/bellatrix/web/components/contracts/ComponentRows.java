@@ -23,7 +23,7 @@ import java.lang.reflect.Method;
 import java.util.function.Supplier;
 
 public interface ComponentRows extends Component {
-    Integer getRows();
+    int getRows();
 
     @SneakyThrows
     default void validateRowsIsSet() {

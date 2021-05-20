@@ -23,7 +23,7 @@ import java.lang.reflect.Method;
 import java.util.function.Supplier;
 
 public interface ComponentWidth extends Component {
-    Integer getWidth();
+    int getWidth();
 
     @SneakyThrows
     default void validateWidthIsSet() {
