@@ -20,6 +20,7 @@ import solutions.bellatrix.web.validations.ComponentValidator;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.function.Supplier;
 
 public interface ComponentRequired extends Component {
     boolean isRequired();
@@ -27,8 +28,8 @@ public interface ComponentRequired extends Component {
     @SneakyThrows
     default void validateIsRequired() {
         try {
-            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeTrue", WebComponent.class, boolean.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, isRequired(), "required");
+            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeTrue", WebComponent.class, Supplier.class, String.class);
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, (Supplier<Boolean>)this::isRequired, "required");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -37,8 +38,8 @@ public interface ComponentRequired extends Component {
     @SneakyThrows
     default void validateNotRequired() {
         try {
-            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeFalse", WebComponent.class, boolean.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, isRequired(), "required");
+            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeFalse", WebComponent.class, Supplier.class, String.class);
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, (Supplier<Object>)this::isRequired, "required");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }

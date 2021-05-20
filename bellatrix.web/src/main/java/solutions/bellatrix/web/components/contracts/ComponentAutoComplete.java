@@ -20,6 +20,7 @@ import solutions.bellatrix.web.validations.ComponentValidator;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.function.Supplier;
 
 public interface ComponentAutoComplete extends Component {
     boolean isAutoComplete();
@@ -27,8 +28,8 @@ public interface ComponentAutoComplete extends Component {
     @SneakyThrows
     default void validateAutoCompleteOn() {
         try {
-            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeTrue", WebComponent.class, boolean.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, isAutoComplete(), "autocomplete");
+            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeTrue", WebComponent.class, Supplier.class, String.class);
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, (Supplier<Boolean>)this::isAutoComplete, "autocomplete");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -37,8 +38,8 @@ public interface ComponentAutoComplete extends Component {
     @SneakyThrows
     default void validateAutoCompleteOff() {
         try {
-            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeFalse", WebComponent.class, boolean.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, isAutoComplete(), "autocomplete");
+            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeFalse", WebComponent.class, Supplier.class, String.class);
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, (Supplier<Boolean>)this::isAutoComplete, "autocomplete");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }

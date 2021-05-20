@@ -64,7 +64,7 @@ public class JavaScriptService extends WebService {
             var result = (String)javascriptExecutor.executeScript(script, nativeElement);
             return result;
         } catch (NoSuchSessionException ex) {
-            return "";
+            throw new NoSuchSessionException();
         } catch (Exception ex) {
             DebugInformation.printStackTrace(ex);
             return "";
