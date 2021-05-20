@@ -20,6 +20,7 @@ import solutions.bellatrix.web.validations.ComponentValidator;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.function.Supplier;
 
 public interface ComponentDate extends Component {
     String getDate();
@@ -29,8 +30,8 @@ public interface ComponentDate extends Component {
     @SneakyThrows
     default void validateDateIs(String value) {
         try {
-            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIs", WebComponent.class, String.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getDate(), value, "date");
+            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIs", WebComponent.class, Supplier.class, String.class, String.class);
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, (Supplier<String>)this::getDate, value, "date");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }

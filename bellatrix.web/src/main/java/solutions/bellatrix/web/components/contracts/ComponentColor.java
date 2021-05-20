@@ -20,6 +20,7 @@ import solutions.bellatrix.web.validations.ComponentValidator;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.function.Supplier;
 
 public interface ComponentColor extends Component {
     String getColor();
@@ -29,8 +30,8 @@ public interface ComponentColor extends Component {
     @SneakyThrows
     default void validateColorIs(String value) {
         try {
-            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIs", WebComponent.class, String.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getColor(), value, "color");
+            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIs", WebComponent.class, Supplier.class, String.class, String.class);
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, (Supplier<String>)this::getColor, value, "color");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }

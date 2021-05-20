@@ -32,6 +32,9 @@
     <inspection_tool class="JUnit5Converter" enabled="true" level="INFORMATION" enabled_by_default="true">
       <scope name="Project Files" level="INFORMATION" enabled="true" />
     </inspection_tool>
+    <inspection_tool class="Java9ReflectionClassVisibility" enabled="true" level="ERROR" enabled_by_default="true" />
+    <inspection_tool class="JavaReflectionInvocation" enabled="true" level="ERROR" enabled_by_default="true" />
+    <inspection_tool class="JavaReflectionMemberAccess" enabled="true" level="ERROR" enabled_by_default="true" />
     <inspection_tool class="Junit4Converter" enabled="true" level="INFORMATION" enabled_by_default="true">
       <scope name="Project Files" level="INFORMATION" enabled="true" />
     </inspection_tool>

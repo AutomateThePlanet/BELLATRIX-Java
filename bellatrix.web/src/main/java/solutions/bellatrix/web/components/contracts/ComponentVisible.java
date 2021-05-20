@@ -20,6 +20,7 @@ import solutions.bellatrix.web.validations.ComponentValidator;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.function.Supplier;
 
 public interface ComponentVisible extends Component {
     boolean isVisible();
@@ -27,8 +28,8 @@ public interface ComponentVisible extends Component {
     @SneakyThrows
     default void validateIsVisible() {
         try {
-            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeTrue", WebComponent.class, boolean.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, isVisible(), "visible");
+            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeTrue", WebComponent.class, Supplier.class, String.class);
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, (Supplier<Boolean>)this::isVisible, "visible");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -37,8 +38,8 @@ public interface ComponentVisible extends Component {
     @SneakyThrows
     default void validateNotVisible() {
         try {
-            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeFalse", WebComponent.class, boolean.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, isVisible(), "visible");
+            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeFalse", WebComponent.class, Supplier.class, String.class);
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, (Supplier<Boolean>)this::isVisible, "visible");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }

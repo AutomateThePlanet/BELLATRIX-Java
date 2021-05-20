@@ -20,6 +20,7 @@ import solutions.bellatrix.web.validations.ComponentValidator;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.function.Supplier;
 
 public interface ComponentHref extends Component {
     String getHref();
@@ -27,8 +28,8 @@ public interface ComponentHref extends Component {
     @SneakyThrows
     default void validateHrefIs(String value) {
         try {
-            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIs", WebComponent.class, String.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getHref(), value, "href");
+            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIs", WebComponent.class, Supplier.class, String.class, String.class);
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, (Supplier<String>)this::getHref, value, "href");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -37,8 +38,8 @@ public interface ComponentHref extends Component {
     @SneakyThrows
     default void validateHrefIsSet() {
         try {
-            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIsSet", WebComponent.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getHref(), "href");
+            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIsSet", WebComponent.class, Supplier.class, String.class);
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, (Supplier<String>)this::getHref, "href");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -47,8 +48,8 @@ public interface ComponentHref extends Component {
     @SneakyThrows
     default void validateHrefNotSet() {
         try {
-            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeNotSet", WebComponent.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getHref(), "href");
+            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeNotSet", WebComponent.class, Supplier.class, String.class);
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, (Supplier<String>)this::getHref, "href");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -57,8 +58,8 @@ public interface ComponentHref extends Component {
     @SneakyThrows
     default void validateHrefContains(String value) {
         try {
-            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeContains", WebComponent.class, String.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getHref(), value, "href");
+            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeContains", WebComponent.class, Supplier.class, String.class, String.class);
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, (Supplier<String>)this::getHref, value, "href");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -67,8 +68,8 @@ public interface ComponentHref extends Component {
     @SneakyThrows
     default void validateHrefNotContains(String value) {
         try {
-            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeNotContains", WebComponent.class, String.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getHref(), value, "href");
+            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeNotContains", WebComponent.class, Supplier.class, String.class, String.class);
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, (Supplier<String>)this::getHref, value, "href");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }

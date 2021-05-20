@@ -20,6 +20,7 @@ import solutions.bellatrix.web.validations.ComponentValidator;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.function.Supplier;
 
 public interface ComponentWeek extends Component {
     String getWeek();
@@ -29,8 +30,8 @@ public interface ComponentWeek extends Component {
     @SneakyThrows
     default void validateWeekIs(String value) {
         try {
-            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIs", WebComponent.class, String.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getWeek(), value, "week");
+            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIs", WebComponent.class, Supplier.class, String.class, String.class);
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, (Supplier<String>)this::getWeek, value, "week");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }

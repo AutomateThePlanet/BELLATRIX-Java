@@ -40,8 +40,8 @@ public class ComponentCreateService extends WebService {
         return by(componentClass, new CssFindStrategy(css));
     }
 
-    public <TComponent extends WebComponent> TComponent byClass(Class<TComponent> componentClass, String cclass) {
-        return by(componentClass, new ClassFindStrategy(cclass));
+    public <TComponent extends WebComponent> TComponent byClass(Class<TComponent> componentClass, String className) {
+        return by(componentClass, new ClassFindStrategy(className));
     }
 
     public <TComponent extends WebComponent> TComponent byXPath(Class<TComponent> componentClass, String xpath) {

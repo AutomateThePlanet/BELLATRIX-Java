@@ -16,6 +16,7 @@ package solutions.bellatrix.web.components.listeners;
 import solutions.bellatrix.core.plugins.Listener;
 import solutions.bellatrix.core.utilities.Log;
 import solutions.bellatrix.web.components.*;
+import solutions.bellatrix.web.validations.ComponentValidator;
 
 public class BddLogging extends Listener {
     private static boolean isBddLoggingTurnedOn = false;
@@ -46,8 +47,11 @@ public class BddLogging extends Listener {
             TimeInput.SETTING_TIME.addListener((x) -> Log.info("setting '%s' in %s", x.getActionValue(), x.getComponent().getComponentName()));
             UrlInput.SETTING_URL.addListener((x) -> Log.info("typing '%s' in %s", x.getActionValue(), x.getComponent().getComponentName()));
             WeekInput.SETTING_WEEK.addListener((x) -> Log.info("setting '%s' in %s", x.getActionValue(), x.getComponent().getComponentName()));
-            WebComponent.HOVERING.addListener((x) -> Log.info("hovering on %s", x.getComponent().getComponentName()));
-            WebComponent.VALIDATED_ATTRIBUTE.addListener((x) -> System.out.println(x.getMessage()));
+            WebComponent.HOVERING.addListener((x) -> Log.info("hovering %s", x.getComponent().getComponentName()));
+            WebComponent.FOCUSING.addListener((x) -> Log.info("focusing %s", x.getComponent().getComponentName()));
+            WebComponent.SCROLLING_TO_VISIBLE.addListener((x) -> Log.info("scrolling to %s", x.getComponent().getComponentName()));
+            WebComponent.SETTING_ATTRIBUTE.addListener((x) -> Log.info("setting %s to '%s' in %s", x.getActionValue(), x.getMessage(), x.getComponent().getComponentName()));
+            ComponentValidator.VALIDATING_ATTRIBUTE.addListener((x) -> Log.info(x.getMessage()));
             isBddLoggingTurnedOn = true;
         }
     }

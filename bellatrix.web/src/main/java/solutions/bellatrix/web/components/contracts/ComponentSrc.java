@@ -20,6 +20,7 @@ import solutions.bellatrix.web.validations.ComponentValidator;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.function.Supplier;
 
 public interface ComponentSrc extends Component {
     String getSrc();
@@ -27,8 +28,8 @@ public interface ComponentSrc extends Component {
     @SneakyThrows
     default void validateSrcIs(String value) {
         try {
-            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIs", WebComponent.class, String.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getSrc(), value, "src");
+            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIs", WebComponent.class, Supplier.class, String.class, String.class);
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, (Supplier<String>)this::getSrc, value, "src");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -37,8 +38,8 @@ public interface ComponentSrc extends Component {
     @SneakyThrows
     default void validateSrcIsSet() {
         try {
-            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIsSet", WebComponent.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getSrc(), "src");
+            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIsSet", WebComponent.class, Supplier.class, String.class);
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this,(Supplier<String>)this:: getSrc, "src");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -47,8 +48,8 @@ public interface ComponentSrc extends Component {
     @SneakyThrows
     default void validateSrcNotSet() {
         try {
-            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeNotSet", WebComponent.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getSrc(), "src");
+            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeNotSet", WebComponent.class, Supplier.class, String.class);
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, (Supplier<String>)this::getSrc, "src");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -57,8 +58,8 @@ public interface ComponentSrc extends Component {
     @SneakyThrows
     default void validateSrcContains(String value) {
         try {
-            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeContains", WebComponent.class, String.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getSrc(), value, "src");
+            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeContains", WebComponent.class, Supplier.class, String.class, String.class);
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, (Supplier<String>)this::getSrc, value, "src");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -67,8 +68,8 @@ public interface ComponentSrc extends Component {
     @SneakyThrows
     default void validateSrcNotContains(String value) {
         try {
-            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeNotContains", WebComponent.class, String.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getSrc(), value, "src");
+            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeNotContains", WebComponent.class, Supplier.class, String.class, String.class);
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, (Supplier<String>)this::getSrc, value, "src");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }

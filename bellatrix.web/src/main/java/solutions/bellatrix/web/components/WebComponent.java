@@ -20,6 +20,7 @@ import lombok.Setter;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.*;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
 import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.core.plugins.EventListener;
@@ -60,7 +61,6 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
     public final static EventListener<ComponentActionEventArgs> CREATED_ELEMENT = new EventListener<>();
     public final static EventListener<ComponentActionEventArgs> CREATING_ELEMENTS = new EventListener<>();
     public final static EventListener<ComponentActionEventArgs> CREATED_ELEMENTS = new EventListener<>();
-    public final static EventListener<ComponentActionEventArgs> VALIDATED_ATTRIBUTE = new EventListener<>();
 
     @Setter(AccessLevel.PROTECTED) private WebElement wrappedElement;
     @Getter @Setter private WebElement parentWrappedElement;
@@ -106,7 +106,7 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
     }
 
     public void setAttribute(String name, String value) {
-        SETTING_ATTRIBUTE.broadcast(new ComponentActionEventArgs(this));
+        SETTING_ATTRIBUTE.broadcast(new ComponentActionEventArgs(this, value, name));
         javaScriptService.execute(String.format("arguments[0].setAttribute('%s', '%s');", name, value), this);
         ATTRIBUTE_SET.broadcast(new ComponentActionEventArgs(this));
     }
@@ -120,7 +120,8 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
 
     public void hover() {
         HOVERING.broadcast(new ComponentActionEventArgs(this));
-        javaScriptService.execute("arguments[0].onmouseover();", getWrappedElement());
+        Actions actions = new Actions(wrappedDriver);
+        actions.moveToElement(getWrappedElement()).build().perform();
         HOVERED.broadcast(new ComponentActionEventArgs(this));
     }
 
@@ -281,7 +282,7 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
         try {
             var originalElementBorder = getWrappedElement().getCssValue("background-color");
             javaScriptService.execute("arguments[0].style.background='yellow'; return;", getWrappedElement());
-            Thread.sleep(100);
+            //Thread.sleep(100);
 
             var runnable = new Runnable() {
                 @SneakyThrows
@@ -361,12 +362,20 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
         return wrappedElement;
     }
 
+    private void simulateClick(WebElement element) {
+        var currentBrowser = DriverService.getBrowserConfiguration().getBrowser();
+        if (currentBrowser == Browser.INTERNET_EXPLORER) {
+            element.click();
+            return;
+        }
+        javaScriptService.execute("const a=arguments[0];['mouseover','mousedown','mouseup','click'].forEach(e=>{const c=document.createEvent('MouseEvents');c.initEvent(e,true,true);a.focus();a.dispatchEvent(c)})", element);
+    }
+
     protected void defaultClick(EventListener<ComponentActionEventArgs> clicking, EventListener<ComponentActionEventArgs> clicked) {
         clicking.broadcast(new ComponentActionEventArgs(this));
 
-        this.toExist().toBeClickable().waitToBe();
-        javaScriptService.execute("arguments[0].focus();arguments[0].click();arguments[0].dispatchEvent(new Event('click'));", wrappedElement);
-
+        toExist().toBeClickable().waitToBe();
+        simulateClick(getWrappedElement());
         clicked.broadcast(new ComponentActionEventArgs(this));
     }
 
@@ -375,7 +384,7 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
 
         this.toExist().toBeClickable().waitToBe();
         if (!getWrappedElement().isSelected()) {
-            javaScriptService.execute("arguments[0].focus();arguments[0].click();arguments[0].dispatchEvent(new Event('click'));", wrappedElement);
+            simulateClick(getWrappedElement());
         }
 
         clicked.broadcast(new ComponentActionEventArgs(this));
@@ -384,9 +393,9 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
     protected void defaultUncheck(EventListener<ComponentActionEventArgs> checking, EventListener<ComponentActionEventArgs> checked) {
         checking.broadcast(new ComponentActionEventArgs(this));
 
-        this.toExist().toBeClickable().waitToBe();
+        toExist().toBeClickable().waitToBe();
         if (getWrappedElement().isSelected()) {
-            javaScriptService.execute("arguments[0].focus();arguments[0].click();arguments[0].dispatchEvent(new Event('click'));", wrappedElement);
+            simulateClick(getWrappedElement());
         }
 
         checked.broadcast(new ComponentActionEventArgs(this));
@@ -411,145 +420,283 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
     }
 
     protected String defaultGetValue() {
-        return Optional.ofNullable(getAttribute("value")).orElse("");
+        try {
+            return Optional.ofNullable(getAttribute("value")).orElse("");
+        } catch (StaleElementReferenceException e) {
+            return Optional.ofNullable(findElement().getAttribute("value")).orElse("");
+        }
     }
 
     protected String defaultGetName() {
-        return Optional.ofNullable(getAttribute("name")).orElse("");
+        try {
+            return Optional.ofNullable(getAttribute("name")).orElse("");
+        } catch (StaleElementReferenceException e) {
+            return Optional.ofNullable(findElement().getAttribute("name")).orElse("");
+        }
     }
 
     protected String defaultGetMaxLength() {
-        return Optional.ofNullable(getAttribute("maxlength")).orElse("");
+        try {
+            return Optional.ofNullable(getAttribute("max")).orElse("");
+        } catch (StaleElementReferenceException e) {
+            return Optional.ofNullable(findElement().getAttribute("max")).orElse("");
+        }
     }
 
     protected String defaultGetMinLength() {
-        return Optional.ofNullable(getAttribute("minlength")).orElse("");
+        try {
+            return Optional.ofNullable(getAttribute("min")).orElse("");
+        } catch (StaleElementReferenceException e) {
+            return Optional.ofNullable(findElement().getAttribute("min")).orElse("");
+        }
     }
 
     protected String defaultGetSizeAttribute() {
-        return Optional.ofNullable(getAttribute("size")).orElse("");
+        try {
+            return Optional.ofNullable(getAttribute("size")).orElse("");
+        } catch (StaleElementReferenceException e) {
+            return Optional.ofNullable(findElement().getAttribute("size")).orElse("");
+        }
     }
 
     protected String defaultGetSizesAttribute() {
-        return Optional.ofNullable(getAttribute("sizes")).orElse("");
+        try {
+            return Optional.ofNullable(getAttribute("sizes")).orElse("");
+        } catch (StaleElementReferenceException e) {
+            return Optional.ofNullable(findElement().getAttribute("sizes")).orElse("");
+        }
     }
 
     protected String defaultGetSrcAttribute() {
-        return Optional.ofNullable(getAttribute("src")).orElse("");
+        try {
+            return Optional.ofNullable(getAttribute("src")).orElse("");
+        } catch (StaleElementReferenceException e) {
+            return Optional.ofNullable(findElement().getAttribute("src")).orElse("");
+        }
     }
 
     protected String defaultGetSrcSetAttribute() {
-        return Optional.ofNullable(getAttribute("srcset")).orElse("");
+        try {
+            return Optional.ofNullable(getAttribute("srcset")).orElse("");
+        } catch (StaleElementReferenceException e) {
+            return Optional.ofNullable(findElement().getAttribute("srcset")).orElse("");
+        }
     }
 
     protected String defaultGetAltAttribute() {
-        return Optional.ofNullable(getAttribute("alt")).orElse("");
+        try {
+            return Optional.ofNullable(getAttribute("alt")).orElse("");
+        } catch (StaleElementReferenceException e) {
+            return Optional.ofNullable(findElement().getAttribute("alt")).orElse("");
+        }
     }
 
     protected String defaultGetColsAttribute() {
-        return Optional.ofNullable(getAttribute("cols")).orElse("");
+        try {
+            return Optional.ofNullable(getAttribute("cols")).orElse("");
+        } catch (StaleElementReferenceException e) {
+            return Optional.ofNullable(findElement().getAttribute("cols")).orElse("");
+        }
     }
 
     protected String defaultGetRowsAttribute() {
-        return Optional.ofNullable(getAttribute("rows")).orElse("");
+        try {
+            return Optional.ofNullable(getAttribute("rows")).orElse("");
+        } catch (StaleElementReferenceException e) {
+            return Optional.ofNullable(findElement().getAttribute("rows")).orElse("");
+        }
     }
 
     protected String defaultGetLongDescAttribute() {
-        return Optional.ofNullable(getAttribute("longdesc")).orElse("");
+        try {
+            return Optional.ofNullable(getAttribute("longdesc")).orElse("");
+        } catch (StaleElementReferenceException e) {
+            return Optional.ofNullable(findElement().getAttribute("longdesc")).orElse("");
+        }
     }
 
     protected String defaultGetHeightAttribute() {
-        return Optional.ofNullable(getAttribute("height")).orElse("");
+        try {
+            return Optional.ofNullable(getAttribute("height")).orElse("");
+        } catch (StaleElementReferenceException e) {
+            return Optional.ofNullable(findElement().getAttribute("height")).orElse("");
+        }
     }
 
     protected String defaultGetWidthAttribute() {
-        return Optional.ofNullable(getAttribute("width")).orElse("");
+        try {
+            return Optional.ofNullable(getAttribute("width")).orElse("");
+        } catch (StaleElementReferenceException e) {
+            return Optional.ofNullable(findElement().getAttribute("width")).orElse("");
+        }
     }
 
     protected String defaultGetInnerHtmlAttribute() {
-        return Optional.ofNullable(getAttribute("innerHTML")).orElse("");
+        try {
+            return Optional.ofNullable(getAttribute("innerHTML")).orElse("");
+        } catch (StaleElementReferenceException e) {
+            return Optional.ofNullable(findElement().getAttribute("innerHTML")).orElse("");
+        }
     }
 
     protected String defaultGetForAttribute() {
-        return Optional.ofNullable(getAttribute("for")).orElse("");
+        try {
+            return Optional.ofNullable(getAttribute("for")).orElse("");
+        } catch (StaleElementReferenceException e) {
+            return Optional.ofNullable(findElement().getAttribute("for")).orElse("");
+        }
     }
 
     protected String defaultGetTargetAttribute() {
-        return Optional.ofNullable(getAttribute("target")).orElse("");
+        try {
+            return Optional.ofNullable(getAttribute("target")).orElse("");
+        } catch (StaleElementReferenceException e) {
+            return Optional.ofNullable(findElement().getAttribute("target")).orElse("");
+        }
     }
 
     protected String defaultGetRelAttribute() {
-        return Optional.ofNullable(getAttribute("rel")).orElse("");
+        try {
+            return Optional.ofNullable(getAttribute("rel")).orElse("");
+        } catch (StaleElementReferenceException e) {
+            return Optional.ofNullable(findElement().getAttribute("rel")).orElse("");
+        }
     }
 
     protected boolean defaultGetDisabledAttribute() {
-        var valueAttr = Optional.ofNullable(getAttribute("disabled")).orElse("false");
-        return valueAttr.toLowerCase(Locale.ROOT).equals("true");
+        try {
+            var valueAttr = Optional.ofNullable(getAttribute("disabled")).orElse("false");
+            return valueAttr.toLowerCase(Locale.ROOT).equals("true");
+        } catch (StaleElementReferenceException e) {
+            var valueAttr = Optional.ofNullable(findElement().getAttribute("disabled")).orElse("false");
+            return valueAttr.toLowerCase(Locale.ROOT).equals("true");
+        }
     }
 
     protected String defaultGetText() {
-        return Optional.ofNullable(getWrappedElement().getText()).orElse("");
+        try {
+            return Optional.ofNullable(getWrappedElement().getText()).orElse("");
+        } catch (StaleElementReferenceException e) {
+            return Optional.ofNullable(findElement().getText()).orElse("");
+        }
     }
 
     protected String defaultGetMinAttribute() {
-        return Optional.ofNullable(getAttribute("min")).orElse("");
+        try {
+            return Optional.ofNullable(getAttribute("min")).orElse("");
+        } catch (StaleElementReferenceException e) {
+            return Optional.ofNullable(findElement().getAttribute("min")).orElse("");
+        }
     }
 
     protected String defaultGetMaxAttribute() {
-        return Optional.ofNullable(getAttribute("max")).orElse("");
+        try {
+            return Optional.ofNullable(getAttribute("max")).orElse("");
+        } catch (StaleElementReferenceException e) {
+            return Optional.ofNullable(findElement().getAttribute("max")).orElse("");
+        }
     }
 
     protected String defaultGetStepAttribute() {
-        return Optional.ofNullable(getAttribute("step")).orElse("");
+        try {
+            return Optional.ofNullable(getAttribute("step")).orElse("");
+        } catch (StaleElementReferenceException e) {
+            return Optional.ofNullable(findElement().getAttribute("step")).orElse("");
+        }
     }
 
     protected String defaultGetWrapAttribute() {
-        return Optional.ofNullable(getAttribute("wrap")).orElse("");
+        try {
+            return Optional.ofNullable(getAttribute("wrap")).orElse("");
+        } catch (StaleElementReferenceException e) {
+            return Optional.ofNullable(findElement().getAttribute("wrap")).orElse("");
+        }
     }
 
     protected String defaultGetPlaceholderAttribute() {
-        return Optional.ofNullable(getAttribute("placeholder")).orElse("");
+        try {
+            return Optional.ofNullable(getAttribute("placeholder")).orElse("");
+        } catch (StaleElementReferenceException e) {
+            return Optional.ofNullable(findElement().getAttribute("placeholder")).orElse("");
+        }
     }
 
     protected String defaultGetAcceptAttribute() {
-        return Optional.ofNullable(getAttribute("accept")).orElse(null);
+        try {
+            return Optional.ofNullable(getAttribute("accept")).orElse(null);
+        } catch (StaleElementReferenceException e) {
+            return Optional.ofNullable(findElement().getAttribute("accept")).orElse(null);
+        }
     }
 
     protected boolean defaultGetAutoCompleteAttribute() {
-        return Optional.ofNullable(getAttribute("autocomplete")).orElse("").equals("on");
+        try {
+            return Optional.ofNullable(getAttribute("autocomplete")).orElse("").equals("on");
+        } catch (StaleElementReferenceException e) {
+            return Optional.ofNullable(findElement().getAttribute("autocomplete")).orElse("").equals("on");
+        }
     }
 
     protected boolean defaultGetSpellCheckAttribute() {
-        return Optional.ofNullable(getAttribute("spellcheck")).orElse("").equals("on");
+        try {
+            return Optional.ofNullable(getAttribute("spellcheck")).orElse("").equals("on");
+        } catch (StaleElementReferenceException e) {
+            return Optional.ofNullable(findElement().getAttribute("spellcheck")).orElse("").equals("on");
+        }
     }
 
     protected boolean defaultGetReadonlyAttribute() {
-        return !StringUtils.isEmpty(Optional.ofNullable(getAttribute("readonly")).orElse(""));
+        try {
+            return !StringUtils.isEmpty(Optional.ofNullable(getAttribute("readonly")).orElse(""));
+        } catch (StaleElementReferenceException e) {
+            return !StringUtils.isEmpty(Optional.ofNullable(findElement().getAttribute("readonly")).orElse(""));
+        }
     }
 
     protected boolean defaultGetRequiredAttribute() {
-        return !StringUtils.isEmpty(Optional.ofNullable(getAttribute("required")).orElse(""));
+        try {
+            return !StringUtils.isEmpty(Optional.ofNullable(getAttribute("required")).orElse(""));
+        } catch (StaleElementReferenceException e) {
+            return !StringUtils.isEmpty(Optional.ofNullable(findElement().getAttribute("required")).orElse(""));
+        }
     }
 
     protected boolean defaultGetMultipleAttribute() {
-        return !StringUtils.isEmpty(Optional.ofNullable(getAttribute("multiple")).orElse(""));
+        try {
+            return !StringUtils.isEmpty(Optional.ofNullable(getAttribute("multiple")).orElse(""));
+        } catch (StaleElementReferenceException e) {
+            return !StringUtils.isEmpty(Optional.ofNullable(findElement().getAttribute("multiple")).orElse(""));
+        }
     }
 
     protected String defaultGetList() {
-        return Optional.ofNullable(getAttribute("list")).orElse("");
+        try {
+            return Optional.ofNullable(getAttribute("list")).orElse("");
+        } catch (StaleElementReferenceException e) {
+            return Optional.ofNullable(findElement().getAttribute("list")).orElse("");
+        }
     }
 
     @SneakyThrows
     protected String defaultGetHref() {
-        return unescapeHtml4(URLDecoder.decode(Optional.ofNullable(getAttribute("href")).orElse(""), StandardCharsets.UTF_8.name()));
+        try {
+            return unescapeHtml4(URLDecoder.decode(Optional.ofNullable(getAttribute("href")).orElse(""), StandardCharsets.UTF_8.name()));
+        } catch (StaleElementReferenceException e) {
+            return unescapeHtml4(URLDecoder.decode(Optional.ofNullable(findElement().getAttribute("href")).orElse(""), StandardCharsets.UTF_8.name()));
+        }
     }
 
     protected void defaultSetText(EventListener<ComponentActionEventArgs> settingValue, EventListener<ComponentActionEventArgs> valueSet, String value) {
         settingValue.broadcast(new ComponentActionEventArgs(this, value));
-
-        getWrappedElement().click();
-        getWrappedElement().clear();
-        getWrappedElement().sendKeys(value);
+        try {
+            simulateClick(getWrappedElement());
+            getWrappedElement().clear();
+            getWrappedElement().sendKeys(value);
+        } catch (StaleElementReferenceException e) {
+            simulateClick(findElement());
+            getWrappedElement().clear();
+            getWrappedElement().sendKeys(value);
+        }
 
         valueSet.broadcast(new ComponentActionEventArgs(this, value));
     }

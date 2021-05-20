@@ -20,6 +20,7 @@ import solutions.bellatrix.web.validations.ComponentValidator;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.function.Supplier;
 
 public interface ComponentCols extends Component {
     int getCols();
@@ -27,8 +28,8 @@ public interface ComponentCols extends Component {
     @SneakyThrows
     default void validateColsIsSet() {
         try {
-            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeNotNull", WebComponent.class, Object.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getCols(), "cols");
+            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeNotNull", WebComponent.class, Supplier.class, String.class);
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, (Supplier<Object>)this::getCols, "cols");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -37,8 +38,8 @@ public interface ComponentCols extends Component {
     @SneakyThrows
     default void validateColsNotSet() {
         try {
-            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIsNull", WebComponent.class, Object.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getCols(), "cols");
+            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIsNull", WebComponent.class, Supplier.class, String.class);
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, (Supplier<Object>)this::getCols, "cols");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -47,8 +48,8 @@ public interface ComponentCols extends Component {
     @SneakyThrows
     default void validateColsIs(int value) {
         try {
-            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIs", WebComponent.class, Number.class, Number.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getCols(), value, "cols");
+            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIs", WebComponent.class, Supplier.class, Number.class, String.class);
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, (Supplier<Number>)this::getCols, value, "cols");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
