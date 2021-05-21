@@ -18,10 +18,12 @@ import com.google.gson.JsonParser;
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
 import org.apache.commons.io.IOUtils;
+import solutions.bellatrix.core.utilities.DebugInformation;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 import java.util.Properties;
 
 @UtilityClass
@@ -73,7 +75,11 @@ public final class ConfigurationService {
     @SneakyThrows
     public static String getFileAsString(String fileName) {
         InputStream input = ConfigurationService.class.getResourceAsStream("/" + fileName);
-        assert input != null;
-        return IOUtils.toString(input, StandardCharsets.UTF_8);
+        try {
+            return IOUtils.toString(Objects.requireNonNull(input), StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            DebugInformation.printStackTrace(new IOException("Couldn't load '" + fileName + "'"));
+            return "";
+        }
     }
 }
