@@ -78,6 +78,6 @@ public class Map extends PageMap {
     }
 
     public Button getCountryOptionByName(String countryName) {
-        return create().byXPath(Button.class, String.format("//*[contains(text(),'%s')]", countryName));
+        return create().byXPath(Button.class, String.format("//li[contains(text(),'%s')]", countryName));
     }
 }
