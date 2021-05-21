@@ -280,15 +280,16 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
         if (currentBrowser == Browser.CHROME_HEADLESS) return;
 
         try {
-            var originalElementBorder = getWrappedElement().getCssValue("background-color");
-            javaScriptService.execute("arguments[0].style.background='yellow'; return;", wrappedElement);
+            var originalElementBackground = getWrappedElement().getCssValue("background");
+            var originalElementColor = getWrappedElement().getCssValue("color");
+            javaScriptService.execute("arguments[0].style.background='yellow';arguments[0].style.color='black';return;", wrappedElement);
 
             var runnable = new Runnable() {
                 @SneakyThrows
                 public void run() {
                     Thread.sleep(100);
                     try {
-                        javaScriptService.execute("arguments[0].style.background='" + originalElementBorder + "'; return;", wrappedElement);
+                        javaScriptService.execute("arguments[0].style.background='" + originalElementBackground + "';arguments[0].style.color='" + originalElementColor + "';return;", wrappedElement);
                     } catch (NoSuchSessionException | NullPointerException ignored) {
                     }
                 }
@@ -361,20 +362,25 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
         return wrappedElement;
     }
 
-    private void simulateClick(WebElement element) {
+    private void simulateClick(WebComponent component) {
         var currentBrowser = DriverService.getBrowserConfiguration().getBrowser();
+        var jsClick = "['mousedown','mouseup','click'].forEach(l=>{const a=arguments[0];const r=a.getBoundingClientRect();const x=r.left+(r.right-r.left)/2;y=r.top+(r.bottom-r.top)/2;((e,n,x,y)=>{e.dispatchEvent(new MouseEvent(n,{view:window,bubbles:true,cancelable:true,clientX:x,clientY:y,button:0}))})(a,l,x,y)})";
         if (currentBrowser == Browser.INTERNET_EXPLORER) {
-            element.click();
+            getWrappedElement().click();
             return;
         }
-        javaScriptService.execute("const a=arguments[0];['mouseover','mousedown','mouseup','click'].forEach(e=>{const c=document.createEvent('MouseEvents');c.initEvent(e,true,true);a.focus();a.dispatchEvent(c)})", element);
+        try {
+            javaScriptService.execute(jsClick, getWrappedElement());
+        } catch (StaleElementReferenceException e) {
+            javaScriptService.execute(jsClick, findElement());
+        }
     }
 
     protected void defaultClick(EventListener<ComponentActionEventArgs> clicking, EventListener<ComponentActionEventArgs> clicked) {
         clicking.broadcast(new ComponentActionEventArgs(this));
 
         toExist().toBeClickable().waitToBe();
-        simulateClick(getWrappedElement());
+        simulateClick(this);
         clicked.broadcast(new ComponentActionEventArgs(this));
     }
 
@@ -383,7 +389,7 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
 
         this.toExist().toBeClickable().waitToBe();
         if (!getWrappedElement().isSelected()) {
-            simulateClick(getWrappedElement());
+            simulateClick(this);
         }
 
         clicked.broadcast(new ComponentActionEventArgs(this));
@@ -394,7 +400,7 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
 
         toExist().toBeClickable().waitToBe();
         if (getWrappedElement().isSelected()) {
-            simulateClick(getWrappedElement());
+            simulateClick(this);
         }
 
         checked.broadcast(new ComponentActionEventArgs(this));
@@ -687,15 +693,10 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
 
     protected void defaultSetText(EventListener<ComponentActionEventArgs> settingValue, EventListener<ComponentActionEventArgs> valueSet, String value) {
         settingValue.broadcast(new ComponentActionEventArgs(this, value));
-        try {
-            simulateClick(getWrappedElement());
-            getWrappedElement().clear();
-            getWrappedElement().sendKeys(value);
-        } catch (StaleElementReferenceException e) {
-            simulateClick(findElement());
-            getWrappedElement().clear();
-            getWrappedElement().sendKeys(value);
-        }
+
+        simulateClick(this);
+        getWrappedElement().clear();
+        getWrappedElement().sendKeys(value);
 
         valueSet.broadcast(new ComponentActionEventArgs(this, value));
     }
