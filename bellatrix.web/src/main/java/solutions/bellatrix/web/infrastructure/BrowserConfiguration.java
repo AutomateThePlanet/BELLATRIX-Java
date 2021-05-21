@@ -59,4 +59,26 @@ public class BrowserConfiguration {
     public Browser getBrowser() {
         return browser;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof BrowserConfiguration))
+            return false;
+        BrowserConfiguration that = (BrowserConfiguration)obj;
+        if (!(this.getBrowser() == null ? that.getBrowser() == null : this.getBrowser().equals(that.getBrowser())))
+            return false;
+        if (!(this.getLifecycle() == null ? that.getLifecycle() == null : this.getLifecycle().equals(that.getLifecycle())))
+            return false;
+        if (this.getHeight() != that.getHeight())
+            return false;
+        if (this.getWidth() != that.getWidth())
+            return false;
+        if (this.getVersion() != that.getVersion())
+            return false;
+        if (!(this.getPlatform() == null ? that.getPlatform() == null : this.getPlatform().equals(that.getPlatform())))
+            return false;
+        if (!(this.getDriverOptions() == null ? that.getDriverOptions() == null : this.getDriverOptions().equals(that.getDriverOptions())))
+            return false;
+        return true;
+    }
 }
