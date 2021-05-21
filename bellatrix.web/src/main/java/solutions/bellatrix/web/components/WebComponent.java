@@ -281,17 +281,16 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
 
         try {
             var originalElementBorder = getWrappedElement().getCssValue("background-color");
-            javaScriptService.execute("arguments[0].style.background='yellow'; return;", getWrappedElement());
-            //Thread.sleep(100);
+            javaScriptService.execute("arguments[0].style.background='yellow'; return;", wrappedElement);
 
             var runnable = new Runnable() {
                 @SneakyThrows
                 public void run() {
+                    Thread.sleep(100);
                     try {
-                        javaScriptService.execute("arguments[0].style.background='" + originalElementBorder + "'; return;", getWrappedElement());
+                        javaScriptService.execute("arguments[0].style.background='" + originalElementBorder + "'; return;", wrappedElement);
                     } catch (NoSuchSessionException | NullPointerException ignored) {
                     }
-                    Thread.sleep(100);
                 }
             };
             new Thread(runnable).start();
