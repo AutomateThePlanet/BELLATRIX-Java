@@ -13,10 +13,7 @@
 
 package solutions.bellatrix.web.services;
 
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.NoSuchSessionException;
-import org.openqa.selenium.StaleElementReferenceException;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import solutions.bellatrix.core.utilities.DebugInformation;
 import solutions.bellatrix.web.components.WebComponent;
 
@@ -66,7 +63,7 @@ public class JavaScriptService extends WebService {
             return result;
         } catch (NoSuchSessionException ex) {
             throw ex;
-        } catch (StaleElementReferenceException ex) {
+        } catch (StaleElementReferenceException | NoSuchElementException ex) {
             return "";
         } catch (Exception ex) {
             DebugInformation.printStackTrace(ex);
