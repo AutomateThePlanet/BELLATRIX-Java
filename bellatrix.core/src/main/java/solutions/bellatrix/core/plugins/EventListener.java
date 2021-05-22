@@ -18,7 +18,7 @@ import java.util.Set;
 import java.util.function.Consumer;
 
 public class EventListener<TArgs> {
-    private final Set<Consumer<TArgs>> listeners = new HashSet();
+    private final Set<Consumer<TArgs>> listeners = new HashSet<>();
 
     public void addListener(Consumer<TArgs> listener) {
         listeners.add(listener);
