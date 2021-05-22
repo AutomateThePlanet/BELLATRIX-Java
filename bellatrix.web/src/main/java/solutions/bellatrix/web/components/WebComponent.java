@@ -88,7 +88,7 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
         try {
             wrappedElement.isDisplayed(); // checking if getting property throws exception
             return wrappedElement;
-        } catch (StaleElementReferenceException | NullPointerException ex) {
+        } catch (StaleElementReferenceException | NoSuchElementException | NullPointerException ex) {
             return findElement();
         }
     }
