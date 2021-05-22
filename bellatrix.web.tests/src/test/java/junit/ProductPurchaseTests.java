@@ -77,7 +77,7 @@ public class ProductPurchaseTests extends WebTest {
         purchaseInfo.setAddress2("Lützowplatz 17");
         purchaseInfo.setCity("Berlin");
         purchaseInfo.setZip("10115");
-        purchaseInfo.setPhone("+00498888999281");
+        purchaseInfo.setPhone("+498888999281");
 
         var checkoutPage = app().create(CheckoutPage.class);
         checkoutPage.fillBillingInfo(purchaseInfo);
@@ -106,7 +106,7 @@ public class ProductPurchaseTests extends WebTest {
         purchaseInfo.setAddress2("Lützowplatz 17");
         purchaseInfo.setCity("Berlin");
         purchaseInfo.setZip("10115");
-        purchaseInfo.setPhone("+00498888999281");
+        purchaseInfo.setPhone("+498888999281");
 
         var checkoutPage = app().create(CheckoutPage.class);
         checkoutPage.fillBillingInfo(purchaseInfo);
