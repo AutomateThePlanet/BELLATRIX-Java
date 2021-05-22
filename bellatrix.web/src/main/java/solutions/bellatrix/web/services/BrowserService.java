@@ -21,6 +21,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.opera.OperaDriver;
 import org.openqa.selenium.safari.SafariDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.core.utilities.InstanceFactory;
@@ -160,11 +161,8 @@ public class BrowserService extends WebService {
         var webDriverWait = new WebDriverWait(getWrappedDriver(), ajaxTimeout + additionalTimeoutInSeconds, sleepInterval);
         webDriverWait.until(d -> {
             String script = String.format("return performance.getEntriesByType('resource').filter(item => item.initiatorType == 'xmlhttprequest' && item.name.toLowerCase().includes('%s'))[0] !== undefined;", requestPartialUrl);
-            String result = (String)javascriptExecutor.executeScript(script);
-            if (result.equals("True")) {
-                return true;
-            }
-            return false;
+            boolean result = (boolean)javascriptExecutor.executeScript(script);
+            return result;
         });
     }
 
@@ -184,6 +182,13 @@ public class BrowserService extends WebService {
         long sleepInterval = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getSleepInterval();
         var webDriverWait = new WebDriverWait(getWrappedDriver(), waitForJavaScriptAnimationsTimeout, sleepInterval);
         webDriverWait.until(d -> (boolean)javascriptExecutor.executeScript("return jQuery && jQuery(':animated').length === 0"));
+    }
+
+    public void waitForPartialUrl(String partialUrl) {
+        long waitForPartialUrlTimeout = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getWaitForPartialUrl();
+        long sleepInterval = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getSleepInterval();
+        var webDriverWait = new WebDriverWait(getWrappedDriver(), waitForPartialUrlTimeout, sleepInterval);
+        webDriverWait.until(ExpectedConditions.urlContains(partialUrl));
     }
 
     public void waitForAngular() {
