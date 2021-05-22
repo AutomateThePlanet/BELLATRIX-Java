@@ -228,7 +228,6 @@ public class DriverService {
                 WebDriverManager.iedriver().setup();
                 var internetExplorerOptions = new InternetExplorerOptions();
                 addDriverOptions(internetExplorerOptions);
-                DesiredCapabilities caps = DesiredCapabilities.internetExplorer();
                 internetExplorerOptions.introduceFlakinessByIgnoringSecurityDomains().ignoreZoomSettings();
                 if (shouldCaptureHttpTraffic) internetExplorerOptions.setProxy(proxyConfig);
                 driver = new InternetExplorerDriver(internetExplorerOptions);

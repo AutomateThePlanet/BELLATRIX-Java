@@ -20,7 +20,7 @@ import solutions.bellatrix.web.validations.ComponentValidator;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.function.Supplier;
+import java.util.function.BooleanSupplier;
 
 public interface ComponentDisabled extends Component {
     boolean isDisabled();
@@ -28,8 +28,8 @@ public interface ComponentDisabled extends Component {
     @SneakyThrows
     default void validateIsDisabled(String value) {
         try {
-            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeTrue", WebComponent.class, Supplier.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, (Supplier<Boolean>)this::isDisabled, "disabled");
+            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeTrue", WebComponent.class, BooleanSupplier.class, String.class);
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, (BooleanSupplier)this::isDisabled, "disabled");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
@@ -38,8 +38,8 @@ public interface ComponentDisabled extends Component {
     @SneakyThrows
     default void validateNotDisabled() {
         try {
-            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeFalse", WebComponent.class, Supplier.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, (Supplier<Boolean>)this::isDisabled, "disabled");
+            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeFalse", WebComponent.class, BooleanSupplier.class, String.class);
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, (BooleanSupplier)this::isDisabled, "disabled");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }

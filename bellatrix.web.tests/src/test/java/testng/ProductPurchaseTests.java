@@ -17,7 +17,6 @@ import cartpage.CartPage;
 import checkoutpage.CheckoutPage;
 import checkoutpage.PurchaseInfo;
 import mainpage.MainPage;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import solutions.bellatrix.web.components.Anchor;
 import solutions.bellatrix.web.findstrategies.TextContains;
@@ -107,7 +106,7 @@ public class ProductPurchaseTests extends WebTest {
         purchaseInfo.setCompany("Space Flowers");
         purchaseInfo.setCountry("Germany");
         purchaseInfo.setAddress1("1 Willi Brandt Avenue Tiergarten");
-        purchaseInfo.setAddress2("Lьtzowplatz 17");
+        purchaseInfo.setAddress2("Lützowplatz 17");
         purchaseInfo.setCity("Berlin");
         purchaseInfo.setZip("10115");
         purchaseInfo.setPhone("+00498888999281");
