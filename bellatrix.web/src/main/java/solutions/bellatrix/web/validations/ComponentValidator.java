@@ -15,9 +15,7 @@ package solutions.bellatrix.web.validations;
 
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
-import org.openqa.selenium.SearchContext;
 import org.openqa.selenium.TimeoutException;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.core.plugins.EventListener;
 import solutions.bellatrix.core.utilities.Log;
@@ -25,12 +23,10 @@ import solutions.bellatrix.web.components.ComponentActionEventArgs;
 import solutions.bellatrix.web.components.WebComponent;
 import solutions.bellatrix.web.configuration.TimeoutSettings;
 import solutions.bellatrix.web.configuration.WebSettings;
-import solutions.bellatrix.web.infrastructure.DriverService;
 import solutions.bellatrix.web.services.BrowserService;
 
 import java.time.Duration;
 import java.util.function.BooleanSupplier;
-import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class ComponentValidator {

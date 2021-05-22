@@ -39,7 +39,7 @@ public interface ComponentSrc extends Component {
     default void validateSrcIsSet() {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIsSet", WebComponent.class, Supplier.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this,(Supplier<String>)this:: getSrc, "src");
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, (Supplier<String>)this::getSrc, "src");
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
