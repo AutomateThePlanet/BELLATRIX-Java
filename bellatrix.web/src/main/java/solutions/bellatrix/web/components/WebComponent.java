@@ -21,6 +21,7 @@ import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Select;
 import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.core.plugins.EventListener;
@@ -40,6 +41,7 @@ import solutions.bellatrix.web.waitstrategies.*;
 
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -363,25 +365,36 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
         return wrappedElement;
     }
 
-    private void simulateClick(WebComponent component) {
-        var currentBrowser = DriverService.getBrowserConfiguration().getBrowser();
-        var jsClick = "['mousedown','mouseup','click'].forEach(l=>{const a=arguments[0];const r=a.getBoundingClientRect();const x=r.left+(r.right-r.left)/2;y=r.top+(r.bottom-r.top)/2;((e,n,x,y)=>{e.dispatchEvent(new MouseEvent(n,{view:window,bubbles:true,cancelable:true,clientX:x,clientY:y,button:0}))})(a,l,x,y)})";
-        if (currentBrowser == Browser.INTERNET_EXPLORER) {
-            getWrappedElement().click();
-            return;
-        }
+    private void clickInternal() {
+        long toBeClickableTimeout = webSettings.getTimeoutSettings().getElementToBeClickableTimeout();
+        long sleepInterval = webSettings.getTimeoutSettings().getSleepInterval();
+
+        FluentWait<WebDriver> wait = new FluentWait<>(getWrappedDriver())
+                .withTimeout(Duration.ofSeconds(toBeClickableTimeout))
+                .pollingEvery(Duration.ofSeconds(sleepInterval > 0 ? sleepInterval : 1));
+
         try {
-            javaScriptService.execute(jsClick, getWrappedElement());
-        } catch (StaleElementReferenceException e) {
-            javaScriptService.execute(jsClick, findElement());
+            wait.until(x -> tryClick());
+        } catch (TimeoutException e) {
+            toExist().toBeClickable().findElement().click();
+        }
+    }
+
+    private boolean tryClick() {
+        try {
+            toExist().toBeClickable().findElement().click();
+            return true;
+        } catch (ElementNotInteractableException e) {
+            return false;
+        } catch (WebDriverException e) {
+            toExist().toBeClickable().waitToBe();
+            return false;
         }
     }
 
     protected void defaultClick(EventListener<ComponentActionEventArgs> clicking, EventListener<ComponentActionEventArgs> clicked) {
         clicking.broadcast(new ComponentActionEventArgs(this));
-
-        toExist().toBeClickable().waitToBe();
-        simulateClick(this);
+        clickInternal();
         clicked.broadcast(new ComponentActionEventArgs(this));
     }
 
@@ -390,7 +403,7 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
 
         this.toExist().toBeClickable().waitToBe();
         if (!getWrappedElement().isSelected()) {
-            simulateClick(this);
+            clickInternal();
         }
 
         clicked.broadcast(new ComponentActionEventArgs(this));
@@ -401,7 +414,7 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
 
         toExist().toBeClickable().waitToBe();
         if (getWrappedElement().isSelected()) {
-            simulateClick(this);
+            clickInternal();
         }
 
         checked.broadcast(new ComponentActionEventArgs(this));
@@ -695,7 +708,7 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
     protected void defaultSetText(EventListener<ComponentActionEventArgs> settingValue, EventListener<ComponentActionEventArgs> valueSet, String value) {
         settingValue.broadcast(new ComponentActionEventArgs(this, value));
 
-        simulateClick(this);
+        clickInternal();
         getWrappedElement().clear();
         getWrappedElement().sendKeys(value);
 
