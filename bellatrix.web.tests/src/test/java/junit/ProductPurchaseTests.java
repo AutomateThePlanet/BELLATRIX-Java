@@ -20,10 +20,18 @@ import mainpage.MainPage;
 import org.junit.jupiter.api.Test;
 import solutions.bellatrix.web.components.Anchor;
 import solutions.bellatrix.web.findstrategies.TextContains;
+import solutions.bellatrix.web.infrastructure.Browser;
+import solutions.bellatrix.web.infrastructure.ExecutionBrowser;
+import solutions.bellatrix.web.infrastructure.Lifecycle;
 import solutions.bellatrix.web.infrastructure.junit.WebTest;
 
-//@ExecutionBrowser(browser = Browser.CHROME, lifecycle = Lifecycle.REUSE_IF_STARTED)
+@ExecutionBrowser(browser = Browser.SAFARI, lifecycle = Lifecycle.RESTART_ON_FAIL)
 public class ProductPurchaseTests extends WebTest {
+    @Override
+    protected void afterMethod() {
+        app().cookies().deleteAllCookies();
+    }
+
     @Test
     public void completePurchaseSuccessfully_first() {
         app().navigate().to("http://demos.bellatrix.solutions/");
