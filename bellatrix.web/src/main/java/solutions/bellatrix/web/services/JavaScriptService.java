@@ -61,7 +61,7 @@ public class JavaScriptService extends WebService {
         try {
             var result = (String)javascriptExecutor.executeScript(script, nativeElement);
             return result;
-        } catch (NoSuchSessionException ex) {
+        } catch (NoSuchSessionException | NoSuchWindowException ex) {
             throw ex;
         } catch (StaleElementReferenceException | NoSuchElementException ex) {
             return "";
