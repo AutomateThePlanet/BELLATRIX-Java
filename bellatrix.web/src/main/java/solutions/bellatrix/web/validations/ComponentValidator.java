@@ -16,6 +16,8 @@ package solutions.bellatrix.web.validations;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.TimeoutException;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.FluentWait;
 import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.core.plugins.EventListener;
 import solutions.bellatrix.core.utilities.Log;
@@ -23,6 +25,7 @@ import solutions.bellatrix.web.components.ComponentActionEventArgs;
 import solutions.bellatrix.web.components.WebComponent;
 import solutions.bellatrix.web.configuration.TimeoutSettings;
 import solutions.bellatrix.web.configuration.WebSettings;
+import solutions.bellatrix.web.infrastructure.DriverService;
 import solutions.bellatrix.web.services.BrowserService;
 
 import java.time.Duration;
@@ -96,16 +99,18 @@ public class ComponentValidator {
     }
 
     private <T> void waitUntil(BooleanSupplier condition, WebComponent component, String attributeName, String value, Supplier<T> supplier, String prefix) {
+        var validationTimeout = timeoutSettings.getValidationsTimeout();
+        var sleepInterval = timeoutSettings.getSleepInterval();
+
+        FluentWait<WebDriver> wait = new FluentWait<>(DriverService.getWrappedDriver())
+                .withTimeout(Duration.ofSeconds(validationTimeout))
+                .pollingEvery(Duration.ofSeconds(sleepInterval > 0 ? sleepInterval : 1));
+
         try {
-            var validationTimeout = timeoutSettings.getValidationsTimeout() > 0 ? timeoutSettings.getValidationsTimeout() : 1;
-            var sleepInterval = timeoutSettings.getSleepInterval() > 0 ? timeoutSettings.getSleepInterval() : 1;
-            long start = System.currentTimeMillis();
-            while (!condition.getAsBoolean()) {
-                if (System.currentTimeMillis() - start > validationTimeout * 1000) {
-                    throw new TimeoutException("Validation failed: tried for " + validationTimeout + (validationTimeout > 1 ? " seconds" : " second") + " checking every " + sleepInterval + (sleepInterval > 1 ? " seconds" : " second"));
-                }
-                retryFind(component, Duration.ofSeconds(sleepInterval));
-            }
+            wait.until(x -> {
+                component.findElement();
+                return condition.getAsBoolean();
+            });
         } catch (TimeoutException ex) {
             var error = String.format("\u001B[0mThe %s of \u001B[1m%s \u001B[2m(%s)\u001B[0m%n" +
                             "  Should %s: \"\u001B[1m%s\u001B[0m\"%n" +
@@ -115,13 +120,7 @@ public class ComponentValidator {
                     prefix, value, "", supplier.get().toString().replaceAll("%n", "%n" + String.format("%" + (prefix.length() + 12) + "s", " ")),
                     browserService.getUrl());
             Log.error("%n%n%s%n%n", error);
-            throw new AssertionError(error, new TimeoutException(ex));
+            throw new AssertionError(error, ex);
         }
-    }
-
-    @SneakyThrows
-    private void retryFind(WebComponent component, Duration pollingEvery) {
-        Thread.sleep(pollingEvery.toMillis());
-        component.findElement();
     }
 }
