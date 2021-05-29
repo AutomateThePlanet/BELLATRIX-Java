@@ -116,7 +116,7 @@ public class DesktopComponent extends LayoutComponentValidationsBuilder implemen
         waitStrategies.add(waitStrategy);
     }
 
-    public <TElementType extends DesktopComponent> TElementType toExists() {
+    public <TElementType extends DesktopComponent> TElementType toExist() {
         var waitStrategy = new ToExistWaitStrategy();
         ensureState(waitStrategy);
         return (TElementType)this;
@@ -264,7 +264,7 @@ public class DesktopComponent extends LayoutComponentValidationsBuilder implemen
     protected void defaultClick(EventListener<ComponentActionEventArgs> clicking, EventListener<ComponentActionEventArgs> clicked) {
         clicking.broadcast(new ComponentActionEventArgs(this));
 
-        this.toExists().toBeClickable().waitToBe();
+        toExist().toBeClickable().waitToBe();
         findElement().click();
 
         clicked.broadcast(new ComponentActionEventArgs(this));
@@ -328,7 +328,7 @@ public class DesktopComponent extends LayoutComponentValidationsBuilder implemen
             action.moveToElement(wrappedElement).perform();
             if (shouldWait) {
                 Thread.sleep(500);
-                toExists().waitToBe();
+                toExist().waitToBe();
             }
         } catch (ElementNotInteractableException | InterruptedException ex) {
             DebugInformation.printStackTrace(ex);

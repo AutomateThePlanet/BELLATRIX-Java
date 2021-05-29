@@ -115,7 +115,7 @@ public class IOSComponent extends LayoutComponentValidationsBuilder implements C
         waitStrategies.add(waitStrategy);
     }
 
-    public <TElementType extends IOSComponent> TElementType toExists() {
+    public <TElementType extends IOSComponent> TElementType toExist() {
         var waitStrategy = new ToExistWaitStrategy();
         ensureState(waitStrategy);
         return (TElementType)this;
@@ -271,7 +271,7 @@ public class IOSComponent extends LayoutComponentValidationsBuilder implements C
     protected void defaultClick(EventListener<ComponentActionEventArgs> clicking, EventListener<ComponentActionEventArgs> clicked) {
         clicking.broadcast(new ComponentActionEventArgs(this));
 
-        this.toExists().toBeClickable().waitToBe();
+        toExist().toBeClickable().waitToBe();
         findElement().click();
 
         clicked.broadcast(new ComponentActionEventArgs(this));
@@ -280,7 +280,7 @@ public class IOSComponent extends LayoutComponentValidationsBuilder implements C
     protected void defaultCheck(EventListener<ComponentActionEventArgs> checking, EventListener<ComponentActionEventArgs> checked) {
         checking.broadcast(new ComponentActionEventArgs(this));
 
-        this.toExists().toBeClickable().waitToBe();
+        toExist().toBeClickable().waitToBe();
         if (!this.defaultGetCheckedAttribute()) {
             findElement().click();
         }
@@ -291,7 +291,7 @@ public class IOSComponent extends LayoutComponentValidationsBuilder implements C
     protected void defaultUncheck(EventListener<ComponentActionEventArgs> unchecking, EventListener<ComponentActionEventArgs> unchecked) {
         unchecking.broadcast(new ComponentActionEventArgs(this));
 
-        this.toExists().toBeClickable().waitToBe();
+        toExist().toBeClickable().waitToBe();
         if (this.defaultGetCheckedAttribute()) {
             findElement().click();
         }
@@ -359,7 +359,7 @@ public class IOSComponent extends LayoutComponentValidationsBuilder implements C
             action.moveToElement(wrappedElement).perform();
             if (shouldWait) {
                 Thread.sleep(500);
-                toExists().waitToBe();
+                toExist().waitToBe();
             }
         } catch (ElementNotInteractableException | InterruptedException ex) {
             DebugInformation.printStackTrace(ex);
