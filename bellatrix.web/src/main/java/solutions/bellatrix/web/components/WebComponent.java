@@ -185,14 +185,32 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
         return (TElementType)this;
     }
 
-    public <TElementType extends WebComponent> TElementType toBeClickable() {
-        var waitStrategy = new ToBeClickableWaitStrategy();
+    public <TElementType extends WebComponent> TElementType toNotExist() {
+        var waitStrategy = new ToNotExistWaitStrategy();
         ensureState(waitStrategy);
         return (TElementType)this;
     }
 
     public <TElementType extends WebComponent> TElementType toBeVisible() {
         var waitStrategy = new ToBeVisibleWaitStrategy();
+        ensureState(waitStrategy);
+        return (TElementType)this;
+    }
+
+    public <TElementType extends WebComponent> TElementType toNotBeVisible() {
+        var waitStrategy = new ToNotBeVisibleWaitStrategy();
+        ensureState(waitStrategy);
+        return (TElementType)this;
+    }
+
+    public <TElementType extends WebComponent> TElementType toBeClickable() {
+        var waitStrategy = new ToBeClickableWaitStrategy();
+        ensureState(waitStrategy);
+        return (TElementType)this;
+    }
+
+    public <TElementType extends WebComponent> TElementType toBeDisabled() {
+        var waitStrategy = new ToBeDisabledWaitStrategy();
         ensureState(waitStrategy);
         return (TElementType)this;
     }
