@@ -726,7 +726,6 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
     protected void defaultSetText(EventListener<ComponentActionEventArgs> settingValue, EventListener<ComponentActionEventArgs> valueSet, String value) {
         settingValue.broadcast(new ComponentActionEventArgs(this, value));
 
-        clickInternal();
         getWrappedElement().clear();
         getWrappedElement().sendKeys(value);
 
