@@ -48,27 +48,27 @@ public class WaitStrategyFactory {
         return new ToBeClickableWaitStrategy(timeoutSettings.getElementToBeClickableTimeout(), timeoutSettings.getSleepInterval());
     }
 
-    public ToBeVisibleWaitStrategy notBeVisible(long timeoutInterval, long sleepInterval) {
-        return new ToBeVisibleWaitStrategy(timeoutInterval, sleepInterval);
+    public ToNotBeVisibleWaitStrategy notBeVisible(long timeoutInterval, long sleepInterval) {
+        return new ToNotBeVisibleWaitStrategy(timeoutInterval, sleepInterval);
     }
 
-    public ToBeVisibleWaitStrategy notBeVisible() {
-        return new ToBeVisibleWaitStrategy(timeoutSettings.getElementNotToBeVisibleTimeout(), timeoutSettings.getSleepInterval());
+    public ToNotBeVisibleWaitStrategy notBeVisible() {
+        return new ToNotBeVisibleWaitStrategy(timeoutSettings.getElementNotToBeVisibleTimeout(), timeoutSettings.getSleepInterval());
     }
 
-    public ToBeClickableWaitStrategy notExist(long timeoutInterval, long sleepInterval) {
-        return new ToBeClickableWaitStrategy(timeoutInterval, sleepInterval);
+    public ToNotExistWaitStrategy notExist(long timeoutInterval, long sleepInterval) {
+        return new ToNotExistWaitStrategy(timeoutInterval, sleepInterval);
     }
 
-    public ToBeClickableWaitStrategy notExist() {
-        return new ToBeClickableWaitStrategy(timeoutSettings.getElementToNotExistTimeout(), timeoutSettings.getSleepInterval());
+    public ToNotExistWaitStrategy notExist() {
+        return new ToNotExistWaitStrategy(timeoutSettings.getElementToNotExistTimeout(), timeoutSettings.getSleepInterval());
     }
 
-    public ToBeClickableWaitStrategy haveContent(long timeoutInterval, long sleepInterval) {
-        return new ToBeClickableWaitStrategy(timeoutInterval, sleepInterval);
+    public ToHaveContentWaitStrategy haveContent(long timeoutInterval, long sleepInterval) {
+        return new ToHaveContentWaitStrategy(timeoutInterval, sleepInterval);
     }
 
-    public ToBeClickableWaitStrategy haveContent() {
-        return new ToBeClickableWaitStrategy(timeoutSettings.getElementToHaveContentTimeout(), timeoutSettings.getSleepInterval());
+    public ToHaveContentWaitStrategy haveContent() {
+        return new ToHaveContentWaitStrategy(timeoutSettings.getElementToHaveContentTimeout(), timeoutSettings.getSleepInterval());
     }
 }
