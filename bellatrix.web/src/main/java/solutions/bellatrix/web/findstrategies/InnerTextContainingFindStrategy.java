@@ -15,18 +15,18 @@ package solutions.bellatrix.web.findstrategies;
 
 import org.openqa.selenium.By;
 
-public class ClassFindStrategy extends FindStrategy {
-    public ClassFindStrategy(String value) {
+public class InnerTextContainingFindStrategy extends FindStrategy {
+    public InnerTextContainingFindStrategy(String value) {
         super(value);
     }
 
     @Override
     public By convert() {
-        return By.className(getValue());
+        return By.xpath(String.format("//*[contains(text(), '%s')]", getValue()));
     }
 
     @Override
     public String toString() {
-        return String.format("class = %s", getValue());
+        return String.format("text containing %s", getValue());
     }
 }

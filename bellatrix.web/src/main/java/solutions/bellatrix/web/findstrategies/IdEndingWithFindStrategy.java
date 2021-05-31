@@ -15,18 +15,18 @@ package solutions.bellatrix.web.findstrategies;
 
 import org.openqa.selenium.By;
 
-public class ClassFindStrategy extends FindStrategy {
-    public ClassFindStrategy(String value) {
+public class IdEndingWithFindStrategy extends FindStrategy {
+    public IdEndingWithFindStrategy(String value) {
         super(value);
     }
 
     @Override
     public By convert() {
-        return By.className(getValue());
+        return By.cssSelector(String.format("[id$='%s']", getValue()));
     }
 
     @Override
     public String toString() {
-        return String.format("class = %s", getValue());
+        return String.format("id ending with %s", getValue());
     }
 }

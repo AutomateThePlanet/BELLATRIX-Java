@@ -283,12 +283,36 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
         return create(componentClass, new IdFindStrategy(id));
     }
 
+    public <TComponent extends WebComponent> TComponent createByAttributeContaining(Class<TComponent> componentClass, String attributeName, String value) {
+        return create(componentClass, new AttributeContainingWithFindStrategy(attributeName, value));
+    }
+
+    public <TComponent extends WebComponent> TComponent createByIdEndingWith(Class<TComponent> componentClass, String idEnding) {
+        return create(componentClass, new IdEndingWithFindStrategy(idEnding));
+    }
+
     public <TComponent extends WebComponent> TComponent createByCss(Class<TComponent> componentClass, String css) {
         return create(componentClass, new CssFindStrategy(css));
     }
 
-    public <TComponent extends WebComponent> TComponent createByClass(Class<TComponent> componentClass, String cclass) {
-        return create(componentClass, new ClassFindStrategy(cclass));
+    public <TComponent extends WebComponent> TComponent createByClass(Class<TComponent> componentClass, String className) {
+        return create(componentClass, new ClassFindStrategy(className));
+    }
+
+    public <TComponent extends WebComponent> TComponent createByName(Class<TComponent> componentClass, String name) {
+        return create(componentClass, new NameFindStrategy(name));
+    }
+
+    public <TComponent extends WebComponent> TComponent createByNameEnding(Class<TComponent> componentClass, String nameEnding) {
+        return create(componentClass, new NameEndingWithFindStrategy(nameEnding));
+    }
+
+    public <TComponent extends WebComponent> TComponent createByValueContaining(Class<TComponent> componentClass, String valueContaining) {
+        return create(componentClass, new ValueContainingWithFindStrategy(valueContaining));
+    }
+
+    public <TComponent extends WebComponent> TComponent createByClassContaining(Class<TComponent> componentClass, String classNameContaining) {
+        return create(componentClass, new ClassContainingFindStrategy(classNameContaining));
     }
 
     public <TComponent extends WebComponent> TComponent createByXPath(Class<TComponent> componentClass, String xpath) {
@@ -297,6 +321,10 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
 
     public <TComponent extends WebComponent> TComponent createByLinkText(Class<TComponent> componentClass, String linkText) {
         return create(componentClass, new LinkTextFindStrategy(linkText));
+    }
+
+    public <TComponent extends WebComponent> TComponent createByLinkTextContaining(Class<TComponent> componentClass, String linkTextContaining) {
+        return create(componentClass, new LinkTextContainingFindStrategy(linkTextContaining));
     }
 
     public <TComponent extends WebComponent> TComponent createByTag(Class<TComponent> componentClass, String tag) {
@@ -308,19 +336,43 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
     }
 
     public <TComponent extends WebComponent> TComponent createByInnerTextContaining(Class<TComponent> componentClass, String innerText) {
-        return create(componentClass, new InnerTextContainsFindStrategy(innerText));
+        return create(componentClass, new InnerTextContainingFindStrategy(innerText));
     }
 
     public <TComponent extends WebComponent> List<TComponent> createAllById(Class<TComponent> componentClass, String id) {
         return createAll(componentClass, new IdFindStrategy(id));
     }
 
+    public <TComponent extends WebComponent> List<TComponent> createAllByAttributeContaining(Class<TComponent> componentClass, String attributeName, String value) {
+        return createAll(componentClass, new AttributeContainingWithFindStrategy(attributeName, value));
+    }
+
+    public <TComponent extends WebComponent> List<TComponent> createAllByIdEndingWith(Class<TComponent> componentClass, String idEnding) {
+        return createAll(componentClass, new IdEndingWithFindStrategy(idEnding));
+    }
+
     public <TComponent extends WebComponent> List<TComponent> createAllByCss(Class<TComponent> componentClass, String css) {
         return createAll(componentClass, new CssFindStrategy(css));
     }
 
-    public <TComponent extends WebComponent> List<TComponent> createAllByClass(Class<TComponent> componentClass, String cclass) {
-        return createAll(componentClass, new ClassFindStrategy(cclass));
+    public <TComponent extends WebComponent> List<TComponent> createAllByClass(Class<TComponent> componentClass, String className) {
+        return createAll(componentClass, new ClassFindStrategy(className));
+    }
+
+    public <TComponent extends WebComponent> List<TComponent> createAllByName(Class<TComponent> componentClass, String name) {
+        return createAll(componentClass, new NameFindStrategy(name));
+    }
+
+    public <TComponent extends WebComponent> List<TComponent> createAllByNameEnding(Class<TComponent> componentClass, String nameEnding) {
+        return createAll(componentClass, new NameEndingWithFindStrategy(nameEnding));
+    }
+
+    public <TComponent extends WebComponent> List<TComponent> createAllByValueContaining(Class<TComponent> componentClass, String valueContaining) {
+        return createAll(componentClass, new ValueContainingWithFindStrategy(valueContaining));
+    }
+
+    public <TComponent extends WebComponent> List<TComponent> createAllByClassContaining(Class<TComponent> componentClass, String classNameContaining) {
+        return createAll(componentClass, new ClassContainingFindStrategy(classNameContaining));
     }
 
     public <TComponent extends WebComponent> List<TComponent> createAllByXPath(Class<TComponent> componentClass, String xpath) {
@@ -329,6 +381,10 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
 
     public <TComponent extends WebComponent> List<TComponent> createAllByLinkText(Class<TComponent> componentClass, String linkText) {
         return createAll(componentClass, new LinkTextFindStrategy(linkText));
+    }
+
+    public <TComponent extends WebComponent> List<TComponent> createAllByLinkTextContaining(Class<TComponent> componentClass, String linkTextContaining) {
+        return createAll(componentClass, new LinkTextContainingFindStrategy(linkTextContaining));
     }
 
     public <TComponent extends WebComponent> List<TComponent> createAllByTag(Class<TComponent> componentClass, String tag) {
@@ -340,7 +396,7 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
     }
 
     public <TComponent extends WebComponent> List<TComponent> createAllByInnerTextContaining(Class<TComponent> componentClass, String innerText) {
-        return createAll(componentClass, new InnerTextContainsFindStrategy(innerText));
+        return createAll(componentClass, new InnerTextContainingFindStrategy(innerText));
     }
 
     public void highlight() {

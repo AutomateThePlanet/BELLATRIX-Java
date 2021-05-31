@@ -19,7 +19,6 @@ import checkoutpage.PurchaseInfo;
 import mainpage.MainPage;
 import org.junit.jupiter.api.Test;
 import solutions.bellatrix.web.components.Anchor;
-import solutions.bellatrix.web.findstrategies.TextContains;
 import solutions.bellatrix.web.infrastructure.Browser;
 import solutions.bellatrix.web.infrastructure.ExecutionBrowser;
 import solutions.bellatrix.web.infrastructure.Lifecycle;
@@ -36,7 +35,7 @@ public class ProductPurchaseTests extends WebTest {
     public void completePurchaseSuccessfully_first() {
         app().navigate().to("http://demos.bellatrix.solutions/");
         var addToCartFalcon9 = app().create().byCss(Anchor.class, "[data-product_id*='28']");
-        var blogLink = app().create().by(Anchor.class, TextContains.by("Blog"));
+        var blogLink = app().create().byInnerTextContaining(Anchor.class, "Blog");
         addToCartFalcon9.click();
         blogLink.above(addToCartFalcon9).validate();
         new MainPage().asserts().productBoxLink("Falcon 9", "http://demos.bellatrix.solutions/product/falcon-9/");
