@@ -125,14 +125,80 @@ public class AndroidComponent extends LayoutComponentValidationsBuilder implemen
         return (TElementType)this;
     }
 
-    public <TElementType extends AndroidComponent> TElementType toBeClickable() {
-        var waitStrategy = new ToBeClickableWaitStrategy();
+    public <TElementType extends AndroidComponent> TElementType toNotExist() {
+        var waitStrategy = new ToNotExistWaitStrategy();
         ensureState(waitStrategy);
         return (TElementType)this;
     }
 
     public <TElementType extends AndroidComponent> TElementType toBeVisible() {
         var waitStrategy = new ToBeVisibleWaitStrategy();
+        ensureState(waitStrategy);
+        return (TElementType)this;
+    }
+
+    public <TElementType extends AndroidComponent> TElementType toNotBeVisible() {
+        var waitStrategy = new ToNotBeVisibleWaitStrategy();
+        ensureState(waitStrategy);
+        return (TElementType)this;
+    }
+
+    public <TElementType extends AndroidComponent> TElementType toBeClickable() {
+        var waitStrategy = new ToBeClickableWaitStrategy();
+        ensureState(waitStrategy);
+        return (TElementType)this;
+    }
+
+    public <TElementType extends AndroidComponent> TElementType toBeDisabled() {
+        var waitStrategy = new ToBeDisabledWaitStrategy();
+        ensureState(waitStrategy);
+        return (TElementType)this;
+    }
+
+    public <TElementType extends AndroidComponent> TElementType toHaveContent() {
+        var waitStrategy = new ToHaveContentWaitStrategy();
+        ensureState(waitStrategy);
+        return (TElementType)this;
+    }
+
+    public <TElementType extends AndroidComponent> TElementType toExist(long timeoutInterval, long sleepInterval) {
+        var waitStrategy = new ToExistWaitStrategy(timeoutInterval, sleepInterval);
+        ensureState(waitStrategy);
+        return (TElementType)this;
+    }
+
+    public <TElementType extends AndroidComponent> TElementType toNotExist(long timeoutInterval, long sleepInterval) {
+        var waitStrategy = new ToNotExistWaitStrategy(timeoutInterval, sleepInterval);
+        ensureState(waitStrategy);
+        return (TElementType)this;
+    }
+
+    public <TElementType extends AndroidComponent> TElementType toBeVisible(long timeoutInterval, long sleepInterval) {
+        var waitStrategy = new ToBeVisibleWaitStrategy(timeoutInterval, sleepInterval);
+        ensureState(waitStrategy);
+        return (TElementType)this;
+    }
+
+    public <TElementType extends AndroidComponent> TElementType toNotBeVisible(long timeoutInterval, long sleepInterval) {
+        var waitStrategy = new ToNotBeVisibleWaitStrategy(timeoutInterval, sleepInterval);
+        ensureState(waitStrategy);
+        return (TElementType)this;
+    }
+
+    public <TElementType extends AndroidComponent> TElementType toBeClickable(long timeoutInterval, long sleepInterval) {
+        var waitStrategy = new ToBeClickableWaitStrategy(timeoutInterval, sleepInterval);
+        ensureState(waitStrategy);
+        return (TElementType)this;
+    }
+
+    public <TElementType extends AndroidComponent> TElementType toBeDisabled(long timeoutInterval, long sleepInterval) {
+        var waitStrategy = new ToBeDisabledWaitStrategy(timeoutInterval, sleepInterval);
+        ensureState(waitStrategy);
+        return (TElementType)this;
+    }
+
+    public <TElementType extends AndroidComponent> TElementType toHaveContent(long timeoutInterval, long sleepInterval) {
+        var waitStrategy = new ToHaveContentWaitStrategy(timeoutInterval, sleepInterval);
         ensureState(waitStrategy);
         return (TElementType)this;
     }

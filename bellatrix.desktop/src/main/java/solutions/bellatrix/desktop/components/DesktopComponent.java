@@ -116,8 +116,27 @@ public class DesktopComponent extends LayoutComponentValidationsBuilder implemen
         waitStrategies.add(waitStrategy);
     }
 
+
     public <TElementType extends DesktopComponent> TElementType toExist() {
         var waitStrategy = new ToExistWaitStrategy();
+        ensureState(waitStrategy);
+        return (TElementType)this;
+    }
+
+    public <TElementType extends DesktopComponent> TElementType toNotExist() {
+        var waitStrategy = new ToNotExistWaitStrategy();
+        ensureState(waitStrategy);
+        return (TElementType)this;
+    }
+
+    public <TElementType extends DesktopComponent> TElementType toBeVisible() {
+        var waitStrategy = new ToBeVisibleWaitStrategy();
+        ensureState(waitStrategy);
+        return (TElementType)this;
+    }
+
+    public <TElementType extends DesktopComponent> TElementType toNotBeVisible() {
+        var waitStrategy = new ToNotBeVisibleWaitStrategy();
         ensureState(waitStrategy);
         return (TElementType)this;
     }
@@ -128,8 +147,56 @@ public class DesktopComponent extends LayoutComponentValidationsBuilder implemen
         return (TElementType)this;
     }
 
-    public <TElementType extends DesktopComponent> TElementType toBeVisible() {
-        var waitStrategy = new ToBeVisibleWaitStrategy();
+    public <TElementType extends DesktopComponent> TElementType toBeDisabled() {
+        var waitStrategy = new ToBeDisabledWaitStrategy();
+        ensureState(waitStrategy);
+        return (TElementType)this;
+    }
+
+    public <TElementType extends DesktopComponent> TElementType toHaveContent() {
+        var waitStrategy = new ToHaveContentWaitStrategy();
+        ensureState(waitStrategy);
+        return (TElementType)this;
+    }
+
+    public <TElementType extends DesktopComponent> TElementType toExist(long timeoutInterval, long sleepInterval) {
+        var waitStrategy = new ToExistWaitStrategy(timeoutInterval, sleepInterval);
+        ensureState(waitStrategy);
+        return (TElementType)this;
+    }
+
+    public <TElementType extends DesktopComponent> TElementType toNotExist(long timeoutInterval, long sleepInterval) {
+        var waitStrategy = new ToNotExistWaitStrategy(timeoutInterval, sleepInterval);
+        ensureState(waitStrategy);
+        return (TElementType)this;
+    }
+
+    public <TElementType extends DesktopComponent> TElementType toBeVisible(long timeoutInterval, long sleepInterval) {
+        var waitStrategy = new ToBeVisibleWaitStrategy(timeoutInterval, sleepInterval);
+        ensureState(waitStrategy);
+        return (TElementType)this;
+    }
+
+    public <TElementType extends DesktopComponent> TElementType toNotBeVisible(long timeoutInterval, long sleepInterval) {
+        var waitStrategy = new ToNotBeVisibleWaitStrategy(timeoutInterval, sleepInterval);
+        ensureState(waitStrategy);
+        return (TElementType)this;
+    }
+
+    public <TElementType extends DesktopComponent> TElementType toBeClickable(long timeoutInterval, long sleepInterval) {
+        var waitStrategy = new ToBeClickableWaitStrategy(timeoutInterval, sleepInterval);
+        ensureState(waitStrategy);
+        return (TElementType)this;
+    }
+
+    public <TElementType extends DesktopComponent> TElementType toBeDisabled(long timeoutInterval, long sleepInterval) {
+        var waitStrategy = new ToBeDisabledWaitStrategy(timeoutInterval, sleepInterval);
+        ensureState(waitStrategy);
+        return (TElementType)this;
+    }
+
+    public <TElementType extends DesktopComponent> TElementType toHaveContent(long timeoutInterval, long sleepInterval) {
+        var waitStrategy = new ToHaveContentWaitStrategy(timeoutInterval, sleepInterval);
         ensureState(waitStrategy);
         return (TElementType)this;
     }
