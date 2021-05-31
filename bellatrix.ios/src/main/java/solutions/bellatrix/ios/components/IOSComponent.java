@@ -121,14 +121,80 @@ public class IOSComponent extends LayoutComponentValidationsBuilder implements C
         return (TElementType)this;
     }
 
-    public <TElementType extends IOSComponent> TElementType toBeClickable() {
-        var waitStrategy = new ToBeClickableWaitStrategy();
+    public <TElementType extends IOSComponent> TElementType toNotExist() {
+        var waitStrategy = new ToNotExistWaitStrategy();
         ensureState(waitStrategy);
         return (TElementType)this;
     }
 
     public <TElementType extends IOSComponent> TElementType toBeVisible() {
         var waitStrategy = new ToBeVisibleWaitStrategy();
+        ensureState(waitStrategy);
+        return (TElementType)this;
+    }
+
+    public <TElementType extends IOSComponent> TElementType toNotBeVisible() {
+        var waitStrategy = new ToNotBeVisibleWaitStrategy();
+        ensureState(waitStrategy);
+        return (TElementType)this;
+    }
+
+    public <TElementType extends IOSComponent> TElementType toBeClickable() {
+        var waitStrategy = new ToBeClickableWaitStrategy();
+        ensureState(waitStrategy);
+        return (TElementType)this;
+    }
+
+    public <TElementType extends IOSComponent> TElementType toBeDisabled() {
+        var waitStrategy = new ToBeDisabledWaitStrategy();
+        ensureState(waitStrategy);
+        return (TElementType)this;
+    }
+
+    public <TElementType extends IOSComponent> TElementType toHaveContent() {
+        var waitStrategy = new ToHaveContentWaitStrategy();
+        ensureState(waitStrategy);
+        return (TElementType)this;
+    }
+
+    public <TElementType extends IOSComponent> TElementType toExist(long timeoutInterval, long sleepInterval) {
+        var waitStrategy = new ToExistWaitStrategy(timeoutInterval, sleepInterval);
+        ensureState(waitStrategy);
+        return (TElementType)this;
+    }
+
+    public <TElementType extends IOSComponent> TElementType toNotExist(long timeoutInterval, long sleepInterval) {
+        var waitStrategy = new ToNotExistWaitStrategy(timeoutInterval, sleepInterval);
+        ensureState(waitStrategy);
+        return (TElementType)this;
+    }
+
+    public <TElementType extends IOSComponent> TElementType toBeVisible(long timeoutInterval, long sleepInterval) {
+        var waitStrategy = new ToBeVisibleWaitStrategy(timeoutInterval, sleepInterval);
+        ensureState(waitStrategy);
+        return (TElementType)this;
+    }
+
+    public <TElementType extends IOSComponent> TElementType toNotBeVisible(long timeoutInterval, long sleepInterval) {
+        var waitStrategy = new ToNotBeVisibleWaitStrategy(timeoutInterval, sleepInterval);
+        ensureState(waitStrategy);
+        return (TElementType)this;
+    }
+
+    public <TElementType extends IOSComponent> TElementType toBeClickable(long timeoutInterval, long sleepInterval) {
+        var waitStrategy = new ToBeClickableWaitStrategy(timeoutInterval, sleepInterval);
+        ensureState(waitStrategy);
+        return (TElementType)this;
+    }
+
+    public <TElementType extends IOSComponent> TElementType toBeDisabled(long timeoutInterval, long sleepInterval) {
+        var waitStrategy = new ToBeDisabledWaitStrategy(timeoutInterval, sleepInterval);
+        ensureState(waitStrategy);
+        return (TElementType)this;
+    }
+
+    public <TElementType extends IOSComponent> TElementType toHaveContent(long timeoutInterval, long sleepInterval) {
+        var waitStrategy = new ToHaveContentWaitStrategy(timeoutInterval, sleepInterval);
         ensureState(waitStrategy);
         return (TElementType)this;
     }
