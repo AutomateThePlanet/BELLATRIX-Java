@@ -40,18 +40,16 @@ import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
 public class DriverService {
-    private static final ThreadLocal<Boolean> DISPOSED;
+    private static final ThreadLocal<Boolean> DISPOSED = ThreadLocal.withInitial(() -> true);
     private static final ThreadLocal<BrowserConfiguration> BROWSER_CONFIGURATION;
     private static final ThreadLocal<HashMap<String, String>> CUSTOM_DRIVER_OPTIONS;
     private static final ThreadLocal<WebDriver> WRAPPED_DRIVER;
 
     static {
-        DISPOSED = new ThreadLocal<>();
         CUSTOM_DRIVER_OPTIONS = new ThreadLocal<>();
         CUSTOM_DRIVER_OPTIONS.set(new HashMap<>());
         BROWSER_CONFIGURATION = new ThreadLocal<>();
         WRAPPED_DRIVER = new ThreadLocal<>();
-        DISPOSED.set(false);
     }
 
     public static HashMap<String, String> getCustomDriverOptions() {
@@ -71,26 +69,28 @@ public class DriverService {
     }
 
     public static WebDriver start(BrowserConfiguration configuration) {
-        BROWSER_CONFIGURATION.set(configuration);
-        DISPOSED.set(false);
-        WebDriver driver;
-        var webSettings = ConfigurationService.get(WebSettings.class);
-        var executionType = webSettings.getExecutionType();
-        if (executionType.equals("regular")) {
-            driver = initializeDriverRegularMode();
-        } else {
-            var gridSettings = webSettings.getGridSettings().stream().filter(g -> g.getProviderName().equals(executionType.toLowerCase())).findFirst();
-            assert gridSettings.isPresent() : String.format("The specified execution type '%s' is not declared in the configuration", executionType);
-            driver = initializeDriverGridMode(gridSettings.get());
-        }
+        if (DISPOSED.get()) {
+            BROWSER_CONFIGURATION.set(configuration);
+            DISPOSED.set(false);
+            WebDriver driver;
+            var webSettings = ConfigurationService.get(WebSettings.class);
+            var executionType = webSettings.getExecutionType();
+            if (executionType.equals("regular")) {
+                driver = initializeDriverRegularMode();
+            } else {
+                var gridSettings = webSettings.getGridSettings().stream().filter(g -> g.getProviderName().equals(executionType.toLowerCase())).findFirst();
+                assert gridSettings.isPresent() : String.format("The specified execution type '%s' is not declared in the configuration", executionType);
+                driver = initializeDriverGridMode(gridSettings.get());
+            }
 
-        driver.manage().timeouts().pageLoadTimeout(ConfigurationService.get(WebSettings.class).getTimeoutSettings().getPageLoadTimeout(), TimeUnit.SECONDS);
-        driver.manage().timeouts().setScriptTimeout(ConfigurationService.get(WebSettings.class).getTimeoutSettings().getScriptTimeout(), TimeUnit.SECONDS);
-        driver.manage().window().maximize();
-        changeWindowSize(driver);
-        WRAPPED_DRIVER.set(driver);
+            driver.manage().timeouts().pageLoadTimeout(ConfigurationService.get(WebSettings.class).getTimeoutSettings().getPageLoadTimeout(), TimeUnit.SECONDS);
+            driver.manage().timeouts().setScriptTimeout(ConfigurationService.get(WebSettings.class).getTimeoutSettings().getScriptTimeout(), TimeUnit.SECONDS);
+            driver.manage().window().maximize();
+            changeWindowSize(driver);
+            WRAPPED_DRIVER.set(driver);
 
-        return driver;
+            return driver;
+        } else return WRAPPED_DRIVER.get();
     }
 
     private static WebDriver initializeDriverGridMode(GridSettings gridSettings) {
@@ -271,7 +271,9 @@ public class DriverService {
 
         if (WRAPPED_DRIVER.get() != null) {
             WRAPPED_DRIVER.get().close();
-            CUSTOM_DRIVER_OPTIONS.get().clear();
+            if (CUSTOM_DRIVER_OPTIONS.get() != null) {
+                CUSTOM_DRIVER_OPTIONS.get().clear();
+            }
         }
 
         ProxyServer.close();
