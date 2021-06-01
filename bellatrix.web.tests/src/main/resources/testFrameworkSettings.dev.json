@@ -14,9 +14,9 @@
     "shouldHighlightElements": "true",
     "shouldCaptureHttpTraffic": "false",
     "screenshotsOnFailEnabled": "false",
-    "screenshotsSaveLocation": "user.home\\BELLATRIX\\Screenshots",
+    "screenshotsSaveLocation": "${user.home}/BELLATRIX/Screenshots",
     "videosOnFailEnabled": "false",
-    "videosSaveLocation": "user.home\\BELLATRIX\\Videos",
+    "videosSaveLocation": "${user.home}/BELLATRIX/Videos",
     "timeoutSettings": {
       "elementWaitTimeout": "30",
       "pageLoadTimeout": "30",

@@ -18,7 +18,7 @@ import plugins.screenshots.ScreenshotPlugin;
 import ru.yandex.qatools.ashot.AShot;
 import ru.yandex.qatools.ashot.shooting.ShootingStrategies;
 import solutions.bellatrix.core.configuration.ConfigurationService;
-import solutions.bellatrix.core.utilities.UserHomePathNormalizer;
+import solutions.bellatrix.core.utilities.PathNormalizer;
 import solutions.bellatrix.web.configuration.WebSettings;
 
 import javax.imageio.ImageIO;
@@ -44,7 +44,7 @@ public class WebScreenshotPlugin extends ScreenshotPlugin {
     @Override
     protected String getOutputFolder() {
         String saveLocation = ConfigurationService.get(WebSettings.class).getScreenshotsSaveLocation();
-        saveLocation = UserHomePathNormalizer.normalizePath(saveLocation);
+        saveLocation = PathNormalizer.normalizePath(saveLocation);
 
         var directory = new File(saveLocation);
         if (directory.mkdirs()) {

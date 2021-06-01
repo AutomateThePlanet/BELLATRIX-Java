@@ -18,7 +18,7 @@ import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.core.plugins.Plugin;
 import solutions.bellatrix.core.plugins.TestResult;
 import solutions.bellatrix.core.utilities.DebugInformation;
-import solutions.bellatrix.core.utilities.UserHomePathNormalizer;
+import solutions.bellatrix.core.utilities.PathNormalizer;
 
 import java.lang.reflect.Method;
 import java.util.Objects;
@@ -138,7 +138,7 @@ public class AppLifecyclePlugin extends Plugin {
         var executionAppAnnotation = (ExecutionApp)type.getDeclaredAnnotation(ExecutionApp.class);
         if (executionAppAnnotation == null) {
             var defaultAppPath = ConfigurationService.get(AndroidSettings.class).getDefaultAppPath();
-            defaultAppPath = UserHomePathNormalizer.normalizePath(defaultAppPath);
+            defaultAppPath = PathNormalizer.normalizePath(defaultAppPath);
             var defaultLifecycle = Lifecycle.fromText(ConfigurationService.get(AndroidSettings.class).getDefaultLifeCycle());
             var defaultAppPackage = ConfigurationService.get(AndroidSettings.class).getDefaultAppPackage();
             var defaultAppActivity = ConfigurationService.get(AndroidSettings.class).getDefaultAppActivity();
@@ -150,6 +150,6 @@ public class AppLifecyclePlugin extends Plugin {
             return new AppConfiguration(true);
         }
 
-        return new AppConfiguration(executionAppAnnotation.lifecycle(), executionAppAnnotation.androidVersion(), executionAppAnnotation.deviceName(), UserHomePathNormalizer.normalizePath(executionAppAnnotation.appPath()), executionAppAnnotation.appPackage(), executionAppAnnotation.appActivity());
+        return new AppConfiguration(executionAppAnnotation.lifecycle(), executionAppAnnotation.androidVersion(), executionAppAnnotation.deviceName(), PathNormalizer.normalizePath(executionAppAnnotation.appPath()), executionAppAnnotation.appPackage(), executionAppAnnotation.appActivity());
     }
 }

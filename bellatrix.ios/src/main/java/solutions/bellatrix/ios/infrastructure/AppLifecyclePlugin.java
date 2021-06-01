@@ -17,7 +17,7 @@ import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.core.plugins.Plugin;
 import solutions.bellatrix.core.plugins.TestResult;
 import solutions.bellatrix.core.utilities.DebugInformation;
-import solutions.bellatrix.core.utilities.UserHomePathNormalizer;
+import solutions.bellatrix.core.utilities.PathNormalizer;
 import solutions.bellatrix.ios.configuration.IOSSettings;
 
 import java.lang.reflect.Method;
@@ -138,7 +138,7 @@ public class AppLifecyclePlugin extends Plugin {
         var executionAppAnnotation = (ExecutionApp)type.getDeclaredAnnotation(ExecutionApp.class);
         if (executionAppAnnotation == null) {
             var defaultAppPath = ConfigurationService.get(IOSSettings.class).getDefaultAppPath();
-            defaultAppPath = UserHomePathNormalizer.normalizePath(defaultAppPath);
+            defaultAppPath = PathNormalizer.normalizePath(defaultAppPath);
             var defaultLifecycle = Lifecycle.fromText(ConfigurationService.get(IOSSettings.class).getDefaultLifeCycle());
             var defaultIOSVersion = ConfigurationService.get(IOSSettings.class).getDefaultIOSVersion();
             var defaultDeviceName = ConfigurationService.get(IOSSettings.class).getDefaultDeviceName();

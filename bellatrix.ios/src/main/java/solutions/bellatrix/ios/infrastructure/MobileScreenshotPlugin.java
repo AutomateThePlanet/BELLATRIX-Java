@@ -19,7 +19,7 @@ import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import plugins.screenshots.ScreenshotPlugin;
 import solutions.bellatrix.core.configuration.ConfigurationService;
-import solutions.bellatrix.core.utilities.UserHomePathNormalizer;
+import solutions.bellatrix.core.utilities.PathNormalizer;
 import solutions.bellatrix.ios.configuration.IOSSettings;
 
 import java.io.File;
@@ -42,7 +42,7 @@ public class MobileScreenshotPlugin extends ScreenshotPlugin {
     @Override
     protected String getOutputFolder() {
         String saveLocation = ConfigurationService.get(IOSSettings.class).getScreenshotsSaveLocation();
-        saveLocation = UserHomePathNormalizer.normalizePath(saveLocation);
+        saveLocation = PathNormalizer.normalizePath(saveLocation);
 
         var directory = new File(saveLocation);
         if (directory.mkdirs()) {
