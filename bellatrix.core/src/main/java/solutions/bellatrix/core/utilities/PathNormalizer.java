@@ -1,12 +1,14 @@
 package solutions.bellatrix.core.utilities;
 
+import org.apache.commons.text.StringEscapeUtils;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class PathNormalizer {
     public static String normalizePath(String path) {
-        path = path.replaceAll("[\\\\/]", System.getProperty("file.separator"));
-
+        var fileSeparator = StringEscapeUtils.escapeJava(System.getProperty("file.separator"));
+        path = path.replaceAll("[\\\\/]", fileSeparator);
         Matcher matcher = Pattern.compile("\\$\\{(.*?)}").matcher(path);
 
         while (matcher.find()) {
