@@ -19,36 +19,32 @@ import checkoutpage.PurchaseInfo;
 import mainpage.MainPage;
 import org.junit.jupiter.api.Test;
 import solutions.bellatrix.web.components.Anchor;
-import solutions.bellatrix.web.findstrategies.TextContains;
+import solutions.bellatrix.web.infrastructure.Browser;
+import solutions.bellatrix.web.infrastructure.ExecutionBrowser;
+import solutions.bellatrix.web.infrastructure.Lifecycle;
 import solutions.bellatrix.web.infrastructure.junit.WebTest;
 
-//@ExecutionBrowser(browser = Browser.CHROME, lifecycle = Lifecycle.REUSE_IF_STARTED)
+@ExecutionBrowser(browser = Browser.FIREFOX, lifecycle = Lifecycle.RESTART_ON_FAIL)
 public class ProductPurchaseTests extends WebTest {
+    @Override
+    protected void afterMethod() {
+        app().cookies().deleteAllCookies();
+    }
+
     @Test
     public void completePurchaseSuccessfully_first() {
         app().navigate().to("http://demos.bellatrix.solutions/");
-        var addToCartFalcon9 = app().create().byCss(Anchor.class,"[data-product_id*='28']");
-        var blogLink = app().create().by(Anchor.class, TextContains.by("Blog"));
+        var addToCartFalcon9 = app().create().byCss(Anchor.class, "[data-product_id*='28']");
+        var blogLink = app().create().byInnerTextContaining(Anchor.class, "Blog");
         addToCartFalcon9.click();
-
-        blogLink.below(addToCartFalcon9).greaterThan(30).validate();
         blogLink.above(addToCartFalcon9).validate();
-
-        blogLink.height().equal(10).validate();
-
-
-        blogLink.width().greaterThanOrEqual(10).validate();
-        blogLink.inside(addToCartFalcon9).validate();
-        blogLink.topInside(addToCartFalcon9).greaterThan(5).validate();
-        blogLink.alignedHorizontallyTop(addToCartFalcon9, addToCartFalcon9).validate();
-
-        new MainPage().asserts().productBoxLink("", "");
+        new MainPage().asserts().productBoxLink("Falcon 9", "http://demos.bellatrix.solutions/product/falcon-9/");
     }
 
     @Test
     public void completePurchaseSuccessfully_second() {
         app().navigate().to("http://demos.bellatrix.solutions/");
-        var addToCartFalcon9 = app().create().byCss(Anchor.class,"[data-product_id*='28']");
+        var addToCartFalcon9 = app().create().byCss(Anchor.class, "[data-product_id*='28']");
         addToCartFalcon9.click();
     }
 
@@ -67,7 +63,7 @@ public class ProductPurchaseTests extends WebTest {
     }
 
     @Test
-    public void purchaseFalcon9WithoutFacade() throws InterruptedException {
+    public void purchaseFalcon9WithoutFacade() {
         var mainPage = app().goTo(MainPage.class);
         mainPage.addRocketToShoppingCart("Falcon 9");
 
@@ -85,10 +81,10 @@ public class ProductPurchaseTests extends WebTest {
         purchaseInfo.setCompany("Space Flowers");
         purchaseInfo.setCountry("Germany");
         purchaseInfo.setAddress1("1 Willi Brandt Avenue Tiergarten");
-        purchaseInfo.setAddress2("Lьtzowplatz 17");
+        purchaseInfo.setAddress2("Lützowplatz 17");
         purchaseInfo.setCity("Berlin");
         purchaseInfo.setZip("10115");
-        purchaseInfo.setPhone("+00498888999281");
+        purchaseInfo.setPhone("+498888999281");
 
         var checkoutPage = app().create(CheckoutPage.class);
         checkoutPage.fillBillingInfo(purchaseInfo);
@@ -96,7 +92,7 @@ public class ProductPurchaseTests extends WebTest {
     }
 
     @Test
-    public void purchaseSaturnVWithoutFacade() throws InterruptedException {
+    public void purchaseSaturnVWithoutFacade() {
         var mainPage = app().goTo(MainPage.class);
         mainPage.addRocketToShoppingCart("Saturn V");
 
@@ -114,10 +110,10 @@ public class ProductPurchaseTests extends WebTest {
         purchaseInfo.setCompany("Space Flowers");
         purchaseInfo.setCountry("Germany");
         purchaseInfo.setAddress1("1 Willi Brandt Avenue Tiergarten");
-        purchaseInfo.setAddress2("Lьtzowplatz 17");
+        purchaseInfo.setAddress2("Lützowplatz 17");
         purchaseInfo.setCity("Berlin");
         purchaseInfo.setZip("10115");
-        purchaseInfo.setPhone("+00498888999281");
+        purchaseInfo.setPhone("+498888999281");
 
         var checkoutPage = app().create(CheckoutPage.class);
         checkoutPage.fillBillingInfo(purchaseInfo);

@@ -16,8 +16,7 @@ package solutions.bellatrix.web.findstrategies;
 import org.openqa.selenium.By;
 
 public class CssFindStrategy extends FindStrategy {
-    public CssFindStrategy(String value)
-    {
+    public CssFindStrategy(String value) {
         super(value);
     }
 

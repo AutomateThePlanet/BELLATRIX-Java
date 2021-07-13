@@ -28,19 +28,15 @@ public class AppConfiguration {
     @Getter private Boolean isMobileWebExecution;
     @Getter HashMap<String, String> appiumOptions;
 
-    public HashMap<String, String> getAppiumOptions() {
-        return appiumOptions;
-    }
-
     public AppConfiguration(boolean isMobileWebExecution) {
         this.isMobileWebExecution = isMobileWebExecution;
     }
 
-    public AppConfiguration(Lifecycle lifecycle, String IOSVersion, String deviceName, String appPath) {
-        if (StringUtil.isBlank(IOSVersion)) {
+    public AppConfiguration(Lifecycle lifecycle, String iOSVersion, String deviceName, String appPath) {
+        if (StringUtil.isBlank(iOSVersion)) {
             this.iosVersion = ConfigurationService.get(IOSSettings.class).getDefaultIOSVersion();
         } else {
-            this.iosVersion = IOSVersion;
+            this.iosVersion = iOSVersion;
         }
 
         if (StringUtil.isBlank(deviceName)) {

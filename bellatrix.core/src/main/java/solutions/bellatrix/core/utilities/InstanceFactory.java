@@ -17,7 +17,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
 
 public final class InstanceFactory {
-    @SuppressWarnings("unchecked")
     public static <T> T create(Class<T> classOf) {
         T obj = null;
         try {
@@ -28,7 +27,6 @@ public final class InstanceFactory {
         return obj;
     }
 
-    @SuppressWarnings("unchecked")
     public static <T> T create(Class<T> classOf, Object... args) {
         T obj = null;
         try {
@@ -39,7 +37,6 @@ public final class InstanceFactory {
         return obj;
     }
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
     public static <T> T createByTypeParameter(Class parameterClass, int index) {
         try {
             var elementsClass = (Class)((ParameterizedType)parameterClass.getGenericSuperclass()).getActualTypeArguments()[index];

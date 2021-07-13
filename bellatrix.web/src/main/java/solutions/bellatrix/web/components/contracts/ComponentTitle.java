@@ -18,38 +18,60 @@ import solutions.bellatrix.core.utilities.SingletonFactory;
 import solutions.bellatrix.web.components.WebComponent;
 import solutions.bellatrix.web.validations.ComponentValidator;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.function.Supplier;
 
 public interface ComponentTitle extends Component {
     String getTitle();
 
     @SneakyThrows
     default void validateTitleIs(String value) {
-        Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIs", WebComponent.class, String.class, String.class, String.class);
-        method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getTitle(), value, "title");
+        try {
+            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIs", WebComponent.class, Supplier.class, String.class, String.class);
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, (Supplier<String>)this::getTitle, value, "title");
+        } catch (InvocationTargetException e) {
+            throw e.getCause();
+        }
     }
 
     @SneakyThrows
     default void validateTitleIsSet() {
-        Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIsSet", WebComponent.class, String.class, String.class);
-        method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getTitle(), "title");
+        try {
+            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIsSet", WebComponent.class, Supplier.class, String.class);
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, (Supplier<String>)this::getTitle, "title");
+        } catch (InvocationTargetException e) {
+            throw e.getCause();
+        }
     }
 
     @SneakyThrows
     default void validateTitleNotSet() {
-        Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeNotSet", WebComponent.class, String.class, String.class);
-        method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getTitle(), "title");
+        try {
+            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeNotSet", WebComponent.class, Supplier.class, String.class);
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, (Supplier<String>)this::getTitle, "title");
+        } catch (InvocationTargetException e) {
+            throw e.getCause();
+        }
     }
 
     @SneakyThrows
     default void validateTitleContains(String value) {
-        Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeContains", WebComponent.class, String.class, String.class, String.class);
-        method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getTitle(), value, "title");
+        try {
+            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeContains", WebComponent.class, Supplier.class, String.class, String.class);
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, (Supplier<String>)this::getTitle, value, "title");
+        } catch (InvocationTargetException e) {
+            throw e.getCause();
+        }
     }
 
     @SneakyThrows
     default void validateTitleNotContains(String value) {
-        Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeNotContains", WebComponent.class, String.class, String.class, String.class);
-        method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, getTitle(), value, "title");
+        try {
+            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeNotContains", WebComponent.class, Supplier.class, String.class, String.class);
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, (Supplier<String>)this::getTitle, value, "title");
+        } catch (InvocationTargetException e) {
+            throw e.getCause();
+        }
     }
 }

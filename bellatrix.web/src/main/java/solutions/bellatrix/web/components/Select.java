@@ -31,7 +31,7 @@ public class Select extends WebComponent implements ComponentDisabled, Component
         return getClass();
     }
 
-    public Option GetSelected() {
+    public Option getSelected() {
         var nativeSelect = new org.openqa.selenium.support.ui.Select(findElement());
         var optionComponent = InstanceFactory.create(Option.class);
         optionComponent.setFindStrategy(getFindStrategy());
@@ -43,7 +43,7 @@ public class Select extends WebComponent implements ComponentDisabled, Component
     public List<Option> getAllOptions() {
         var nativeSelect = new org.openqa.selenium.support.ui.Select(findElement());
         var options = new ArrayList<Option>();
-        for (var nativeOption: nativeSelect.getOptions()) {
+        for (var nativeOption : nativeSelect.getOptions()) {
             var optionComponent = InstanceFactory.create(Option.class);
             optionComponent.setFindStrategy(getFindStrategy());
             optionComponent.setElementIndex(0);

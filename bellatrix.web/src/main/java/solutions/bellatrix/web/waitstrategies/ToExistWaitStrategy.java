@@ -19,18 +19,18 @@ import org.openqa.selenium.SearchContext;
 import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.web.configuration.WebSettings;
 
-public class ToExistsWaitStrategy extends WaitStrategy {
-    public ToExistsWaitStrategy() {
+public class ToExistWaitStrategy extends WaitStrategy {
+    public ToExistWaitStrategy() {
         timeoutInterval = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getElementToExistTimeout();
         sleepInterval = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getSleepInterval();
     }
 
-    public ToExistsWaitStrategy(long timeoutIntervalSeconds, long sleepIntervalSeconds) {
-       super(timeoutIntervalSeconds, sleepIntervalSeconds);
+    public ToExistWaitStrategy(long timeoutIntervalSeconds, long sleepIntervalSeconds) {
+        super(timeoutIntervalSeconds, sleepIntervalSeconds);
     }
 
-    public static ToExistsWaitStrategy of() {
-        return new ToExistsWaitStrategy();
+    public static ToExistWaitStrategy of() {
+        return new ToExistWaitStrategy();
     }
 
     @Override
@@ -38,15 +38,11 @@ public class ToExistsWaitStrategy extends WaitStrategy {
         waitUntil((x) -> elementExists(searchContext, by));
     }
 
-    private boolean elementExists(SearchContext searchContext, By by)
-    {
-        try
-        {
+    private boolean elementExists(SearchContext searchContext, By by) {
+        try {
             var element = findElement(searchContext, by);
             return element != null;
-        }
-        catch (NoSuchElementException e)
-        {
+        } catch (NoSuchElementException e) {
             return false;
         }
     }

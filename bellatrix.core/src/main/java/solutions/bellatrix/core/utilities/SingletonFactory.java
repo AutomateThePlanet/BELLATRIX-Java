@@ -26,16 +26,15 @@ public class SingletonFactory {
     private SingletonFactory() {
     }
 
-    @SuppressWarnings("unchecked")
-    public static <T> T getInstance(Class<T> classOf, Object ... initargs) {
+    public static <T> T getInstance(Class<T> classOf, Object... initargs) {
         try {
             if (!SINGLETON_FACTORY.mapHolder.containsKey(classOf.getName())) {
 
-                T obj = (T) classOf.getConstructors()[0].newInstance(initargs);
+                T obj = (T)classOf.getConstructors()[0].newInstance(initargs);
                 SINGLETON_FACTORY.mapHolder.put(classOf.getName(), obj);
             }
 
-            return (T) SINGLETON_FACTORY.mapHolder.get(classOf.getName());
+            return (T)SINGLETON_FACTORY.mapHolder.get(classOf.getName());
         } catch (Exception e) {
             // not the best practice to return null. But probably we will never end here so it is OK.
             return null;

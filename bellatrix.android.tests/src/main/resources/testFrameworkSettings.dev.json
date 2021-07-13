@@ -11,15 +11,14 @@
     "defaultBrowser": "Chrome",
     "defaultAppPackage": "com.example.android.apis",
     "defaultAppActivity": ".view.Controls1",
-    "defaultAppPath": "user.home\\ApiDemos.apk",
+    "defaultAppPath": "${user.home}/ApiDemos.apk",
     "artificialDelayBeforeAction": "0",
     "automaticallyScrollToVisible": "false",
     "waitUntilReadyOnElementFound": "false",
     "screenshotsOnFailEnabled": "false",
-    "screenshotsSaveLocation": "user.home\\BELLATRIX\\videos",
+    "screenshotsSaveLocation": "${user.home}/BELLATRIX/videos",
     "videosOnFailEnabled": "false",
-    "videosSaveLocation": "user.home\\BELLATRIX\\videos",
-
+    "videosSaveLocation": "u${user.home}/BELLATRIX/videos",
     "timeoutSettings": {
       "implicitWaitTimeout": "5",
       "elementWaitTimeout": "30",
@@ -35,25 +34,25 @@
     },
     "gridSettings": [
       {
-        "providerName" : "saucelabs",
-        "url" : "http://ondemand.saucelabs.com:80/wd/hub",
-        "arguments" : [
+        "providerName": "saucelabs",
+        "url": "http://ondemand.saucelabs.com:80/wd/hub",
+        "arguments": [
           {
-            "screenResolution" : "1280x800",
-            "recordVideo" : "true",
-            "recordScreenshots" : "true",
-            "username" : "myUserName",
-            "accessKey" : "myPass",
-            "name" : "bellatrix_run"
+            "screenResolution": "1280x800",
+            "recordVideo": "true",
+            "recordScreenshots": "true",
+            "username": "myUserName",
+            "accessKey": "myPass",
+            "name": "bellatrix_run"
           }
         ]
       },
       {
-        "providerName" : "grid",
-        "url" : "http://127.0.0.1:4444/wd/hub",
-        "arguments" : [
+        "providerName": "grid",
+        "url": "http://127.0.0.1:4444/wd/hub",
+        "arguments": [
           {
-            "name" : "bellatrix_run"
+            "name": "bellatrix_run"
           }
         ]
       }

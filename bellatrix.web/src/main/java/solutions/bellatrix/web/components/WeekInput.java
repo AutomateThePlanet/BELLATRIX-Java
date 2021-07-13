@@ -72,12 +72,14 @@ public class WeekInput extends WebComponent implements ComponentDisabled, Compon
 
     @Override
     public void setWeek(int year, int weekNumber) {
-
+        defaultSetWeek(year, weekNumber);
     }
 
     protected void defaultSetWeek(int year, int weekNumber) {
-        if (weekNumber <= 0 || weekNumber > 52) throw new IllegalArgumentException(String.format("The week number should be between 0 and 53 but you specified: %d", weekNumber));
-        if (year <= 0) throw new IllegalArgumentException(String.format("The year should be a positive number but you specified: %d", year));
+        if (weekNumber <= 0 || weekNumber > 52)
+            throw new IllegalArgumentException(String.format("The week number should be between 0 and 53 but you specified: %d", weekNumber));
+        if (year <= 0)
+            throw new IllegalArgumentException(String.format("The year should be a positive number but you specified: %d", year));
 
         String valueToBeSet;
 

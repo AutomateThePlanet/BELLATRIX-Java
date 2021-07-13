@@ -38,10 +38,10 @@ public class FullPageScreenshotEngine {
         webDriverWait.until(
                 wd ->
                 {
-                        var response = (String)javaScriptService.execute("return (typeof canvasImgContentDecoded === 'undefined' || canvasImgContentDecoded === null)");
-                        if (StringUtils.isEmpty(response))
-                            return false;
-                        return Boolean.parseBoolean(response);
+                    var response = (String)javaScriptService.execute("return (typeof canvasImgContentDecoded === 'undefined' || canvasImgContentDecoded === null)");
+                    if (StringUtils.isEmpty(response))
+                        return false;
+                    return Boolean.parseBoolean(response);
                 });
         webDriverWait.until(wd -> !StringUtils.isEmpty((String)javaScriptService.execute("return canvasImgContentDecoded;")));
         var pngContent = (String)javaScriptService.execute("return canvasImgContentDecoded;");

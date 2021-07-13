@@ -18,20 +18,30 @@ import solutions.bellatrix.core.utilities.SingletonFactory;
 import solutions.bellatrix.web.components.WebComponent;
 import solutions.bellatrix.web.validations.ComponentValidator;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.function.BooleanSupplier;
 
 public interface ComponentMultiple extends Component {
     boolean isMultiple();
 
     @SneakyThrows
     default void validateIsMultiple(String value) {
-        Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeTrue", WebComponent.class, boolean.class, String.class);
-        method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, isMultiple(), "multiple");
+        try {
+            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeTrue", WebComponent.class, BooleanSupplier.class, String.class);
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, (BooleanSupplier)this::isMultiple, "multiple");
+        } catch (InvocationTargetException e) {
+            throw e.getCause();
+        }
     }
 
     @SneakyThrows
     default void validateNotMultiple() {
-        Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeFalse", WebComponent.class, boolean.class, String.class);
-        method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, isMultiple(), "multiple");
+        try {
+            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeFalse", WebComponent.class, BooleanSupplier.class, String.class);
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, (BooleanSupplier)this::isMultiple, "multiple");
+        } catch (InvocationTargetException e) {
+            throw e.getCause();
+        }
     }
 }

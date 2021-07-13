@@ -13,28 +13,62 @@
 
 package solutions.bellatrix.android.waitstrategies;
 
+import solutions.bellatrix.android.configuration.AndroidSettings;
+import solutions.bellatrix.android.configuration.TimeoutSettings;
+import solutions.bellatrix.core.configuration.ConfigurationService;
+
 public class WaitStrategyFactory {
-    public ToExistsWaitStrategy exists() {
-        return new ToExistsWaitStrategy(30, 2);
+    private final TimeoutSettings timeoutSettings;
+
+    public WaitStrategyFactory() {
+        timeoutSettings = ConfigurationService.get(AndroidSettings.class).getTimeoutSettings();
     }
 
-    public ToExistsWaitStrategy exists(int timeoutInterval, int sleepInterval) {
-        return new ToExistsWaitStrategy(timeoutInterval, sleepInterval);
+    public ToExistWaitStrategy exist() {
+        return new ToExistWaitStrategy(timeoutSettings.getElementToExistTimeout(), timeoutSettings.getSleepInterval());
     }
 
-    public ToBeVisibleWaitStrategy beVisible(int timeoutInterval, int sleepInterval) {
+    public ToExistWaitStrategy exist(long timeoutInterval, long sleepInterval) {
+        return new ToExistWaitStrategy(timeoutInterval, sleepInterval);
+    }
+
+    public ToBeVisibleWaitStrategy beVisible(long timeoutInterval, long sleepInterval) {
         return new ToBeVisibleWaitStrategy(timeoutInterval, sleepInterval);
     }
 
     public ToBeVisibleWaitStrategy beVisible() {
-        return new ToBeVisibleWaitStrategy(30, 2);
+        return new ToBeVisibleWaitStrategy(timeoutSettings.getElementToBeVisibleTimeout(), timeoutSettings.getSleepInterval());
     }
 
-    public ToBeClickableWaitStrategy beClickable(int timeoutInterval, int sleepInterval) {
+    public ToBeClickableWaitStrategy beClickable(long timeoutInterval, long sleepInterval) {
         return new ToBeClickableWaitStrategy(timeoutInterval, sleepInterval);
     }
 
     public ToBeClickableWaitStrategy beClickable() {
-        return new ToBeClickableWaitStrategy(30, 2);
+        return new ToBeClickableWaitStrategy(timeoutSettings.getElementToBeClickableTimeout(), timeoutSettings.getSleepInterval());
+    }
+
+    public ToNotBeVisibleWaitStrategy notBeVisible(long timeoutInterval, long sleepInterval) {
+        return new ToNotBeVisibleWaitStrategy(timeoutInterval, sleepInterval);
+    }
+
+    public ToNotBeVisibleWaitStrategy notBeVisible() {
+        return new ToNotBeVisibleWaitStrategy(timeoutSettings.getElementNotToBeVisibleTimeout(), timeoutSettings.getSleepInterval());
+    }
+
+    public ToNotExistWaitStrategy notExist(long timeoutInterval, long sleepInterval) {
+        return new ToNotExistWaitStrategy(timeoutInterval, sleepInterval);
+    }
+
+    public ToNotExistWaitStrategy notExist() {
+        return new ToNotExistWaitStrategy(timeoutSettings.getElementToNotExistTimeout(), timeoutSettings.getSleepInterval());
+    }
+
+    public ToHaveContentWaitStrategy haveContent(long timeoutInterval, long sleepInterval) {
+        return new ToHaveContentWaitStrategy(timeoutInterval, sleepInterval);
+    }
+
+    public ToHaveContentWaitStrategy haveContent() {
+        return new ToHaveContentWaitStrategy(timeoutSettings.getElementToHaveContentTimeout(), timeoutSettings.getSleepInterval());
     }
 }

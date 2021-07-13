@@ -16,8 +16,7 @@ package solutions.bellatrix.web.findstrategies;
 import org.openqa.selenium.By;
 
 public class IdContainingFindStrategy extends FindStrategy {
-    public IdContainingFindStrategy(String value)
-    {
+    public IdContainingFindStrategy(String value) {
         super(value);
     }
 

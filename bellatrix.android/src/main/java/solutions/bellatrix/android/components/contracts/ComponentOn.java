@@ -18,6 +18,7 @@ import solutions.bellatrix.android.components.AndroidComponent;
 import solutions.bellatrix.android.validations.ComponentValidator;
 import solutions.bellatrix.core.utilities.SingletonFactory;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 public interface ComponentOn extends Component {
@@ -25,13 +26,22 @@ public interface ComponentOn extends Component {
 
     @SneakyThrows
     default void validateIsOn() {
-        Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeTrue", AndroidComponent.class, boolean.class, String.class);
-        method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (AndroidComponent)this, isOn(), "on");
+        try {
+            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeTrue", AndroidComponent.class, boolean.class, String.class);
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (AndroidComponent)this, isOn(), "on");
+        } catch (InvocationTargetException e) {
+            throw e.getCause();
+        }
     }
 
     @SneakyThrows
     default void validateIsOff() {
-        Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeTrue", AndroidComponent.class, boolean.class, String.class);
-        method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (AndroidComponent)this, !isOn(), "off");
+        try {
+            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeTrue", AndroidComponent.class, boolean.class, String.class);
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (AndroidComponent)this, !isOn(), "off");
+        } catch (
+                InvocationTargetException e) {
+            throw e.getCause();
+        }
     }
 }

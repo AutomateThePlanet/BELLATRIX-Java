@@ -18,6 +18,7 @@ import solutions.bellatrix.core.utilities.SingletonFactory;
 import solutions.bellatrix.desktop.components.DesktopComponent;
 import solutions.bellatrix.desktop.validations.ComponentValidator;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 public interface ComponentDate extends Component {
@@ -25,19 +26,32 @@ public interface ComponentDate extends Component {
 
     @SneakyThrows
     default void validateDateIs(String value) {
-        Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIs", DesktopComponent.class, String.class, String.class, String.class);
-        method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (DesktopComponent)this, getDate(), value, "date");
+        try {
+            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIs", DesktopComponent.class, String.class, String.class, String.class);
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (DesktopComponent)this, getDate(), value, "date");
+        } catch (
+                InvocationTargetException e) {
+            throw e.getCause();
+        }
     }
 
     @SneakyThrows
     default void validateDateContains(String value) {
-        Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeContains", DesktopComponent.class, String.class, String.class, String.class);
-        method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (DesktopComponent)this, getDate(), value, "date");
+        try {
+            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeContains", DesktopComponent.class, String.class, String.class, String.class);
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (DesktopComponent)this, getDate(), value, "date");
+        } catch (InvocationTargetException e) {
+            throw e.getCause();
+        }
     }
 
     @SneakyThrows
     default void validateDateNotContains(String value) {
-        Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeNotContains", DesktopComponent.class, String.class,  String.class, String.class);
-        method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (DesktopComponent)this, getDate(), value, "date");
+        try {
+            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeNotContains", DesktopComponent.class, String.class, String.class, String.class);
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (DesktopComponent)this, getDate(), value, "date");
+        } catch (InvocationTargetException e) {
+            throw e.getCause();
+        }
     }
 }

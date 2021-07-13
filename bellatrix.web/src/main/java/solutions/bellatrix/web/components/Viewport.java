@@ -31,7 +31,7 @@ public class Viewport implements LayoutComponent {
     }
 
     @Override
-    public String getElementName() {
+    public String getComponentName() {
         return "Viewport";
     }
 

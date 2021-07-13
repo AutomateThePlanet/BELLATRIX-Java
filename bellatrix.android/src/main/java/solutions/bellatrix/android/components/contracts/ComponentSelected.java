@@ -18,6 +18,7 @@ import solutions.bellatrix.android.components.AndroidComponent;
 import solutions.bellatrix.android.validations.ComponentValidator;
 import solutions.bellatrix.core.utilities.SingletonFactory;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 public interface ComponentSelected extends Component {
@@ -25,13 +26,22 @@ public interface ComponentSelected extends Component {
 
     @SneakyThrows
     default void validateIsSelected() {
-        Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeTrue", AndroidComponent.class, boolean.class, String.class);
-        method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (AndroidComponent)this, isSelected(), "selected");
+        try {
+            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeTrue", AndroidComponent.class, boolean.class, String.class);
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (AndroidComponent)this, isSelected(), "selected");
+        } catch (InvocationTargetException e) {
+            throw e.getCause();
+        }
     }
 
     @SneakyThrows
     default void validateNotSelected() {
-        Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeFalse", AndroidComponent.class, boolean.class, String.class);
-        method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (AndroidComponent)this, isSelected(), "selected");
+        try {
+            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeFalse", AndroidComponent.class, boolean.class, String.class);
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (AndroidComponent)this, isSelected(), "selected");
+        } catch (
+                InvocationTargetException e) {
+            throw e.getCause();
+        }
     }
 }

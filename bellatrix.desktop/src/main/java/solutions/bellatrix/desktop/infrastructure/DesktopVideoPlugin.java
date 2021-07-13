@@ -15,30 +15,25 @@ package solutions.bellatrix.desktop.infrastructure;
 
 import plugins.video.VideoPlugin;
 import solutions.bellatrix.core.configuration.ConfigurationService;
-import solutions.bellatrix.core.utilities.UserHomePathNormalizer;
+import solutions.bellatrix.core.utilities.PathNormalizer;
 import solutions.bellatrix.desktop.configuration.DesktopSettings;
 
 import java.io.File;
 import java.util.UUID;
 
 public class DesktopVideoPlugin extends VideoPlugin {
-    public DesktopVideoPlugin(boolean isEnabled) {
-        super(isEnabled);
-    }
-
-    public static DesktopVideoPlugin of() {
-        boolean isEnabled = ConfigurationService.get(DesktopSettings.class).getVideosOnFailEnabled();
-        return new DesktopVideoPlugin(isEnabled);
+    public DesktopVideoPlugin() {
+        super(ConfigurationService.get(DesktopSettings.class).getVideosOnFailEnabled());
     }
 
     @Override
     protected String getOutputFolder() {
         String saveLocation = ConfigurationService.get(DesktopSettings.class).getVideosSaveLocation();
-        saveLocation = UserHomePathNormalizer.normalizePath(saveLocation);
+        saveLocation = PathNormalizer.normalizePath(saveLocation);
 
         var directory = new File(saveLocation);
-        if (! directory.exists()){
-            directory.mkdirs();
+        if (directory.mkdirs()) {
+            return saveLocation;
         }
 
         return saveLocation;

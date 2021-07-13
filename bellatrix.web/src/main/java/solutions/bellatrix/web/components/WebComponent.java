@@ -20,11 +20,14 @@ import lombok.Setter;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.*;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Select;
 import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.core.plugins.EventListener;
 import solutions.bellatrix.core.utilities.DebugInformation;
 import solutions.bellatrix.core.utilities.InstanceFactory;
+import solutions.bellatrix.core.utilities.Log;
 import solutions.bellatrix.web.components.contracts.Component;
 import solutions.bellatrix.web.configuration.WebSettings;
 import solutions.bellatrix.web.findstrategies.*;
@@ -38,6 +41,7 @@ import solutions.bellatrix.web.waitstrategies.*;
 
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -59,22 +63,21 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
     public final static EventListener<ComponentActionEventArgs> CREATED_ELEMENT = new EventListener<>();
     public final static EventListener<ComponentActionEventArgs> CREATING_ELEMENTS = new EventListener<>();
     public final static EventListener<ComponentActionEventArgs> CREATED_ELEMENTS = new EventListener<>();
-    public final static EventListener<ComponentActionEventArgs> VALIDATED_ATTRIBUTE = new EventListener<>();
 
     @Setter(AccessLevel.PROTECTED) private WebElement wrappedElement;
     @Getter @Setter private WebElement parentWrappedElement;
     @Getter @Setter private int elementIndex;
     @Getter @Setter private FindStrategy findStrategy;
-    @Getter private WebDriver wrappedDriver;
-    @Getter protected JavaScriptService javaScriptService;
-    @Getter protected BrowserService browserService;
-    @Getter protected ComponentCreateService componentCreateService;
-    @Getter protected ComponentWaitService componentWaitService;
-    private List<WaitStrategy> waitStrategies;
-    private WebSettings webSettings;
+    @Getter private final WebDriver wrappedDriver;
+    @Getter protected final JavaScriptService javaScriptService;
+    @Getter protected final BrowserService browserService;
+    @Getter protected final ComponentCreateService componentCreateService;
+    @Getter protected final ComponentWaitService componentWaitService;
+    private final List<WaitStrategy> waitStrategies;
+    private final WebSettings webSettings;
 
     public WebComponent() {
-        this.waitStrategies = new ArrayList<>();
+        waitStrategies = new ArrayList<>();
         webSettings = ConfigurationService.get(WebSettings.class);
         javaScriptService = new JavaScriptService();
         browserService = new BrowserService();
@@ -87,12 +90,12 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
         try {
             wrappedElement.isDisplayed(); // checking if getting property throws exception
             return wrappedElement;
-        } catch (StaleElementReferenceException | NullPointerException ex) {
+        } catch (StaleElementReferenceException | NoSuchElementException | NullPointerException ex) {
             return findElement();
         }
     }
 
-    public String getElementName() {
+    public String getComponentName() {
         return String.format("%s (%s)", getComponentClass().getSimpleName(), findStrategy.toString());
     }
 
@@ -101,11 +104,11 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
     }
 
     public void scrollToVisible() {
-        scrollToVisible(findElement(), false);
+        scrollToVisible(getWrappedElement(), false);
     }
 
     public void setAttribute(String name, String value) {
-        SETTING_ATTRIBUTE.broadcast(new ComponentActionEventArgs(this));
+        SETTING_ATTRIBUTE.broadcast(new ComponentActionEventArgs(this, value, name));
         javaScriptService.execute(String.format("arguments[0].setAttribute('%s', '%s');", name, value), this);
         ATTRIBUTE_SET.broadcast(new ComponentActionEventArgs(this));
     }
@@ -113,13 +116,14 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
     public void focus() {
         FOCUSING.broadcast(new ComponentActionEventArgs(this));
         javaScriptService.execute("window.focus();");
-        javaScriptService.execute("arguments[0].focus();", findElement());
+        javaScriptService.execute("arguments[0].focus();", getWrappedElement());
         FOCUSED.broadcast(new ComponentActionEventArgs(this));
     }
 
     public void hover() {
         HOVERING.broadcast(new ComponentActionEventArgs(this));
-        javaScriptService.execute("arguments[0].onmouseover();", findElement());
+        Actions actions = new Actions(wrappedDriver);
+        actions.moveToElement(getWrappedElement()).build().perform();
         HOVERED.broadcast(new ComponentActionEventArgs(this));
     }
 
@@ -128,11 +132,11 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
     }
 
     public Point getLocation() {
-        return findElement().getLocation();
+        return getWrappedElement().getLocation();
     }
 
     public Dimension getSize() {
-        return findElement().getSize();
+        return getWrappedElement().getSize();
     }
 
     public String getTitle() {
@@ -164,34 +168,97 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
     }
 
     public String getAttribute(String name) {
-        return findElement().getAttribute(name);
+        return getWrappedElement().getAttribute(name);
     }
 
     public String getCssValue(String propertyName) {
-        return findElement().getCssValue(propertyName);
+        return getWrappedElement().getCssValue(propertyName);
     }
 
     public void ensureState(WaitStrategy waitStrategy) {
         waitStrategies.add(waitStrategy);
     }
 
-    @SuppressWarnings("unchecked")
-    public <TElementType extends WebComponent> TElementType toExists() {
-        var waitStrategy = new ToExistsWaitStrategy();
+    public <TElementType extends WebComponent> TElementType toExist() {
+        var waitStrategy = new ToExistWaitStrategy();
         ensureState(waitStrategy);
         return (TElementType)this;
     }
 
-    @SuppressWarnings("unchecked")
+    public <TElementType extends WebComponent> TElementType toNotExist() {
+        var waitStrategy = new ToNotExistWaitStrategy();
+        ensureState(waitStrategy);
+        return (TElementType)this;
+    }
+
+    public <TElementType extends WebComponent> TElementType toBeVisible() {
+        var waitStrategy = new ToBeVisibleWaitStrategy();
+        ensureState(waitStrategy);
+        return (TElementType)this;
+    }
+
+    public <TElementType extends WebComponent> TElementType toNotBeVisible() {
+        var waitStrategy = new ToNotBeVisibleWaitStrategy();
+        ensureState(waitStrategy);
+        return (TElementType)this;
+    }
+
     public <TElementType extends WebComponent> TElementType toBeClickable() {
         var waitStrategy = new ToBeClickableWaitStrategy();
         ensureState(waitStrategy);
         return (TElementType)this;
     }
 
-    @SuppressWarnings("unchecked")
-    public <TElementType extends WebComponent> TElementType toBeVisible() {
-        var waitStrategy = new ToBeVisibleWaitStrategy();
+    public <TElementType extends WebComponent> TElementType toBeDisabled() {
+        var waitStrategy = new ToBeDisabledWaitStrategy();
+        ensureState(waitStrategy);
+        return (TElementType)this;
+    }
+
+    public <TElementType extends WebComponent> TElementType toHaveContent() {
+        var waitStrategy = new ToHaveContentWaitStrategy();
+        ensureState(waitStrategy);
+        return (TElementType)this;
+    }
+
+    public <TElementType extends WebComponent> TElementType toExist(long timeoutInterval, long sleepInterval) {
+        var waitStrategy = new ToExistWaitStrategy(timeoutInterval, sleepInterval);
+        ensureState(waitStrategy);
+        return (TElementType)this;
+    }
+
+    public <TElementType extends WebComponent> TElementType toNotExist(long timeoutInterval, long sleepInterval) {
+        var waitStrategy = new ToNotExistWaitStrategy(timeoutInterval, sleepInterval);
+        ensureState(waitStrategy);
+        return (TElementType)this;
+    }
+
+    public <TElementType extends WebComponent> TElementType toBeVisible(long timeoutInterval, long sleepInterval) {
+        var waitStrategy = new ToBeVisibleWaitStrategy(timeoutInterval, sleepInterval);
+        ensureState(waitStrategy);
+        return (TElementType)this;
+    }
+
+    public <TElementType extends WebComponent> TElementType toNotBeVisible(long timeoutInterval, long sleepInterval) {
+        var waitStrategy = new ToNotBeVisibleWaitStrategy(timeoutInterval, sleepInterval);
+        ensureState(waitStrategy);
+        return (TElementType)this;
+    }
+
+    public <TElementType extends WebComponent> TElementType toBeClickable(long timeoutInterval, long sleepInterval) {
+        var waitStrategy = new ToBeClickableWaitStrategy(timeoutInterval, sleepInterval);
+        ensureState(waitStrategy);
+        return (TElementType)this;
+    }
+
+    public <TElementType extends WebComponent> TElementType toBeDisabled(long timeoutInterval, long sleepInterval) {
+        var waitStrategy = new ToBeDisabledWaitStrategy(timeoutInterval, sleepInterval);
+        ensureState(waitStrategy);
+        return (TElementType)this;
+    }
+
+    public <TElementType extends WebComponent> TElementType toHaveContent(long timeoutInterval, long sleepInterval) {
+        var waitStrategy = new ToHaveContentWaitStrategy(timeoutInterval, sleepInterval);
         ensureState(waitStrategy);
         return (TElementType)this;
     }
@@ -216,12 +283,36 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
         return create(componentClass, new IdFindStrategy(id));
     }
 
+    public <TComponent extends WebComponent> TComponent createByAttributeContaining(Class<TComponent> componentClass, String attributeName, String value) {
+        return create(componentClass, new AttributeContainingWithFindStrategy(attributeName, value));
+    }
+
+    public <TComponent extends WebComponent> TComponent createByIdEndingWith(Class<TComponent> componentClass, String idEnding) {
+        return create(componentClass, new IdEndingWithFindStrategy(idEnding));
+    }
+
     public <TComponent extends WebComponent> TComponent createByCss(Class<TComponent> componentClass, String css) {
         return create(componentClass, new CssFindStrategy(css));
     }
 
-    public <TComponent extends WebComponent> TComponent createByClass(Class<TComponent> componentClass, String cclass) {
-        return create(componentClass, new ClassFindStrategy(cclass));
+    public <TComponent extends WebComponent> TComponent createByClass(Class<TComponent> componentClass, String className) {
+        return create(componentClass, new ClassFindStrategy(className));
+    }
+
+    public <TComponent extends WebComponent> TComponent createByName(Class<TComponent> componentClass, String name) {
+        return create(componentClass, new NameFindStrategy(name));
+    }
+
+    public <TComponent extends WebComponent> TComponent createByNameEnding(Class<TComponent> componentClass, String nameEnding) {
+        return create(componentClass, new NameEndingWithFindStrategy(nameEnding));
+    }
+
+    public <TComponent extends WebComponent> TComponent createByValueContaining(Class<TComponent> componentClass, String valueContaining) {
+        return create(componentClass, new ValueContainingWithFindStrategy(valueContaining));
+    }
+
+    public <TComponent extends WebComponent> TComponent createByClassContaining(Class<TComponent> componentClass, String classNameContaining) {
+        return create(componentClass, new ClassContainingFindStrategy(classNameContaining));
     }
 
     public <TComponent extends WebComponent> TComponent createByXPath(Class<TComponent> componentClass, String xpath) {
@@ -230,6 +321,10 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
 
     public <TComponent extends WebComponent> TComponent createByLinkText(Class<TComponent> componentClass, String linkText) {
         return create(componentClass, new LinkTextFindStrategy(linkText));
+    }
+
+    public <TComponent extends WebComponent> TComponent createByLinkTextContaining(Class<TComponent> componentClass, String linkTextContaining) {
+        return create(componentClass, new LinkTextContainingFindStrategy(linkTextContaining));
     }
 
     public <TComponent extends WebComponent> TComponent createByTag(Class<TComponent> componentClass, String tag) {
@@ -241,19 +336,43 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
     }
 
     public <TComponent extends WebComponent> TComponent createByInnerTextContaining(Class<TComponent> componentClass, String innerText) {
-        return create(componentClass, new InnerTextContainsFindStrategy(innerText));
+        return create(componentClass, new InnerTextContainingFindStrategy(innerText));
     }
 
     public <TComponent extends WebComponent> List<TComponent> createAllById(Class<TComponent> componentClass, String id) {
         return createAll(componentClass, new IdFindStrategy(id));
     }
 
+    public <TComponent extends WebComponent> List<TComponent> createAllByAttributeContaining(Class<TComponent> componentClass, String attributeName, String value) {
+        return createAll(componentClass, new AttributeContainingWithFindStrategy(attributeName, value));
+    }
+
+    public <TComponent extends WebComponent> List<TComponent> createAllByIdEndingWith(Class<TComponent> componentClass, String idEnding) {
+        return createAll(componentClass, new IdEndingWithFindStrategy(idEnding));
+    }
+
     public <TComponent extends WebComponent> List<TComponent> createAllByCss(Class<TComponent> componentClass, String css) {
         return createAll(componentClass, new CssFindStrategy(css));
     }
 
-    public <TComponent extends WebComponent> List<TComponent> createAllByClass(Class<TComponent> componentClass, String cclass) {
-        return createAll(componentClass, new ClassFindStrategy(cclass));
+    public <TComponent extends WebComponent> List<TComponent> createAllByClass(Class<TComponent> componentClass, String className) {
+        return createAll(componentClass, new ClassFindStrategy(className));
+    }
+
+    public <TComponent extends WebComponent> List<TComponent> createAllByName(Class<TComponent> componentClass, String name) {
+        return createAll(componentClass, new NameFindStrategy(name));
+    }
+
+    public <TComponent extends WebComponent> List<TComponent> createAllByNameEnding(Class<TComponent> componentClass, String nameEnding) {
+        return createAll(componentClass, new NameEndingWithFindStrategy(nameEnding));
+    }
+
+    public <TComponent extends WebComponent> List<TComponent> createAllByValueContaining(Class<TComponent> componentClass, String valueContaining) {
+        return createAll(componentClass, new ValueContainingWithFindStrategy(valueContaining));
+    }
+
+    public <TComponent extends WebComponent> List<TComponent> createAllByClassContaining(Class<TComponent> componentClass, String classNameContaining) {
+        return createAll(componentClass, new ClassContainingFindStrategy(classNameContaining));
     }
 
     public <TComponent extends WebComponent> List<TComponent> createAllByXPath(Class<TComponent> componentClass, String xpath) {
@@ -262,6 +381,10 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
 
     public <TComponent extends WebComponent> List<TComponent> createAllByLinkText(Class<TComponent> componentClass, String linkText) {
         return createAll(componentClass, new LinkTextFindStrategy(linkText));
+    }
+
+    public <TComponent extends WebComponent> List<TComponent> createAllByLinkTextContaining(Class<TComponent> componentClass, String linkTextContaining) {
+        return createAll(componentClass, new LinkTextContainingFindStrategy(linkTextContaining));
     }
 
     public <TComponent extends WebComponent> List<TComponent> createAllByTag(Class<TComponent> componentClass, String tag) {
@@ -273,28 +396,32 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
     }
 
     public <TComponent extends WebComponent> List<TComponent> createAllByInnerTextContaining(Class<TComponent> componentClass, String innerText) {
-        return createAll(componentClass, new InnerTextContainsFindStrategy(innerText));
+        return createAll(componentClass, new InnerTextContainingFindStrategy(innerText));
     }
 
     public void highlight() {
         var currentBrowser = DriverService.getBrowserConfiguration().getBrowser();
-        if (currentBrowser == Browser.CHROME_HEADLESS || currentBrowser == Browser.EDGE_HEADLESS) return;
+        if (currentBrowser == Browser.CHROME_HEADLESS) return;
 
         try {
-            var nativeElement = wrappedElement;
-            var originalElementBorder = nativeElement.getCssValue("background-color");
-            javaScriptService.execute("arguments[0].style.background='yellow'; return;", nativeElement);
+            var originalElementBackground = getWrappedElement().getCssValue("background");
+            var originalElementColor = getWrappedElement().getCssValue("color");
+            var originalElementOutline = getWrappedElement().getCssValue("outline");
+            javaScriptService.execute("arguments[0].style.background='yellow';arguments[0].style.color='black';arguments[0].style.outline='1px solid black';return;", wrappedElement);
 
             var runnable = new Runnable() {
                 @SneakyThrows
                 public void run() {
                     Thread.sleep(100);
-                    javaScriptService.execute("arguments[0].style.background='" + originalElementBorder + "'; return;", nativeElement);
+                    try {
+                        javaScriptService.execute("arguments[0].style.background='" + originalElementBackground + "';arguments[0].style.color='" + originalElementColor + "';arguments[0].style.outline='" + originalElementOutline + "';return;", wrappedElement);
+                    } catch (NoSuchSessionException | NullPointerException ignored) {
+                    }
                 }
             };
             new Thread(runnable).start();
-
-        } catch (Exception ignored) { }
+        } catch (Exception ignored) {
+        }
     }
 
     protected <TComponent extends WebComponent, TFindStrategy extends FindStrategy> TComponent create(Class<TComponent> componentClass, TFindStrategy findStrategy) {
@@ -325,53 +452,80 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
     }
 
     public WebElement findElement() {
-      if (waitStrategies.size() == 0) {
-          waitStrategies.add(Wait.to().exists());
-      }
+        if (waitStrategies.size() == 0) {
+            waitStrategies.add(Wait.to().exist(webSettings.getTimeoutSettings().getElementWaitTimeout(), webSettings.getTimeoutSettings().getSleepInterval()));
+        }
 
-      try {
-          for (var waitStrategy:waitStrategies) {
-              componentWaitService.wait(this, waitStrategy);
-          }
+        try {
+            for (var waitStrategy : waitStrategies) {
+                componentWaitService.wait(this, waitStrategy);
+            }
 
-          wrappedElement = findNativeElement();
-          scrollToMakeElementVisible(wrappedElement);
-          if (webSettings.getWaitUntilReadyOnElementFound()) {
-              browserService.waitForAjax();
-          }
+            wrappedElement = findNativeElement();
+            scrollToMakeElementVisible(wrappedElement);
+            if (webSettings.getWaitUntilReadyOnElementFound()) {
+                browserService.waitForAjax();
+            }
 
-          if (webSettings.getWaitForAngular()) {
-              browserService.waitForAngular();
-          }
+            if (webSettings.getWaitForAngular()) {
+                browserService.waitForAngular();
+            }
 
-          addArtificialDelay();
+            addArtificialDelay();
 
-          waitStrategies.clear();
-      } catch (WebDriverException ex) {
-          DebugInformation.printStackTrace(ex);
-          System.out.printf("%n%nThe element: %n Name: '%s', %n Locator: '%s', %nWas not found on the page or didn't fulfill the specified conditions.%n%n", getComponentClass().getSimpleName(), findStrategy.toString());
-      }
+            waitStrategies.clear();
+        } catch (WebDriverException ex) {
+            Log.error("%n%nThe component: %n" +
+                            "     Type: \"\u001B[1m%s\u001B[0m\"%n" +
+                            "  Locator: \"\u001B[1m%s\u001B[0m\"%n" +
+                            "Was not found on the page or didn't fulfill the specified conditions.%n%n",
+                    getComponentClass().getSimpleName(), findStrategy.toString());
+            throw ex;
+        }
 
         RETURNING_WRAPPED_ELEMENT.broadcast(new ComponentActionEventArgs(this));
         return wrappedElement;
     }
 
+    private void clickInternal() {
+        long toBeClickableTimeout = webSettings.getTimeoutSettings().getElementToBeClickableTimeout();
+        long sleepInterval = webSettings.getTimeoutSettings().getSleepInterval();
+
+        FluentWait<WebDriver> wait = new FluentWait<>(getWrappedDriver())
+                .withTimeout(Duration.ofSeconds(toBeClickableTimeout))
+                .pollingEvery(Duration.ofSeconds(sleepInterval > 0 ? sleepInterval : 1));
+
+        try {
+            wait.until(x -> tryClick());
+        } catch (TimeoutException e) {
+            toExist().toBeClickable().findElement().click();
+        }
+    }
+
+    private boolean tryClick() {
+        try {
+            toExist().toBeClickable().findElement().click();
+            return true;
+        } catch (ElementNotInteractableException e) {
+            return false;
+        } catch (WebDriverException e) {
+            toExist().toBeClickable().waitToBe();
+            return false;
+        }
+    }
 
     protected void defaultClick(EventListener<ComponentActionEventArgs> clicking, EventListener<ComponentActionEventArgs> clicked) {
         clicking.broadcast(new ComponentActionEventArgs(this));
-
-        this.toExists().toBeClickable().waitToBe();
-        javaScriptService.execute("arguments[0].focus();arguments[0].click();", wrappedElement);
-
+        clickInternal();
         clicked.broadcast(new ComponentActionEventArgs(this));
     }
 
     protected void defaultCheck(EventListener<ComponentActionEventArgs> clicking, EventListener<ComponentActionEventArgs> clicked) {
         clicking.broadcast(new ComponentActionEventArgs(this));
 
-        this.toExists().toBeClickable().waitToBe();
-        if (!findElement().isSelected()) {
-            javaScriptService.execute("arguments[0].focus();arguments[0].click();", wrappedElement);
+        this.toExist().toBeClickable().waitToBe();
+        if (!getWrappedElement().isSelected()) {
+            clickInternal();
         }
 
         clicked.broadcast(new ComponentActionEventArgs(this));
@@ -380,176 +534,306 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
     protected void defaultUncheck(EventListener<ComponentActionEventArgs> checking, EventListener<ComponentActionEventArgs> checked) {
         checking.broadcast(new ComponentActionEventArgs(this));
 
-        this.toExists().toBeClickable().waitToBe();
-        if (findElement().isSelected()) {
-            javaScriptService.execute("arguments[0].focus();arguments[0].click();", wrappedElement);
+        toExist().toBeClickable().waitToBe();
+        if (getWrappedElement().isSelected()) {
+            clickInternal();
         }
 
         checked.broadcast(new ComponentActionEventArgs(this));
     }
 
     protected void setValue(EventListener<ComponentActionEventArgs> gettingValue, EventListener<ComponentActionEventArgs> gotValue, String value) {
-        gettingValue.broadcast(new ComponentActionEventArgs(this));
-        javaScriptService.execute(String.format("arguments[0].value = '%s';", value), findElement());
-        gotValue.broadcast(new ComponentActionEventArgs(this));
+        gettingValue.broadcast(new ComponentActionEventArgs(this, value));
+        javaScriptService.execute(String.format("arguments[0].value = '%s';", value), getWrappedElement());
+        gotValue.broadcast(new ComponentActionEventArgs(this, value));
     }
 
     protected void defaultSelectByText(EventListener<ComponentActionEventArgs> selectingValue, EventListener<ComponentActionEventArgs> valueSelected, String value) {
-        selectingValue.broadcast(new ComponentActionEventArgs(this));
-        new Select(findElement()).selectByVisibleText(value);
-        valueSelected.broadcast(new ComponentActionEventArgs(this));
+        selectingValue.broadcast(new ComponentActionEventArgs(this, value));
+        new Select(getWrappedElement()).selectByVisibleText(value);
+        valueSelected.broadcast(new ComponentActionEventArgs(this, value));
     }
 
     protected void defaultSelectByIndex(EventListener<ComponentActionEventArgs> selectingValue, EventListener<ComponentActionEventArgs> valueSelected, int value) {
-        selectingValue.broadcast(new ComponentActionEventArgs(this));
-        new Select(findElement()).selectByIndex(value);
-        valueSelected.broadcast(new ComponentActionEventArgs(this));
+        selectingValue.broadcast(new ComponentActionEventArgs(this, "index: " + value));
+        new Select(getWrappedElement()).selectByIndex(value);
+        valueSelected.broadcast(new ComponentActionEventArgs(this, "index: " + value));
     }
 
     protected String defaultGetValue() {
-        return Optional.ofNullable(getAttribute("value")).orElse("");
+        try {
+            return Optional.ofNullable(getAttribute("value")).orElse("");
+        } catch (StaleElementReferenceException e) {
+            return Optional.ofNullable(findElement().getAttribute("value")).orElse("");
+        }
     }
-    
+
     protected String defaultGetName() {
-        return Optional.ofNullable(getAttribute("name")).orElse("");
+        try {
+            return Optional.ofNullable(getAttribute("name")).orElse("");
+        } catch (StaleElementReferenceException e) {
+            return Optional.ofNullable(findElement().getAttribute("name")).orElse("");
+        }
     }
 
     protected String defaultGetMaxLength() {
-        return Optional.ofNullable(getAttribute("maxlength")).orElse("");
+        try {
+            return Optional.ofNullable(getAttribute("max")).orElse("");
+        } catch (StaleElementReferenceException e) {
+            return Optional.ofNullable(findElement().getAttribute("max")).orElse("");
+        }
     }
 
     protected String defaultGetMinLength() {
-        return Optional.ofNullable(getAttribute("minlength")).orElse("");
+        try {
+            return Optional.ofNullable(getAttribute("min")).orElse("");
+        } catch (StaleElementReferenceException e) {
+            return Optional.ofNullable(findElement().getAttribute("min")).orElse("");
+        }
     }
 
     protected String defaultGetSizeAttribute() {
-        return Optional.ofNullable(getAttribute("size")).orElse("");
+        try {
+            return Optional.ofNullable(getAttribute("size")).orElse("");
+        } catch (StaleElementReferenceException e) {
+            return Optional.ofNullable(findElement().getAttribute("size")).orElse("");
+        }
     }
 
     protected String defaultGetSizesAttribute() {
-        return Optional.ofNullable(getAttribute("sizes")).orElse("");
+        try {
+            return Optional.ofNullable(getAttribute("sizes")).orElse("");
+        } catch (StaleElementReferenceException e) {
+            return Optional.ofNullable(findElement().getAttribute("sizes")).orElse("");
+        }
     }
 
     protected String defaultGetSrcAttribute() {
-        return Optional.ofNullable(getAttribute("src")).orElse("");
+        try {
+            return Optional.ofNullable(getAttribute("src")).orElse("");
+        } catch (StaleElementReferenceException e) {
+            return Optional.ofNullable(findElement().getAttribute("src")).orElse("");
+        }
     }
 
     protected String defaultGetSrcSetAttribute() {
-        return Optional.ofNullable(getAttribute("srcset")).orElse("");
+        try {
+            return Optional.ofNullable(getAttribute("srcset")).orElse("");
+        } catch (StaleElementReferenceException e) {
+            return Optional.ofNullable(findElement().getAttribute("srcset")).orElse("");
+        }
     }
 
     protected String defaultGetAltAttribute() {
-        return Optional.ofNullable(getAttribute("alt")).orElse("");
+        try {
+            return Optional.ofNullable(getAttribute("alt")).orElse("");
+        } catch (StaleElementReferenceException e) {
+            return Optional.ofNullable(findElement().getAttribute("alt")).orElse("");
+        }
     }
 
     protected String defaultGetColsAttribute() {
-        return Optional.ofNullable(getAttribute("cols")).orElse("");
+        try {
+            return Optional.ofNullable(getAttribute("cols")).orElse("");
+        } catch (StaleElementReferenceException e) {
+            return Optional.ofNullable(findElement().getAttribute("cols")).orElse("");
+        }
     }
 
     protected String defaultGetRowsAttribute() {
-        return Optional.ofNullable(getAttribute("rows")).orElse("");
+        try {
+            return Optional.ofNullable(getAttribute("rows")).orElse("");
+        } catch (StaleElementReferenceException e) {
+            return Optional.ofNullable(findElement().getAttribute("rows")).orElse("");
+        }
     }
 
     protected String defaultGetLongDescAttribute() {
-        return Optional.ofNullable(getAttribute("longdesc")).orElse("");
+        try {
+            return Optional.ofNullable(getAttribute("longdesc")).orElse("");
+        } catch (StaleElementReferenceException e) {
+            return Optional.ofNullable(findElement().getAttribute("longdesc")).orElse("");
+        }
     }
 
     protected String defaultGetHeightAttribute() {
-        return Optional.ofNullable(getAttribute("height")).orElse("");
+        try {
+            return Optional.ofNullable(getAttribute("height")).orElse("");
+        } catch (StaleElementReferenceException e) {
+            return Optional.ofNullable(findElement().getAttribute("height")).orElse("");
+        }
     }
 
     protected String defaultGetWidthAttribute() {
-        return Optional.ofNullable(getAttribute("width")).orElse("");
+        try {
+            return Optional.ofNullable(getAttribute("width")).orElse("");
+        } catch (StaleElementReferenceException e) {
+            return Optional.ofNullable(findElement().getAttribute("width")).orElse("");
+        }
     }
 
     protected String defaultGetInnerHtmlAttribute() {
-        return Optional.ofNullable(getAttribute("innerHTML")).orElse("");
+        try {
+            return Optional.ofNullable(getAttribute("innerHTML")).orElse("");
+        } catch (StaleElementReferenceException e) {
+            return Optional.ofNullable(findElement().getAttribute("innerHTML")).orElse("");
+        }
     }
 
     protected String defaultGetForAttribute() {
-        return Optional.ofNullable(getAttribute("for")).orElse("");
+        try {
+            return Optional.ofNullable(getAttribute("for")).orElse("");
+        } catch (StaleElementReferenceException e) {
+            return Optional.ofNullable(findElement().getAttribute("for")).orElse("");
+        }
     }
 
     protected String defaultGetTargetAttribute() {
-        return Optional.ofNullable(getAttribute("target")).orElse("");
+        try {
+            return Optional.ofNullable(getAttribute("target")).orElse("");
+        } catch (StaleElementReferenceException e) {
+            return Optional.ofNullable(findElement().getAttribute("target")).orElse("");
+        }
     }
 
     protected String defaultGetRelAttribute() {
-        return Optional.ofNullable(getAttribute("rel")).orElse("");
+        try {
+            return Optional.ofNullable(getAttribute("rel")).orElse("");
+        } catch (StaleElementReferenceException e) {
+            return Optional.ofNullable(findElement().getAttribute("rel")).orElse("");
+        }
     }
 
     protected boolean defaultGetDisabledAttribute() {
-        var valueAttr = Optional.ofNullable(getAttribute("disabled")).orElse("false");
-        return valueAttr.toLowerCase(Locale.ROOT).equals("true");
+        try {
+            var valueAttr = Optional.ofNullable(getAttribute("disabled")).orElse("false");
+            return valueAttr.toLowerCase(Locale.ROOT).equals("true");
+        } catch (StaleElementReferenceException e) {
+            var valueAttr = Optional.ofNullable(findElement().getAttribute("disabled")).orElse("false");
+            return valueAttr.toLowerCase(Locale.ROOT).equals("true");
+        }
     }
 
     protected String defaultGetText() {
-        return Optional.ofNullable(findElement().getText()).orElse("");
+        try {
+            return Optional.ofNullable(getWrappedElement().getText()).orElse("");
+        } catch (StaleElementReferenceException e) {
+            return Optional.ofNullable(findElement().getText()).orElse("");
+        }
     }
 
     protected String defaultGetMinAttribute() {
-        return Optional.ofNullable(getAttribute("min")).orElse("");
+        try {
+            return Optional.ofNullable(getAttribute("min")).orElse("");
+        } catch (StaleElementReferenceException e) {
+            return Optional.ofNullable(findElement().getAttribute("min")).orElse("");
+        }
     }
 
     protected String defaultGetMaxAttribute() {
-        return Optional.ofNullable(getAttribute("max")).orElse("");
+        try {
+            return Optional.ofNullable(getAttribute("max")).orElse("");
+        } catch (StaleElementReferenceException e) {
+            return Optional.ofNullable(findElement().getAttribute("max")).orElse("");
+        }
     }
 
     protected String defaultGetStepAttribute() {
-        return Optional.ofNullable(getAttribute("step")).orElse("");
+        try {
+            return Optional.ofNullable(getAttribute("step")).orElse("");
+        } catch (StaleElementReferenceException e) {
+            return Optional.ofNullable(findElement().getAttribute("step")).orElse("");
+        }
     }
 
     protected String defaultGetWrapAttribute() {
-        return Optional.ofNullable(getAttribute("wrap")).orElse("");
+        try {
+            return Optional.ofNullable(getAttribute("wrap")).orElse("");
+        } catch (StaleElementReferenceException e) {
+            return Optional.ofNullable(findElement().getAttribute("wrap")).orElse("");
+        }
     }
 
     protected String defaultGetPlaceholderAttribute() {
-        return Optional.ofNullable(getAttribute("placeholder")).orElse("");
+        try {
+            return Optional.ofNullable(getAttribute("placeholder")).orElse("");
+        } catch (StaleElementReferenceException e) {
+            return Optional.ofNullable(findElement().getAttribute("placeholder")).orElse("");
+        }
     }
 
     protected String defaultGetAcceptAttribute() {
-        return Optional.ofNullable(getAttribute("accept")).orElse(null);
+        try {
+            return Optional.ofNullable(getAttribute("accept")).orElse(null);
+        } catch (StaleElementReferenceException e) {
+            return Optional.ofNullable(findElement().getAttribute("accept")).orElse(null);
+        }
     }
 
     protected boolean defaultGetAutoCompleteAttribute() {
-        return Optional.ofNullable(getAttribute("autocomplete")).orElse("").equals("on");
+        try {
+            return Optional.ofNullable(getAttribute("autocomplete")).orElse("").equals("on");
+        } catch (StaleElementReferenceException e) {
+            return Optional.ofNullable(findElement().getAttribute("autocomplete")).orElse("").equals("on");
+        }
     }
 
     protected boolean defaultGetSpellCheckAttribute() {
-        return Optional.ofNullable(getAttribute("spellcheck")).orElse("").equals("on");
+        try {
+            return Optional.ofNullable(getAttribute("spellcheck")).orElse("").equals("on");
+        } catch (StaleElementReferenceException e) {
+            return Optional.ofNullable(findElement().getAttribute("spellcheck")).orElse("").equals("on");
+        }
     }
 
     protected boolean defaultGetReadonlyAttribute() {
-        return !StringUtils.isEmpty(Optional.ofNullable(getAttribute("readonly")).orElse(""));
+        try {
+            return !StringUtils.isEmpty(Optional.ofNullable(getAttribute("readonly")).orElse(""));
+        } catch (StaleElementReferenceException e) {
+            return !StringUtils.isEmpty(Optional.ofNullable(findElement().getAttribute("readonly")).orElse(""));
+        }
     }
 
-    protected boolean defaultGetRequiredAttribute()
-    {
-        return !StringUtils.isEmpty(Optional.ofNullable(getAttribute("required")).orElse(""));
+    protected boolean defaultGetRequiredAttribute() {
+        try {
+            return !StringUtils.isEmpty(Optional.ofNullable(getAttribute("required")).orElse(""));
+        } catch (StaleElementReferenceException e) {
+            return !StringUtils.isEmpty(Optional.ofNullable(findElement().getAttribute("required")).orElse(""));
+        }
     }
 
-    protected boolean defaultGetMultipleAttribute()
-    {
-        return !StringUtils.isEmpty(Optional.ofNullable(getAttribute("multiple")).orElse(""));
+    protected boolean defaultGetMultipleAttribute() {
+        try {
+            return !StringUtils.isEmpty(Optional.ofNullable(getAttribute("multiple")).orElse(""));
+        } catch (StaleElementReferenceException e) {
+            return !StringUtils.isEmpty(Optional.ofNullable(findElement().getAttribute("multiple")).orElse(""));
+        }
     }
 
     protected String defaultGetList() {
-        return Optional.ofNullable(getAttribute("list")).orElse("");
+        try {
+            return Optional.ofNullable(getAttribute("list")).orElse("");
+        } catch (StaleElementReferenceException e) {
+            return Optional.ofNullable(findElement().getAttribute("list")).orElse("");
+        }
     }
 
     @SneakyThrows
     protected String defaultGetHref() {
-        return unescapeHtml4(URLDecoder.decode(Optional.ofNullable(getAttribute("href")).orElse(""), StandardCharsets.UTF_8.name()));
+        try {
+            return unescapeHtml4(URLDecoder.decode(Optional.ofNullable(getAttribute("href")).orElse(""), StandardCharsets.UTF_8.name()));
+        } catch (StaleElementReferenceException e) {
+            return unescapeHtml4(URLDecoder.decode(Optional.ofNullable(findElement().getAttribute("href")).orElse(""), StandardCharsets.UTF_8.name()));
+        }
     }
 
-    protected void defaultSetText(EventListener<ComponentActionEventArgs> settingValue, EventListener<ComponentActionEventArgs> valueSet, String value)
-    {
-        settingValue.broadcast(new ComponentActionEventArgs(this));
+    protected void defaultSetText(EventListener<ComponentActionEventArgs> settingValue, EventListener<ComponentActionEventArgs> valueSet, String value) {
+        settingValue.broadcast(new ComponentActionEventArgs(this, value));
 
-        findElement().clear();
-        findElement().sendKeys(value);
+        getWrappedElement().clear();
+        getWrappedElement().sendKeys(value);
 
-        valueSet.broadcast(new ComponentActionEventArgs(this));
+        valueSet.broadcast(new ComponentActionEventArgs(this, value));
     }
 
     private WebElement findNativeElement() {
@@ -561,8 +845,7 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
     }
 
     private void addArtificialDelay() {
-        if (webSettings.getArtificialDelayBeforeAction() != 0)
-        {
+        if (webSettings.getArtificialDelayBeforeAction() != 0) {
             try {
                 Thread.sleep(webSettings.getArtificialDelayBeforeAction());
             } catch (InterruptedException e) {
@@ -578,15 +861,13 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
         }
     }
 
-    private void scrollToVisible(WebElement wrappedElement, boolean shouldWait)
-    {
+    private void scrollToVisible(WebElement wrappedElement, boolean shouldWait) {
         SCROLLING_TO_VISIBLE.broadcast(new ComponentActionEventArgs(this));
         try {
             javaScriptService.execute("arguments[0].scrollIntoView(true);", wrappedElement);
-            if (shouldWait)
-            {
+            if (shouldWait) {
                 Thread.sleep(500);
-                toExists().waitToBe();
+                toExist().waitToBe();
             }
         } catch (ElementNotInteractableException | InterruptedException ex) {
             DebugInformation.printStackTrace(ex);

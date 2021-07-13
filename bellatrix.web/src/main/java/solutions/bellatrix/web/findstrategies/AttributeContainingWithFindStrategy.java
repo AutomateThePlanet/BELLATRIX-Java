@@ -11,16 +11,25 @@
  * limitations under the License.
  */
 
-package cartInfosection;
+package solutions.bellatrix.web.findstrategies;
 
-import solutions.bellatrix.web.pages.WebSection;
+import org.openqa.selenium.By;
 
-public class CartInfoSection extends WebSection<Map, Asserts> {
-    public String getCurrentAmount() {
-        return map().cartAmount().getText();
+public class AttributeContainingWithFindStrategy extends FindStrategy {
+    String attributeName;
+
+    public AttributeContainingWithFindStrategy(String attributeName, String value) {
+        super(value);
+        this.attributeName = attributeName;
     }
 
-    public void openCart() {
-        map().cartIcon().click();
+    @Override
+    public By convert() {
+        return By.cssSelector(String.format("[%s*='%s']", attributeName, getValue()));
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%s containing %s", attributeName, getValue());
     }
 }

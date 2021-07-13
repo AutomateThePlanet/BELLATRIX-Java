@@ -16,29 +16,24 @@ package solutions.bellatrix.android.infrastructure;
 import plugins.video.VideoPlugin;
 import solutions.bellatrix.android.configuration.AndroidSettings;
 import solutions.bellatrix.core.configuration.ConfigurationService;
-import solutions.bellatrix.core.utilities.UserHomePathNormalizer;
+import solutions.bellatrix.core.utilities.PathNormalizer;
 
 import java.io.File;
 import java.util.UUID;
 
 public class MobileVideoPlugin extends VideoPlugin {
-    public MobileVideoPlugin(boolean isEnabled) {
-        super(isEnabled);
-    }
-
-    public static MobileVideoPlugin of() {
-        boolean isEnabled = ConfigurationService.get(AndroidSettings.class).getVideosOnFailEnabled();
-        return new MobileVideoPlugin(isEnabled);
+    public MobileVideoPlugin() {
+        super(ConfigurationService.get(AndroidSettings.class).getVideosOnFailEnabled());
     }
 
     @Override
     protected String getOutputFolder() {
         String saveLocation = ConfigurationService.get(AndroidSettings.class).getVideosSaveLocation();
-        saveLocation = UserHomePathNormalizer.normalizePath(saveLocation);
+        saveLocation = PathNormalizer.normalizePath(saveLocation);
 
         var directory = new File(saveLocation);
-        if (! directory.exists()){
-            directory.mkdirs();
+        if (directory.mkdirs()) {
+            return saveLocation;
         }
 
         return saveLocation;

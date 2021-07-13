@@ -18,28 +18,33 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.api.extension.ExtensionContext;
-import org.junit.jupiter.api.extension.TestWatcher;
-import solutions.bellatrix.core.plugins.Plugin;
 import solutions.bellatrix.core.plugins.PluginExecutionEngine;
 import solutions.bellatrix.core.plugins.TestResult;
+import solutions.bellatrix.core.plugins.UsesPlugins;
+import sun.misc.Unsafe;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
 @ExtendWith(TestResultListener.class)
-public class BaseTest {
+public class BaseTest extends UsesPlugins {
     static final ThreadLocal<TestResult> CURRENT_TEST_RESULT = new ThreadLocal<>();
     private static final ThreadLocal<Boolean> CONFIGURATION_EXECUTED = new ThreadLocal<>();
     private static final ThreadLocal<List<String>> ALREADY_EXECUTED_BEFORE_CLASSES = new ThreadLocal<>();
 
     public BaseTest() {
+        try {
+            Field theUnsafe = Unsafe.class.getDeclaredField("theUnsafe");
+            theUnsafe.setAccessible(true);
+            Unsafe u = (Unsafe)theUnsafe.get(null);
+
+            Class<?> cls = Class.forName("jdk.internal.module.IllegalAccessLogger");
+            Field logger = cls.getDeclaredField("logger");
+            u.putObjectVolatile(cls, u.staticFieldOffset(logger), null);
+        } catch (Exception ignored) {}
         CONFIGURATION_EXECUTED.set(false);
         ALREADY_EXECUTED_BEFORE_CLASSES.set(new ArrayList<>());
-    }
-
-    public void addPlugin(Plugin plugin) {
-        PluginExecutionEngine.addPlugin(plugin);
     }
 
     @BeforeEach

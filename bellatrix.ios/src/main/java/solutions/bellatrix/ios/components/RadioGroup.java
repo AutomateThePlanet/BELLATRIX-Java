@@ -35,7 +35,8 @@ public class RadioGroup extends IOSComponent {
 
     public void clickByIndex(int index) {
         var allRadioButtons = getAll();
-        if (index > allRadioButtons.size() - 1) throw new IllegalArgumentException(String.format("Only %d radio buttons were present which is less than the specified index = %d.", allRadioButtons.size(), index));
+        if (index > allRadioButtons.size() - 1)
+            throw new IllegalArgumentException(String.format("Only %d radio buttons were present which is less than the specified index = %d.", allRadioButtons.size(), index));
 
         int currentIndex = 0;
         for (var radioButton : allRadioButtons) {

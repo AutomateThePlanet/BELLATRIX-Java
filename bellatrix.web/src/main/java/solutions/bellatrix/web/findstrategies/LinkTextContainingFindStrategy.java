@@ -11,9 +11,22 @@
  * limitations under the License.
  */
 
-package cartInfosection;
+package solutions.bellatrix.web.findstrategies;
 
-import solutions.bellatrix.web.pages.PageAsserts;
+import org.openqa.selenium.By;
 
-public class Asserts extends PageAsserts<Map> {
+public class LinkTextContainingFindStrategy extends FindStrategy {
+    public LinkTextContainingFindStrategy(String value) {
+        super(value);
+    }
+
+    @Override
+    public By convert() {
+        return By.xpath(String.format("//a[contains(text(), '%s')]", getValue()));
+    }
+
+    @Override
+    public String toString() {
+        return String.format("link text containing %s", getValue());
+    }
 }

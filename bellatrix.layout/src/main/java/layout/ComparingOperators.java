@@ -22,7 +22,7 @@ public enum ComparingOperators {
 
     private final String name;
 
-    private ComparingOperators(String s) {
+    ComparingOperators(String s) {
         name = s;
     }
 

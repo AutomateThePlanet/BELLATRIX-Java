@@ -19,10 +19,9 @@ import io.appium.java_client.android.AndroidDriver;
 import java.util.List;
 
 public class TextContainingFindStrategy extends FindStrategy {
-    private final String TEXT_CONTAINING_EXPRESSION = "new UiScrollable(new UiSelector()).scrollIntoView(new UiSelector().textContains(\"%s\"));";
+    private static final String TEXT_CONTAINING_EXPRESSION = "new UiScrollable(new UiSelector()).scrollIntoView(new UiSelector().textContains(\"%s\"));";
 
-    public TextContainingFindStrategy(String value)
-    {
+    public TextContainingFindStrategy(String value) {
         super(value);
     }
 

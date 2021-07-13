@@ -1,19 +1,17 @@
 package solutions.bellatrix.core.plugins.junit;
 
+import org.junit.jupiter.api.extension.AfterTestExecutionCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
-import org.junit.jupiter.api.extension.TestWatcher;
 import solutions.bellatrix.core.plugins.TestResult;
 
-public class TestResultListener implements TestWatcher {
-    @Override
-    public void testSuccessful(ExtensionContext context) {
-        BaseTest.CURRENT_TEST_RESULT.set(TestResult.SUCCESS);
-        TestWatcher.super.testSuccessful(context);
-    }
+public class TestResultListener implements AfterTestExecutionCallback {
 
     @Override
-    public void testFailed(ExtensionContext context, Throwable cause) {
-        BaseTest.CURRENT_TEST_RESULT.set(TestResult.FAILURE);
-        TestWatcher.super.testFailed(context, cause);
+    public void afterTestExecution(ExtensionContext extensionContext) {
+        if (extensionContext.getExecutionException().isPresent()) {
+            BaseTest.CURRENT_TEST_RESULT.set(TestResult.FAILURE);
+        } else {
+            BaseTest.CURRENT_TEST_RESULT.set(TestResult.SUCCESS);
+        }
     }
 }

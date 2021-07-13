@@ -18,6 +18,6 @@ import solutions.bellatrix.web.pages.PageMap;
 
 public class Map extends PageMap {
     public TextField searchField() {
-        return create().byId(TextField.class,"woocommerce-product-search-field-0");
+        return create().byId(TextField.class, "woocommerce-product-search-field-0");
     }
 }

@@ -17,6 +17,6 @@ import solutions.bellatrix.core.utilities.InstanceFactory;
 
 public abstract class PageAsserts<ComponentsT extends PageMap> {
     protected ComponentsT map() {
-        return InstanceFactory.<ComponentsT>createByTypeParameter(getClass(), 0);
+        return InstanceFactory.createByTypeParameter(getClass(), 0);
     }
 }

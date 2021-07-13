@@ -15,16 +15,14 @@ package solutions.bellatrix.core.plugins;
 
 import java.lang.reflect.Method;
 
-public class Plugin {
+public abstract class Plugin {
     public Plugin() {
         PluginExecutionEngine.addPlugin(this);
     }
 
-    @SuppressWarnings("rawtypes")
     public void preBeforeClass(Class type) {
     }
 
-    @SuppressWarnings("rawtypes")
     public void postBeforeClass(Class type) {
     }
 
@@ -49,11 +47,9 @@ public class Plugin {
     public void afterTestFailed(Exception e) {
     }
 
-    @SuppressWarnings("rawtypes")
     public void preAfterClass(Class type) {
     }
 
-    @SuppressWarnings("rawtypes")
     public void postAfterClass(Class type) {
     }
 

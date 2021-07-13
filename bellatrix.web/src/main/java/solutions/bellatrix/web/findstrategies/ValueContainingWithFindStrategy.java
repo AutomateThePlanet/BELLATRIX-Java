@@ -11,18 +11,22 @@
  * limitations under the License.
  */
 
-package cartInfosection;
+package solutions.bellatrix.web.findstrategies;
 
-import solutions.bellatrix.web.components.Anchor;
-import solutions.bellatrix.web.components.Span;
-import solutions.bellatrix.web.pages.PageMap;
+import org.openqa.selenium.By;
 
-public class Map extends PageMap {
-    public Anchor cartIcon() {
-        return create().byClass(Anchor.class, "cart-contents");
+public class ValueContainingWithFindStrategy extends FindStrategy {
+    public ValueContainingWithFindStrategy(String value) {
+        super(value);
     }
 
-    public Span cartAmount() {
-        return create().byClass(Span.class, "amount");
+    @Override
+    public By convert() {
+        return By.cssSelector(String.format("[value*='%s']", getValue()));
+    }
+
+    @Override
+    public String toString() {
+        return String.format("value containing %s", getValue());
     }
 }

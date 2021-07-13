@@ -15,7 +15,7 @@ package solutions.bellatrix.ios.waitstrategies;
 
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.ios.IOSDriver;
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.*;
 import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.ios.configuration.IOSSettings;
 import solutions.bellatrix.ios.findstrategies.FindStrategy;
@@ -23,35 +23,31 @@ import solutions.bellatrix.ios.infrastructure.DriverService;
 
 import java.util.function.Function;
 
-public class ToExistsWaitStrategy extends WaitStrategy {
-    public ToExistsWaitStrategy() {
-        timeoutInterval = ConfigurationService.get(IOSSettings.class).getTimeoutSettings().getElementToExistTimeout();
+public class ToBeDisabledWaitStrategy extends WaitStrategy {
+    public ToBeDisabledWaitStrategy() {
+        timeoutInterval = ConfigurationService.get(IOSSettings.class).getTimeoutSettings().getElementToBeVisibleTimeout();
         sleepInterval = ConfigurationService.get(IOSSettings.class).getTimeoutSettings().getSleepInterval();
     }
 
-    public ToExistsWaitStrategy(long timeoutIntervalSeconds, long sleepIntervalSeconds) {
-       super(timeoutIntervalSeconds, sleepIntervalSeconds);
+    public static ToBeClickableWaitStrategy of() {
+        return new ToBeClickableWaitStrategy();
     }
 
-    public static ToExistsWaitStrategy of() {
-        return new ToExistsWaitStrategy();
+    public ToBeDisabledWaitStrategy(long timeoutIntervalSeconds, long sleepIntervalSeconds) {
+        super(timeoutIntervalSeconds, sleepIntervalSeconds);
     }
 
     @Override
     public <TFindStrategy extends FindStrategy> void waitUntil(TFindStrategy findStrategy) {
-        Function<WebDriver, Boolean> func = (w) -> elementExists(DriverService.getWrappedIOSDriver(), findStrategy);
+        Function<WebDriver, Boolean> func = (w) -> elementIsDisabled(DriverService.getWrappedIOSDriver(), findStrategy);
         waitUntil(func);
     }
 
-    private <TFindStrategy extends FindStrategy> Boolean elementExists(IOSDriver<MobileElement> searchContext, TFindStrategy findStrategy)
-    {
-        try
-        {
-            var element = findStrategy.findElement(searchContext);
-            return element != null;
-        }
-        catch (Exception e)
-        {
+    private <TFindStrategy extends FindStrategy> Boolean elementIsDisabled(IOSDriver<MobileElement> searchContext, TFindStrategy findStrategy) {
+        var element = findStrategy.findElement(searchContext);
+        try {
+            return element != null && !element.isEnabled();
+        } catch (StaleElementReferenceException | NoSuchElementException e) {
             return false;
         }
     }

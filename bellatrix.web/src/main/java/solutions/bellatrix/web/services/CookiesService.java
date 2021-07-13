@@ -22,8 +22,7 @@ public class CookiesService extends WebService {
         getWrappedDriver().manage().addCookie(new Cookie(cookieName, cookieValue, path));
     }
 
-    public void addCookie(Cookie cookieToAdd)
-    {
+    public void addCookie(Cookie cookieToAdd) {
         getWrappedDriver().manage().addCookie(cookieToAdd);
     }
 
@@ -35,11 +34,11 @@ public class CookiesService extends WebService {
         getWrappedDriver().manage().deleteCookieNamed(cookieName);
     }
 
-    public Set<Cookie> GetAllCookies() {
+    public Set<Cookie> getAllCookies() {
         return getWrappedDriver().manage().getCookies();
     }
 
-    public Cookie GetCookie(String cookieName) {
+    public Cookie getCookie(String cookieName) {
         return getWrappedDriver().manage().getCookieNamed(cookieName);
     }
 }

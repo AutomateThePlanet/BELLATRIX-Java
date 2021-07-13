@@ -19,7 +19,6 @@ public class KeyboardService extends MobileService {
     public void hideKeyboard() {
         try {
             getWrappedIOSDriver().hideKeyboard();
-        }
-        catch (WebDriverException ignored) { }
+        } catch (WebDriverException ignored) { }
     }
 }

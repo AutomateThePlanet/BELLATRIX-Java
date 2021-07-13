@@ -23,24 +23,20 @@ import java.util.function.Supplier;
 public class FinishValidationBuilder {
     public final static EventListener<LayoutValidationEventArgs> VALIDATED_COMPONENT_LAYOUT = new EventListener<>();
 
-    @SuppressWarnings("rawtypes")
     @Getter private final Predicate comparingFunction;
     private String notificationMessage;
     private String failedAssertionMessage;
 
-    @SuppressWarnings("rawtypes")
     public FinishValidationBuilder(Predicate comparingFunction, Supplier<String> notificationMessageFunction, Supplier<String> failedAssertionMessageFunction) {
         this.comparingFunction = comparingFunction;
         this.notificationMessage = notificationMessageFunction.get();
         this.failedAssertionMessage = failedAssertionMessageFunction.get();
     }
 
-    @SuppressWarnings("rawtypes")
     public FinishValidationBuilder(Predicate comparingFunction) {
         this.comparingFunction = comparingFunction;
     }
 
-    @SuppressWarnings("unchecked")
     public void validate() {
         Assert.assertTrue(comparingFunction.test(true), failedAssertionMessage);
         VALIDATED_COMPONENT_LAYOUT.broadcast(new LayoutValidationEventArgs(notificationMessage));

@@ -81,7 +81,6 @@ public abstract class LayoutComponentValidationsBuilder implements LayoutCompone
                 () -> buildFailedValidationMessage(secondLayoutComponent, LayoutOptions.RIGHT_INSIDE));
     }
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
     public FinishValidationBuilder alignedVerticallyAll(LayoutComponent... layoutComponents) {
         Integer baseLineRightY = this.getLocation().getX() + this.getSize().getWidth() / 2;
         Integer baseLineLeftY = this.getLocation().getX();
@@ -100,7 +99,6 @@ public abstract class LayoutComponentValidationsBuilder implements LayoutCompone
                         buildFailedAlignValidationMessage(comparingComponentsNames, baseLineLeftY, LayoutOptions.ALIGNED_VERTICALLY_LEFT));
     }
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
     public FinishValidationBuilder alignedVerticallyCentered(LayoutComponent... layoutComponents) {
         Integer baseLineRightY = this.getLocation().getX() + this.getSize().getWidth() / 2;
         var comparingComponentsNames = getLayoutComponentsNames(layoutComponents);
@@ -115,7 +113,6 @@ public abstract class LayoutComponentValidationsBuilder implements LayoutCompone
                 () -> buildFailedAlignValidationMessage(comparingComponentsNames, baseLineRightY, LayoutOptions.ALIGNED_VERTICALLY_CENTERED));
     }
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
     public FinishValidationBuilder alignedVerticallyRight(LayoutComponent... layoutComponents) {
         Integer baseLineRightY = this.getLocation().getX() + this.getSize().getWidth();
         var comparingComponentsNames = getLayoutComponentsNames(layoutComponents);
@@ -130,7 +127,6 @@ public abstract class LayoutComponentValidationsBuilder implements LayoutCompone
                 () -> buildFailedAlignValidationMessage(comparingComponentsNames, baseLineRightY, LayoutOptions.ALIGNED_VERTICALLY_RIGHT));
     }
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
     public FinishValidationBuilder alignedVerticallyLeft(LayoutComponent... layoutComponents) {
         Integer baseLineLeftY = this.getLocation().getX();
         var comparingComponentsNames = getLayoutComponentsNames(layoutComponents);
@@ -142,7 +138,6 @@ public abstract class LayoutComponentValidationsBuilder implements LayoutCompone
                 () -> buildFailedAlignValidationMessage(comparingComponentsNames, baseLineLeftY, LayoutOptions.ALIGNED_VERTICALLY_LEFT));
     }
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
     public FinishValidationBuilder alignedHorizontallyAll(LayoutComponent... layoutComponents) {
         Integer baseLineTopY = this.getLocation().getY();
         Integer baseLineBottomY = this.getLocation().getY() + this.getSize().getHeight();
@@ -161,13 +156,12 @@ public abstract class LayoutComponentValidationsBuilder implements LayoutCompone
                         buildFailedAlignValidationMessage(comparingComponentsNames, baseLineBottomY, LayoutOptions.ALIGNED_HORIZONTALLY_BOTTOM));
     }
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
     public FinishValidationBuilder alignedHorizontallyCentered(LayoutComponent... layoutComponents) {
         Integer baseLineTopY = this.getLocation().getY() + this.getSize().getHeight() / 2;
         var comparingComponentsNames = getLayoutComponentsNames(layoutComponents);
         Predicate combinedPredicate = (s) -> true;
         Arrays.stream(layoutComponents).forEach(c -> {
-            var bottomY = c.getLocation().getY()+ c.getSize().getHeight() / 2;
+            var bottomY = c.getLocation().getY() + c.getSize().getHeight() / 2;
             combinedPredicate.and((r) -> baseLineTopY.equals(bottomY));
         });
 
@@ -176,7 +170,6 @@ public abstract class LayoutComponentValidationsBuilder implements LayoutCompone
                 () -> buildFailedAlignValidationMessage(comparingComponentsNames, baseLineTopY, LayoutOptions.ALIGNED_HORIZONTALLY_CENTERED));
     }
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
     public FinishValidationBuilder alignedHorizontallyTop(LayoutComponent... layoutComponents) {
         Integer baseLineTopY = this.getLocation().getY();
         var comparingComponentsNames = getLayoutComponentsNames(layoutComponents);
@@ -188,13 +181,12 @@ public abstract class LayoutComponentValidationsBuilder implements LayoutCompone
                 () -> buildFailedAlignValidationMessage(comparingComponentsNames, baseLineTopY, LayoutOptions.ALIGNED_HORIZONTALLY_TOP));
     }
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
     public FinishValidationBuilder alignedHorizontallyBottom(LayoutComponent... layoutComponents) {
         Integer baseLineBottomY = this.getLocation().getY() + this.getSize().getHeight();
         var comparingComponentsNames = getLayoutComponentsNames(layoutComponents);
         Predicate combinedPredicate = (s) -> true;
         Arrays.stream(layoutComponents).forEach(c -> {
-            var bottomY = c.getLocation().getY()+ c.getSize().getHeight();
+            var bottomY = c.getLocation().getY() + c.getSize().getHeight();
             combinedPredicate.and((r) -> baseLineBottomY.equals(bottomY));
         });
 
@@ -212,24 +204,24 @@ public abstract class LayoutComponentValidationsBuilder implements LayoutCompone
     }
 
     private String getLayoutComponentsNames(LayoutComponent[] layoutComponents) {
-        var comparingComponentsNames = Arrays.stream(layoutComponents).skip(0).map(LayoutComponent::getElementName).collect(Collectors.joining(","));
+        var comparingComponentsNames = Arrays.stream(layoutComponents).skip(0).map(LayoutComponent::getComponentName).collect(Collectors.joining(","));
         return comparingComponentsNames;
     }
 
     private String buildNotificationAlignValidationMessage(String componentNames, Integer expected, LayoutOptions validationType) {
-        return String.format("validate %s is %s %s %d px ", this.getElementName(), validationType, componentNames, expected);
+        return String.format("validate %s is %s %s %d px ", this.getComponentName(), validationType, componentNames, expected);
     }
 
     private String buildFailedAlignValidationMessage(String componentNames, Integer expected, LayoutOptions validationType) {
-        return String.format("%s should be %s %s %d px but was not. ", this.getElementName(), validationType, componentNames, expected);
+        return String.format("%s should be %s %s %d px but was not. ", this.getComponentName(), validationType, componentNames, expected);
     }
 
     private String buildNotificationValidationMessage(LayoutComponent secondLayoutComponent, LayoutOptions validationType) {
-        return String.format("validate %s is %s of %s ", this.getElementName(), validationType, secondLayoutComponent.getElementName());
+        return String.format("validate %s is %s of %s ", this.getComponentName(), validationType, secondLayoutComponent.getComponentName());
     }
 
     private String buildFailedValidationMessage(LayoutComponent secondLayoutComponent, LayoutOptions validationType) {
-        return String.format("%s should be %s of %s ", this.getElementName(), validationType, secondLayoutComponent.getElementName());
+        return String.format("%s should be %s of %s ", this.getComponentName(), validationType, secondLayoutComponent.getComponentName());
     }
 
     private double calculateRightOfDistance(LayoutComponent component, LayoutComponent secondComponent) {

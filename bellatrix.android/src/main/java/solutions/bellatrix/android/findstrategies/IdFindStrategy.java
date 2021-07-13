@@ -19,10 +19,9 @@ import io.appium.java_client.android.AndroidDriver;
 import java.util.List;
 
 public class IdFindStrategy extends FindStrategy {
-    private final String ID_EXPRESSION = "new UiScrollable(new UiSelector()).scrollIntoView(new UiSelector().resourceId(\"%s\"));";
+    private static final String ID_EXPRESSION = "new UiScrollable(new UiSelector()).scrollIntoView(new UiSelector().resourceId(\"%s\"));";
 
-    public IdFindStrategy(String value)
-    {
+    public IdFindStrategy(String value) {
         super(value);
     }
 

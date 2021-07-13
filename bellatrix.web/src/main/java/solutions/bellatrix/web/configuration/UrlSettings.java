@@ -18,5 +18,5 @@ import lombok.Setter;
 
 public class UrlSettings {
     @Getter @Setter private String shopUrl;
-    @Getter @Setter  private String accountUrl;
+    @Getter @Setter private String accountUrl;
 }

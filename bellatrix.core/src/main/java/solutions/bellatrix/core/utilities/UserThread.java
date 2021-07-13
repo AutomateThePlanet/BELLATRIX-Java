@@ -17,8 +17,9 @@ import lombok.SneakyThrows;
 
 public class UserThread implements Runnable {
     private volatile boolean exit = false;
+
     public void run() {
-        while(!exit) {
+        while (!exit) {
             System.out.println("The user thread is running");
         }
         System.out.println("The user thread is now stopped");

@@ -18,6 +18,7 @@ import solutions.bellatrix.core.utilities.SingletonFactory;
 import solutions.bellatrix.desktop.components.DesktopComponent;
 import solutions.bellatrix.desktop.validations.ComponentValidator;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 public interface ComponentDisabled extends Component {
@@ -25,13 +26,21 @@ public interface ComponentDisabled extends Component {
 
     @SneakyThrows
     default void validateIsDisabled() {
-        Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeTrue", DesktopComponent.class, boolean.class, String.class);
-        method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (DesktopComponent)this, isDisabled(), "disabled");
+        try {
+            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeTrue", DesktopComponent.class, boolean.class, String.class);
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (DesktopComponent)this, isDisabled(), "disabled");
+        } catch (InvocationTargetException e) {
+            throw e.getCause();
+        }
     }
 
     @SneakyThrows
     default void validateNotDisabled() {
-        Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeFalse", DesktopComponent.class, boolean.class, String.class);
-        method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (DesktopComponent)this, isDisabled(), "disabled");
+        try {
+            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeFalse", DesktopComponent.class, boolean.class, String.class);
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (DesktopComponent)this, isDisabled(), "disabled");
+        } catch (InvocationTargetException e) {
+            throw e.getCause();
+        }
     }
 }

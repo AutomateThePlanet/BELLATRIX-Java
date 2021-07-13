@@ -18,7 +18,7 @@ import solutions.bellatrix.desktop.services.ComponentCreateService;
 
 import java.lang.reflect.ParameterizedType;
 
-public abstract class DesktopPage<MapT extends PageMap, AssertsT extends PageAsserts<MapT>>  {
+public abstract class DesktopPage<MapT extends PageMap, AssertsT extends PageAsserts<MapT>> {
     public AppService appService() {
         return new AppService();
     }
@@ -27,7 +27,6 @@ public abstract class DesktopPage<MapT extends PageMap, AssertsT extends PageAss
         return new ComponentCreateService();
     }
 
-    @SuppressWarnings("unchecked")
     public MapT map() {
         try {
             var elementsClass = (Class<MapT>)((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[0];
@@ -37,7 +36,6 @@ public abstract class DesktopPage<MapT extends PageMap, AssertsT extends PageAss
         }
     }
 
-    @SuppressWarnings("unchecked")
     public AssertsT asserts() {
         try {
             var assertionsClass = (Class<AssertsT>)((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[1];

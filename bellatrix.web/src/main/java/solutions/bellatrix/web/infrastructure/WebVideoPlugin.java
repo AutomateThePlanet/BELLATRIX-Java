@@ -15,32 +15,25 @@ package solutions.bellatrix.web.infrastructure;
 
 import plugins.video.VideoPlugin;
 import solutions.bellatrix.core.configuration.ConfigurationService;
+import solutions.bellatrix.core.utilities.PathNormalizer;
 import solutions.bellatrix.web.configuration.WebSettings;
 
 import java.io.File;
 import java.util.UUID;
 
 public class WebVideoPlugin extends VideoPlugin {
-    public WebVideoPlugin(boolean isEnabled) {
-        super(isEnabled);
-    }
-
-    public static WebVideoPlugin of() {
-        boolean isEnabled = ConfigurationService.get(WebSettings.class).getVideosOnFailEnabled();
-        return new WebVideoPlugin(isEnabled);
+    public WebVideoPlugin() {
+        super(ConfigurationService.get(WebSettings.class).getVideosOnFailEnabled());
     }
 
     @Override
     protected String getOutputFolder() {
         String saveLocation = ConfigurationService.get(WebSettings.class).getVideosSaveLocation();
-        if (saveLocation.startsWith("user.home")) {
-            var userHomeDir = System.getProperty("user.home");
-            saveLocation = saveLocation.replace("user.home", userHomeDir);
-        }
+        saveLocation = PathNormalizer.normalizePath(saveLocation);
 
         var directory = new File(saveLocation);
-        if (! directory.exists()){
-            directory.mkdirs();
+        if (directory.mkdirs()) {
+            return saveLocation;
         }
 
         return saveLocation;

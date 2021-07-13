@@ -29,7 +29,7 @@ public class TextField extends WebComponent implements ComponentDisabled, Compon
     public String getText() {
         String text = defaultGetText();
 
-        if(text.isEmpty()) {
+        if (text.isEmpty()) {
             return defaultGetValue();
         }
 
