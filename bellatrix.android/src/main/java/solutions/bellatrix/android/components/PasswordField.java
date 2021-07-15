@@ -16,7 +16,7 @@ package solutions.bellatrix.android.components;
 import solutions.bellatrix.android.components.contracts.ComponentDisabled;
 import solutions.bellatrix.core.plugins.EventListener;
 
-public class PasswordInput extends AndroidComponent implements ComponentDisabled {
+public class PasswordField extends AndroidComponent implements ComponentDisabled {
     public final static EventListener<ComponentActionEventArgs> SETTING_PASSWORD = new EventListener<>();
     public final static EventListener<ComponentActionEventArgs> PASSWORD_SET = new EventListener<>();
 

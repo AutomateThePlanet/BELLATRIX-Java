@@ -17,7 +17,7 @@ import solutions.bellatrix.core.plugins.EventListener;
 import solutions.bellatrix.desktop.components.contracts.ComponentDisabled;
 import solutions.bellatrix.desktop.components.contracts.ComponentTime;
 
-public class Time extends DesktopComponent implements ComponentDisabled, ComponentTime {
+public class TimeInput extends DesktopComponent implements ComponentDisabled, ComponentTime {
     public final static EventListener<ComponentActionEventArgs> SETTING_TIME = new EventListener<>();
     public final static EventListener<ComponentActionEventArgs> TIME_SET = new EventListener<>();
 

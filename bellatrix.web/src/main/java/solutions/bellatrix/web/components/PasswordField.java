@@ -16,11 +16,9 @@ package solutions.bellatrix.web.components;
 import solutions.bellatrix.core.plugins.EventListener;
 import solutions.bellatrix.web.components.contracts.*;
 
-import java.time.LocalDateTime;
-
-public class DateTimeInput extends WebComponent implements ComponentDisabled, ComponentValue, ComponentDateTime, ComponentAutoComplete, ComponentReadonly, ComponentRequired, ComponentMaxText, ComponentMinText, ComponentStep {
-    public final static EventListener<ComponentActionEventArgs> SETTING_TIME = new EventListener<>();
-    public final static EventListener<ComponentActionEventArgs> TIME_SET = new EventListener<>();
+public class PasswordField extends WebComponent implements ComponentDisabled, ComponentValue, ComponentPassword, ComponentAutoComplete, ComponentReadonly, ComponentRequired, ComponentMaxLength, ComponentMinLength, ComponentSize, ComponentPlaceholder {
+    public final static EventListener<ComponentActionEventArgs> SETTING_PASSWORD = new EventListener<>();
+    public final static EventListener<ComponentActionEventArgs> PASSWORD_SET = new EventListener<>();
 
     @Override
     public Class<?> getComponentClass() {
@@ -28,13 +26,13 @@ public class DateTimeInput extends WebComponent implements ComponentDisabled, Co
     }
 
     @Override
-    public String getTime() {
+    public String getPassword() {
         return getValue();
     }
 
     @Override
-    public void setTime(LocalDateTime time) {
-        setValue(SETTING_TIME, TIME_SET, String.format("%d-%d-%dT%d:%d", time.getYear(), time.getMonthValue(), time.getDayOfMonth(), time.getHour(), time.getMinute()));
+    public void setPassword(String value) {
+        setValue(SETTING_PASSWORD, PASSWORD_SET, value);
     }
 
     @Override
@@ -48,13 +46,18 @@ public class DateTimeInput extends WebComponent implements ComponentDisabled, Co
     }
 
     @Override
-    public String getMax() {
-        return defaultGetMaxAttribute();
+    public int getMaxLength() {
+        return Integer.parseInt(defaultGetMaxLength());
     }
 
     @Override
-    public String getMin() {
-        return defaultGetMinAttribute();
+    public int getMinLength() {
+        return Integer.parseInt(defaultGetMinLength());
+    }
+
+    @Override
+    public String getPlaceholder() {
+        return defaultGetPlaceholderAttribute();
     }
 
     @Override
@@ -68,8 +71,8 @@ public class DateTimeInput extends WebComponent implements ComponentDisabled, Co
     }
 
     @Override
-    public double getStep() {
-        return Double.parseDouble(defaultGetStepAttribute());
+    public int getSizeAttribute() {
+        return Integer.parseInt(defaultGetSizeAttribute());
     }
 
     @Override

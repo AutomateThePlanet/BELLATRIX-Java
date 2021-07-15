@@ -16,9 +16,11 @@ package solutions.bellatrix.web.components;
 import solutions.bellatrix.core.plugins.EventListener;
 import solutions.bellatrix.web.components.contracts.*;
 
-public class EmailInput extends WebComponent implements ComponentDisabled, ComponentValue, ComponentEmail, ComponentAutoComplete, ComponentReadonly, ComponentRequired, ComponentMaxLength, ComponentMinLength, ComponentSize, ComponentPlaceholder {
-    public final static EventListener<ComponentActionEventArgs> SETTING_EMAIL = new EventListener<>();
-    public final static EventListener<ComponentActionEventArgs> EMAIL_SET = new EventListener<>();
+import java.time.LocalDateTime;
+
+public class DateTimeField extends WebComponent implements ComponentDisabled, ComponentValue, ComponentDateTime, ComponentAutoComplete, ComponentReadonly, ComponentRequired, ComponentMaxText, ComponentMinText, ComponentStep {
+    public final static EventListener<ComponentActionEventArgs> SETTING_TIME = new EventListener<>();
+    public final static EventListener<ComponentActionEventArgs> TIME_SET = new EventListener<>();
 
     @Override
     public Class<?> getComponentClass() {
@@ -26,13 +28,13 @@ public class EmailInput extends WebComponent implements ComponentDisabled, Compo
     }
 
     @Override
-    public String getEmail() {
+    public String getTime() {
         return getValue();
     }
 
     @Override
-    public void setEmail(String email) {
-        setValue(SETTING_EMAIL, EMAIL_SET, email);
+    public void setTime(LocalDateTime time) {
+        setValue(SETTING_TIME, TIME_SET, String.format("%d-%d-%dT%d:%d", time.getYear(), time.getMonthValue(), time.getDayOfMonth(), time.getHour(), time.getMinute()));
     }
 
     @Override
@@ -46,18 +48,13 @@ public class EmailInput extends WebComponent implements ComponentDisabled, Compo
     }
 
     @Override
-    public int getMaxLength() {
-        return Integer.parseInt(defaultGetMaxLength());
+    public String getMax() {
+        return defaultGetMaxAttribute();
     }
 
     @Override
-    public int getMinLength() {
-        return Integer.parseInt(defaultGetMinLength());
-    }
-
-    @Override
-    public String getPlaceholder() {
-        return defaultGetPlaceholderAttribute();
+    public String getMin() {
+        return defaultGetMinAttribute();
     }
 
     @Override
@@ -71,8 +68,8 @@ public class EmailInput extends WebComponent implements ComponentDisabled, Compo
     }
 
     @Override
-    public int getSizeAttribute() {
-        return Integer.parseInt(defaultGetSizeAttribute());
+    public double getStep() {
+        return Double.parseDouble(defaultGetStepAttribute());
     }
 
     @Override

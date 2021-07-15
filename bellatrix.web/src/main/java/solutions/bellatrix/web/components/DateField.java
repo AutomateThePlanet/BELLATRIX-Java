@@ -16,7 +16,7 @@ package solutions.bellatrix.web.components;
 import solutions.bellatrix.core.plugins.EventListener;
 import solutions.bellatrix.web.components.contracts.*;
 
-public class DateInput extends WebComponent implements ComponentDisabled, ComponentValue, ComponentDate, ComponentAutoComplete, ComponentRequired, ComponentReadonly, ComponentMaxText, ComponentMinText, ComponentStep {
+public class DateField extends WebComponent implements ComponentDisabled, ComponentValue, ComponentDate, ComponentAutoComplete, ComponentRequired, ComponentReadonly, ComponentMaxText, ComponentMinText, ComponentStep {
     public final static EventListener<ComponentActionEventArgs> SETTING_DATE = new EventListener<>();
     public final static EventListener<ComponentActionEventArgs> DATE_SET = new EventListener<>();
 
