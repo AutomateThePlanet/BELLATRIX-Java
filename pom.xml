@@ -35,6 +35,7 @@
         <module>bellatrix.android.tests</module>
         <module>bellatrix.ios</module>
         <module>bellatrix.ios.tests</module>
+        <module>lighthouse-grid-extension</module>
     </modules>
 
     <properties>
