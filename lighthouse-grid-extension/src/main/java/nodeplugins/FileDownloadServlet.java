@@ -2,6 +2,8 @@ package nodeplugins;
 
 import com.google.common.net.HttpHeaders;
 import com.google.common.net.MediaType;
+import lombok.SneakyThrows;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 
 import javax.servlet.ServletException;
@@ -22,10 +24,16 @@ public class FileDownloadServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String pathInfo = req.getRequestURI().substring(req.getServletPath().length() + 1);
-        pathInfo = new String(Base64.getUrlDecoder().decode(pathInfo.getBytes()));
-        LOGGER.info("Request for file download received with path: " + pathInfo);
+        String pathInfo = "report.json";
 
+        LOGGER.info("BEFORE EXECUTING Lighthouse on NODE");
+        var process = Runtime.getRuntime().exec("lighthouse http://demos.bellatrix.solutions/my-account/ --output=json --output-path=report.json --port=5333");
+        try {
+            process.wait(60000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        LOGGER.info("EXECUTED Lighthouse on NODE");
         File file = new File(pathInfo);
         if (!fileExistsAndNotDirectory(file, resp)) {
             return;
