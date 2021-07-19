@@ -18,6 +18,7 @@ import solutions.bellatrix.core.utilities.SingletonFactory;
 import solutions.bellatrix.ios.components.IOSComponent;
 import solutions.bellatrix.ios.validations.ComponentValidator;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 public interface ComponentVisible extends Component {
@@ -25,13 +26,22 @@ public interface ComponentVisible extends Component {
 
     @SneakyThrows
     default void validateIsSelected() {
-        Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeTrue", IOSComponent.class, boolean.class, String.class);
-        method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (IOSComponent)this, isVisible(), "visible");
+        try {
+            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeTrue", IOSComponent.class, boolean.class, String.class);
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (IOSComponent)this, isVisible(), "visible");
+        } catch (InvocationTargetException e) {
+            throw e.getCause();
+        }
     }
 
     @SneakyThrows
     default void validateNotSelected() {
-        Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeFalse", IOSComponent.class, boolean.class, String.class);
-        method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (IOSComponent)this, isVisible(), "visible");
+        try {
+            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeFalse", IOSComponent.class, boolean.class, String.class);
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (IOSComponent)this, isVisible(), "visible");
+        } catch (
+                InvocationTargetException e) {
+            throw e.getCause();
+        }
     }
 }

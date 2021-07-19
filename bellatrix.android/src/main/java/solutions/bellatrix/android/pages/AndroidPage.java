@@ -14,11 +14,11 @@
 package solutions.bellatrix.android.pages;
 
 import solutions.bellatrix.android.services.AppService;
-import solutions.bellatrix.ios.services.ComponentCreateService;
+import solutions.bellatrix.android.services.ComponentCreateService;
 
 import java.lang.reflect.ParameterizedType;
 
-public abstract class AndroidPage<MapT extends PageMap, AssertsT extends PageAsserts<MapT>>  {
+public abstract class AndroidPage<MapT extends PageMap, AssertsT extends PageAsserts<MapT>> {
     public AppService appService() {
         return new AppService();
     }

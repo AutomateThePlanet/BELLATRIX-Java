@@ -13,12 +13,10 @@
 
 package mainpage;
 
-import org.testng.Assert;
 import solutions.bellatrix.web.pages.PageAsserts;
 
 public class Asserts extends PageAsserts<Map> {
     public void productBoxLink(String name, String expectedLink) {
-        var actualLink = map().getProductBoxByName(name).getAttribute("href");
-        Assert.assertEquals(actualLink, expectedLink);
+        map().getProductBoxByName(name).validateHrefIs(expectedLink);
     }
 }

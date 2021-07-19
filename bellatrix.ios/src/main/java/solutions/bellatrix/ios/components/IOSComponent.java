@@ -19,15 +19,13 @@ import layout.LayoutComponentValidationsBuilder;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.ElementNotInteractableException;
-import org.openqa.selenium.Point;
-import org.openqa.selenium.WebDriverException;
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.core.plugins.EventListener;
 import solutions.bellatrix.core.utilities.DebugInformation;
 import solutions.bellatrix.core.utilities.InstanceFactory;
+import solutions.bellatrix.core.utilities.Log;
 import solutions.bellatrix.ios.components.contracts.Component;
 import solutions.bellatrix.ios.findstrategies.*;
 import solutions.bellatrix.ios.infrastructure.DriverService;
@@ -53,16 +51,16 @@ public class IOSComponent extends LayoutComponentValidationsBuilder implements C
     public final static EventListener<ComponentActionEventArgs> CREATED_ELEMENTS = new EventListener<>();
     public final static EventListener<ComponentActionEventArgs> VALIDATED_ATTRIBUTE = new EventListener<>();
 
-    @Getter @Setter(AccessLevel.PROTECTED) private MobileElement wrappedElement;
+    @Setter(AccessLevel.PROTECTED) private MobileElement wrappedElement;
     @Getter @Setter private MobileElement parentWrappedElement;
     @Getter @Setter private int elementIndex;
     @Getter @Setter private FindStrategy findStrategy;
-    @Getter private IOSDriver<MobileElement> wrappedDriver;
-    @Getter protected AppService appService;
-    @Getter protected ComponentCreateService componentCreateService;
-    @Getter protected ComponentWaitService componentWaitService;
-    private List<WaitStrategy> waitStrategies;
-    private solutions.bellatrix.ios.configuration.IOSSettings iOSSettings;
+    @Getter private final IOSDriver<MobileElement> wrappedDriver;
+    @Getter protected final AppService appService;
+    @Getter protected final ComponentCreateService componentCreateService;
+    @Getter protected final ComponentWaitService componentWaitService;
+    private final List<WaitStrategy> waitStrategies;
+    private final solutions.bellatrix.ios.configuration.IOSSettings iOSSettings;
 
     public IOSComponent() {
         this.waitStrategies = new ArrayList<>();
@@ -73,7 +71,16 @@ public class IOSComponent extends LayoutComponentValidationsBuilder implements C
         wrappedDriver = DriverService.getWrappedIOSDriver();
     }
 
-    public String getElementName() {
+    public MobileElement getWrappedElement() {
+        try {
+            wrappedElement.isDisplayed(); // checking if getting property throws exception
+            return wrappedElement;
+        } catch (StaleElementReferenceException | NullPointerException ex) {
+            return findElement();
+        }
+    }
+
+    public String getComponentName() {
         return String.format("%s (%s)", getComponentClass().getSimpleName(), findStrategy.toString());
     }
 
@@ -108,8 +115,26 @@ public class IOSComponent extends LayoutComponentValidationsBuilder implements C
         waitStrategies.add(waitStrategy);
     }
 
-    public <TElementType extends IOSComponent> TElementType toExists() {
-        var waitStrategy = new ToExistsWaitStrategy();
+    public <TElementType extends IOSComponent> TElementType toExist() {
+        var waitStrategy = new ToExistWaitStrategy();
+        ensureState(waitStrategy);
+        return (TElementType)this;
+    }
+
+    public <TElementType extends IOSComponent> TElementType toNotExist() {
+        var waitStrategy = new ToNotExistWaitStrategy();
+        ensureState(waitStrategy);
+        return (TElementType)this;
+    }
+
+    public <TElementType extends IOSComponent> TElementType toBeVisible() {
+        var waitStrategy = new ToBeVisibleWaitStrategy();
+        ensureState(waitStrategy);
+        return (TElementType)this;
+    }
+
+    public <TElementType extends IOSComponent> TElementType toNotBeVisible() {
+        var waitStrategy = new ToNotBeVisibleWaitStrategy();
         ensureState(waitStrategy);
         return (TElementType)this;
     }
@@ -120,8 +145,56 @@ public class IOSComponent extends LayoutComponentValidationsBuilder implements C
         return (TElementType)this;
     }
 
-    public <TElementType extends IOSComponent> TElementType toBeVisible() {
-        var waitStrategy = new ToBeVisibleWaitStrategy();
+    public <TElementType extends IOSComponent> TElementType toBeDisabled() {
+        var waitStrategy = new ToBeDisabledWaitStrategy();
+        ensureState(waitStrategy);
+        return (TElementType)this;
+    }
+
+    public <TElementType extends IOSComponent> TElementType toHaveContent() {
+        var waitStrategy = new ToHaveContentWaitStrategy();
+        ensureState(waitStrategy);
+        return (TElementType)this;
+    }
+
+    public <TElementType extends IOSComponent> TElementType toExist(long timeoutInterval, long sleepInterval) {
+        var waitStrategy = new ToExistWaitStrategy(timeoutInterval, sleepInterval);
+        ensureState(waitStrategy);
+        return (TElementType)this;
+    }
+
+    public <TElementType extends IOSComponent> TElementType toNotExist(long timeoutInterval, long sleepInterval) {
+        var waitStrategy = new ToNotExistWaitStrategy(timeoutInterval, sleepInterval);
+        ensureState(waitStrategy);
+        return (TElementType)this;
+    }
+
+    public <TElementType extends IOSComponent> TElementType toBeVisible(long timeoutInterval, long sleepInterval) {
+        var waitStrategy = new ToBeVisibleWaitStrategy(timeoutInterval, sleepInterval);
+        ensureState(waitStrategy);
+        return (TElementType)this;
+    }
+
+    public <TElementType extends IOSComponent> TElementType toNotBeVisible(long timeoutInterval, long sleepInterval) {
+        var waitStrategy = new ToNotBeVisibleWaitStrategy(timeoutInterval, sleepInterval);
+        ensureState(waitStrategy);
+        return (TElementType)this;
+    }
+
+    public <TElementType extends IOSComponent> TElementType toBeClickable(long timeoutInterval, long sleepInterval) {
+        var waitStrategy = new ToBeClickableWaitStrategy(timeoutInterval, sleepInterval);
+        ensureState(waitStrategy);
+        return (TElementType)this;
+    }
+
+    public <TElementType extends IOSComponent> TElementType toBeDisabled(long timeoutInterval, long sleepInterval) {
+        var waitStrategy = new ToBeDisabledWaitStrategy(timeoutInterval, sleepInterval);
+        ensureState(waitStrategy);
+        return (TElementType)this;
+    }
+
+    public <TElementType extends IOSComponent> TElementType toHaveContent(long timeoutInterval, long sleepInterval) {
+        var waitStrategy = new ToHaveContentWaitStrategy(timeoutInterval, sleepInterval);
         ensureState(waitStrategy);
         return (TElementType)this;
     }
@@ -221,7 +294,7 @@ public class IOSComponent extends LayoutComponentValidationsBuilder implements C
         findElement();
         var nativeElements = findStrategy.findAllElements(wrappedElement);
         List<TComponent> componentList = new ArrayList<>();
-        for (int i = 0; i < nativeElements.stream().count(); i++) {
+        for (int i = 0; i < nativeElements.size(); i++) {
             var component = InstanceFactory.create(componentClass);
             component.setFindStrategy(findStrategy);
             component.setElementIndex(i);
@@ -234,58 +307,58 @@ public class IOSComponent extends LayoutComponentValidationsBuilder implements C
     }
 
     protected MobileElement findElement() {
-      if (waitStrategies.stream().count() == 0) {
-          waitStrategies.add(Wait.to().exists());
-      }
+        if (waitStrategies.size() == 0) {
+            waitStrategies.add(Wait.to().exist());
+        }
 
-      try {
-          for (var waitStrategy:waitStrategies) {
-              componentWaitService.wait(this, waitStrategy);
-          }
+        try {
+            for (var waitStrategy : waitStrategies) {
+                componentWaitService.wait(this, waitStrategy);
+            }
 
-          wrappedElement = findNativeElement();
-          scrollToMakeElementVisible(wrappedElement);
-          addArtificialDelay();
+            wrappedElement = findNativeElement();
+            scrollToMakeElementVisible(wrappedElement);
+            addArtificialDelay();
 
-          waitStrategies.clear();
-      } catch (WebDriverException ex) {
-          DebugInformation.printStackTrace(ex);
-          System.out.print(String.format("\n\nThe element: \n Name: '%s', \n Locator: '%s = %s', \nWas not found on the page or didn't fulfill the specified conditions.\n\n", getComponentClass().getSimpleName(), findStrategy.toString(), findStrategy.getValue()));
-      }
+            waitStrategies.clear();
+        } catch (WebDriverException ex) {
+            Log.error("%n%nThe component: %n" +
+                            "     Type: \"\u001B[1m%s\u001B[0m\"%n" +
+                            "  Locator: \"\u001B[1m%s\u001B[0m\"%n" +
+                            "Was not found on the page or didn't fulfill the specified conditions.%n%n",
+                    getComponentClass().getSimpleName(), findStrategy.toString());
+            throw ex;
+        }
 
         RETURNING_WRAPPED_ELEMENT.broadcast(new ComponentActionEventArgs(this));
         return wrappedElement;
     }
 
-
-    protected void defaultClick(EventListener<ComponentActionEventArgs> clicking, EventListener<ComponentActionEventArgs> clicked)
-    {
+    protected void defaultClick(EventListener<ComponentActionEventArgs> clicking, EventListener<ComponentActionEventArgs> clicked) {
         clicking.broadcast(new ComponentActionEventArgs(this));
 
-        this.toExists().toBeClickable().waitToBe();
+        toExist().toBeClickable().waitToBe();
         findElement().click();
 
         clicked.broadcast(new ComponentActionEventArgs(this));
     }
 
-    protected void defaultCheck(EventListener<ComponentActionEventArgs> checking, EventListener<ComponentActionEventArgs> checked)
-    {
+    protected void defaultCheck(EventListener<ComponentActionEventArgs> checking, EventListener<ComponentActionEventArgs> checked) {
         checking.broadcast(new ComponentActionEventArgs(this));
 
-        this.toExists().toBeClickable().waitToBe();
-        if(!this.defaultGetCheckedAttribute()) {
+        toExist().toBeClickable().waitToBe();
+        if (!this.defaultGetCheckedAttribute()) {
             findElement().click();
         }
 
         checked.broadcast(new ComponentActionEventArgs(this));
     }
 
-    protected void defaultUncheck(EventListener<ComponentActionEventArgs> unchecking, EventListener<ComponentActionEventArgs> unchecked)
-    {
+    protected void defaultUncheck(EventListener<ComponentActionEventArgs> unchecking, EventListener<ComponentActionEventArgs> unchecked) {
         unchecking.broadcast(new ComponentActionEventArgs(this));
 
-        this.toExists().toBeClickable().waitToBe();
-        if(this.defaultGetCheckedAttribute()) {
+        toExist().toBeClickable().waitToBe();
+        if (this.defaultGetCheckedAttribute()) {
             findElement().click();
         }
 
@@ -310,8 +383,7 @@ public class IOSComponent extends LayoutComponentValidationsBuilder implements C
         return Optional.ofNullable(findElement().getText()).orElse("");
     }
 
-    protected void defaultSetText(EventListener<ComponentActionEventArgs> settingValue, EventListener<ComponentActionEventArgs> valueSet, String value)
-    {
+    protected void defaultSetText(EventListener<ComponentActionEventArgs> settingValue, EventListener<ComponentActionEventArgs> valueSet, String value) {
         settingValue.broadcast(new ComponentActionEventArgs(this));
 
         findElement().clear();
@@ -329,8 +401,7 @@ public class IOSComponent extends LayoutComponentValidationsBuilder implements C
     }
 
     private void addArtificialDelay() {
-        if (iOSSettings.getArtificialDelayBeforeAction() != 0)
-        {
+        if (iOSSettings.getArtificialDelayBeforeAction() != 0) {
             try {
                 Thread.sleep(iOSSettings.getArtificialDelayBeforeAction());
             } catch (InterruptedException e) {
@@ -346,26 +417,18 @@ public class IOSComponent extends LayoutComponentValidationsBuilder implements C
         }
     }
 
-    private void scrollToVisible(MobileElement wrappedElement, boolean shouldWait)
-    {
+    private void scrollToVisible(MobileElement wrappedElement, boolean shouldWait) {
+        // Not tested
         SCROLLING_TO_VISIBLE.broadcast(new ComponentActionEventArgs(this));
         try {
-            //            var js = (JavascriptExecutor)driver;
-            //            Map<String, String> swipe = new HashMap<>();
-            //            swipe.put("direction", "down"); // "up", "right", "left"
-            //            swipe.put("element", element.getId());
-            //            js.executeScript("mobile:swipe", swipe);
             var action = new Actions(wrappedDriver);
             action.moveToElement(wrappedElement).perform();
-            if (shouldWait)
-            {
+            if (shouldWait) {
                 Thread.sleep(500);
-                toExists().waitToBe();
+                toExist().waitToBe();
             }
-        } catch (ElementNotInteractableException ex) {
+        } catch (ElementNotInteractableException | InterruptedException ex) {
             DebugInformation.printStackTrace(ex);
-        } catch (InterruptedException e) {
-            DebugInformation.printStackTrace(e);
         }
 
         SCROLLED_TO_VISIBLE.broadcast(new ComponentActionEventArgs(this));

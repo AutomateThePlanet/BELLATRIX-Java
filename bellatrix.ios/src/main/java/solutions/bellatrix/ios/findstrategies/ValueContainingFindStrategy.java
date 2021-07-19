@@ -19,10 +19,9 @@ import io.appium.java_client.ios.IOSDriver;
 import java.util.List;
 
 public class ValueContainingFindStrategy extends FindStrategy {
-    private final String DESCRIPTION_EXPRESSION = "//*[contains(@value, '%s')]";
+    private static final String DESCRIPTION_EXPRESSION = "//*[contains(@value, '%s')]";
 
-    public ValueContainingFindStrategy(String value)
-    {
+    public ValueContainingFindStrategy(String value) {
         super(value);
     }
 

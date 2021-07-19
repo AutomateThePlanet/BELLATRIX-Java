@@ -31,7 +31,7 @@ public class ToBeClickableWaitStrategy extends WaitStrategy {
     }
 
     public ToBeClickableWaitStrategy(long timeoutIntervalSeconds, long sleepIntervalSeconds) {
-       super(timeoutIntervalSeconds, sleepIntervalSeconds);
+        super(timeoutIntervalSeconds, sleepIntervalSeconds);
     }
 
     @Override
@@ -39,19 +39,11 @@ public class ToBeClickableWaitStrategy extends WaitStrategy {
         waitUntil((x) -> elementIsClickable(searchContext, by));
     }
 
-    private boolean elementIsClickable(SearchContext searchContext, By by)
-    {
+    private boolean elementIsClickable(SearchContext searchContext, By by) {
         var element = findElement(searchContext, by);
-        try
-        {
+        try {
             return element != null && element.isEnabled();
-        }
-        catch (StaleElementReferenceException e)
-        {
-            return false;
-        }
-        catch (NoSuchElementException e)
-        {
+        } catch (StaleElementReferenceException | NoSuchElementException e) {
             return false;
         }
     }

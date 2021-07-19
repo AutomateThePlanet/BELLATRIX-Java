@@ -21,10 +21,10 @@ import lombok.SneakyThrows;
 import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.Platform;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import solutions.bellatrix.android.configuration.AndroidSettings;
+import solutions.bellatrix.android.configuration.GridSettings;
 import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.core.utilities.DebugInformation;
-import solutions.bellatrix.ios.configuration.AndroidSettings;
-import solutions.bellatrix.ios.configuration.GridSettings;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -32,40 +32,40 @@ import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
 public class DriverService {
-    private static ThreadLocal<Boolean> disposed;
-    private static ThreadLocal<AppConfiguration> appConfiguration;
-    private static ThreadLocal<HashMap<String, String>> customDriverOptions;
-    private static ThreadLocal<AndroidDriver<MobileElement>> wrappedAndroidDriver;
+    private static final ThreadLocal<Boolean> DISPOSED;
+    private static final ThreadLocal<AppConfiguration> APP_CONFIGURATION;
+    private static final ThreadLocal<HashMap<String, String>> CUSTOM_DRIVER_OPTIONS;
+    private static final ThreadLocal<AndroidDriver<MobileElement>> WRAPPED_ANDROID_DRIVER;
 
     static {
-        disposed = new ThreadLocal<>();
-        customDriverOptions = new ThreadLocal<>();
-        customDriverOptions.set(new HashMap<>());
-        appConfiguration = new ThreadLocal<>();
-        wrappedAndroidDriver = new ThreadLocal<>();
-        disposed.set(false);
+        DISPOSED = new ThreadLocal<>();
+        CUSTOM_DRIVER_OPTIONS = new ThreadLocal<>();
+        CUSTOM_DRIVER_OPTIONS.set(new HashMap<>());
+        APP_CONFIGURATION = new ThreadLocal<>();
+        WRAPPED_ANDROID_DRIVER = new ThreadLocal<>();
+        DISPOSED.set(false);
     }
 
     public static HashMap<String, String> getCustomDriverOptions() {
-        return customDriverOptions.get();
+        return CUSTOM_DRIVER_OPTIONS.get();
     }
 
     public static void addDriverOptions(String key, String value) {
-        customDriverOptions.get().put(key, value);
+        CUSTOM_DRIVER_OPTIONS.get().put(key, value);
     }
 
     public static AndroidDriver<MobileElement> getWrappedAndroidDriver() {
-        return wrappedAndroidDriver.get();
+        return WRAPPED_ANDROID_DRIVER.get();
     }
 
     public static AppConfiguration getAppConfiguration() {
-        return appConfiguration.get();
+        return APP_CONFIGURATION.get();
     }
 
     public static AndroidDriver<MobileElement> start(AppConfiguration configuration) {
-        appConfiguration.set(configuration);
-        disposed.set(false);
-        AndroidDriver<MobileElement> driver = null;
+        APP_CONFIGURATION.set(configuration);
+        DISPOSED.set(false);
+        AndroidDriver<MobileElement> driver;
         var androidSettings = ConfigurationService.get(AndroidSettings.class);
         var executionType = androidSettings.getExecutionType();
         if (executionType.equals("regular")) {
@@ -77,7 +77,7 @@ public class DriverService {
         }
 
         driver.manage().timeouts().implicitlyWait(androidSettings.getTimeoutSettings().getImplicitWaitTimeout(), TimeUnit.SECONDS);
-        wrappedAndroidDriver.set(driver);
+        WRAPPED_ANDROID_DRIVER.set(driver);
 
         return driver;
     }
@@ -89,7 +89,7 @@ public class DriverService {
 
         AndroidDriver<MobileElement> driver = null;
         try {
-            driver = new AndroidDriver<MobileElement>(new URL(gridSettings.getUrl()), caps);
+            driver = new AndroidDriver<>(new URL(gridSettings.getUrl()), caps);
         } catch (MalformedURLException e) {
             DebugInformation.printStackTrace(e);
         }
@@ -119,10 +119,10 @@ public class DriverService {
     }
 
     private static <TOption extends MutableCapabilities> void addGridOptions(TOption options, GridSettings gridSettings) {
-        for (var entry:gridSettings.getArguments()) {
-            for (var c:entry.entrySet()) {
+        for (var entry : gridSettings.getArguments()) {
+            for (var c : entry.entrySet()) {
                 if (c.getKey().startsWith("env_")) {
-                    var envValue = System.getProperty(c.getKey().replace("env_", "")) ;
+                    var envValue = System.getProperty(c.getKey().replace("env_", ""));
                     options.setCapability(c.getKey(), envValue);
                 } else {
                     options.setCapability(c.getKey(), c.getValue());
@@ -132,21 +132,21 @@ public class DriverService {
     }
 
     private static <TOption extends MutableCapabilities> void addDriverOptions(TOption chromeOptions) {
-        for (var optionKey:appConfiguration.get().appiumOptions.keySet()) {
-            chromeOptions.setCapability(optionKey, appConfiguration.get().appiumOptions.get(optionKey));
+        for (var optionKey : APP_CONFIGURATION.get().appiumOptions.keySet()) {
+            chromeOptions.setCapability(optionKey, APP_CONFIGURATION.get().appiumOptions.get(optionKey));
         }
     }
 
     public static void close() {
-        if (disposed.get()) {
+        if (DISPOSED.get()) {
             return;
         }
 
-        if (wrappedAndroidDriver.get() != null) {
-            wrappedAndroidDriver.get().close();
-            customDriverOptions.get().clear();
+        if (WRAPPED_ANDROID_DRIVER.get() != null) {
+            WRAPPED_ANDROID_DRIVER.get().close();
+            CUSTOM_DRIVER_OPTIONS.get().clear();
         }
 
-        disposed.set(true);
+        DISPOSED.set(true);
     }
 }

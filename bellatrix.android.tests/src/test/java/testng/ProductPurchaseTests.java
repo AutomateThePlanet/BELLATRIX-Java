@@ -17,7 +17,7 @@ import org.testng.annotations.Test;
 import solutions.bellatrix.android.components.Button;
 import solutions.bellatrix.android.infrastructure.ExecutionApp;
 import solutions.bellatrix.android.infrastructure.Lifecycle;
-import solutions.bellatrix.android.infrastructure.junit.AndroidTest;
+import solutions.bellatrix.android.infrastructure.testng.AndroidTest;
 
 @ExecutionApp(lifecycle = Lifecycle.RESTART_ON_FAIL)
 public class ProductPurchaseTests extends AndroidTest {

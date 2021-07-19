@@ -19,10 +19,9 @@ import io.appium.java_client.android.AndroidDriver;
 import java.util.List;
 
 public class ClassFindStrategy extends FindStrategy {
-    private final String CLASS_EXPRESSION = "new UiScrollable(new UiSelector()).scrollIntoView(new UiSelector().className(\\\"%s\\\"));";
+    private static final String CLASS_EXPRESSION = "new UiScrollable(new UiSelector()).scrollIntoView(new UiSelector().className(\"%s\"));";
 
-    public ClassFindStrategy(String value)
-    {
+    public ClassFindStrategy(String value) {
         super(value);
     }
 
@@ -48,6 +47,6 @@ public class ClassFindStrategy extends FindStrategy {
 
     @Override
     public String toString() {
-        return String.format("text = %s", getValue());
+        return String.format("class = %s", getValue());
     }
 }

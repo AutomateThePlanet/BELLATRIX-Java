@@ -13,11 +13,10 @@
 
 package checkoutpage;
 
-import org.testng.Assert;
 import solutions.bellatrix.web.pages.PageAsserts;
 
 public class Asserts extends PageAsserts<Map> {
     public void orderReceived() {
-        Assert.assertEquals(map().receivedMessage().getText(), "Order received");
+        map().receivedMessage().validateTextIs("Order received");
     }
 }

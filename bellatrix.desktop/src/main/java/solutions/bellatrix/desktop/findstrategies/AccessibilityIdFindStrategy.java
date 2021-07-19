@@ -20,8 +20,7 @@ import org.openqa.selenium.WebElement;
 import java.util.List;
 
 public class AccessibilityIdFindStrategy extends FindStrategy {
-    public AccessibilityIdFindStrategy(String value)
-    {
+    public AccessibilityIdFindStrategy(String value) {
         super(value);
     }
 

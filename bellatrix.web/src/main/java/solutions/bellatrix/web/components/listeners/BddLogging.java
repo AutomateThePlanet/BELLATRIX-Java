@@ -13,15 +13,45 @@
 
 package solutions.bellatrix.web.components.listeners;
 
-import solutions.bellatrix.web.components.Anchor;
-import solutions.bellatrix.web.components.WebComponent;
+import solutions.bellatrix.core.plugins.Listener;
+import solutions.bellatrix.core.utilities.Log;
+import solutions.bellatrix.web.components.*;
+import solutions.bellatrix.web.validations.ComponentValidator;
 
-public class BddLogging {
+public class BddLogging extends Listener {
     private static boolean isBddLoggingTurnedOn = false;
-    public static void addPlugin() {
+
+    @Override
+    public void addListener() {
         if (!isBddLoggingTurnedOn) {
-            Anchor.CLICKING.addListener((x) -> System.out.printf("clicking %s%n", x.getComponent().getElementName()));
-            WebComponent.VALIDATED_ATTRIBUTE.addListener((x) -> System.out.println(x.getMessage()));
+            Anchor.CLICKING.addListener((x) -> Log.info("clicking %s", x.getComponent().getComponentName()));
+            Button.CLICKING.addListener((x) -> Log.info("clicking %s", x.getComponent().getComponentName()));
+            CheckBox.CHECKING.addListener((x) -> Log.info("checking %s", x.getComponent().getComponentName()));
+            CheckBox.UNCHECKING.addListener((x) -> Log.info("unchecking %s", x.getComponent().getComponentName()));
+            ColorInput.SETTING_COLOR.addListener((x) -> Log.info("setting '%s' in %s", x.getActionValue(), x.getComponent().getComponentName()));
+            DateInput.SETTING_DATE.addListener((x) -> Log.info("setting '%s' in %s", x.getActionValue(), x.getComponent().getComponentName()));
+            DateTimeInput.SETTING_TIME.addListener((x) -> Log.info("setting '%s' in %s", x.getActionValue(), x.getComponent().getComponentName()));
+            EmailInput.SETTING_EMAIL.addListener((x) -> Log.info("typing '%s' in %s", x.getActionValue(), x.getComponent().getComponentName()));
+            FileInput.UPLOADING.addListener((x) -> Log.info("uploading '%s' to %s", x.getActionValue(), x.getComponent().getComponentName()));
+            MonthInput.SETTING_MONTH.addListener((x) -> Log.info("setting '%s' in %s", x.getActionValue(), x.getComponent().getComponentName()));
+            NumberInput.SETTING_NUMBER.addListener((x) -> Log.info("typing '%s' in %s", x.getActionValue(), x.getComponent().getComponentName()));
+            PasswordInput.SETTING_PASSWORD.addListener((x) -> Log.info("typing '%s' in %s", x.getActionValue(), x.getComponent().getComponentName()));
+            PhoneInput.SETTING_PHONE.addListener((x) -> Log.info("typing '%s' in %s", x.getActionValue(), x.getComponent().getComponentName()));
+            RadioButton.CLICKING.addListener((x) -> System.out.printf("clicking %s%n", x.getComponent().getComponentName()));
+            Range.SETTING_RANGE.addListener((x) -> Log.info("setting '%s' in %s", x.getActionValue(), x.getComponent().getComponentName()));
+            Reset.CLICKING.addListener((x) -> System.out.printf("clicking %s%n", x.getComponent().getComponentName()));
+            SearchInput.SETTING_SEARCH.addListener((x) -> Log.info("typing '%s' in %s", x.getActionValue(), x.getComponent().getComponentName()));
+            Select.SELECTING.addListener((x) -> Log.info("selecting '%s' from %s", x.getActionValue(), x.getComponent().getComponentName()));
+            TextArea.SETTING_TEXT.addListener((x) -> Log.info("typing '%s' in %s", x.getActionValue(), x.getComponent().getComponentName()));
+            TextField.SETTING_TEXT.addListener((x) -> Log.info("typing '%s' in %s", x.getActionValue(), x.getComponent().getComponentName()));
+            TimeInput.SETTING_TIME.addListener((x) -> Log.info("setting '%s' in %s", x.getActionValue(), x.getComponent().getComponentName()));
+            UrlInput.SETTING_URL.addListener((x) -> Log.info("typing '%s' in %s", x.getActionValue(), x.getComponent().getComponentName()));
+            WeekInput.SETTING_WEEK.addListener((x) -> Log.info("setting '%s' in %s", x.getActionValue(), x.getComponent().getComponentName()));
+            WebComponent.HOVERING.addListener((x) -> Log.info("hovering %s", x.getComponent().getComponentName()));
+            WebComponent.FOCUSING.addListener((x) -> Log.info("focusing %s", x.getComponent().getComponentName()));
+            WebComponent.SCROLLING_TO_VISIBLE.addListener((x) -> Log.info("scrolling to %s", x.getComponent().getComponentName()));
+            WebComponent.SETTING_ATTRIBUTE.addListener((x) -> Log.info("setting %s to '%s' in %s", x.getActionValue(), x.getMessage(), x.getComponent().getComponentName()));
+            ComponentValidator.VALIDATING_ATTRIBUTE.addListener((x) -> Log.info(x.getMessage()));
             isBddLoggingTurnedOn = true;
         }
     }

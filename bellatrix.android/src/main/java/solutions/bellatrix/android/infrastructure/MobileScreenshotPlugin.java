@@ -20,40 +20,33 @@ import org.openqa.selenium.TakesScreenshot;
 import plugins.screenshots.ScreenshotPlugin;
 import solutions.bellatrix.android.configuration.AndroidSettings;
 import solutions.bellatrix.core.configuration.ConfigurationService;
+import solutions.bellatrix.core.utilities.PathNormalizer;
 
 import java.io.File;
 import java.nio.file.Paths;
 import java.util.UUID;
 
 public class MobileScreenshotPlugin extends ScreenshotPlugin {
-    public MobileScreenshotPlugin(boolean isEnabled) {
-        super(isEnabled);
-    }
-
-    public static MobileScreenshotPlugin of() {
-        boolean isEnabled = ConfigurationService.get(AndroidSettings.class).getScreenshotsOnFailEnabled();
-        return new MobileScreenshotPlugin(isEnabled);
+    public MobileScreenshotPlugin() {
+        super(ConfigurationService.get(AndroidSettings.class).getScreenshotsOnFailEnabled());
     }
 
     @Override
     @SneakyThrows
-    protected void takeScreenshot( String screenshotSaveDir, String filename) {
-        File screenshot = ((TakesScreenshot) DriverService.getWrappedAndroidDriver()).getScreenshotAs(OutputType.FILE);
-        var destFile = new File(Paths.get(screenshotSaveDir, filename).toString() + ".png");
+    protected void takeScreenshot(String screenshotSaveDir, String filename) {
+        File screenshot = ((TakesScreenshot)DriverService.getWrappedAndroidDriver()).getScreenshotAs(OutputType.FILE);
+        var destFile = new File(Paths.get(screenshotSaveDir, filename) + ".png");
         FileUtils.copyFile(screenshot, destFile);
     }
 
     @Override
     protected String getOutputFolder() {
         String saveLocation = ConfigurationService.get(AndroidSettings.class).getScreenshotsSaveLocation();
-        if (saveLocation.startsWith("user.home")) {
-            var userHomeDir = System.getProperty("user.home");
-            saveLocation = saveLocation.replace("user.home", userHomeDir);
-        }
+        saveLocation = PathNormalizer.normalizePath(saveLocation);
 
         var directory = new File(saveLocation);
-        if (! directory.exists()){
-            directory.mkdirs();
+        if (directory.mkdirs()) {
+            return saveLocation;
         }
 
         return saveLocation;

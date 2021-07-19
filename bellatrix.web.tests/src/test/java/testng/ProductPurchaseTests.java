@@ -19,44 +19,32 @@ import checkoutpage.PurchaseInfo;
 import mainpage.MainPage;
 import org.testng.annotations.Test;
 import solutions.bellatrix.web.components.Anchor;
-import solutions.bellatrix.web.components.CheckBox;
-import solutions.bellatrix.web.components.Frame;
-import solutions.bellatrix.web.findstrategies.TextContains;
 import solutions.bellatrix.web.infrastructure.Browser;
 import solutions.bellatrix.web.infrastructure.ExecutionBrowser;
 import solutions.bellatrix.web.infrastructure.Lifecycle;
 import solutions.bellatrix.web.infrastructure.testng.WebTest;
 
-@ExecutionBrowser(browser = Browser.CHROME, lifecycle = Lifecycle.REUSE_IF_STARTED)
+@ExecutionBrowser(browser = Browser.FIREFOX, lifecycle = Lifecycle.RESTART_ON_FAIL)
 public class ProductPurchaseTests extends WebTest {
-    @Test
-    public void sandbox() {
-        app().navigate().to("https://www.w3schools.com/tags/tryit.asp?filename=tryhtml5_input_type_checkbox");
-        var frame = app().create().byId(Frame.class,"iframeResult");
-        app().browser().switchToFrame(frame);
-        var checkbox1 = app().create().byId(CheckBox.class,"vehicle1");
-        var checkbox2 = app().create().byId(CheckBox.class,"vehicle2");
-        var checkbox3 = app().create().byId(CheckBox.class,"vehicle3");
-        checkbox3.check();
-        checkbox1.validateIsUnchecked();
-        checkbox2.validateIsUnchecked();
-        checkbox3.validateIsChecked();
+    @Override
+    protected void afterMethod() {
+        app().cookies().deleteAllCookies();
     }
 
     @Test
     public void completePurchaseSuccessfully_first() {
         app().navigate().to("http://demos.bellatrix.solutions/");
-        var addToCartFalcon9 = app().create().byCss(Anchor.class,"[data-product_id*='28']");
-        var blogLink = app().create().by(Anchor.class, TextContains.by("Blog"));
+        var addToCartFalcon9 = app().create().byCss(Anchor.class, "[data-product_id*='28']");
+        var blogLink = app().create().byInnerTextContaining(Anchor.class, "Blog");
         addToCartFalcon9.click();
-//        blogLink.layout().assertAboveOf(addToCartFalcon9);
-        new MainPage().asserts().productBoxLink("", "");
+        blogLink.above(addToCartFalcon9);
+        new MainPage().asserts().productBoxLink("Falcon 9", "http://demos.bellatrix.solutions/product/falcon-9/");
     }
 
     @Test
     public void completePurchaseSuccessfully_second() {
         app().navigate().to("http://demos.bellatrix.solutions/");
-        var addToCartFalcon9 = app().create().byCss(Anchor.class,"[data-product_id*='28']");
+        var addToCartFalcon9 = app().create().byCss(Anchor.class, "[data-product_id*='28']");
         addToCartFalcon9.click();
     }
 
@@ -75,7 +63,7 @@ public class ProductPurchaseTests extends WebTest {
     }
 
     @Test
-    public void purchaseFalcon9WithoutFacade() throws InterruptedException {
+    public void purchaseFalcon9WithoutFacade() {
         var mainPage = app().goTo(MainPage.class);
         mainPage.addRocketToShoppingCart("Falcon 9");
 
@@ -93,10 +81,10 @@ public class ProductPurchaseTests extends WebTest {
         purchaseInfo.setCompany("Space Flowers");
         purchaseInfo.setCountry("Germany");
         purchaseInfo.setAddress1("1 Willi Brandt Avenue Tiergarten");
-        purchaseInfo.setAddress2("Lьtzowplatz 17");
+        purchaseInfo.setAddress2("Lützowplatz 17");
         purchaseInfo.setCity("Berlin");
         purchaseInfo.setZip("10115");
-        purchaseInfo.setPhone("+00498888999281");
+        purchaseInfo.setPhone("+498888999281");
 
         var checkoutPage = app().create(CheckoutPage.class);
         checkoutPage.fillBillingInfo(purchaseInfo);
@@ -104,7 +92,7 @@ public class ProductPurchaseTests extends WebTest {
     }
 
     @Test
-    public void purchaseSaturnVWithoutFacade() throws InterruptedException {
+    public void purchaseSaturnVWithoutFacade() {
         var mainPage = app().goTo(MainPage.class);
         mainPage.addRocketToShoppingCart("Saturn V");
 
@@ -122,10 +110,10 @@ public class ProductPurchaseTests extends WebTest {
         purchaseInfo.setCompany("Space Flowers");
         purchaseInfo.setCountry("Germany");
         purchaseInfo.setAddress1("1 Willi Brandt Avenue Tiergarten");
-        purchaseInfo.setAddress2("Lьtzowplatz 17");
+        purchaseInfo.setAddress2("Lützowplatz 17");
         purchaseInfo.setCity("Berlin");
         purchaseInfo.setZip("10115");
-        purchaseInfo.setPhone("+00498888999281");
+        purchaseInfo.setPhone("+498888999281");
 
         var checkoutPage = app().create(CheckoutPage.class);
         checkoutPage.fillBillingInfo(purchaseInfo);

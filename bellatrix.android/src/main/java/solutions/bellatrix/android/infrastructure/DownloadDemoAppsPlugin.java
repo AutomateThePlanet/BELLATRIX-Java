@@ -19,20 +19,16 @@ import solutions.bellatrix.core.plugins.Plugin;
 import solutions.bellatrix.core.utilities.FileDownloader;
 
 public class DownloadDemoAppsPlugin extends Plugin {
-    private static ThreadLocal<Boolean> areDemoAppsDownloaded;
+    private static final ThreadLocal<Boolean> ARE_DEMO_APPS_DOWNLOADED;
 
     static {
-        areDemoAppsDownloaded = new ThreadLocal<>();
-    }
-
-    public static DownloadDemoAppsPlugin of() {
-        return new DownloadDemoAppsPlugin();
+        ARE_DEMO_APPS_DOWNLOADED = new ThreadLocal<>();
     }
 
     @Override
     public void preBeforeClass(Class type) {
         super.preBeforeClass(type);
-        if (areDemoAppsDownloaded.get())
+        if (ARE_DEMO_APPS_DOWNLOADED.get())
             return;
         var shouldDownloadDemoApps = ConfigurationService.get(AndroidSettings.class).getDownloadDemoApps();
         if (shouldDownloadDemoApps) {

@@ -15,6 +15,8 @@ package solutions.bellatrix.android.waitstrategies;
 
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.android.AndroidDriver;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import solutions.bellatrix.android.configuration.AndroidSettings;
 import solutions.bellatrix.android.findstrategies.FindStrategy;
@@ -23,35 +25,31 @@ import solutions.bellatrix.core.configuration.ConfigurationService;
 
 import java.util.function.Function;
 
-public class ToExistsWaitStrategy extends WaitStrategy {
-    public ToExistsWaitStrategy() {
-        timeoutInterval = ConfigurationService.get(AndroidSettings.class).getTimeoutSettings().getElementToExistTimeout();
+public class ToBeDisabledWaitStrategy extends WaitStrategy {
+    public ToBeDisabledWaitStrategy() {
+        timeoutInterval = ConfigurationService.get(AndroidSettings.class).getTimeoutSettings().getElementToBeVisibleTimeout();
         sleepInterval = ConfigurationService.get(AndroidSettings.class).getTimeoutSettings().getSleepInterval();
     }
 
-    public ToExistsWaitStrategy(long timeoutIntervalSeconds, long sleepIntervalSeconds) {
-       super(timeoutIntervalSeconds, sleepIntervalSeconds);
+    public static ToBeClickableWaitStrategy of() {
+        return new ToBeClickableWaitStrategy();
     }
 
-    public static ToExistsWaitStrategy of() {
-        return new ToExistsWaitStrategy();
+    public ToBeDisabledWaitStrategy(long timeoutIntervalSeconds, long sleepIntervalSeconds) {
+        super(timeoutIntervalSeconds, sleepIntervalSeconds);
     }
 
     @Override
     public <TFindStrategy extends FindStrategy> void waitUntil(TFindStrategy findStrategy) {
-        Function<WebDriver, Boolean> func = (w) -> elementExists(DriverService.getWrappedAndroidDriver(), findStrategy);
+        Function<WebDriver, Boolean> func = (w) -> elementIsDisabled(DriverService.getWrappedAndroidDriver(), findStrategy);
         waitUntil(func);
     }
 
-    private <TFindStrategy extends FindStrategy> Boolean elementExists(AndroidDriver<MobileElement> searchContext, TFindStrategy findStrategy)
-    {
-        try
-        {
-            var element = findStrategy.findElement(searchContext);
-            return element != null;
-        }
-        catch (Exception e)
-        {
+    private <TFindStrategy extends FindStrategy> Boolean elementIsDisabled(AndroidDriver<MobileElement> searchContext, TFindStrategy findStrategy) {
+        var element = findStrategy.findElement(searchContext);
+        try {
+            return element != null && !element.isEnabled();
+        } catch (StaleElementReferenceException | NoSuchElementException e) {
             return false;
         }
     }

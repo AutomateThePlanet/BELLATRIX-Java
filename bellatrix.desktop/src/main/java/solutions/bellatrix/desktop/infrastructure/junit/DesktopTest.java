@@ -29,10 +29,10 @@ public class DesktopTest extends BaseTest {
 
     @Override
     protected void configure() {
-        addPlugin(AppLifecyclePlugin.of());
-        addPlugin(DesktopScreenshotPlugin.of());
-        addPlugin(DesktopVideoPlugin.of());
-        addPlugin(DownloadDemoAppsPlugin.of());
-        BddLogging.addPlugin();
+        addPlugin(AppLifecyclePlugin.class);
+        addPlugin(DesktopScreenshotPlugin.class);
+        addPlugin(DesktopVideoPlugin.class);
+        addPlugin(DownloadDemoAppsPlugin.class);
+        addListener(BddLogging.class);
     }
 }

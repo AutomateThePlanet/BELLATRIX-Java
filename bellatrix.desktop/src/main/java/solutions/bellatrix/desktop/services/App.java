@@ -36,15 +36,13 @@ public class App implements AutoCloseable {
         DriverService.addDriverOptions(key, value);
     }
 
-    public <TPage extends DesktopPage> TPage create(Class<TPage> pageOf, Object... args)
-    {
+    public <TPage extends DesktopPage> TPage create(Class<TPage> pageOf, Object... args) {
         return SingletonFactory.getInstance(pageOf, args);
     }
 
     @Override
     public void close() {
-        if (disposed)
-        {
+        if (disposed) {
             return;
         }
 

@@ -76,8 +76,10 @@ public class MonthInput extends WebComponent implements ComponentDisabled, Compo
     }
 
     protected void defaultSetMonth(int year, int monthNumber) {
-        if (monthNumber <= 0 || monthNumber > 12) throw new IllegalArgumentException(String.format("The month number should be between 0 and 12 but you specified: %d", monthNumber));
-        if (year <= 0) throw new IllegalArgumentException(String.format("The year should be a positive number but you specified: %d", year));
+        if (monthNumber <= 0 || monthNumber > 12)
+            throw new IllegalArgumentException(String.format("The month number should be between 0 and 12 but you specified: %d", monthNumber));
+        if (year <= 0)
+            throw new IllegalArgumentException(String.format("The year should be a positive number but you specified: %d", year));
 
         String valueToBeSet;
 

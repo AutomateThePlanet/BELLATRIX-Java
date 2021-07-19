@@ -14,12 +14,15 @@
 package solutions.bellatrix.web.components.listeners;
 
 import solutions.bellatrix.core.configuration.ConfigurationService;
+import solutions.bellatrix.core.plugins.Listener;
 import solutions.bellatrix.web.components.WebComponent;
 import solutions.bellatrix.web.configuration.WebSettings;
 
-public class HighlightElements {
+public class HighlightElements extends Listener {
     private static boolean isHighlightElementsAdded = false;
-    public static void addPlugin() {
+
+    @Override
+    public void addListener() {
         if (!isHighlightElementsAdded) {
             var shouldHighlightElements = ConfigurationService.get(WebSettings.class).getShouldHighlightElements();
             if (shouldHighlightElements) {

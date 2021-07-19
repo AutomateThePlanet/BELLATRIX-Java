@@ -19,7 +19,7 @@ public class Frame extends WebComponent {
         return getClass();
     }
 
-    public void getName() {
-        defaultGetName();
+    public String getName() {
+        return defaultGetName();
     }
 }

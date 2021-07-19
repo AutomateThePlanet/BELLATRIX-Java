@@ -20,8 +20,7 @@ import org.openqa.selenium.WebElement;
 import java.util.List;
 
 public class AutomationIdFindStrategy extends FindStrategy {
-    public AutomationIdFindStrategy(String value)
-    {
+    public AutomationIdFindStrategy(String value) {
         super(value);
     }
 
@@ -42,7 +41,7 @@ public class AutomationIdFindStrategy extends FindStrategy {
 
     @Override
     public List<WebElement> findAllElements(WebElement element) {
-        return element.findElement(By.xpath(String.format("//*[@AutomationId='%s']", getValue())));
+        return element.findElements(By.xpath(String.format("//*[@AutomationId='%s']", getValue())));
     }
 
     @Override

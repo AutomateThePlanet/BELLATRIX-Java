@@ -21,11 +21,7 @@ public final class InstanceFactory {
         T obj = null;
         try {
             obj = (T)classOf.getConstructors()[0].newInstance();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
         }
         return obj;
@@ -35,11 +31,7 @@ public final class InstanceFactory {
         T obj = null;
         try {
             obj = (T)classOf.getConstructors()[0].newInstance(args);
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
         }
         return obj;

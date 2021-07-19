@@ -21,8 +21,7 @@ public class KeyboardService extends MobileService {
     public void hideKeyboard() {
         try {
             getWrappedAndroidDriver().hideKeyboard();
-        }
-        catch (WebDriverException ignored) { }
+        } catch (WebDriverException ignored) { }
     }
 
     public void longPressKey(AndroidKey androidKey) {

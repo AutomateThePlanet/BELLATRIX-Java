@@ -21,24 +21,24 @@ import java.io.IOException;
 import java.net.ServerSocket;
 
 public class ProxyServer {
-    private static ThreadLocal<BrowserMobProxyServer> proxyServer = new ThreadLocal<>();
+    private static final ThreadLocal<BrowserMobProxyServer> PROXY_SERVER = new ThreadLocal<>();
 
     @SneakyThrows
     public static int init() {
         int port = findFreePort();
-        proxyServer.set(new BrowserMobProxyServer());
-        proxyServer.get().start(port);
+        PROXY_SERVER.set(new BrowserMobProxyServer());
+        PROXY_SERVER.get().start(port);
         return port;
     }
 
     public static void close() {
-        if (proxyServer.get() != null) {
-            proxyServer.get().stop();
+        if (PROXY_SERVER.get() != null) {
+            PROXY_SERVER.get().stop();
         }
     }
 
     public void assertNoErrorCodes() {
-        var harEntries = proxyServer.get().getHar().getLog().getEntries();
+        var harEntries = PROXY_SERVER.get().getHar().getLog().getEntries();
         var areThereErrorCodes = harEntries.stream().anyMatch(r
                 -> r.getResponse().getStatus() > 400
                 && r.getResponse().getStatus() < 599);
@@ -47,14 +47,14 @@ public class ProxyServer {
     }
 
     public void assertRequestMade(String url) {
-        var harEntries = proxyServer.get().getHar().getLog().getEntries();
+        var harEntries = PROXY_SERVER.get().getHar().getLog().getEntries();
         var areRequestsMade = harEntries.stream().anyMatch(r -> r.getRequest().getUrl().contains(url));
 
         Assert.assertTrue(areRequestsMade);
     }
 
     public void assertNoLargeImagesRequested() {
-        var harEntries = proxyServer.get().getHar().getLog().getEntries();
+        var harEntries = PROXY_SERVER.get().getHar().getLog().getEntries();
         var areThereLargeImages = harEntries.stream().anyMatch(r
                 -> r.getResponse().getContent().getMimeType().startsWith("image")
                 && r.getResponse().getContent().getSize() > 40000);

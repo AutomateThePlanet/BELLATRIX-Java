@@ -11,27 +11,9 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.web.findstrategies;
+package cartinfosection;
 
-import org.openqa.selenium.By;
+import solutions.bellatrix.web.pages.PageAsserts;
 
-public class TextContains extends FindStrategy {
-    public TextContains(String value)
-    {
-        super(value);
-    }
-
-    public static TextContains by(String value) {
-        return new TextContains(value);
-    }
-
-    @Override
-    public By convert() {
-        return By.xpath(String.format("//*[contains(text(), '%s')]", getValue()));
-    }
-
-    @Override
-    public String toString() {
-        return String.format("text containing %s", getValue());
-    }
+public class Asserts extends PageAsserts<Map> {
 }

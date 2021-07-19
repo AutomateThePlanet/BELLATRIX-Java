@@ -17,6 +17,7 @@ import lombok.Getter;
 import org.jsoup.internal.StringUtil;
 import solutions.bellatrix.android.configuration.AndroidSettings;
 import solutions.bellatrix.core.configuration.ConfigurationService;
+import solutions.bellatrix.core.utilities.PathNormalizer;
 
 import java.util.HashMap;
 
@@ -27,12 +28,8 @@ public class AppConfiguration {
     @Getter private String appPackage;
     @Getter private String appActivity;
     @Getter private String androidVersion;
-    @Getter private Boolean isMobileWebExecution;
+    @Getter private final Boolean isMobileWebExecution;
     @Getter HashMap<String, String> appiumOptions;
-
-    public HashMap<String, String> getAppiumOptions() {
-        return appiumOptions;
-    }
 
     public AppConfiguration(boolean isMobileWebExecution) {
         this.isMobileWebExecution = isMobileWebExecution;
@@ -52,9 +49,9 @@ public class AppConfiguration {
         }
 
         if (StringUtil.isBlank(appPath)) {
-            this.appPath = ConfigurationService.get(AndroidSettings.class).getDefaultAppPath();
+            this.appPath = PathNormalizer.normalizePath(ConfigurationService.get(AndroidSettings.class).getDefaultAppPath());
         } else {
-            this.appPath = appPath;
+            this.appPath = PathNormalizer.normalizePath(appPath);
         }
 
         this.lifecycle = lifecycle;
@@ -70,6 +67,8 @@ public class AppConfiguration {
         } else {
             this.appActivity = appActivity;
         }
+
+        this.isMobileWebExecution = false;
 
         appiumOptions = new HashMap<>();
     }

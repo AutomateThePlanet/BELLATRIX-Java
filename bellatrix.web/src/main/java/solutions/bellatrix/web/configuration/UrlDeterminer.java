@@ -12,6 +12,7 @@
  */
 
 package solutions.bellatrix.web.configuration;
+
 import org.apache.hc.core5.net.URIBuilder;
 import solutions.bellatrix.core.configuration.ConfigurationService;
 
@@ -34,8 +35,7 @@ public class UrlDeterminer {
                     .build()
                     .normalize();
             return uri.toString();
-        }
-        catch (URISyntaxException ex) {
+        } catch (URISyntaxException ex) {
             return null;
         }
     }

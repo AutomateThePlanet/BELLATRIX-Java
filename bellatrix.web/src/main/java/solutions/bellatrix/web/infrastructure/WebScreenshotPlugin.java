@@ -18,6 +18,7 @@ import plugins.screenshots.ScreenshotPlugin;
 import ru.yandex.qatools.ashot.AShot;
 import ru.yandex.qatools.ashot.shooting.ShootingStrategies;
 import solutions.bellatrix.core.configuration.ConfigurationService;
+import solutions.bellatrix.core.utilities.PathNormalizer;
 import solutions.bellatrix.web.configuration.WebSettings;
 
 import javax.imageio.ImageIO;
@@ -26,18 +27,13 @@ import java.nio.file.Paths;
 import java.util.UUID;
 
 public class WebScreenshotPlugin extends ScreenshotPlugin {
-    public WebScreenshotPlugin(boolean isEnabled) {
-        super(isEnabled);
-    }
-
-    public static WebScreenshotPlugin of() {
-        boolean isEnabled = ConfigurationService.get(WebSettings.class).getScreenshotsOnFailEnabled();
-        return new WebScreenshotPlugin(isEnabled);
+    public WebScreenshotPlugin() {
+        super(ConfigurationService.get(WebSettings.class).getScreenshotsOnFailEnabled());
     }
 
     @Override
     @SneakyThrows
-    protected void takeScreenshot( String screenshotSaveDir, String filename) {
+    protected void takeScreenshot(String screenshotSaveDir, String filename) {
         var screenshot = new AShot()
                 .shootingStrategy(ShootingStrategies.viewportPasting(100))
                 .takeScreenshot(DriverService.getWrappedDriver());
@@ -48,14 +44,11 @@ public class WebScreenshotPlugin extends ScreenshotPlugin {
     @Override
     protected String getOutputFolder() {
         String saveLocation = ConfigurationService.get(WebSettings.class).getScreenshotsSaveLocation();
-        if (saveLocation.startsWith("user.home")) {
-            var userHomeDir = System.getProperty("user.home");
-            saveLocation = saveLocation.replace("user.home", userHomeDir);
-        }
+        saveLocation = PathNormalizer.normalizePath(saveLocation);
 
         var directory = new File(saveLocation);
-        if (! directory.exists()){
-            directory.mkdirs();
+        if (directory.mkdirs()) {
+            return saveLocation;
         }
 
         return saveLocation;

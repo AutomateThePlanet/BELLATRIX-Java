@@ -76,9 +76,12 @@ public class DateInput extends WebComponent implements ComponentDisabled, Compon
     }
 
     protected void defaultSetDate(int year, int month, int day) {
-        if (year <= 0) throw new IllegalArgumentException(String.format("The year should be a positive number but you specified: %d", year));
-        if (month <= 0 || month > 12) throw new IllegalArgumentException(String.format("The month should be between 0 and 12 but you specified: %d", month));
-        if (day <= 0 || day > 31) throw new IllegalArgumentException(String.format("The day should be between 0 and 31 but you specified: %d", day));
+        if (year <= 0)
+            throw new IllegalArgumentException(String.format("The year should be a positive number but you specified: %d", year));
+        if (month <= 0 || month > 12)
+            throw new IllegalArgumentException(String.format("The month should be between 0 and 12 but you specified: %d", month));
+        if (day <= 0 || day > 31)
+            throw new IllegalArgumentException(String.format("The day should be between 0 and 31 but you specified: %d", day));
 
         String valueToBeSet;
 

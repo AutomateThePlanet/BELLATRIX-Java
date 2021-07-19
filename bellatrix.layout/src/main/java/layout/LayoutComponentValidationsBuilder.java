@@ -161,7 +161,7 @@ public abstract class LayoutComponentValidationsBuilder implements LayoutCompone
         var comparingComponentsNames = getLayoutComponentsNames(layoutComponents);
         Predicate combinedPredicate = (s) -> true;
         Arrays.stream(layoutComponents).forEach(c -> {
-            var bottomY = c.getLocation().getY()+ c.getSize().getHeight() / 2;
+            var bottomY = c.getLocation().getY() + c.getSize().getHeight() / 2;
             combinedPredicate.and((r) -> baseLineTopY.equals(bottomY));
         });
 
@@ -186,7 +186,7 @@ public abstract class LayoutComponentValidationsBuilder implements LayoutCompone
         var comparingComponentsNames = getLayoutComponentsNames(layoutComponents);
         Predicate combinedPredicate = (s) -> true;
         Arrays.stream(layoutComponents).forEach(c -> {
-            var bottomY = c.getLocation().getY()+ c.getSize().getHeight();
+            var bottomY = c.getLocation().getY() + c.getSize().getHeight();
             combinedPredicate.and((r) -> baseLineBottomY.equals(bottomY));
         });
 
@@ -204,24 +204,24 @@ public abstract class LayoutComponentValidationsBuilder implements LayoutCompone
     }
 
     private String getLayoutComponentsNames(LayoutComponent[] layoutComponents) {
-        var comparingComponentsNames = Arrays.stream(layoutComponents).skip(0).map(x -> x.getElementName()).collect(Collectors.joining(","));
+        var comparingComponentsNames = Arrays.stream(layoutComponents).skip(0).map(LayoutComponent::getComponentName).collect(Collectors.joining(","));
         return comparingComponentsNames;
     }
 
     private String buildNotificationAlignValidationMessage(String componentNames, Integer expected, LayoutOptions validationType) {
-        return String.format("validate %s is %s %s %d px ", this.getElementName(), validationType, componentNames, expected);
+        return String.format("validate %s is %s %s %d px ", this.getComponentName(), validationType, componentNames, expected);
     }
 
     private String buildFailedAlignValidationMessage(String componentNames, Integer expected, LayoutOptions validationType) {
-        return String.format("%s should be %s %s %d px but was not. ", this.getElementName(), validationType, componentNames, expected);
+        return String.format("%s should be %s %s %d px but was not. ", this.getComponentName(), validationType, componentNames, expected);
     }
 
     private String buildNotificationValidationMessage(LayoutComponent secondLayoutComponent, LayoutOptions validationType) {
-        return String.format("validate %s is %s of %s ", this.getElementName(), validationType, secondLayoutComponent.getElementName());
+        return String.format("validate %s is %s of %s ", this.getComponentName(), validationType, secondLayoutComponent.getComponentName());
     }
 
     private String buildFailedValidationMessage(LayoutComponent secondLayoutComponent, LayoutOptions validationType) {
-        return String.format("%s should be %s of %s ", this.getElementName(), validationType, secondLayoutComponent.getElementName());
+        return String.format("%s should be %s of %s ", this.getComponentName(), validationType, secondLayoutComponent.getComponentName());
     }
 
     private double calculateRightOfDistance(LayoutComponent component, LayoutComponent secondComponent) {

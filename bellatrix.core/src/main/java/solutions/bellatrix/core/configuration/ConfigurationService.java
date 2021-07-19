@@ -18,10 +18,12 @@ import com.google.gson.JsonParser;
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
 import org.apache.commons.io.IOUtils;
+import solutions.bellatrix.core.utilities.DebugInformation;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 import java.util.Properties;
 
 @UtilityClass
@@ -29,7 +31,7 @@ public final class ConfigurationService {
     private static String environment;
 
     public static <T> T get(Class<T> configSection) {
-        T mappedObject = null;
+        T mappedObject = (T)new Object();
         if (environment == null) {
             String environmentOverride = System.getProperty("environment");
             if (environmentOverride == null) {
@@ -42,8 +44,7 @@ public final class ConfigurationService {
                 }
 
                 environment = p.getProperty("environment");
-            }
-           else {
+            } else {
                 environment = environmentOverride;
             }
         }
@@ -57,7 +58,7 @@ public final class ConfigurationService {
         var gson = new Gson();
 
         try {
-            mappedObject= gson.fromJson(jsonObject, configSection);
+            mappedObject = gson.fromJson(jsonObject, configSection);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -65,8 +66,7 @@ public final class ConfigurationService {
         return mappedObject;
     }
 
-    public static String getSectionName(Class<?> configSection)
-    {
+    public static String getSectionName(Class<?> configSection) {
         var sb = new StringBuilder(configSection.getSimpleName());
         sb.setCharAt(0, Character.toLowerCase(sb.charAt(0)));
         return sb.toString();
@@ -75,6 +75,11 @@ public final class ConfigurationService {
     @SneakyThrows
     public static String getFileAsString(String fileName) {
         InputStream input = ConfigurationService.class.getResourceAsStream("/" + fileName);
-        return IOUtils.toString(input, StandardCharsets.UTF_8);
+        try {
+            return IOUtils.toString(Objects.requireNonNull(input), StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            DebugInformation.printStackTrace(new IOException("Couldn't load '" + fileName + "'"));
+            return "";
+        }
     }
 }

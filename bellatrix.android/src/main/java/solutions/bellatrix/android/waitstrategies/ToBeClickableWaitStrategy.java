@@ -36,7 +36,7 @@ public class ToBeClickableWaitStrategy extends WaitStrategy {
     }
 
     public ToBeClickableWaitStrategy(long timeoutIntervalSeconds, long sleepIntervalSeconds) {
-       super(timeoutIntervalSeconds, sleepIntervalSeconds);
+        super(timeoutIntervalSeconds, sleepIntervalSeconds);
     }
 
     @Override
@@ -45,19 +45,11 @@ public class ToBeClickableWaitStrategy extends WaitStrategy {
         waitUntil(func);
     }
 
-    private <TFindStrategy extends FindStrategy> Boolean elementIsClickable(AndroidDriver<MobileElement> searchContext, TFindStrategy findStrategy)
-    {
+    private <TFindStrategy extends FindStrategy> Boolean elementIsClickable(AndroidDriver<MobileElement> searchContext, TFindStrategy findStrategy) {
         var element = findStrategy.findElement(searchContext);
-        try
-        {
+        try {
             return element != null && element.isEnabled();
-        }
-        catch (StaleElementReferenceException e)
-        {
-            return false;
-        }
-        catch (NoSuchElementException e)
-        {
+        } catch (StaleElementReferenceException | NoSuchElementException e) {
             return false;
         }
     }

@@ -13,16 +13,16 @@
 
 package solutions.bellatrix.web.services;
 
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import solutions.bellatrix.core.utilities.DebugInformation;
+import solutions.bellatrix.web.components.WebComponent;
 
 public class JavaScriptService extends WebService {
     private final JavascriptExecutor javascriptExecutor;
 
     public JavaScriptService() {
         super();
-        javascriptExecutor = (JavascriptExecutor) getWrappedDriver();
+        javascriptExecutor = (JavascriptExecutor)getWrappedDriver();
     }
 
     public Object execute(String script) {
@@ -45,22 +45,26 @@ public class JavaScriptService extends WebService {
     public String execute(String script, Object... args) {
         try {
             var result = (String)javascriptExecutor.executeScript(script, args);
-            return result ;
+            return result;
         } catch (Exception ex) {
             DebugInformation.printStackTrace(ex);
             return "";
         }
     }
 
-//    public <TElement extends Element> String Execute(String script, TElement element) {
-//        var result = execute(script, element.getWrappedElement());
-//        return result;
-//    }
+    public <TComponent extends WebComponent> String execute(String script, TComponent component) {
+        var result = execute(script, component.findElement());
+        return result;
+    }
 
     public String execute(String script, WebElement nativeElement) {
         try {
             var result = (String)javascriptExecutor.executeScript(script, nativeElement);
             return result;
+        } catch (NoSuchSessionException | NoSuchWindowException ex) {
+            throw ex;
+        } catch (StaleElementReferenceException | NoSuchElementException ex) {
+            return "";
         } catch (Exception ex) {
             DebugInformation.printStackTrace(ex);
             return "";

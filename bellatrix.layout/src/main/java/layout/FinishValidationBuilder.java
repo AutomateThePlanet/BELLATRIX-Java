@@ -23,7 +23,7 @@ import java.util.function.Supplier;
 public class FinishValidationBuilder {
     public final static EventListener<LayoutValidationEventArgs> VALIDATED_COMPONENT_LAYOUT = new EventListener<>();
 
-    @Getter private Predicate comparingFunction;
+    @Getter private final Predicate comparingFunction;
     private String notificationMessage;
     private String failedAssertionMessage;
 

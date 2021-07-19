@@ -29,7 +29,7 @@ public class TextArea extends WebComponent implements ComponentText, ComponentVa
     public String getText() {
         String text = defaultGetText();
 
-        if(text.isEmpty()) {
+        if (text.isEmpty()) {
             return defaultGetValue();
         }
 

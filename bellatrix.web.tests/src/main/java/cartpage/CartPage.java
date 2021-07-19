@@ -23,7 +23,7 @@ public class CartPage extends WebPage<Map, Asserts> {
 
     @Override
     protected void waitForPageLoad() {
-        map().couponCodeTextField().toExists().waitToBe();
+        map().couponCodeTextField().toExist().waitToBe();
     }
 
     public void applyCoupon(String coupon) {
@@ -32,7 +32,7 @@ public class CartPage extends WebPage<Map, Asserts> {
         browser().waitForAjax();
     }
 
-    public void increaseProductQuantity(int newQuantity) throws InterruptedException {
+    public void increaseProductQuantity(int newQuantity) {
         map().quantityBox().setText(String.valueOf(newQuantity));
         map().updateCart().click();
         browser().waitForAjax();

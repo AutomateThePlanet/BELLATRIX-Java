@@ -20,8 +20,7 @@ import org.openqa.selenium.WebElement;
 import java.util.List;
 
 public class XPathFindStrategy extends FindStrategy {
-    public XPathFindStrategy(String value)
-    {
+    public XPathFindStrategy(String value) {
         super(value);
     }
 

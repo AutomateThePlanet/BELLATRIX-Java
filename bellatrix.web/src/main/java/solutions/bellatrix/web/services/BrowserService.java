@@ -15,17 +15,26 @@ package solutions.bellatrix.web.services;
 
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.openqa.selenium.opera.OperaDriver;
+import org.openqa.selenium.safari.SafariDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import solutions.bellatrix.core.configuration.ConfigurationService;
+import solutions.bellatrix.core.utilities.InstanceFactory;
 import solutions.bellatrix.web.components.Frame;
 import solutions.bellatrix.web.configuration.WebSettings;
+import solutions.bellatrix.web.infrastructure.BrowserConfiguration;
 
 public class BrowserService extends WebService {
     private final JavascriptExecutor javascriptExecutor;
 
     public BrowserService() {
         super();
-        javascriptExecutor = (JavascriptExecutor) getWrappedDriver();
+        javascriptExecutor = (JavascriptExecutor)getWrappedDriver();
     }
 
     public String getPageSource() {
@@ -76,82 +85,74 @@ public class BrowserService extends WebService {
         getWrappedDriver().switchTo().frame(frame.findElement());
     }
 
-//    public void ClearSessionStorage() {
-//        var browserConfig = ServicesCollection.Current.Resolve < BrowserConfiguration > ();
-//        switch (browserConfig.BrowserType) {
-//            case BrowserType.NotSet:
-//                break;
-//            case BrowserType.Chrome:
-//            case BrowserType.ChromeHeadless:
-//                var chromeDriver = (ChromeDriver) WrappedDriver;
-//                chromeDriver.WebStorage.SessionStorage.Clear();
-//                break;
-//            case BrowserType.Firefox:
-//            case BrowserType.FirefoxHeadless:
-//                var firefoxDriver = (FirefoxDriver) WrappedDriver;
-//                firefoxDriver.WebStorage.SessionStorage.Clear();
-//                break;
-//            case BrowserType.InternetExplorer:
-//                var ieDriver = (InternetExplorerDriver) WrappedDriver;
-//                ieDriver.WebStorage.SessionStorage.Clear();
-//                break;
-//            case BrowserType.Edge:
-//            case BrowserType.EdgeHeadless:
-//                var edgeDriver = (EdgeDriver) WrappedDriver;
-//                edgeDriver.WebStorage.SessionStorage.Clear();
-//                break;
-//            case BrowserType.Opera:
-//                var operaDriver = (OperaDriver) WrappedDriver;
-//                operaDriver.WebStorage.SessionStorage.Clear();
-//                break;
-//            case BrowserType.Safari:
-//                var safariDriver = (SafariDriver) WrappedDriver;
-//                safariDriver.WebStorage.SessionStorage.Clear();
-//                break;
-//        }
-//    }
-//
-//    public void ClearLocalStorage() {
-//        var browserConfig = ServicesCollection.Current.Resolve < BrowserConfiguration > ();
-//        switch (browserConfig.BrowserType) {
-//            case BrowserType.NotSet:
-//                break;
-//            case BrowserType.Chrome:
-//            case BrowserType.ChromeHeadless:
-//                var chromeDriver = (ChromeDriver) WrappedDriver;
-//                chromeDriver.WebStorage.LocalStorage.Clear();
-//                break;
-//            case BrowserType.Firefox:
-//            case BrowserType.FirefoxHeadless:
-//                var firefoxDriver = (FirefoxDriver) WrappedDriver;
-//                firefoxDriver.WebStorage.LocalStorage.Clear();
-//                break;
-//            case BrowserType.InternetExplorer:
-//                var ieDriver = (InternetExplorerDriver) WrappedDriver;
-//                ieDriver.WebStorage.LocalStorage.Clear();
-//                break;
-//            case BrowserType.Edge:
-//            case BrowserType.EdgeHeadless:
-//                var edgeDriver = (EdgeDriver) WrappedDriver;
-//                edgeDriver.WebStorage.LocalStorage.Clear();
-//                break;
-//            case BrowserType.Opera:
-//                var operaDriver = (OperaDriver) WrappedDriver;
-//                operaDriver.WebStorage.LocalStorage.Clear();
-//                break;
-//            case BrowserType.Safari:
-//                var safariDriver = (SafariDriver) WrappedDriver;
-//                safariDriver.WebStorage.LocalStorage.Clear();
-//                break;
-//        }
-//    }
+    public void clearSessionStorage() {
+        var browserConfig = InstanceFactory.create(BrowserConfiguration.class);
+        switch (browserConfig.getBrowser()) {
+            case CHROME, CHROME_HEADLESS -> {
+                var chromeDriver = (ChromeDriver)getWrappedDriver();
+                chromeDriver.getSessionStorage().clear();
+            }
+            case FIREFOX, FIREFOX_HEADLESS -> {
+                var firefoxDriver = (FirefoxDriver)getWrappedDriver();
+                firefoxDriver.getSessionStorage().clear();
+            }
+            case INTERNET_EXPLORER -> {
+                var ieDriver = (InternetExplorerDriver)getWrappedDriver();
+                ((JavascriptExecutor)ieDriver).executeScript("sessionStorage.clear()");
+            }
+            case EDGE -> {
+                // case EDGE_HEADLESS:
+                var edgeDriver = (EdgeDriver)getWrappedDriver();
+                ((JavascriptExecutor)edgeDriver).executeScript("sessionStorage.clear()");
+            }
+            case OPERA -> {
+                var operaDriver = (OperaDriver)getWrappedDriver();
+                operaDriver.getSessionStorage().clear();
+            }
+            case SAFARI -> {
+                var safariDriver = (SafariDriver)getWrappedDriver();
+                ((JavascriptExecutor)safariDriver).executeScript("sessionStorage.clear()");
+            }
+        }
+    }
+
+    public void clearLocalStorage() {
+        var browserConfig = InstanceFactory.create(BrowserConfiguration.class);
+        switch (browserConfig.getBrowser()) {
+            case CHROME, CHROME_HEADLESS -> {
+                var chromeDriver = (ChromeDriver)getWrappedDriver();
+                chromeDriver.getLocalStorage().clear();
+            }
+            case FIREFOX, FIREFOX_HEADLESS -> {
+                var firefoxDriver = (FirefoxDriver)getWrappedDriver();
+                firefoxDriver.getLocalStorage().clear();
+            }
+            case INTERNET_EXPLORER -> {
+                var ieDriver = (InternetExplorerDriver)getWrappedDriver();
+                ((JavascriptExecutor)ieDriver).executeScript("localStorage.clear()");
+            }
+            case EDGE -> {
+                // case EDGE_HEADLESS:
+                var edgeDriver = (EdgeDriver)getWrappedDriver();
+                ((JavascriptExecutor)edgeDriver).executeScript("localStorage.clear()");
+            }
+            case OPERA -> {
+                var operaDriver = (OperaDriver)getWrappedDriver();
+                operaDriver.getLocalStorage().clear();
+            }
+            case SAFARI -> {
+                var safariDriver = (SafariDriver)getWrappedDriver();
+                ((JavascriptExecutor)safariDriver).executeScript("localStorage.clear()");
+            }
+        }
+    }
 
     public void waitForAjax() {
         long ajaxTimeout = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getWaitForAjaxTimeout();
         long sleepInterval = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getSleepInterval();
         var webDriverWait = new WebDriverWait(getWrappedDriver(), ajaxTimeout, sleepInterval);
-        var javascriptExecutor = (JavascriptExecutor) getWrappedDriver();
-        webDriverWait.until(d -> (boolean) javascriptExecutor.executeScript("return window.jQuery != undefined && jQuery.active == 0"));
+        var javascriptExecutor = (JavascriptExecutor)getWrappedDriver();
+        webDriverWait.until(d -> (boolean)javascriptExecutor.executeScript("return window.jQuery != undefined && jQuery.active == 0"));
     }
 
     public void waitForAjaxRequest(String requestPartialUrl, int additionalTimeoutInSeconds) {
@@ -160,11 +161,8 @@ public class BrowserService extends WebService {
         var webDriverWait = new WebDriverWait(getWrappedDriver(), ajaxTimeout + additionalTimeoutInSeconds, sleepInterval);
         webDriverWait.until(d -> {
             String script = String.format("return performance.getEntriesByType('resource').filter(item => item.initiatorType == 'xmlhttprequest' && item.name.toLowerCase().includes('%s'))[0] !== undefined;", requestPartialUrl);
-            String result = (String) javascriptExecutor.executeScript(script);
-            if (result == "True") {
-                return true;
-            }
-            return false;
+            boolean result = (boolean)javascriptExecutor.executeScript(script);
+            return result;
         });
     }
 
@@ -183,7 +181,14 @@ public class BrowserService extends WebService {
         long waitForJavaScriptAnimationsTimeout = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getWaitForJavaScriptAnimationsTimeout();
         long sleepInterval = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getSleepInterval();
         var webDriverWait = new WebDriverWait(getWrappedDriver(), waitForJavaScriptAnimationsTimeout, sleepInterval);
-        webDriverWait.until(d -> (boolean) javascriptExecutor.executeScript("return jQuery && jQuery(':animated').length === 0"));
+        webDriverWait.until(d -> (boolean)javascriptExecutor.executeScript("return jQuery && jQuery(':animated').length === 0"));
+    }
+
+    public void waitForPartialUrl(String partialUrl) {
+        long waitForPartialUrlTimeout = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getWaitForPartialUrl();
+        long sleepInterval = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getSleepInterval();
+        var webDriverWait = new WebDriverWait(getWrappedDriver(), waitForPartialUrlTimeout, sleepInterval);
+        webDriverWait.until(ExpectedConditions.urlContains(partialUrl));
     }
 
     public void waitForAngular() {
@@ -191,15 +196,15 @@ public class BrowserService extends WebService {
         long sleepInterval = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getSleepInterval();
         var webDriverWait = new WebDriverWait(getWrappedDriver(), angularTimeout, sleepInterval);
 
-        String isAngular5 = (String) javascriptExecutor.executeScript("return getAllAngularRootElements()[0].attributes['ng-version']");
+        String isAngular5 = (String)javascriptExecutor.executeScript("return getAllAngularRootElements()[0].attributes['ng-version']");
         if (StringUtils.isBlank(isAngular5)) {
-            webDriverWait.until(d -> (boolean) javascriptExecutor.executeScript("return window.getAllAngularTestabilities().findIndex(x=>!x.isStable()) === -1"));
+            webDriverWait.until(d -> (boolean)javascriptExecutor.executeScript("return window.getAllAngularTestabilities().findIndex(x=>!x.isStable()) === -1"));
         } else {
-            boolean isAngularDefined = (boolean) javascriptExecutor.executeScript("return window.angular === undefined");
-            if (!((boolean) isAngularDefined)) {
-                boolean isAngularInjectorUnDefined = (boolean) javascriptExecutor.executeScript("return angular.element(document).injector() === undefined");
+            boolean isAngularDefined = (boolean)javascriptExecutor.executeScript("return window.angular === undefined");
+            if (!((boolean)isAngularDefined)) {
+                boolean isAngularInjectorUnDefined = (boolean)javascriptExecutor.executeScript("return angular.element(document).injector() === undefined");
                 if (!isAngularInjectorUnDefined) {
-                    webDriverWait.until(d -> (boolean) javascriptExecutor.executeScript("return angular.element(document).injector().get('$http').pendingRequests.length === 0"));
+                    webDriverWait.until(d -> (boolean)javascriptExecutor.executeScript("return angular.element(document).injector().get('$http').pendingRequests.length === 0"));
                 }
             }
         }
