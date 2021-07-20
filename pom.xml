@@ -65,12 +65,4 @@
         </plugins>
     </build>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>selenium-server</artifactId>
-            <scope>provided</scope>
-        </dependency>
-    </dependencies>
-
 </project>
