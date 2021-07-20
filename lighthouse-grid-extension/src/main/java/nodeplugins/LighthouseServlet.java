@@ -18,6 +18,7 @@ import java.util.logging.Logger;
 
 import static java.lang.Thread.*;
 
+// java -Dwebdriver.chrome.driver="C:\Users\angel\.nuget\packages\selenium.webdriver.chromedriver\91.0.4472.10100\driver\win32\chromedriver.exe" -cp "selenium-server-standalone-3.141.59.jar;bellatrix-selenium-grid-extensions.jar" org.openqa.grid.selenium.GridLauncherV3 -role node -hub http://localhost:4444/grid/register -servlets "nodeplugins.LighthouseServlet"
 public class LighthouseServlet extends HttpServlet {
 
     private static final Logger LOGGER = Logger.getLogger(LighthouseServlet.class.getName());

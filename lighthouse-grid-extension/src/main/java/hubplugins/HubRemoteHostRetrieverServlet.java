@@ -9,16 +9,17 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.logging.Logger;
 
-public class HubRequestsProxyingServlet extends RegistryBasedServlet {
+// java -Dwebdriver.chrome.driver="C:\Users\angel\.nuget\packages\selenium.webdriver.chromedriver\91.0.4472.10100\driver\win32\chromedriver.exe" -cp "selenium-server-standalone-3.141.59.jar;bellatrix-selenium-grid-extensions.jar" org.openqa.grid.selenium.GridLauncherV3 -role hub -servlets "hubplugins.HubRemoteHostRetrieverServlet"
+public class HubRemoteHostRetrieverServlet extends RegistryBasedServlet {
 
-    private static final Logger LOGGER = Logger.getLogger(HubRequestsProxyingServlet.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(HubRemoteHostRetrieverServlet.class.getName());
 
     @SuppressWarnings("unused")
-    public HubRequestsProxyingServlet() {
+    public HubRemoteHostRetrieverServlet() {
         this(null);
     }
 
-    public HubRequestsProxyingServlet(GridRegistry registry) {
+    public HubRemoteHostRetrieverServlet(GridRegistry registry) {
         super(registry);
     }
 
