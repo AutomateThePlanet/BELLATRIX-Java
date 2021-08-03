@@ -18,7 +18,7 @@ import solutions.bellatrix.web.components.contracts.*;
 
 import java.time.LocalDateTime;
 
-public class DateTimeField extends WebComponent implements ComponentDisabled, ComponentValue, ComponentDateTime, ComponentAutoComplete, ComponentReadonly, ComponentRequired, ComponentMaxText, ComponentMinText, ComponentStep {
+public class DateTimeInput extends WebComponent implements ComponentDisabled, ComponentValue, ComponentDateTime, ComponentAutoComplete, ComponentReadonly, ComponentRequired, ComponentMaxText, ComponentMinText, ComponentStep {
     public final static EventListener<ComponentActionEventArgs> SETTING_TIME = new EventListener<>();
     public final static EventListener<ComponentActionEventArgs> TIME_SET = new EventListener<>();
 
