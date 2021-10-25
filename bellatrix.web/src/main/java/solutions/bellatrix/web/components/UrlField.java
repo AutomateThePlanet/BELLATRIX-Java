@@ -16,9 +16,9 @@ package solutions.bellatrix.web.components;
 import solutions.bellatrix.core.plugins.EventListener;
 import solutions.bellatrix.web.components.contracts.*;
 
-public class EmailInput extends WebComponent implements ComponentDisabled, ComponentValue, ComponentEmail, ComponentAutoComplete, ComponentReadonly, ComponentRequired, ComponentMaxLength, ComponentMinLength, ComponentSize, ComponentPlaceholder {
-    public final static EventListener<ComponentActionEventArgs> SETTING_EMAIL = new EventListener<>();
-    public final static EventListener<ComponentActionEventArgs> EMAIL_SET = new EventListener<>();
+public class UrlField extends WebComponent implements ComponentDisabled, ComponentValue, ComponentUrl, ComponentAutoComplete, ComponentReadonly, ComponentRequired, ComponentMaxLength, ComponentMinLength, ComponentSize, ComponentPlaceholder {
+    public final static EventListener<ComponentActionEventArgs> SETTING_URL = new EventListener<>();
+    public final static EventListener<ComponentActionEventArgs> URL_SET = new EventListener<>();
 
     @Override
     public Class<?> getComponentClass() {
@@ -26,13 +26,13 @@ public class EmailInput extends WebComponent implements ComponentDisabled, Compo
     }
 
     @Override
-    public String getEmail() {
+    public String getUrl() {
         return getValue();
     }
 
     @Override
-    public void setEmail(String email) {
-        setValue(SETTING_EMAIL, EMAIL_SET, email);
+    public void setUrl(String url) {
+        setValue(SETTING_URL, URL_SET, url);
     }
 
     @Override
@@ -77,6 +77,6 @@ public class EmailInput extends WebComponent implements ComponentDisabled, Compo
 
     @Override
     public String getValue() {
-        return defaultGetValue();
+        return null;
     }
 }

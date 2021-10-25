@@ -16,9 +16,9 @@ package solutions.bellatrix.web.components;
 import solutions.bellatrix.core.plugins.EventListener;
 import solutions.bellatrix.web.components.contracts.*;
 
-public class UrlInput extends WebComponent implements ComponentDisabled, ComponentValue, ComponentUrl, ComponentAutoComplete, ComponentReadonly, ComponentRequired, ComponentMaxLength, ComponentMinLength, ComponentSize, ComponentPlaceholder {
-    public final static EventListener<ComponentActionEventArgs> SETTING_URL = new EventListener<>();
-    public final static EventListener<ComponentActionEventArgs> URL_SET = new EventListener<>();
+public class PasswordField extends WebComponent implements ComponentDisabled, ComponentValue, ComponentPassword, ComponentAutoComplete, ComponentReadonly, ComponentRequired, ComponentMaxLength, ComponentMinLength, ComponentSize, ComponentPlaceholder {
+    public final static EventListener<ComponentActionEventArgs> SETTING_PASSWORD = new EventListener<>();
+    public final static EventListener<ComponentActionEventArgs> PASSWORD_SET = new EventListener<>();
 
     @Override
     public Class<?> getComponentClass() {
@@ -26,13 +26,13 @@ public class UrlInput extends WebComponent implements ComponentDisabled, Compone
     }
 
     @Override
-    public String getUrl() {
+    public String getPassword() {
         return getValue();
     }
 
     @Override
-    public void setUrl(String url) {
-        setValue(SETTING_URL, URL_SET, url);
+    public void setPassword(String value) {
+        setValue(SETTING_PASSWORD, PASSWORD_SET, value);
     }
 
     @Override
@@ -77,6 +77,6 @@ public class UrlInput extends WebComponent implements ComponentDisabled, Compone
 
     @Override
     public String getValue() {
-        return null;
+        return defaultGetValue();
     }
 }

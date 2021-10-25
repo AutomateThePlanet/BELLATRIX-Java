@@ -16,7 +16,7 @@ package solutions.bellatrix.web.components;
 import solutions.bellatrix.core.plugins.EventListener;
 import solutions.bellatrix.web.components.contracts.*;
 
-public class SearchInput extends WebComponent implements ComponentDisabled, ComponentValue, ComponentSearch, ComponentAutoComplete, ComponentReadonly, ComponentRequired, ComponentMaxLength, ComponentMinLength, ComponentSize, ComponentPlaceholder {
+public class SearchField extends WebComponent implements ComponentDisabled, ComponentValue, ComponentSearch, ComponentAutoComplete, ComponentReadonly, ComponentRequired, ComponentMaxLength, ComponentMinLength, ComponentSize, ComponentPlaceholder {
     public final static EventListener<ComponentActionEventArgs> SETTING_SEARCH = new EventListener<>();
     public final static EventListener<ComponentActionEventArgs> SEARCH_SET = new EventListener<>();
 

@@ -16,7 +16,7 @@ package solutions.bellatrix.web.components;
 import solutions.bellatrix.core.plugins.EventListener;
 import solutions.bellatrix.web.components.contracts.*;
 
-public class PhoneInput extends WebComponent implements ComponentDisabled, ComponentValue, ComponentPhone, ComponentAutoComplete, ComponentReadonly, ComponentRequired, ComponentMaxLength, ComponentMinLength, ComponentSize, ComponentPlaceholder {
+public class PhoneField extends WebComponent implements ComponentDisabled, ComponentValue, ComponentPhone, ComponentAutoComplete, ComponentReadonly, ComponentRequired, ComponentMaxLength, ComponentMinLength, ComponentSize, ComponentPlaceholder {
     public final static EventListener<ComponentActionEventArgs> SETTING_PHONE = new EventListener<>();
     public final static EventListener<ComponentActionEventArgs> PHONE_SET = new EventListener<>();
 

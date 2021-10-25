@@ -17,7 +17,7 @@ import solutions.bellatrix.core.plugins.EventListener;
 import solutions.bellatrix.desktop.components.contracts.ComponentDate;
 import solutions.bellatrix.desktop.components.contracts.ComponentDisabled;
 
-public class Date extends DesktopComponent implements ComponentDisabled, ComponentDate {
+public class DateInput extends DesktopComponent implements ComponentDisabled, ComponentDate {
     public final static EventListener<ComponentActionEventArgs> SETTING_DATE = new EventListener<>();
     public final static EventListener<ComponentActionEventArgs> DATE_SET = new EventListener<>();
 
