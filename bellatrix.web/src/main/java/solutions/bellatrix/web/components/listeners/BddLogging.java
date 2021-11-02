@@ -29,8 +29,8 @@ public class BddLogging extends Listener {
             CheckBox.CHECKING.addListener((x) -> Log.info("checking %s", x.getComponent().getComponentName()));
             CheckBox.UNCHECKING.addListener((x) -> Log.info("unchecking %s", x.getComponent().getComponentName()));
             ColorInput.SETTING_COLOR.addListener((x) -> Log.info("setting '%s' in %s", x.getActionValue(), x.getComponent().getComponentName()));
-            DateField.SETTING_DATE.addListener((x) -> Log.info("setting '%s' in %s", x.getActionValue(), x.getComponent().getComponentName()));
-            DateTimeField.SETTING_TIME.addListener((x) -> Log.info("setting '%s' in %s", x.getActionValue(), x.getComponent().getComponentName()));
+            DateInput.SETTING_DATE.addListener((x) -> Log.info("setting '%s' in %s", x.getActionValue(), x.getComponent().getComponentName()));
+            DateTimeInput.SETTING_TIME.addListener((x) -> Log.info("setting '%s' in %s", x.getActionValue(), x.getComponent().getComponentName()));
             EmailField.SETTING_EMAIL.addListener((x) -> Log.info("typing '%s' in %s", x.getActionValue(), x.getComponent().getComponentName()));
             FileInput.UPLOADING.addListener((x) -> Log.info("uploading '%s' to %s", x.getActionValue(), x.getComponent().getComponentName()));
             MonthInput.SETTING_MONTH.addListener((x) -> Log.info("setting '%s' in %s", x.getActionValue(), x.getComponent().getComponentName()));
