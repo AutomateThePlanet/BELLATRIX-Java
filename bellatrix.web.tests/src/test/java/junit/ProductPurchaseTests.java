@@ -23,7 +23,6 @@ import solutions.bellatrix.web.infrastructure.Browser;
 import solutions.bellatrix.web.infrastructure.ExecutionBrowser;
 import solutions.bellatrix.web.infrastructure.Lifecycle;
 import solutions.bellatrix.web.infrastructure.junit.WebTest;
-
 @ExecutionBrowser(browser = Browser.FIREFOX, lifecycle = Lifecycle.RESTART_ON_FAIL)
 public class ProductPurchaseTests extends WebTest {
     @Override
