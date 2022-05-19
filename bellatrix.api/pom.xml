@@ -23,4 +23,19 @@
     <artifactId>bellatrix.api</artifactId>
     <version>1.0</version>
 
+    <dependencies>
+        <dependency>
+            <groupId>solutions.bellatrix</groupId>
+            <artifactId>bellatrix.core</artifactId>
+            <version>1.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.rest-assured</groupId>
+            <artifactId>rest-assured</artifactId>
+            <version>5.0.1</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
 </project>
