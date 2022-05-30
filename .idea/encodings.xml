@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/bellatrix.android.tests/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/bellatrix.android.tests/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/bellatrix.android/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/bellatrix.android/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/bellatrix.api/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/bellatrix.api/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/bellatrix.core/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/bellatrix.core/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/bellatrix.desktop.tests/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/bellatrix.desktop.tests/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/bellatrix.desktop/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/bellatrix.desktop/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/bellatrix.ios.tests/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/bellatrix.ios.tests/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/bellatrix.ios/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/bellatrix.ios/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/bellatrix.layout/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/bellatrix.layout/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/bellatrix.plugins.screenshots/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/bellatrix.plugins.screenshots/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/bellatrix.plugins.video/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/bellatrix.plugins.video/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/bellatrix.web.tests/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/bellatrix.web.tests/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/bellatrix.web/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/bellatrix.web/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/lighthouse-grid-extension/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/lighthouse-grid-extension/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/resources" charset="UTF-8" />
+  </component>
+</project>
