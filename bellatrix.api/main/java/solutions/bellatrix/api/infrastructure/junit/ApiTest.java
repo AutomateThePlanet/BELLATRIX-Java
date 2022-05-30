@@ -13,21 +13,69 @@
 
 package solutions.bellatrix.api.infrastructure.junit;
 
+import io.restassured.RestAssured;
+import io.restassured.builder.RequestSpecBuilder;
+import io.restassured.config.LogConfig;
+import io.restassured.config.RestAssuredConfig;
+import io.restassured.filter.log.LogDetail;
+import io.restassured.http.ContentType;
+import io.restassured.specification.RequestSpecification;
+import solutions.bellatrix.api.configuration.ApiSettings;
 import solutions.bellatrix.api.services.App;
+import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.core.plugins.junit.BaseTest;
 
 public class ApiTest extends BaseTest {
+    protected RequestSpecification requestSpecification;
+    protected ThreadLocal<RestAssured> threadSafeApiClient;
 
     public App app() {
         return new App();
     }
 
+    public RestAssured apiClient() {
+        return threadSafeApiClient.get();
+    }
+
     @Override
-    protected void configure() {
-//        addPlugin(BrowserLifecyclePlugin.class);
-//        addPlugin(WebScreenshotPlugin.class);
-//        addPlugin(WebVideoPlugin.class);
-//        addListener(BddLogging.class);
-//        addListener(HighlightElements.class);
+    protected void beforeMethod() {
+        threadSafeApiClient = new ThreadLocal<>();
+        var logConfig = LogConfig.logConfig().enableLoggingOfRequestAndResponseIfValidationFails(LogDetail.ALL);
+        var config = RestAssuredConfig.config().logConfig(logConfig);
+
+        var requestSpecBuilder = new RequestSpecBuilder()
+                .setBaseUri(getBaseUri())
+                .setBasePath(getBasePath())
+                .setContentType(ContentType.JSON)
+                .setRelaxedHTTPSValidation()
+                .setConfig(config);
+
+        initializeDefaultHeaders(requestSpecBuilder);
+    }
+
+    private void initializeDefaultHeaders(RequestSpecBuilder requestSpecBuilder) {
+        var settings = ConfigurationService.get(ApiSettings.class);
+        for (var entry : settings.getHeaders()) {
+            for (var c : entry.entrySet()) {
+                requestSpecBuilder.addHeader(c.getKey(), c.getValue());
+            }
+        }
+    }
+
+    @Override
+    protected void afterMethod() {
+        apiClient().reset();
+    }
+
+    protected RequestSpecification givenRequest() {
+        return apiClient().given().spec(requestSpecification).log().all();
+    }
+
+    protected String getBaseUri() {
+        return ConfigurationService.get(ApiSettings.class).getBaseUri();
+    }
+
+    protected String getBasePath() {
+        return ConfigurationService.get(ApiSettings.class).getBasePath();
     }
 }
