@@ -27,30 +27,26 @@ import solutions.bellatrix.core.plugins.junit.BaseTest;
 
 public class ApiTest extends BaseTest {
     protected RequestSpecification requestSpecification;
-    protected ThreadLocal<RestAssured> threadSafeApiClient;
 
     public App app() {
         return new App();
     }
 
-    public RestAssured apiClient() {
-        return threadSafeApiClient.get();
-    }
-
     @Override
     protected void beforeMethod() {
-        threadSafeApiClient = new ThreadLocal<>();
         var logConfig = LogConfig.logConfig().enableLoggingOfRequestAndResponseIfValidationFails(LogDetail.ALL);
         var config = RestAssuredConfig.config().logConfig(logConfig);
 
+        // Anton(31.05.22): Probably we don't need to set here base URI and Path since we will have different ones for different APIs
         var requestSpecBuilder = new RequestSpecBuilder()
-                .setBaseUri(getBaseUri())
-                .setBasePath(getBasePath())
+//                .setBaseUri(getBaseUri())
+//                .setBasePath(getBasePath())
                 .setContentType(ContentType.JSON)
                 .setRelaxedHTTPSValidation()
                 .setConfig(config);
 
         initializeDefaultHeaders(requestSpecBuilder);
+        requestSpecification = requestSpecBuilder.build();
     }
 
     private void initializeDefaultHeaders(RequestSpecBuilder requestSpecBuilder) {
@@ -64,11 +60,11 @@ public class ApiTest extends BaseTest {
 
     @Override
     protected void afterMethod() {
-        apiClient().reset();
+        RestAssured.reset();
     }
 
     protected RequestSpecification givenRequest() {
-        return apiClient().given().spec(requestSpecification).log().all();
+        return RestAssured.given().spec(requestSpecification).log().all();
     }
 
     protected String getBaseUri() {

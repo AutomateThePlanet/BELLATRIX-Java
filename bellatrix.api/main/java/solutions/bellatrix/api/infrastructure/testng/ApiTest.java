@@ -28,19 +28,13 @@ import solutions.bellatrix.core.plugins.testng.BaseTest;
 public class ApiTest extends BaseTest {
 
     protected RequestSpecification requestSpecification;
-    protected ThreadLocal<RestAssured> threadSafeApiClient;
 
     public App app() {
         return new App();
     }
 
-    public RestAssured apiClient() {
-        return threadSafeApiClient.get();
-    }
-
     @Override
     protected void beforeMethod() {
-        threadSafeApiClient = new ThreadLocal<>();
         var logConfig = LogConfig.logConfig().enableLoggingOfRequestAndResponseIfValidationFails(LogDetail.ALL);
         var config = RestAssuredConfig.config().logConfig(logConfig);
 
@@ -65,11 +59,11 @@ public class ApiTest extends BaseTest {
 
     @Override
     protected void afterMethod() {
-        apiClient().reset();
+        RestAssured.reset();
     }
 
     protected RequestSpecification givenRequest() {
-        return apiClient().given().spec(requestSpecification).log().all();
+        return RestAssured.given().spec(requestSpecification).log().all();
     }
 
     protected String getBaseUri() {
