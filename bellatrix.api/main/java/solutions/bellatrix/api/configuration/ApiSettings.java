@@ -11,24 +11,16 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.api.services;
+package solutions.bellatrix.api.configuration;
 
-import com.github.javafaker.Faker;
+import lombok.Getter;
+import lombok.Setter;
 
-public class App implements AutoCloseable {
-    private boolean disposed = false;
-    private Faker faker;
+import java.util.HashMap;
+import java.util.List;
 
-    public Faker getFaker() {
-        return new Faker();
-    }
-
-    @Override
-    public void close() {
-        if (disposed) {
-            return;
-        }
-
-        disposed = true;
-    }
+public class ApiSettings {
+    @Getter @Setter private String baseUri;
+    @Getter @Setter private String basePath;
+    @Getter @Setter private List<HashMap<String, String>> headers;
 }
