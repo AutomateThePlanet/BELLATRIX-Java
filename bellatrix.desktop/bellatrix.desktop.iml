@@ -47,12 +47,6 @@
     <orderEntry type="library" scope="RUNTIME" name="Maven: commons-beanutils:commons-beanutils:1.9.4" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: commons-digester:commons-digester:2.1" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: commons-collections:commons-collections:3.2.2" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: org.springframework:spring-context:5.3.4" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: org.springframework:spring-aop:5.3.4" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: org.springframework:spring-beans:5.3.4" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: org.springframework:spring-core:5.3.4" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: org.springframework:spring-jcl:5.3.4" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: org.springframework:spring-expression:5.3.4" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.aspectj:aspectjweaver:1.9.6" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.30" level="project" />
     <orderEntry type="library" name="Maven: org.junit.jupiter:junit-jupiter-engine:5.8.0-M1" level="project" />
