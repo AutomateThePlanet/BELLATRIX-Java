@@ -5,7 +5,7 @@
       <configuration />
     </facet>
   </component>
-  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_17_PREVIEW">
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_15">
     <output url="file://$MODULE_DIR$/target/classes" />
     <output-test url="file://$MODULE_DIR$/target/test-classes" />
     <content url="file://$MODULE_DIR$">
@@ -83,10 +83,5 @@
     <orderEntry type="library" name="Maven: org.apache.groovy:groovy-json:4.0.1" level="project" />
     <orderEntry type="library" name="Maven: io.rest-assured:rest-assured-common:5.0.1" level="project" />
     <orderEntry type="library" name="Maven: io.rest-assured:xml-path:5.0.1" level="project" />
-    <orderEntry type="library" name="Maven: com.github.javafaker:javafaker:1.0.2" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.commons:commons-lang3:3.5" level="project" />
-    <orderEntry type="library" name="Maven: org.yaml:snakeyaml:android:1.23" level="project" />
-    <orderEntry type="library" name="Maven: com.github.mifmif:generex:1.0.2" level="project" />
-    <orderEntry type="library" name="Maven: dk.brics.automaton:automaton:1.11-8" level="project" />
   </component>
 </module>
