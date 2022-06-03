@@ -18,7 +18,6 @@
         <module name="bellatrix.desktop" />
         <module name="bellatrix.ios.tests" />
         <module name="bellatrix.web.tests" />
-        <module name="lighthouse-grid-extension" />
         <module name="bellatrix.ios" />
         <module name="bellatrix.plugins.screenshots" />
       </profile>

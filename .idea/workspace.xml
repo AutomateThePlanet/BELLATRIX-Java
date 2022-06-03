@@ -4,7 +4,25 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="14c0f28d-f2d9-4f49-a071-d62632548345" name="Changes" comment="change API project dependencies" />
+    <list default="true" id="14c0f28d-f2d9-4f49-a071-d62632548345" name="Changes" comment="change API project dependencies">
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.android.tests/bellatrix.android.tests.iml" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.android.tests/bellatrix.android.tests.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.android/bellatrix.android.iml" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.android/bellatrix.android.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.api/bellatrix.api.iml" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.api/bellatrix.api.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.core/bellatrix.core.iml" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.core/bellatrix.core.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.desktop.tests/bellatrix.desktop.tests.iml" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.desktop.tests/bellatrix.desktop.tests.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.desktop/bellatrix.desktop.iml" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.desktop/bellatrix.desktop.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.ios.tests/bellatrix.ios.tests.iml" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.ios.tests/bellatrix.ios.tests.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.ios/bellatrix.ios.iml" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.ios/bellatrix.ios.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.layout/bellatrix.layout.iml" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.layout/bellatrix.layout.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.plugins.screenshots/bellatrix.plugins.screenshots.iml" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.plugins.screenshots/bellatrix.plugins.screenshots.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.plugins.video/bellatrix.plugins.video.iml" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.plugins.video/bellatrix.plugins.video.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.web.tests/bellatrix.web.tests.iml" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.web.tests/bellatrix.web.tests.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bellatrix.web/bellatrix.web.iml" beforeDir="false" afterPath="$PROJECT_DIR$/bellatrix.web/bellatrix.web.iml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -21,14 +39,14 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/bellatrix.web.tests/src/main/resources/testFrameworkSettings.dev.json" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/bellatrix.web/src/main/java/solutions/bellatrix/web/pages/WebPage.java" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/bellatrix.web.tests/src/main/resources/application.properties" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/bellatrix.web/src/main/java/solutions/bellatrix/web/components/WebComponent.java" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/bellatrix.web.tests/src/test/java/junit/ProductPurchaseTests.java" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/bellatrix.web.tests/src/main/java/cartinfosection/Map.java" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/bellatrix.web/src/main/java/solutions/bellatrix/web/infrastructure/DriverService.java" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/bellatrix.web.tests/src/main/java/cartpage/CartPage.java" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/bellatrix.web.tests/src/main/resources/application.properties" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/bellatrix.web.tests/src/main/resources/testFrameworkSettings.dev.json" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/bellatrix.web.tests/src/test/java/junit/ProductPurchaseTests.java" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/bellatrix.web/src/main/java/solutions/bellatrix/web/components/WebComponent.java" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/bellatrix.web/src/main/java/solutions/bellatrix/web/infrastructure/DriverService.java" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/bellatrix.web/src/main/java/solutions/bellatrix/web/pages/WebPage.java" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -45,16 +63,18 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">
-    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
-    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="full.screen.before.presentation.mode" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="project.structure.last.edited" value="Modules" />
-    <property name="project.structure.proportion" value="0.0" />
-    <property name="project.structure.side.proportion" value="0.0" />
-    <property name="settings.editor.selected.configurable" value="preferences.editor" />
-  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "C:/SourceCode/BELLATRIX-Java",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.36206895",
+    "spring.configuration.checksum": "156b09285831e5ca97a0882deb97faf1"
+  }
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="junit" />
@@ -158,6 +178,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1652258136109</updated>
+      <workItem from="1654257166405" duration="124000" />
     </task>
     <task id="LOCAL-00001" summary="change API project dependencies">
       <created>1652970483763</created>
@@ -168,6 +189,9 @@
     </task>
     <option name="localTasksCounter" value="2" />
     <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">

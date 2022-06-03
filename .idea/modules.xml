@@ -16,7 +16,6 @@
       <module fileurl="file://$PROJECT_DIR$/bellatrix.plugins.video/bellatrix.plugins.video.iml" filepath="$PROJECT_DIR$/bellatrix.plugins.video/bellatrix.plugins.video.iml" />
       <module fileurl="file://$PROJECT_DIR$/bellatrix.web/bellatrix.web.iml" filepath="$PROJECT_DIR$/bellatrix.web/bellatrix.web.iml" />
       <module fileurl="file://$PROJECT_DIR$/bellatrix.web.tests/bellatrix.web.tests.iml" filepath="$PROJECT_DIR$/bellatrix.web.tests/bellatrix.web.tests.iml" />
-      <module fileurl="file://$PROJECT_DIR$/lighthouse-grid-extension/lighthouse-grid-extension.iml" filepath="$PROJECT_DIR$/lighthouse-grid-extension/lighthouse-grid-extension.iml" />
     </modules>
   </component>
 </project>
