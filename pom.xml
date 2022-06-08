@@ -33,12 +33,11 @@
         <module>bellatrix.desktop.tests</module>
         <module>bellatrix.android.tests</module>
         <module>bellatrix.ios.tests</module>
-        <module>lighthouse-grid-extension</module>
     </modules>
 
     <properties>
-        <maven.compiler.source>15</maven.compiler.source>
-        <maven.compiler.target>15</maven.compiler.target>
+        <maven.compiler.source>18</maven.compiler.source>
+        <maven.compiler.target>18</maven.compiler.target>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
