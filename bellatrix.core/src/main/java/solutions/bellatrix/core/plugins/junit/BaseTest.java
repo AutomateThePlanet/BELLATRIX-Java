@@ -60,7 +60,7 @@ public class BaseTest extends UsesPlugins {
             assert testInfo.getTestMethod().isPresent();
             var methodInfo = testClass.getMethod(testInfo.getTestMethod().get().getName());
             PluginExecutionEngine.preBeforeTest(CURRENT_TEST_RESULT.get(), methodInfo);
-            beforeMethod();
+            beforeEach();
             PluginExecutionEngine.postBeforeTest(CURRENT_TEST_RESULT.get(), methodInfo);
         } catch (Exception e) {
             PluginExecutionEngine.beforeTestFailed(e);
@@ -89,7 +89,7 @@ public class BaseTest extends UsesPlugins {
             assert testInfo.getTestMethod().isPresent();
             var methodInfo = testClass.getMethod(testInfo.getTestMethod().get().getName());
             PluginExecutionEngine.preAfterTest(CURRENT_TEST_RESULT.get(), methodInfo);
-            afterMethod();
+            afterEach();
             PluginExecutionEngine.postAfterTest(CURRENT_TEST_RESULT.get(), methodInfo);
         } catch (Exception e) {
             PluginExecutionEngine.afterTestFailed(e);
@@ -115,9 +115,9 @@ public class BaseTest extends UsesPlugins {
     protected void beforeAll() {
     }
 
-    protected void beforeMethod() {
+    protected void beforeEach() {
     }
 
-    protected void afterMethod() {
+    protected void afterEach() {
     }
 }
