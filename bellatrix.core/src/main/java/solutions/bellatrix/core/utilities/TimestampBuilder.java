@@ -4,6 +4,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class TimestampBuilder {
+    public static synchronized String getGuid() {
+        return java.util.UUID.randomUUID().toString();
+    }
+
     public static synchronized String buildUniqueTextByPrefix(String prefix) {
         return buildUniqueText(prefix, "", "");
     }
