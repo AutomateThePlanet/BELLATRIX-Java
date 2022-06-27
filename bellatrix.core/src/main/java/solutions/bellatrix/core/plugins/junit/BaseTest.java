@@ -112,10 +112,10 @@ public class BaseTest extends UsesPlugins {
     protected void configure() {
     }
 
-    protected void beforeAll() {
+    protected void beforeAll() throws Exception {
     }
 
-    protected void beforeEach() {
+    protected void beforeEach() throws Exception {
     }
 
     protected void afterEach() {

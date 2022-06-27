@@ -33,7 +33,7 @@ public class ApiTest extends BaseTest {
     }
 
     @Override
-    protected void beforeEach() {
+    protected void beforeEach() throws Exception {
         var logConfig = LogConfig.logConfig().enableLoggingOfRequestAndResponseIfValidationFails(LogDetail.ALL);
         var config = RestAssuredConfig.config().logConfig(logConfig);
 

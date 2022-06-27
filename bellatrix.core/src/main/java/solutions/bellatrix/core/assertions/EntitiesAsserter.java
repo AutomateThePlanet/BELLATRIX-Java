@@ -43,11 +43,11 @@ public class EntitiesAsserter {
                 .stream().filter(s -> s.getName().startsWith("get")).toList();
 
         for (var currentRealProperty : properties) {
-            if (!propertiesNotToCompareList.contains(currentRealProperty.getName())) {
-                String currentRealPropertyName = currentRealProperty.getName();
+            String currentRealPropertyName = currentRealProperty.getName().replaceFirst("get", "");
+            if (propertiesNotToCompareList.stream().filter(p -> p.equalsIgnoreCase(currentRealPropertyName)).count() == 0) {
                 Method currentExpectedProperty = null;
                 try {
-                    currentExpectedProperty = expectedObject.getClass().getMethod(currentRealPropertyName);
+                    currentExpectedProperty = expectedObject.getClass().getMethod(currentRealProperty.getName());
                 } catch (NoSuchMethodException e) {
                     failedAssertions.add(e);
                 }
