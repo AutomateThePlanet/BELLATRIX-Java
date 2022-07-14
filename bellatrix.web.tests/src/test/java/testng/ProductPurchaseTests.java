@@ -27,7 +27,7 @@ import solutions.bellatrix.web.infrastructure.testng.WebTest;
 @ExecutionBrowser(browser = Browser.FIREFOX, lifecycle = Lifecycle.RESTART_ON_FAIL)
 public class ProductPurchaseTests extends WebTest {
     @Override
-    protected void afterMethod() {
+    protected void afterEach() {
         app().cookies().deleteAllCookies();
     }
 
