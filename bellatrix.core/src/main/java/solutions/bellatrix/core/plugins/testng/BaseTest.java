@@ -21,11 +21,15 @@ import solutions.bellatrix.core.plugins.UsesPlugins;
 import sun.misc.Unsafe;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 @Listeners(TestResultListener.class)
 public class BaseTest extends UsesPlugins {
     static final ThreadLocal<TestResult> CURRENT_TEST_RESULT = new ThreadLocal<>();
     private static final ThreadLocal<Boolean> CONFIGURATION_EXECUTED = new ThreadLocal<>();
+    private static final List<String> ALREADY_EXECUTED_BEFORE_CLASSES = Collections.synchronizedList(new ArrayList<>());
 
     public BaseTest() {
         try {
@@ -43,30 +47,34 @@ public class BaseTest extends UsesPlugins {
     @BeforeClass
     public void beforeClassCore() {
         try {
-            if (!CONFIGURATION_EXECUTED.get()) {
-                configure();
-                CONFIGURATION_EXECUTED.set(true);
+            if (!ALREADY_EXECUTED_BEFORE_CLASSES.contains(this.getClass().getName())) {
+                beforeClassCore();
+                ALREADY_EXECUTED_BEFORE_CLASSES.add(this.getClass().getName());
             }
 
             var testClass = this.getClass();
-            PluginExecutionEngine.preBeforeClass(testClass);
-            beforeClass();
-            PluginExecutionEngine.postBeforeClass(testClass);
+            var methodInfo = testClass.getMethod(this.getClass().getName());
+            PluginExecutionEngine.preBeforeTest(CURRENT_TEST_RESULT.get(), methodInfo);
+            beforeEach();
+            PluginExecutionEngine.postBeforeTest(CURRENT_TEST_RESULT.get(), methodInfo);
         } catch (Exception e) {
-            PluginExecutionEngine.beforeClassFailed(e);
+            PluginExecutionEngine.beforeTestFailed(e);
         }
     }
 
     @BeforeMethod
     public void beforeMethodCore(ITestResult result) {
         try {
+            if (!CONFIGURATION_EXECUTED.get()) {
+                configure();
+                CONFIGURATION_EXECUTED.set(true);
+            }
             var testClass = this.getClass();
-            var methodInfo = testClass.getMethod(result.getMethod().getMethodName());
-            PluginExecutionEngine.preBeforeTest(CURRENT_TEST_RESULT.get(), methodInfo);
-            beforeMethod();
-            PluginExecutionEngine.postBeforeTest(CURRENT_TEST_RESULT.get(), methodInfo);
+            PluginExecutionEngine.preBeforeClass(testClass);
+            beforeAll();
+            PluginExecutionEngine.postBeforeClass(testClass);
         } catch (Exception e) {
-            PluginExecutionEngine.beforeTestFailed(e);
+            PluginExecutionEngine.beforeClassFailed(e);
         }
     }
 
@@ -76,7 +84,7 @@ public class BaseTest extends UsesPlugins {
             var testClass = this.getClass();
             var methodInfo = testClass.getMethod(result.getMethod().getMethodName());
             PluginExecutionEngine.preAfterTest(CURRENT_TEST_RESULT.get(), methodInfo);
-            afterMethod();
+            afterEach();
             PluginExecutionEngine.postAfterTest(CURRENT_TEST_RESULT.get(), methodInfo);
         } catch (Exception e) {
             PluginExecutionEngine.afterTestFailed(e);
@@ -88,7 +96,6 @@ public class BaseTest extends UsesPlugins {
         try {
             var testClass = this.getClass();
             PluginExecutionEngine.preAfterClass(testClass);
-            afterClass();
             PluginExecutionEngine.postAfterClass(testClass);
         } catch (Exception e) {
             PluginExecutionEngine.afterClassFailed(e);
@@ -98,15 +105,12 @@ public class BaseTest extends UsesPlugins {
     protected void configure() {
     }
 
-    protected void beforeClass() {
+    protected void beforeAll() throws Exception {
     }
 
-    protected void afterClass() {
+    protected void beforeEach() throws Exception {
     }
 
-    protected void beforeMethod() {
-    }
-
-    protected void afterMethod() {
+    protected void afterEach() {
     }
 }

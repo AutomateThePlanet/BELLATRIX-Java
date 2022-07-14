@@ -25,13 +25,14 @@ import sun.misc.Unsafe;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @ExtendWith(TestResultListener.class)
 public class BaseTest extends UsesPlugins {
     static final ThreadLocal<TestResult> CURRENT_TEST_RESULT = new ThreadLocal<>();
     private static final ThreadLocal<Boolean> CONFIGURATION_EXECUTED = new ThreadLocal<>();
-    private static final ThreadLocal<List<String>> ALREADY_EXECUTED_BEFORE_CLASSES = new ThreadLocal<>();
+    private static final List<String> ALREADY_EXECUTED_BEFORE_CLASSES = Collections.synchronizedList(new ArrayList<>());
 
     public BaseTest() {
         try {
@@ -44,16 +45,17 @@ public class BaseTest extends UsesPlugins {
             u.putObjectVolatile(cls, u.staticFieldOffset(logger), null);
         } catch (Exception ignored) {}
         CONFIGURATION_EXECUTED.set(false);
-        ALREADY_EXECUTED_BEFORE_CLASSES.set(new ArrayList<>());
     }
 
     @BeforeEach
     public void beforeMethodCore(TestInfo testInfo) {
         try {
             assert testInfo.getTestClass().isPresent();
-            if (!ALREADY_EXECUTED_BEFORE_CLASSES.get().contains(testInfo.getTestClass().get().getName())) {
+            var className = testInfo.getTestClass().get().getName();
+            var listWithClasses = ALREADY_EXECUTED_BEFORE_CLASSES;
+            if (!ALREADY_EXECUTED_BEFORE_CLASSES.contains(testInfo.getTestClass().get().getName())) {
                 beforeClassCore();
-                ALREADY_EXECUTED_BEFORE_CLASSES.get().add(testInfo.getTestClass().get().getName());
+                ALREADY_EXECUTED_BEFORE_CLASSES.add(testInfo.getTestClass().get().getName());
             }
 
             var testClass = this.getClass();

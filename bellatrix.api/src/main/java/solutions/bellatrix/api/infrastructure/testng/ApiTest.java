@@ -34,7 +34,7 @@ public class ApiTest extends BaseTest {
     }
 
     @Override
-    protected void beforeMethod() {
+    protected void beforeEach() {
         var logConfig = LogConfig.logConfig().enableLoggingOfRequestAndResponseIfValidationFails(LogDetail.ALL);
         var config = RestAssuredConfig.config().logConfig(logConfig);
 
@@ -58,7 +58,7 @@ public class ApiTest extends BaseTest {
     }
 
     @Override
-    protected void afterMethod() {
+    protected void afterEach() {
         RestAssured.reset();
     }
 
