@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Automate The Planet Ltd.
+ * Copyright 2022 Automate The Planet Ltd.
  * Author: Anton Angelov
  * Licensed under the Apache License, Version 2.0 (the "License");
  * You may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@ import solutions.bellatrix.web.infrastructure.testng.WebTest;
 @ExecutionBrowser(browser = Browser.FIREFOX, lifecycle = Lifecycle.RESTART_ON_FAIL)
 public class ProductPurchaseTests extends WebTest {
     @Override
-    protected void afterMethod() {
+    protected void afterEach() {
         app().cookies().deleteAllCookies();
     }
 
