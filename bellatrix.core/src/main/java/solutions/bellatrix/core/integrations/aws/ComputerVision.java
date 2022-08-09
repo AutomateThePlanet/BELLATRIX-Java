@@ -46,8 +46,7 @@ public class ComputerVision {
         Assert.assertTrue(actualTextSnippets.containsAll(expectedTextSnippets) , "Some of the expected text snippets weren't present on the actual PDF/Image.");
     }
 
-    public void validateFormLayout(String expectedLayoutFilePath, String fileToBeValidatedPath, double delta)
-    {
+    public void validateFormLayout(String expectedLayoutFilePath, String fileToBeValidatedPath, double delta) {
         var expectedAnalyzedFile = extractBlocksFromLocalFile(expectedLayoutFilePath);
         var actualAnalyzedFile = extractBlocksFromLocalFile(fileToBeValidatedPath);
 
