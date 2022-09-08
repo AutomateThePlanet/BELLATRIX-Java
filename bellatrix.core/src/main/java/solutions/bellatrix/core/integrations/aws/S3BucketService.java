@@ -61,6 +61,28 @@ public class S3BucketService {
 
     }
 
+    public void uploadFile(Region region, String bucketName, byte[] data, String resultFileName) {
+        S3Client client = S3Client.builder()
+                .region(region)
+                .credentialsProvider(ProfileCredentialsProvider.create())
+                .build();
+        try(client) {
+            PutObjectRequest request = PutObjectRequest.builder()
+                    .bucket(bucketName).key(resultFileName).build();
+
+            client.putObject(request, RequestBody.fromBytes(data));
+
+            // wait to be uploaded
+            S3Waiter waiter = client.waiter();
+            HeadObjectRequest requestWait = HeadObjectRequest.builder().bucket(bucketName).key(resultFileName).build();
+
+            WaiterResponse<HeadObjectResponse> waiterResponse = waiter.waitUntilObjectExists(requestWait);
+
+            waiterResponse.matched().response().ifPresent(System.out::println);
+        }
+
+    }
+
     public void deleteFile(Region region, String bucketName, String sourceFilePath) {
         S3Client client = S3Client.builder()
                 .region(region)
