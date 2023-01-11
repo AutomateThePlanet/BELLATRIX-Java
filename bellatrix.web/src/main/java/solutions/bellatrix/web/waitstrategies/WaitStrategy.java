@@ -20,6 +20,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import solutions.bellatrix.web.infrastructure.DriverService;
 
+import java.time.Duration;
 import java.util.function.Function;
 
 public abstract class WaitStrategy {
@@ -37,7 +38,7 @@ public abstract class WaitStrategy {
     public abstract void waitUntil(SearchContext searchContext, By by);
 
     protected void waitUntil(Function<SearchContext, Boolean> waitCondition) {
-        var webDriverWait = new WebDriverWait(DriverService.getWrappedDriver(), timeoutInterval, sleepInterval * 1000);
+        var webDriverWait = new WebDriverWait(DriverService.getWrappedDriver(), Duration.ofSeconds(timeoutInterval), Duration.ofSeconds(sleepInterval));
         webDriverWait.until(waitCondition);
     }
 

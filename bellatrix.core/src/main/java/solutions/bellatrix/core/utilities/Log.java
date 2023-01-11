@@ -12,7 +12,6 @@
  */
 package solutions.bellatrix.core.utilities;
 
-import org.jetbrains.annotations.NotNull;
 import solutions.bellatrix.core.plugins.EventListener;
 
 public class Log {
@@ -20,14 +19,14 @@ public class Log {
     public final static EventListener<LoggerActionEventArgs> LOGGED_INFO = new EventListener<>();
     public final static EventListener<LoggerActionEventArgs> LOGGED_ERROR = new EventListener<>();
 
-    public static void info(@NotNull String format, Object... args) {
+    public static void info(String format, Object... args) {
         String info = String.format(format, args);
         LOGGED_ENTRY.broadcast(new LoggerActionEventArgs(info));
         LOGGED_INFO.broadcast(new LoggerActionEventArgs(info));
         System.out.println(info);
     }
 
-    public static void error(@NotNull String format, Object... args) {
+    public static void error(String format, Object... args) {
         String error = String.format(format, args);
         LOGGED_ENTRY.broadcast(new LoggerActionEventArgs(error));
         LOGGED_ERROR.broadcast(new LoggerActionEventArgs(error));

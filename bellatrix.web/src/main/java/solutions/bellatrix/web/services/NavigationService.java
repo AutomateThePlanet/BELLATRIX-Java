@@ -23,6 +23,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -52,7 +53,7 @@ public class NavigationService extends WebService {
         try {
             long waitForPartialTimeout = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getWaitForPartialUrl();
             long sleepInterval = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getSleepInterval();
-            var webDriverWait = new WebDriverWait(getWrappedDriver(), waitForPartialTimeout, sleepInterval);
+            var webDriverWait = new WebDriverWait(getWrappedDriver(), Duration.ofSeconds(waitForPartialTimeout), Duration.ofSeconds(sleepInterval));
             webDriverWait.until(d -> getWrappedDriver().getCurrentUrl().contains(partialUrl));
         } catch (TimeoutException ex) {
             // TODO: UrlNotNavigatedEvent?.Invoke(this, new UrlNotNavigatedEventArgs(ex));

@@ -22,6 +22,7 @@ import solutions.bellatrix.web.configuration.WebSettings;
 import solutions.bellatrix.web.services.JavaScriptService;
 
 import java.io.File;
+import java.time.Duration;
 
 public class FullPageScreenshotEngine {
     private static final String GENERATE_SCREENSHOT_JS = "function genScreenshot () {var canvasImgContentDecoded; html2canvas(document.body).then(function(canvas) { window.canvasImgContentDecoded = canvas.toDataURL(\"image/png\"); });}genScreenshot();";
@@ -31,7 +32,7 @@ public class FullPageScreenshotEngine {
         var javaScriptService = new JavaScriptService();
         var timeoutInterval = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getWaitForAjaxTimeout();
         var sleepInterval = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getSleepInterval();
-        var webDriverWait = new WebDriverWait(DriverService.getWrappedDriver(), timeoutInterval, sleepInterval);
+        var webDriverWait = new WebDriverWait(DriverService.getWrappedDriver(), Duration.ofSeconds(timeoutInterval), Duration.ofSeconds(sleepInterval));
         webDriverWait.ignoring(IllegalArgumentException.class);
         javaScriptService.execute(html2CanvasContent);
         javaScriptService.execute(GENERATE_SCREENSHOT_JS);
