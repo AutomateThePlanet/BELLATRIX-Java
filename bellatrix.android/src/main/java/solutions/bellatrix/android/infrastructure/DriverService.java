@@ -76,9 +76,9 @@ public class DriverService {
             driver = initializeDriverGridMode(gridSettings.get());
         }
 
-        driver.manage().timeouts().implicitlyWait(androidSettings.getTimeoutSettings().getImplicitWaitTimeout(), TimeUnit.SECONDS);
+//        driver.manage().timeouts().implicitlyWait(androidSettings.getTimeoutSettings().getImplicitWaitTimeout(), TimeUnit.SECONDS);
         WRAPPED_ANDROID_DRIVER.set(driver);
-
+        solutions.bellatrix.web.infrastructure.DriverService.setWrappedDriver(driver);
         return driver;
     }
 
@@ -90,6 +90,7 @@ public class DriverService {
         AndroidDriver driver = null;
         try {
             driver = new AndroidDriver(new URL(gridSettings.getUrl()), caps);
+            solutions.bellatrix.web.infrastructure.DriverService.setWrappedDriver(driver);
         } catch (MalformedURLException e) {
             DebugInformation.printStackTrace(e);
         }
@@ -114,7 +115,7 @@ public class DriverService {
 
         addDriverOptions(caps);
         var driver = new AndroidDriver(new URL(serviceUrl), caps);
-
+        solutions.bellatrix.web.infrastructure.DriverService.setWrappedDriver(driver);
         return driver;
     }
 

@@ -77,6 +77,7 @@ public class DriverService {
 
         driver.manage().timeouts().implicitlyWait(IOSSettings.getTimeoutSettings().getImplicitWaitTimeout(), TimeUnit.SECONDS);
         WRAPPED_IOS_DRIVER.set(driver);
+        solutions.bellatrix.web.infrastructure.DriverService.setWrappedDriver(driver);
 
         return driver;
     }
@@ -89,6 +90,7 @@ public class DriverService {
         IOSDriver driver = null;
         try {
             driver = new IOSDriver(new URL(gridSettings.getUrl()), caps);
+            solutions.bellatrix.web.infrastructure.DriverService.setWrappedDriver(driver);
         } catch (MalformedURLException e) {
             DebugInformation.printStackTrace(e);
         }
@@ -111,7 +113,7 @@ public class DriverService {
 
         addDriverOptions(caps);
         var driver = new IOSDriver(new URL(serviceUrl), caps);
-
+        solutions.bellatrix.web.infrastructure.DriverService.setWrappedDriver(driver);
         return driver;
     }
 

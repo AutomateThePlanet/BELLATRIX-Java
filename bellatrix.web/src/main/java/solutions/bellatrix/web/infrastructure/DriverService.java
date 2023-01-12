@@ -64,6 +64,10 @@ public class DriverService {
         return WRAPPED_DRIVER.get();
     }
 
+    public static void setWrappedDriver(WebDriver driver) {
+        WRAPPED_DRIVER.set(driver);
+    }
+
     public static BrowserConfiguration getBrowserConfiguration() {
         return BROWSER_CONFIGURATION.get();
     }
