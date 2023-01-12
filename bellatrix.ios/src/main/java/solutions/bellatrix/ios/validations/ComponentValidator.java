@@ -24,6 +24,7 @@ import solutions.bellatrix.ios.components.IOSComponent;
 import solutions.bellatrix.ios.configuration.IOSSettings;
 import solutions.bellatrix.ios.infrastructure.DriverService;
 
+import java.time.Duration;
 import java.util.function.Function;
 
 public class ComponentValidator {
@@ -80,7 +81,7 @@ public class ComponentValidator {
     }
 
     private void waitUntil(Function<SearchContext, Boolean> waitCondition, String exceptionMessage, IOSComponent component, String attributeName, String value, String property, String prefix) {
-        var webDriverWait = new WebDriverWait(DriverService.getWrappedIOSDriver(), iOSSettings.getTimeoutSettings().getValidationsTimeout(), iOSSettings.getTimeoutSettings().getSleepInterval());
+        var webDriverWait = new WebDriverWait(DriverService.getWrappedIOSDriver(), Duration.ofSeconds(iOSSettings.getTimeoutSettings().getValidationsTimeout()), Duration.ofSeconds(iOSSettings.getTimeoutSettings().getSleepInterval()));
         try {
             webDriverWait.until(waitCondition);
         } catch (TimeoutException ex) {

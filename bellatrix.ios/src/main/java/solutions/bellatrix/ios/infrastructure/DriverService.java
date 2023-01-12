@@ -13,7 +13,7 @@
 
 package solutions.bellatrix.ios.infrastructure;
 
-import io.appium.java_client.MobileElement;
+
 import io.appium.java_client.ios.IOSDriver;
 import io.appium.java_client.remote.MobileCapabilityType;
 import lombok.SneakyThrows;
@@ -34,7 +34,7 @@ public class DriverService {
     private static final ThreadLocal<Boolean> DISPOSED;
     private static final ThreadLocal<AppConfiguration> APP_CONFIGURATION;
     private static final ThreadLocal<HashMap<String, String>> CUSTOM_DRIVER_OPTIONS;
-    private static final ThreadLocal<IOSDriver<MobileElement>> WRAPPED_IOS_DRIVER;
+    private static final ThreadLocal<IOSDriver> WRAPPED_IOS_DRIVER;
 
     static {
         DISPOSED = new ThreadLocal<>();
@@ -53,7 +53,7 @@ public class DriverService {
         CUSTOM_DRIVER_OPTIONS.get().put(key, value);
     }
 
-    public static IOSDriver<MobileElement> getWrappedIOSDriver() {
+    public static IOSDriver getWrappedIOSDriver() {
         return WRAPPED_IOS_DRIVER.get();
     }
 
@@ -61,10 +61,10 @@ public class DriverService {
         return APP_CONFIGURATION.get();
     }
 
-    public static IOSDriver<MobileElement> start(AppConfiguration configuration) {
+    public static IOSDriver start(AppConfiguration configuration) {
         APP_CONFIGURATION.set(configuration);
         DISPOSED.set(false);
-        IOSDriver<MobileElement> driver;
+        IOSDriver driver;
         var IOSSettings = ConfigurationService.get(solutions.bellatrix.ios.configuration.IOSSettings.class);
         var executionType = IOSSettings.getExecutionType();
         if (executionType.equals("regular")) {
@@ -81,14 +81,14 @@ public class DriverService {
         return driver;
     }
 
-    private static IOSDriver<MobileElement> initializeDriverGridMode(GridSettings gridSettings) {
+    private static IOSDriver initializeDriverGridMode(GridSettings gridSettings) {
         var caps = new DesiredCapabilities();
         caps.setCapability("platform", Platform.WIN10);
         caps.setCapability("version", "latest");
 
-        IOSDriver<MobileElement> driver = null;
+        IOSDriver driver = null;
         try {
-            driver = new IOSDriver<>(new URL(gridSettings.getUrl()), caps);
+            driver = new IOSDriver(new URL(gridSettings.getUrl()), caps);
         } catch (MalformedURLException e) {
             DebugInformation.printStackTrace(e);
         }
@@ -97,7 +97,7 @@ public class DriverService {
     }
 
     @SneakyThrows
-    private static IOSDriver<MobileElement> initializeDriverRegularMode(String serviceUrl) {
+    private static IOSDriver initializeDriverRegularMode(String serviceUrl) {
         var caps = new DesiredCapabilities();
         caps.setCapability(MobileCapabilityType.PLATFORM_NAME, "IOS");
         caps.setCapability(MobileCapabilityType.PLATFORM_VERSION, getAppConfiguration().getIosVersion());
@@ -110,7 +110,7 @@ public class DriverService {
         }
 
         addDriverOptions(caps);
-        var driver = new IOSDriver<MobileElement>(new URL(serviceUrl), caps);
+        var driver = new IOSDriver(new URL(serviceUrl), caps);
 
         return driver;
     }

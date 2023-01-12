@@ -13,7 +13,6 @@
 
 package solutions.bellatrix.android.services;
 
-import org.openqa.selenium.Rotatable;
 import org.openqa.selenium.ScreenOrientation;
 
 import java.time.LocalDateTime;
@@ -36,7 +35,7 @@ public class DeviceService extends MobileService {
     }
 
     public void rotate(ScreenOrientation newOrientation) {
-        ((Rotatable)getWrappedAndroidDriver()).rotate(newOrientation);
+        getWrappedAndroidDriver().rotate(newOrientation);
     }
 
     public boolean isLocked() {

@@ -13,6 +13,8 @@
 
 package solutions.bellatrix.desktop.findstrategies;
 
+import io.appium.java_client.AppiumBy;
+import io.appium.java_client.pagefactory.WindowsBy;
 import io.appium.java_client.windows.WindowsDriver;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -25,13 +27,13 @@ public class AutomationIdFindStrategy extends FindStrategy {
     }
 
     @Override
-    public WebElement findElement(WindowsDriver<WebElement> driver) {
-        return driver.findElementByWindowsUIAutomation(getValue());
+    public WebElement findElement(WindowsDriver driver) {
+        return driver.findElement(By.xpath(String.format("//*[@AutomationId='%s']", getValue())));
     }
 
     @Override
-    public List<WebElement> findAllElements(WindowsDriver<WebElement> driver) {
-        return driver.findElementsByWindowsUIAutomation(getValue());
+    public List<WebElement> findAllElements(WindowsDriver driver) {
+        return driver.findElements(By.xpath(String.format("//*[@AutomationId='%s']", getValue())));
     }
 
     @Override

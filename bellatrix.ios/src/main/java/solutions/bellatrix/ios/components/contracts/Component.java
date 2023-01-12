@@ -13,12 +13,13 @@
 
 package solutions.bellatrix.ios.components.contracts;
 
-import io.appium.java_client.MobileElement;
+
 import layout.LayoutComponent;
+import org.openqa.selenium.WebElement;
 import solutions.bellatrix.ios.findstrategies.FindStrategy;
 
 public interface Component extends LayoutComponent {
     Class<?> getComponentClass();
-    MobileElement getWrappedElement();
+    WebElement getWrappedElement();
     FindStrategy getFindStrategy();
 }

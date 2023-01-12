@@ -13,7 +13,7 @@
 
 package solutions.bellatrix.ios.waitstrategies;
 
-import io.appium.java_client.MobileElement;
+
 import io.appium.java_client.ios.IOSDriver;
 import org.openqa.selenium.*;
 import solutions.bellatrix.core.configuration.ConfigurationService;
@@ -43,7 +43,7 @@ public class ToNotExistWaitStrategy extends WaitStrategy {
         waitUntil(func);
     }
 
-    private <TFindStrategy extends FindStrategy> Boolean elementNotExists(IOSDriver<MobileElement> searchContext, TFindStrategy findStrategy) {
+    private <TFindStrategy extends FindStrategy> Boolean elementNotExists(IOSDriver searchContext, TFindStrategy findStrategy) {
         var element = findStrategy.findElement(searchContext);
         try {
             return element == null;

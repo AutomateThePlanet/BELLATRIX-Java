@@ -123,11 +123,6 @@ public class DriverService {
                 addGridOptions(edgeOptions, gridSettings);
                 caps.setCapability(ChromeOptions.CAPABILITY, edgeOptions);
             }
-            case OPERA: {
-                var operaOptions = new OperaOptions();
-                addGridOptions(operaOptions, gridSettings);
-                caps.setCapability(ChromeOptions.CAPABILITY, operaOptions);
-            }
             case SAFARI: {
                 var safariOptions = new SafariOptions();
                 addGridOptions(safariOptions, gridSettings);

@@ -13,7 +13,7 @@
 
 package solutions.bellatrix.android.infrastructure;
 
-import io.appium.java_client.MobileElement;
+
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.remote.AndroidMobileCapabilityType;
 import io.appium.java_client.remote.MobileCapabilityType;
@@ -35,7 +35,7 @@ public class DriverService {
     private static final ThreadLocal<Boolean> DISPOSED;
     private static final ThreadLocal<AppConfiguration> APP_CONFIGURATION;
     private static final ThreadLocal<HashMap<String, String>> CUSTOM_DRIVER_OPTIONS;
-    private static final ThreadLocal<AndroidDriver<MobileElement>> WRAPPED_ANDROID_DRIVER;
+    private static final ThreadLocal<AndroidDriver> WRAPPED_ANDROID_DRIVER;
 
     static {
         DISPOSED = new ThreadLocal<>();
@@ -54,7 +54,7 @@ public class DriverService {
         CUSTOM_DRIVER_OPTIONS.get().put(key, value);
     }
 
-    public static AndroidDriver<MobileElement> getWrappedAndroidDriver() {
+    public static AndroidDriver getWrappedAndroidDriver() {
         return WRAPPED_ANDROID_DRIVER.get();
     }
 
@@ -62,10 +62,10 @@ public class DriverService {
         return APP_CONFIGURATION.get();
     }
 
-    public static AndroidDriver<MobileElement> start(AppConfiguration configuration) {
+    public static AndroidDriver start(AppConfiguration configuration) {
         APP_CONFIGURATION.set(configuration);
         DISPOSED.set(false);
-        AndroidDriver<MobileElement> driver;
+        AndroidDriver driver;
         var androidSettings = ConfigurationService.get(AndroidSettings.class);
         var executionType = androidSettings.getExecutionType();
         if (executionType.equals("regular")) {
@@ -82,14 +82,14 @@ public class DriverService {
         return driver;
     }
 
-    private static AndroidDriver<MobileElement> initializeDriverGridMode(GridSettings gridSettings) {
+    private static AndroidDriver initializeDriverGridMode(GridSettings gridSettings) {
         var caps = new DesiredCapabilities();
         caps.setCapability("platform", Platform.WIN10);
         caps.setCapability("version", "latest");
 
-        AndroidDriver<MobileElement> driver = null;
+        AndroidDriver driver = null;
         try {
-            driver = new AndroidDriver<>(new URL(gridSettings.getUrl()), caps);
+            driver = new AndroidDriver(new URL(gridSettings.getUrl()), caps);
         } catch (MalformedURLException e) {
             DebugInformation.printStackTrace(e);
         }
@@ -98,7 +98,7 @@ public class DriverService {
     }
 
     @SneakyThrows
-    private static AndroidDriver<MobileElement> initializeDriverRegularMode(String serviceUrl) {
+    private static AndroidDriver initializeDriverRegularMode(String serviceUrl) {
         var caps = new DesiredCapabilities();
         caps.setCapability(MobileCapabilityType.PLATFORM_NAME, "Android");
         caps.setCapability(MobileCapabilityType.PLATFORM_VERSION, getAppConfiguration().getAndroidVersion());
@@ -113,7 +113,7 @@ public class DriverService {
         }
 
         addDriverOptions(caps);
-        var driver = new AndroidDriver<MobileElement>(new URL(serviceUrl), caps);
+        var driver = new AndroidDriver(new URL(serviceUrl), caps);
 
         return driver;
     }

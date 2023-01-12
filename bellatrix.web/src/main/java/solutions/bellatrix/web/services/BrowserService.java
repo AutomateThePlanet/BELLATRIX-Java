@@ -107,10 +107,6 @@ public class BrowserService extends WebService {
                 var edgeDriver = (EdgeDriver)getWrappedDriver();
                 ((JavascriptExecutor)edgeDriver).executeScript("sessionStorage.clear()");
             }
-            case OPERA -> {
-                var operaDriver = (OperaDriver)getWrappedDriver();
-                operaDriver.getSessionStorage().clear();
-            }
             case SAFARI -> {
                 var safariDriver = (SafariDriver)getWrappedDriver();
                 ((JavascriptExecutor)safariDriver).executeScript("sessionStorage.clear()");

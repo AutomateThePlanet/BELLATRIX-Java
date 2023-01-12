@@ -45,7 +45,7 @@ public class ToBeVisibleWaitStrategy extends WaitStrategy {
         waitUntil(func);
     }
 
-    private <TFindStrategy extends FindStrategy> boolean elementIsVisible(WindowsDriver<WebElement> searchContext, TFindStrategy findStrategy) {
+    private <TFindStrategy extends FindStrategy> boolean elementIsVisible(WindowsDriver searchContext, TFindStrategy findStrategy) {
         var element = findStrategy.findElement(searchContext);
         try {
             return element != null && element.isDisplayed();

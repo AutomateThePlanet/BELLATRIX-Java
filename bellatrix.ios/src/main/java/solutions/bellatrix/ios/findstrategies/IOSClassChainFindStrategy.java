@@ -13,8 +13,11 @@
 
 package solutions.bellatrix.ios.findstrategies;
 
-import io.appium.java_client.MobileElement;
+
+import io.appium.java_client.AppiumBy;
 import io.appium.java_client.ios.IOSDriver;
+import io.appium.java_client.remote.MobileBrowserType;
+import org.openqa.selenium.WebElement;
 
 import java.util.List;
 
@@ -24,22 +27,22 @@ public class IOSClassChainFindStrategy extends FindStrategy {
     }
 
     @Override
-    public MobileElement findElement(IOSDriver<MobileElement> driver) {
-        return driver.findElementByIosClassChain(getValue());
+    public WebElement findElement(IOSDriver driver) {
+        return driver.findElement(AppiumBy.iOSClassChain(getValue()));
     }
 
     @Override
-    public List<MobileElement> findAllElements(IOSDriver<MobileElement> driver) {
-        return driver.findElementsByIosClassChain(getValue());
+    public List<WebElement> findAllElements(IOSDriver driver) {
+        return driver.findElements(AppiumBy.iOSClassChain(getValue()));
     }
 
     @Override
-    public MobileElement findElement(MobileElement element) {
+    public WebElement findElement(WebElement element) {
         return null;
     }
 
     @Override
-    public List<MobileElement> findAllElements(MobileElement element) {
+    public List<WebElement> findAllElements(WebElement element) {
         return null;
     }
 

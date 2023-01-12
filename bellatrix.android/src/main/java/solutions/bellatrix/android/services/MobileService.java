@@ -13,12 +13,11 @@
 
 package solutions.bellatrix.android.services;
 
-import io.appium.java_client.MobileElement;
 import io.appium.java_client.android.AndroidDriver;
 import solutions.bellatrix.android.infrastructure.DriverService;
 
 public abstract class MobileService {
-    public AndroidDriver<MobileElement> getWrappedAndroidDriver() {
+    public AndroidDriver getWrappedAndroidDriver() {
         return DriverService.getWrappedAndroidDriver();
     }
 }

@@ -13,7 +13,6 @@
 
 package solutions.bellatrix.ios.services;
 
-import org.openqa.selenium.Rotatable;
 import org.openqa.selenium.ScreenOrientation;
 
 import java.time.LocalDateTime;
@@ -32,7 +31,7 @@ public class DeviceService extends MobileService {
     }
 
     public void rotate(ScreenOrientation newOrientation) {
-        ((Rotatable)getWrappedIOSDriver()).rotate(newOrientation);
+        getWrappedIOSDriver().rotate(newOrientation);
     }
 
     public boolean isLocked() {

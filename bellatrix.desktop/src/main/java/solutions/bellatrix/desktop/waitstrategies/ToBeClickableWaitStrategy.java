@@ -45,7 +45,7 @@ public class ToBeClickableWaitStrategy extends WaitStrategy {
         waitUntil(func);
     }
 
-    private <TFindStrategy extends FindStrategy> boolean elementIsClickable(WindowsDriver<WebElement> searchContext, TFindStrategy findStrategy) {
+    private <TFindStrategy extends FindStrategy> boolean elementIsClickable(WindowsDriver searchContext, TFindStrategy findStrategy) {
         var element = findStrategy.findElement(searchContext);
         try {
             return element != null && element.isEnabled();

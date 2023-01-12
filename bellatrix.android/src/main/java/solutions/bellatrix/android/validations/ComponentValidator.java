@@ -24,6 +24,7 @@ import solutions.bellatrix.android.infrastructure.DriverService;
 import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.core.utilities.Log;
 
+import java.time.Duration;
 import java.util.function.Function;
 
 public class ComponentValidator {
@@ -80,7 +81,7 @@ public class ComponentValidator {
     }
 
     private void waitUntil(Function<SearchContext, Boolean> waitCondition, String exceptionMessage, AndroidComponent component, String attributeName, String value, String property, String prefix) {
-        var webDriverWait = new WebDriverWait(DriverService.getWrappedAndroidDriver(), androidSettings.getTimeoutSettings().getValidationsTimeout(), androidSettings.getTimeoutSettings().getSleepInterval());
+        var webDriverWait = new WebDriverWait(DriverService.getWrappedAndroidDriver(), Duration.ofSeconds(androidSettings.getTimeoutSettings().getValidationsTimeout()), Duration.ofSeconds(androidSettings.getTimeoutSettings().getSleepInterval()));
         try {
             webDriverWait.until(waitCondition);
         } catch (TimeoutException ex) {

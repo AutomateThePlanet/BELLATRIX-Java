@@ -13,8 +13,9 @@
 
 package solutions.bellatrix.ios.findstrategies;
 
-import io.appium.java_client.MobileElement;
+
 import io.appium.java_client.ios.IOSDriver;
+import org.openqa.selenium.WebElement;
 
 import java.util.List;
 
@@ -29,11 +30,11 @@ public abstract class FindStrategy {
         return value;
     }
 
-    public abstract MobileElement findElement(IOSDriver<MobileElement> driver);
+    public abstract WebElement findElement(IOSDriver driver);
 
-    public abstract List<MobileElement> findAllElements(IOSDriver<MobileElement> driver);
+    public abstract List<WebElement> findAllElements(IOSDriver driver);
 
-    public abstract MobileElement findElement(MobileElement element);
+    public abstract WebElement findElement(WebElement element);
 
-    public abstract List<MobileElement> findAllElements(MobileElement element);
+    public abstract List<WebElement> findAllElements(WebElement element);
 }

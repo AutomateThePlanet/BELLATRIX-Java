@@ -56,7 +56,7 @@ public class DesktopComponent extends LayoutComponentValidationsBuilder implemen
     @Getter @Setter private WebElement parentWrappedElement;
     @Getter @Setter private int elementIndex;
     @Getter @Setter private FindStrategy findStrategy;
-    @Getter private final WindowsDriver<WebElement> wrappedDriver;
+    @Getter private final WindowsDriver wrappedDriver;
     @Getter protected final AppService appService;
     @Getter protected final ComponentCreateService componentCreateService;
     @Getter protected final ComponentWaitService componentWaitService;

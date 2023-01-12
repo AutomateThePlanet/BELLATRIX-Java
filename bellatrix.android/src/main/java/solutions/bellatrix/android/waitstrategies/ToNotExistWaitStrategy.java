@@ -13,7 +13,7 @@
 
 package solutions.bellatrix.android.waitstrategies;
 
-import io.appium.java_client.MobileElement;
+
 import io.appium.java_client.android.AndroidDriver;
 import org.openqa.selenium.WebDriver;
 import solutions.bellatrix.android.configuration.AndroidSettings;
@@ -43,7 +43,7 @@ public class ToNotExistWaitStrategy extends WaitStrategy {
         waitUntil(func);
     }
 
-    private <TFindStrategy extends FindStrategy> Boolean elementNotExists(AndroidDriver<MobileElement> searchContext, TFindStrategy findStrategy) {
+    private <TFindStrategy extends FindStrategy> Boolean elementNotExists(AndroidDriver searchContext, TFindStrategy findStrategy) {
         try {
             var element = findStrategy.findElement(searchContext);
             return element == null;

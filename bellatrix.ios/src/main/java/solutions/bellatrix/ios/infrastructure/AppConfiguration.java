@@ -14,7 +14,7 @@
 package solutions.bellatrix.ios.infrastructure;
 
 import lombok.Getter;
-import org.jsoup.internal.StringUtil;
+import org.apache.commons.lang3.StringUtils;
 import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.ios.configuration.IOSSettings;
 
@@ -33,19 +33,19 @@ public class AppConfiguration {
     }
 
     public AppConfiguration(Lifecycle lifecycle, String iOSVersion, String deviceName, String appPath) {
-        if (StringUtil.isBlank(iOSVersion)) {
+        if (StringUtils.isBlank(iOSVersion)) {
             this.iosVersion = ConfigurationService.get(IOSSettings.class).getDefaultIOSVersion();
         } else {
             this.iosVersion = iOSVersion;
         }
 
-        if (StringUtil.isBlank(deviceName)) {
+        if (StringUtils.isBlank(deviceName)) {
             this.deviceName = ConfigurationService.get(IOSSettings.class).getDefaultDeviceName();
         } else {
             this.deviceName = deviceName;
         }
 
-        if (StringUtil.isBlank(appPath)) {
+        if (StringUtils.isBlank(appPath)) {
             this.appPath = ConfigurationService.get(IOSSettings.class).getDefaultAppPath();
         } else {
             this.appPath = appPath;

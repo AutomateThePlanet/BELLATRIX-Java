@@ -13,7 +13,7 @@
 
 package solutions.bellatrix.ios.components;
 
-import io.appium.java_client.MobileElement;
+
 import io.appium.java_client.ios.IOSDriver;
 import layout.LayoutComponentValidationsBuilder;
 import lombok.AccessLevel;
@@ -51,11 +51,11 @@ public class IOSComponent extends LayoutComponentValidationsBuilder implements C
     public final static EventListener<ComponentActionEventArgs> CREATED_ELEMENTS = new EventListener<>();
     public final static EventListener<ComponentActionEventArgs> VALIDATED_ATTRIBUTE = new EventListener<>();
 
-    @Setter(AccessLevel.PROTECTED) private MobileElement wrappedElement;
-    @Getter @Setter private MobileElement parentWrappedElement;
+    @Setter(AccessLevel.PROTECTED) private WebElement wrappedElement;
+    @Getter @Setter private WebElement parentWrappedElement;
     @Getter @Setter private int elementIndex;
     @Getter @Setter private FindStrategy findStrategy;
-    @Getter private final IOSDriver<MobileElement> wrappedDriver;
+    @Getter private final IOSDriver wrappedDriver;
     @Getter protected final AppService appService;
     @Getter protected final ComponentCreateService componentCreateService;
     @Getter protected final ComponentWaitService componentWaitService;
@@ -71,7 +71,7 @@ public class IOSComponent extends LayoutComponentValidationsBuilder implements C
         wrappedDriver = DriverService.getWrappedIOSDriver();
     }
 
-    public MobileElement getWrappedElement() {
+    public WebElement getWrappedElement() {
         try {
             wrappedElement.isDisplayed(); // checking if getting property throws exception
             return wrappedElement;
@@ -306,7 +306,7 @@ public class IOSComponent extends LayoutComponentValidationsBuilder implements C
         return componentList;
     }
 
-    protected MobileElement findElement() {
+    protected WebElement findElement() {
         if (waitStrategies.size() == 0) {
             waitStrategies.add(Wait.to().exist());
         }
@@ -392,7 +392,7 @@ public class IOSComponent extends LayoutComponentValidationsBuilder implements C
         valueSet.broadcast(new ComponentActionEventArgs(this));
     }
 
-    private MobileElement findNativeElement() {
+    private WebElement findNativeElement() {
         if (parentWrappedElement == null) {
             return findStrategy.findAllElements(wrappedDriver).get(elementIndex);
         } else {
@@ -410,14 +410,14 @@ public class IOSComponent extends LayoutComponentValidationsBuilder implements C
         }
     }
 
-    private void scrollToMakeElementVisible(MobileElement wrappedElement) {
+    private void scrollToMakeElementVisible(WebElement wrappedElement) {
         // createBy default scroll down to make the element visible.
         if (iOSSettings.getAutomaticallyScrollToVisible()) {
             scrollToVisible(wrappedElement, false);
         }
     }
 
-    private void scrollToVisible(MobileElement wrappedElement, boolean shouldWait) {
+    private void scrollToVisible(WebElement wrappedElement, boolean shouldWait) {
         // Not tested
         SCROLLING_TO_VISIBLE.broadcast(new ComponentActionEventArgs(this));
         try {

@@ -22,6 +22,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import solutions.bellatrix.desktop.findstrategies.FindStrategy;
 import solutions.bellatrix.desktop.infrastructure.DriverService;
 
+import java.time.Duration;
 import java.util.function.Function;
 
 public abstract class WaitStrategy {
@@ -39,7 +40,7 @@ public abstract class WaitStrategy {
     public abstract <TFindStrategy extends FindStrategy> void waitUntil(TFindStrategy findStrategy);
 
     protected void waitUntil(Function<WebDriver, Boolean> waitCondition) {
-        var webDriverWait = new WebDriverWait(DriverService.getWrappedDriver(), timeoutInterval, sleepInterval);
+        var webDriverWait = new WebDriverWait(DriverService.getWrappedDriver(), Duration.ofSeconds(timeoutInterval), Duration.ofSeconds(sleepInterval));
         webDriverWait.until(waitCondition);
     }
 

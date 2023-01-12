@@ -14,10 +14,10 @@
 package solutions.bellatrix.android.infrastructure;
 
 import lombok.Getter;
-import org.jsoup.internal.StringUtil;
 import solutions.bellatrix.android.configuration.AndroidSettings;
 import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.core.utilities.PathNormalizer;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.HashMap;
 
@@ -36,19 +36,19 @@ public class AppConfiguration {
     }
 
     public AppConfiguration(Lifecycle lifecycle, String androidVersion, String deviceName, String appPath, String appPackage, String appActivity) {
-        if (StringUtil.isBlank(androidVersion)) {
+        if (StringUtils.isBlank(androidVersion)) {
             this.androidVersion = ConfigurationService.get(AndroidSettings.class).getDefaultAndroidVersion();
         } else {
             this.androidVersion = androidVersion;
         }
 
-        if (StringUtil.isBlank(deviceName)) {
+        if (StringUtils.isBlank(deviceName)) {
             this.deviceName = ConfigurationService.get(AndroidSettings.class).getDefaultDeviceName();
         } else {
             this.deviceName = deviceName;
         }
 
-        if (StringUtil.isBlank(appPath)) {
+        if (StringUtils.isBlank(appPath)) {
             this.appPath = PathNormalizer.normalizePath(ConfigurationService.get(AndroidSettings.class).getDefaultAppPath());
         } else {
             this.appPath = PathNormalizer.normalizePath(appPath);
@@ -56,13 +56,13 @@ public class AppConfiguration {
 
         this.lifecycle = lifecycle;
 
-        if (StringUtil.isBlank(appPackage)) {
+        if (StringUtils.isBlank(appPackage)) {
             this.appPackage = ConfigurationService.get(AndroidSettings.class).getDefaultAppPackage();
         } else {
             this.appPackage = appPackage;
         }
 
-        if (StringUtil.isBlank(appActivity)) {
+        if (StringUtils.isBlank(appActivity)) {
             this.appActivity = ConfigurationService.get(AndroidSettings.class).getDefaultAppActivity();
         } else {
             this.appActivity = appActivity;

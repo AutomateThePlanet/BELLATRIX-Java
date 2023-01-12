@@ -27,13 +27,13 @@ public class IdContainingFindStrategy extends FindStrategy {
     }
 
     @Override
-    public WebElement findElement(WindowsDriver<WebElement> driver) {
-        return driver.findElementByXPath(String.format(XPATH_CONTAINING_EXPRESSION, getValue()));
+    public WebElement findElement(WindowsDriver driver) {
+        return driver.findElement(By.xpath(String.format(XPATH_CONTAINING_EXPRESSION, getValue())));
     }
 
     @Override
-    public List<WebElement> findAllElements(WindowsDriver<WebElement> driver) {
-        return driver.findElementsByXPath(String.format(XPATH_CONTAINING_EXPRESSION, getValue()));
+    public List<WebElement> findAllElements(WindowsDriver driver) {
+        return driver.findElements(By.xpath(String.format(XPATH_CONTAINING_EXPRESSION, getValue())));
     }
 
     @Override

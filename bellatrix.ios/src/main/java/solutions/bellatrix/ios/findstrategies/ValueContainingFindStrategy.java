@@ -13,8 +13,10 @@
 
 package solutions.bellatrix.ios.findstrategies;
 
-import io.appium.java_client.MobileElement;
+
 import io.appium.java_client.ios.IOSDriver;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 
 import java.util.List;
 
@@ -26,23 +28,23 @@ public class ValueContainingFindStrategy extends FindStrategy {
     }
 
     @Override
-    public MobileElement findElement(IOSDriver<MobileElement> driver) {
-        return driver.findElementByXPath(String.format(DESCRIPTION_EXPRESSION, getValue()));
+    public WebElement findElement(IOSDriver driver) {
+        return driver.findElement(By.xpath(String.format(DESCRIPTION_EXPRESSION, getValue())));
     }
 
     @Override
-    public List<MobileElement> findAllElements(IOSDriver<MobileElement> driver) {
-        return driver.findElementsByXPath(String.format(DESCRIPTION_EXPRESSION, getValue()));
+    public List<WebElement> findAllElements(IOSDriver driver) {
+        return driver.findElements(By.xpath(String.format(DESCRIPTION_EXPRESSION, getValue())));
     }
 
     @Override
-    public MobileElement findElement(MobileElement element) {
-        return element.findElementByXPath(String.format(DESCRIPTION_EXPRESSION, getValue()));
+    public WebElement findElement(WebElement element) {
+        return element.findElement(By.xpath(String.format(DESCRIPTION_EXPRESSION, getValue())));
     }
 
     @Override
-    public List<MobileElement> findAllElements(MobileElement element) {
-        return element.findElementsByXPath(String.format(DESCRIPTION_EXPRESSION, getValue()));
+    public List<WebElement> findAllElements(WebElement element) {
+        return element.findElements(By.xpath(String.format(DESCRIPTION_EXPRESSION, getValue())));
     }
 
     @Override

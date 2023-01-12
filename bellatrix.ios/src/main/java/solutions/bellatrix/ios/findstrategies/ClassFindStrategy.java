@@ -13,8 +13,10 @@
 
 package solutions.bellatrix.ios.findstrategies;
 
-import io.appium.java_client.MobileElement;
+
 import io.appium.java_client.ios.IOSDriver;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 
 import java.util.List;
 
@@ -24,23 +26,23 @@ public class ClassFindStrategy extends FindStrategy {
     }
 
     @Override
-    public MobileElement findElement(IOSDriver<MobileElement> driver) {
-        return driver.findElementByClassName(getValue());
+    public WebElement findElement(IOSDriver driver) {
+        return driver.findElement(By.className(getValue()));
     }
 
     @Override
-    public List<MobileElement> findAllElements(IOSDriver<MobileElement> driver) {
-        return driver.findElementsByClassName(getValue());
+    public List<WebElement> findAllElements(IOSDriver driver) {
+        return driver.findElements(By.className(getValue()));
     }
 
     @Override
-    public MobileElement findElement(MobileElement element) {
-        return element.findElementByClassName(getValue());
+    public WebElement findElement(WebElement element) {
+        return element.findElement(By.className(getValue()));
     }
 
     @Override
-    public List<MobileElement> findAllElements(MobileElement element) {
-        return element.findElementsByClassName(getValue());
+    public List<WebElement> findAllElements(WebElement element) {
+        return element.findElements(By.className(getValue()));
     }
 
     @Override

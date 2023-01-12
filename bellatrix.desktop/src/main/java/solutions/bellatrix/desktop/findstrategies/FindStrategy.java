@@ -29,9 +29,9 @@ public abstract class FindStrategy {
         return value;
     }
 
-    public abstract WebElement findElement(WindowsDriver<WebElement> driver);
+    public abstract WebElement findElement(WindowsDriver driver);
 
-    public abstract List<WebElement> findAllElements(WindowsDriver<WebElement> driver);
+    public abstract List<WebElement> findAllElements(WindowsDriver driver);
 
     public abstract WebElement findElement(WebElement element);
 

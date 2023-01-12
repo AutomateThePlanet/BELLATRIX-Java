@@ -45,7 +45,7 @@ public class ToNotBeVisibleWaitStrategy extends WaitStrategy {
         waitUntil(func);
     }
 
-    private <TFindStrategy extends FindStrategy> boolean elementIsInvisible(WindowsDriver<WebElement> searchContext, TFindStrategy findStrategy) {
+    private <TFindStrategy extends FindStrategy> boolean elementIsInvisible(WindowsDriver searchContext, TFindStrategy findStrategy) {
         var element = findStrategy.findElement(searchContext);
         try {
             return element != null && !element.isDisplayed();

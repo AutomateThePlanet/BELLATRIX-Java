@@ -13,8 +13,10 @@
 
 package solutions.bellatrix.android.findstrategies;
 
-import io.appium.java_client.MobileElement;
+
+import io.appium.java_client.MobileBy;
 import io.appium.java_client.android.AndroidDriver;
+import org.openqa.selenium.WebElement;
 
 import java.util.List;
 
@@ -26,22 +28,22 @@ public class TextContainingFindStrategy extends FindStrategy {
     }
 
     @Override
-    public MobileElement findElement(AndroidDriver<MobileElement> driver) {
-        return driver.findElementByAndroidUIAutomator(String.format(TEXT_CONTAINING_EXPRESSION, getValue()));
+    public WebElement findElement(AndroidDriver driver) {
+        return driver.findElement(MobileBy.androidUIAutomator(String.format(TEXT_CONTAINING_EXPRESSION, getValue())));
     }
 
     @Override
-    public List<MobileElement> findAllElements(AndroidDriver<MobileElement> driver) {
-        return driver.findElementsByAndroidUIAutomator(String.format(TEXT_CONTAINING_EXPRESSION, getValue()));
+    public List<WebElement> findAllElements(AndroidDriver driver) {
+        return driver.findElements(MobileBy.androidUIAutomator(String.format(TEXT_CONTAINING_EXPRESSION, getValue())));
     }
 
     @Override
-    public MobileElement findElement(MobileElement element) {
+    public WebElement findElement(WebElement element) {
         return null;
     }
 
     @Override
-    public List<MobileElement> findAllElements(MobileElement element) {
+    public List<WebElement> findAllElements(WebElement element) {
         return null;
     }
 

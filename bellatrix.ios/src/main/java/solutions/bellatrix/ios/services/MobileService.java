@@ -13,12 +13,12 @@
 
 package solutions.bellatrix.ios.services;
 
-import io.appium.java_client.MobileElement;
+
 import io.appium.java_client.ios.IOSDriver;
 import solutions.bellatrix.ios.infrastructure.DriverService;
 
 public abstract class MobileService {
-    public IOSDriver<MobileElement> getWrappedIOSDriver() {
+    public IOSDriver getWrappedIOSDriver() {
         return DriverService.getWrappedIOSDriver();
     }
 }

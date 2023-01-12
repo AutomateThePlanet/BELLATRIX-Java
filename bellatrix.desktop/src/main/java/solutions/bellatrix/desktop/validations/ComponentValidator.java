@@ -24,6 +24,7 @@ import solutions.bellatrix.desktop.components.DesktopComponent;
 import solutions.bellatrix.desktop.configuration.DesktopSettings;
 import solutions.bellatrix.desktop.infrastructure.DriverService;
 
+import java.time.Duration;
 import java.util.function.Function;
 
 public class ComponentValidator {
@@ -80,7 +81,7 @@ public class ComponentValidator {
     }
 
     private void waitUntil(Function<SearchContext, Boolean> waitCondition, String exceptionMessage, DesktopComponent component, String attributeName, String value, String property, String prefix) {
-        var webDriverWait = new WebDriverWait(DriverService.getWrappedDriver(), desktopSettings.getTimeoutSettings().getValidationsTimeout(), desktopSettings.getTimeoutSettings().getSleepInterval());
+        var webDriverWait = new WebDriverWait(DriverService.getWrappedDriver(), Duration.ofSeconds(desktopSettings.getTimeoutSettings().getValidationsTimeout()), Duration.ofSeconds(desktopSettings.getTimeoutSettings().getSleepInterval()));
         try {
             webDriverWait.until(waitCondition);
         } catch (TimeoutException ex) {

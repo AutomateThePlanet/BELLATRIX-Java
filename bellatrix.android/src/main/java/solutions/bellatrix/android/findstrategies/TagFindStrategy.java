@@ -13,9 +13,10 @@
 
 package solutions.bellatrix.android.findstrategies;
 
-import io.appium.java_client.MobileElement;
+
 import io.appium.java_client.android.AndroidDriver;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 
 import java.util.List;
 
@@ -25,22 +26,22 @@ public class TagFindStrategy extends FindStrategy {
     }
 
     @Override
-    public MobileElement findElement(AndroidDriver<MobileElement> driver) {
-        return driver.findElementByTagName(getValue());
+    public WebElement findElement(AndroidDriver driver) {
+        return driver.findElement(By.tagName(getValue()));
     }
 
     @Override
-    public List<MobileElement> findAllElements(AndroidDriver<MobileElement> driver) {
-        return driver.findElementsByTagName(getValue());
+    public List<WebElement> findAllElements(AndroidDriver driver) {
+        return driver.findElements(By.tagName(getValue()));
     }
 
     @Override
-    public MobileElement findElement(MobileElement element) {
+    public WebElement findElement(WebElement element) {
         return element.findElement(By.tagName(getValue()));
     }
 
     @Override
-    public List<MobileElement> findAllElements(MobileElement element) {
+    public List<WebElement> findAllElements(WebElement element) {
         return element.findElements(By.tagName(getValue()));
     }
 

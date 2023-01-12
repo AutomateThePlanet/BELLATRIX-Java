@@ -43,7 +43,7 @@ public class ToNotExistWaitStrategy extends WaitStrategy {
         waitUntil(func);
     }
 
-    private <TFindStrategy extends FindStrategy> boolean elementExists(WindowsDriver<WebElement> searchContext, TFindStrategy findStrategy) {
+    private <TFindStrategy extends FindStrategy> boolean elementExists(WindowsDriver searchContext, TFindStrategy findStrategy) {
         try {
             var element = findStrategy.findElement(searchContext);
             return element == null;

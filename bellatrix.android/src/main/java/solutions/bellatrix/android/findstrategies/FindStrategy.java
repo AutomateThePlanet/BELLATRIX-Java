@@ -13,8 +13,8 @@
 
 package solutions.bellatrix.android.findstrategies;
 
-import io.appium.java_client.MobileElement;
 import io.appium.java_client.android.AndroidDriver;
+import org.openqa.selenium.WebElement;
 
 import java.util.List;
 
@@ -29,11 +29,11 @@ public abstract class FindStrategy {
         return value;
     }
 
-    public abstract MobileElement findElement(AndroidDriver<MobileElement> driver);
+    public abstract WebElement findElement(AndroidDriver driver);
 
-    public abstract List<MobileElement> findAllElements(AndroidDriver<MobileElement> driver);
+    public abstract List<WebElement> findAllElements(AndroidDriver driver);
 
-    public abstract MobileElement findElement(MobileElement element);
+    public abstract WebElement findElement(WebElement element);
 
-    public abstract List<MobileElement> findAllElements(MobileElement element);
+    public abstract List<WebElement> findAllElements(WebElement element);
 }

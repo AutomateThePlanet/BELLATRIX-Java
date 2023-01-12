@@ -32,7 +32,7 @@ public class DriverService {
     private static final ThreadLocal<Boolean> DISPOSED;
     private static final ThreadLocal<AppConfiguration> APP_CONFIGURATION;
     private static final ThreadLocal<HashMap<String, String>> CUSTOM_DRIVER_OPTIONS;
-    private static final ThreadLocal<WindowsDriver<WebElement>> WRAPPED_DRIVER;
+    private static final ThreadLocal<WindowsDriver> WRAPPED_DRIVER;
 
     static {
         DISPOSED = new ThreadLocal<>();
@@ -51,7 +51,7 @@ public class DriverService {
         CUSTOM_DRIVER_OPTIONS.get().put(key, value);
     }
 
-    public static WindowsDriver<WebElement> getWrappedDriver() {
+    public static WindowsDriver getWrappedDriver() {
         return WRAPPED_DRIVER.get();
     }
 
@@ -59,10 +59,10 @@ public class DriverService {
         return APP_CONFIGURATION.get();
     }
 
-    public static WindowsDriver<WebElement> start(AppConfiguration configuration) {
+    public static WindowsDriver start(AppConfiguration configuration) {
         APP_CONFIGURATION.set(configuration);
         DISPOSED.set(false);
-        WindowsDriver<WebElement> driver;
+        WindowsDriver driver;
         var desktopSettings = ConfigurationService.get(DesktopSettings.class);
         var executionType = desktopSettings.getExecutionType();
         if (executionType.equals("regular")) {
@@ -81,14 +81,14 @@ public class DriverService {
         return driver;
     }
 
-    private static WindowsDriver<WebElement> initializeDriverGridMode(GridSettings gridSettings) {
+    private static WindowsDriver initializeDriverGridMode(GridSettings gridSettings) {
         var caps = new DesiredCapabilities();
         caps.setCapability("platform", Platform.WIN10);
         caps.setCapability("version", "latest");
 
-        WindowsDriver<WebElement> driver = null;
+        WindowsDriver driver = null;
         try {
-            driver = new WindowsDriver<>(new URL(gridSettings.getUrl()), caps);
+            driver = new WindowsDriver(new URL(gridSettings.getUrl()), caps);
         } catch (MalformedURLException e) {
             DebugInformation.printStackTrace(e);
         }
@@ -97,14 +97,14 @@ public class DriverService {
     }
 
     @SneakyThrows
-    private static WindowsDriver<WebElement> initializeDriverRegularMode(String serviceUrl) {
+    private static WindowsDriver initializeDriverRegularMode(String serviceUrl) {
         var caps = new DesiredCapabilities();
         caps.setCapability("app", getAppConfiguration().getAppPath());
         caps.setCapability("deviceName", "WindowsPC");
         caps.setCapability("platformName", "Windows");
         caps.setCapability("appWorkingDir", new File(getAppConfiguration().getAppPath()).getParent());
         addDriverOptions(caps);
-        var driver = new WindowsDriver<>(new URL(serviceUrl), caps);
+        var driver = new WindowsDriver(new URL(serviceUrl), caps);
 
         return driver;
     }

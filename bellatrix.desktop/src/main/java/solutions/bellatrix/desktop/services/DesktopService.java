@@ -18,7 +18,7 @@ import org.openqa.selenium.WebElement;
 import solutions.bellatrix.desktop.infrastructure.DriverService;
 
 public abstract class DesktopService {
-    public WindowsDriver<WebElement> getWrappedDriver() {
+    public WindowsDriver getWrappedDriver() {
         return DriverService.getWrappedDriver();
     }
 }

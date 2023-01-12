@@ -25,13 +25,13 @@ public class XPathFindStrategy extends FindStrategy {
     }
 
     @Override
-    public WebElement findElement(WindowsDriver<WebElement> driver) {
-        return driver.findElementByXPath(getValue());
+    public WebElement findElement(WindowsDriver driver) {
+        return driver.findElement(By.xpath(getValue()));
     }
 
     @Override
-    public List<WebElement> findAllElements(WindowsDriver<WebElement> driver) {
-        return driver.findElementsByXPath(getValue());
+    public List<WebElement> findAllElements(WindowsDriver driver) {
+        return driver.findElements(By.tagName(getValue()));
     }
 
     @Override

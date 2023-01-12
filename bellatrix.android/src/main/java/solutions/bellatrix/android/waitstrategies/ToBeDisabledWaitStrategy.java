@@ -13,7 +13,7 @@
 
 package solutions.bellatrix.android.waitstrategies;
 
-import io.appium.java_client.MobileElement;
+
 import io.appium.java_client.android.AndroidDriver;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.StaleElementReferenceException;
@@ -45,7 +45,7 @@ public class ToBeDisabledWaitStrategy extends WaitStrategy {
         waitUntil(func);
     }
 
-    private <TFindStrategy extends FindStrategy> Boolean elementIsDisabled(AndroidDriver<MobileElement> searchContext, TFindStrategy findStrategy) {
+    private <TFindStrategy extends FindStrategy> Boolean elementIsDisabled(AndroidDriver searchContext, TFindStrategy findStrategy) {
         var element = findStrategy.findElement(searchContext);
         try {
             return element != null && !element.isEnabled();

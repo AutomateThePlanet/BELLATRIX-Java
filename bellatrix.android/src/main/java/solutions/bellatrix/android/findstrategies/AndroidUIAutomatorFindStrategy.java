@@ -13,8 +13,10 @@
 
 package solutions.bellatrix.android.findstrategies;
 
-import io.appium.java_client.MobileElement;
+import io.appium.java_client.MobileBy;
 import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.pagefactory.AndroidBy;
+import org.openqa.selenium.WebElement;
 
 import java.util.List;
 
@@ -24,23 +26,23 @@ public class AndroidUIAutomatorFindStrategy extends FindStrategy {
     }
 
     @Override
-    public MobileElement findElement(AndroidDriver<MobileElement> driver) {
-        return driver.findElementByAndroidUIAutomator(getValue());
+    public WebElement findElement(AndroidDriver driver) {
+        return driver.findElement(MobileBy.androidUIAutomator(getValue()));
     }
 
     @Override
-    public List<MobileElement> findAllElements(AndroidDriver<MobileElement> driver) {
-        return driver.findElementsByAndroidUIAutomator(getValue());
+    public List<WebElement> findAllElements(AndroidDriver driver) {
+        return driver.findElements(MobileBy.androidUIAutomator(getValue()));
     }
 
     @Override
-    public MobileElement findElement(MobileElement element) {
+    public WebElement findElement(WebElement element) {
         // AndroidUIAutomatorFindStrategy not supported for searching inside another element.
         return null;
     }
 
     @Override
-    public List<MobileElement> findAllElements(MobileElement element) {
+    public List<WebElement> findAllElements(WebElement element) {
         // AndroidUIAutomatorFindStrategy not supported for searching inside another element.
         return null;
     }
