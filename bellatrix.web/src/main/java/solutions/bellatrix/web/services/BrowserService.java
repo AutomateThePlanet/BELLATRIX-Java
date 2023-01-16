@@ -189,6 +189,13 @@ public class BrowserService extends WebService {
         webDriverWait.until(ExpectedConditions.urlContains(partialUrl));
     }
 
+    public void waitNumberOfWindowsToBe(int numberOfWindows) {
+        long waitNumberOfWindowsToBe = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getWaitForPartialUrl();
+        long sleepInterval = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getSleepInterval();
+        var webDriverWait = new WebDriverWait(getWrappedDriver(), Duration.ofSeconds(waitNumberOfWindowsToBe), Duration.ofSeconds(sleepInterval));
+        webDriverWait.until(ExpectedConditions.numberOfWindowsToBe(numberOfWindows));
+    }
+
     public void waitForAngular() {
         long angularTimeout = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getWaitForAngularTimeout();
         long sleepInterval = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getSleepInterval();
