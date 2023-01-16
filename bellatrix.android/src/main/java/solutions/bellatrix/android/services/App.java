@@ -53,7 +53,7 @@ public class App implements AutoCloseable {
     }
 
     public void addDriverOptions(String key, String value) {
-        DriverService.addDriverOptions(key, value);
+        DriverService.addDriverConfigOptions(key, value);
     }
 
     public <TPage extends AndroidPage> TPage create(Class<TPage> pageOf, Object... args) {

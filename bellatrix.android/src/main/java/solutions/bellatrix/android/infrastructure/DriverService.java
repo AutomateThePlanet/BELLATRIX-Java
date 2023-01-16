@@ -29,7 +29,6 @@ import solutions.bellatrix.core.utilities.DebugInformation;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
-import java.util.concurrent.TimeUnit;
 
 public class DriverService {
     private static final ThreadLocal<Boolean> DISPOSED;
@@ -50,7 +49,7 @@ public class DriverService {
         return CUSTOM_DRIVER_OPTIONS.get();
     }
 
-    public static void addDriverOptions(String key, String value) {
+    public static void addDriverConfigOptions(String key, String value) {
         CUSTOM_DRIVER_OPTIONS.get().put(key, value);
     }
 
@@ -113,7 +112,8 @@ public class DriverService {
             caps.setCapability(AndroidMobileCapabilityType.APP_ACTIVITY, getAppConfiguration().getAppActivity());
         }
 
-        addDriverOptions(caps);
+        addDriverConfigOptions(caps);
+        addCustomDriverOptions(caps);
         var driver = new AndroidDriver(new URL(serviceUrl), caps);
         solutions.bellatrix.web.infrastructure.DriverService.setWrappedDriver(driver);
         return driver;
@@ -132,9 +132,15 @@ public class DriverService {
         }
     }
 
-    private static <TOption extends MutableCapabilities> void addDriverOptions(TOption chromeOptions) {
+    private static <TOption extends MutableCapabilities> void addDriverConfigOptions(TOption chromeOptions) {
         for (var optionKey : APP_CONFIGURATION.get().appiumOptions.keySet()) {
             chromeOptions.setCapability(optionKey, APP_CONFIGURATION.get().appiumOptions.get(optionKey));
+        }
+    }
+
+    private static <TOption extends MutableCapabilities> void addCustomDriverOptions(TOption mobileOptions) {
+        for (var optionKey : CUSTOM_DRIVER_OPTIONS.get().keySet()) {
+            mobileOptions.setCapability(optionKey, CUSTOM_DRIVER_OPTIONS.get().get(optionKey));
         }
     }
 

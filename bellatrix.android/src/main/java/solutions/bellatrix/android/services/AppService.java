@@ -14,9 +14,11 @@
 package solutions.bellatrix.android.services;
 
 import io.appium.java_client.android.Activity;
+import org.openqa.selenium.ContextAware;
 import solutions.bellatrix.core.utilities.RuntimeInformation;
 
 import java.time.Duration;
+import java.util.stream.Stream;
 
 public class AppService extends MobileService {
     public String getCurrentActivity() {
@@ -75,6 +77,13 @@ public class AppService extends MobileService {
 
     public void resetApp() {
         getWrappedAndroidDriver().resetApp();
+    }
+
+    public void switchToWebView() {
+        var contexts = ((ContextAware)getWrappedAndroidDriver()).getContextHandles();
+        long count = contexts.stream().count();
+        var lastContext = contexts.stream().skip(count - 1).findFirst().get();
+        ((ContextAware)getWrappedAndroidDriver()).context(lastContext);
     }
 
     public void installApp(String appPath) {

@@ -53,7 +53,8 @@ public class BaseTest extends UsesPlugins {
             assert testInfo.getTestClass().isPresent();
             var className = testInfo.getTestClass().get().getName();
             var listWithClasses = ALREADY_EXECUTED_BEFORE_CLASSES;
-            if (!ALREADY_EXECUTED_BEFORE_CLASSES.contains(testInfo.getTestClass().get().getName())) {
+            var currentTestClassName = testInfo.getTestClass().get().getName();
+            if (!ALREADY_EXECUTED_BEFORE_CLASSES.contains(currentTestClassName)) {
                 beforeClassCore();
                 ALREADY_EXECUTED_BEFORE_CLASSES.add(testInfo.getTestClass().get().getName());
             }

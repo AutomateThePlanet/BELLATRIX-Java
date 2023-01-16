@@ -34,6 +34,10 @@ public class AppLifecyclePlugin extends Plugin {
         PREVIOUS_APP_CONFIGURATION = new ThreadLocal<>();
         IS_APP_STARTED_DURING_PRE_BEFORE_CLASS = new ThreadLocal<>();
         IS_APP_STARTED_CORRECTLY = new ThreadLocal<>();
+        IS_APP_STARTED_DURING_PRE_BEFORE_CLASS.set(false);
+        IS_APP_STARTED_CORRECTLY.set(false);
+        CURRENT_APP_CONFIGURATION.set(null);
+        PREVIOUS_APP_CONFIGURATION.set(null);
     }
 
     @Override
