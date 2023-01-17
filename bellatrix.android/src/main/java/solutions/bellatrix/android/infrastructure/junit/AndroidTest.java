@@ -30,9 +30,9 @@ public class AndroidTest extends BaseTest {
     @Override
     protected void configure() {
         addPlugin(AppLifecyclePlugin.class);
-        addPlugin(MobileScreenshotPlugin.class);
-        addPlugin(MobileVideoPlugin.class);
-        addPlugin(DownloadDemoAppsPlugin.class);
+//        addPlugin(MobileScreenshotPlugin.class);
+//        addPlugin(MobileVideoPlugin.class);
+//        addPlugin(DownloadDemoAppsPlugin.class);
         addListener(BddLogging.class);
     }
 }

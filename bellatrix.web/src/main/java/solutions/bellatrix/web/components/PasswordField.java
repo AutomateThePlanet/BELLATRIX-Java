@@ -32,7 +32,7 @@ public class PasswordField extends WebComponent implements ComponentDisabled, Co
 
     @Override
     public void setPassword(String value) {
-        setValue(SETTING_PASSWORD, PASSWORD_SET, value);
+        defaultSetText(SETTING_PASSWORD, PASSWORD_SET, value);
     }
 
     @Override

@@ -51,8 +51,6 @@ public class BaseTest extends UsesPlugins {
     public void beforeMethodCore(TestInfo testInfo) {
         try {
             assert testInfo.getTestClass().isPresent();
-            var className = testInfo.getTestClass().get().getName();
-            var listWithClasses = ALREADY_EXECUTED_BEFORE_CLASSES;
             var currentTestClassName = testInfo.getTestClass().get().getName();
             if (!ALREADY_EXECUTED_BEFORE_CLASSES.contains(currentTestClassName)) {
                 beforeClassCore();

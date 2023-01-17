@@ -45,25 +45,7 @@ public class BaseTest extends UsesPlugins {
     }
 
     @BeforeClass
-    public void beforeClassCore() {
-        try {
-            if (!ALREADY_EXECUTED_BEFORE_CLASSES.contains(this.getClass().getName())) {
-                beforeClassCore();
-                ALREADY_EXECUTED_BEFORE_CLASSES.add(this.getClass().getName());
-            }
-
-            var testClass = this.getClass();
-            var methodInfo = testClass.getMethod(this.getClass().getName());
-            PluginExecutionEngine.preBeforeTest(CURRENT_TEST_RESULT.get(), methodInfo);
-            beforeEach();
-            PluginExecutionEngine.postBeforeTest(CURRENT_TEST_RESULT.get(), methodInfo);
-        } catch (Exception e) {
-            PluginExecutionEngine.beforeTestFailed(e);
-        }
-    }
-
-    @BeforeMethod
-    public void beforeMethodCore(ITestResult result) {
+    public void beforeClass() {
         try {
             if (!CONFIGURATION_EXECUTED.get()) {
                 configure();
@@ -75,6 +57,24 @@ public class BaseTest extends UsesPlugins {
             PluginExecutionEngine.postBeforeClass(testClass);
         } catch (Exception e) {
             PluginExecutionEngine.beforeClassFailed(e);
+        }
+    }
+
+    @BeforeMethod
+    public void beforeMethodCore(ITestResult result) {
+        try {
+//            var currentTestClassName = this.getClass().getName();
+//            if (!ALREADY_EXECUTED_BEFORE_CLASSES.contains(currentTestClassName)) {
+//                beforeClassCore();
+//                ALREADY_EXECUTED_BEFORE_CLASSES.add(currentTestClassName);
+//            }
+
+            var methodInfo = this.getClass().getMethod(result.getMethod().getMethodName());
+            PluginExecutionEngine.preBeforeTest(CURRENT_TEST_RESULT.get(), methodInfo);
+            beforeEach();
+            PluginExecutionEngine.postBeforeTest(CURRENT_TEST_RESULT.get(), methodInfo);
+        } catch (Exception e) {
+            PluginExecutionEngine.beforeTestFailed(e);
         }
     }
 
@@ -101,6 +101,21 @@ public class BaseTest extends UsesPlugins {
             PluginExecutionEngine.afterClassFailed(e);
         }
     }
+
+//    public void beforeClassCore() {
+//        try {
+//            if (!CONFIGURATION_EXECUTED.get()) {
+//                configure();
+//                CONFIGURATION_EXECUTED.set(true);
+//            }
+//            var testClass = this.getClass();
+//            PluginExecutionEngine.preBeforeClass(testClass);
+//            beforeAll();
+//            PluginExecutionEngine.postBeforeClass(testClass);
+//        } catch (Exception e) {
+//            PluginExecutionEngine.beforeClassFailed(e);
+//        }
+//    }
 
     protected void configure() {
     }
