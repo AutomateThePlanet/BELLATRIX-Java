@@ -76,7 +76,8 @@ public class BrowserService extends WebService {
     }
 
     public void switchToLastTab() {
-        getWrappedDriver().switchTo().window(getWrappedDriver().getWindowHandles().stream().reduce((first, second) -> second).orElse(""));
+        var handles = getWrappedDriver().getWindowHandles();
+        getWrappedDriver().switchTo().window(handles.stream().reduce((first, second) -> second).orElse(""));
     }
 
     public void switchToTab(String tabName) {

@@ -14,6 +14,7 @@
 package solutions.bellatrix.web.components;
 
 import solutions.bellatrix.web.components.contracts.ComponentText;
+import solutions.bellatrix.web.components.contracts.ComponentVisible;
 
 public class Heading extends WebComponent implements ComponentText {
     @Override

@@ -23,7 +23,7 @@ import solutions.bellatrix.web.infrastructure.Browser;
 import solutions.bellatrix.web.infrastructure.ExecutionBrowser;
 import solutions.bellatrix.web.infrastructure.Lifecycle;
 import solutions.bellatrix.web.infrastructure.junit.WebTest;
-@ExecutionBrowser(browser = Browser.FIREFOX, lifecycle = Lifecycle.RESTART_ON_FAIL)
+@ExecutionBrowser(browser = Browser.FIREFOX, lifecycle = Lifecycle.RESTART_EVERY_TIME)
 public class ProductPurchaseTests extends WebTest {
     @Override
     protected void afterEach() {
@@ -74,16 +74,16 @@ public class ProductPurchaseTests extends WebTest {
         cartPage.clickProceedToCheckout();
 
         var purchaseInfo = new PurchaseInfo();
-        purchaseInfo.setEmail("info@berlinspaceflowers.com");
-        purchaseInfo.setFirstName("Anton");
-        purchaseInfo.setLastName("Angelov");
-        purchaseInfo.setCompany("Space Flowers");
-        purchaseInfo.setCountry("Germany");
-        purchaseInfo.setAddress1("1 Willi Brandt Avenue Tiergarten");
-        purchaseInfo.setAddress2("Lützowplatz 17");
-        purchaseInfo.setCity("Berlin");
-        purchaseInfo.setZip("10115");
-        purchaseInfo.setPhone("+498888999281");
+//        purchaseInfo.setEmail("info@berlinspaceflowers.com");
+//        purchaseInfo.setFirstName("Anton");
+//        purchaseInfo.setLastName("Angelov");
+//        purchaseInfo.setCompany("Space Flowers");
+//        purchaseInfo.setCountry("Germany");
+//        purchaseInfo.setAddress1("1 Willi Brandt Avenue Tiergarten");
+//        purchaseInfo.setAddress2("Lützowplatz 17");
+//        purchaseInfo.setCity("Berlin");
+//        purchaseInfo.setZip("10115");
+//        purchaseInfo.setPhone("+498888999281");
 
         var checkoutPage = app().create(CheckoutPage.class);
         checkoutPage.fillBillingInfo(purchaseInfo);
@@ -103,16 +103,16 @@ public class ProductPurchaseTests extends WebTest {
         cartPage.clickProceedToCheckout();
 
         var purchaseInfo = new PurchaseInfo();
-        purchaseInfo.setEmail("info@berlinspaceflowers.com");
-        purchaseInfo.setFirstName("Anton");
-        purchaseInfo.setLastName("Angelov");
-        purchaseInfo.setCompany("Space Flowers");
-        purchaseInfo.setCountry("Germany");
-        purchaseInfo.setAddress1("1 Willi Brandt Avenue Tiergarten");
-        purchaseInfo.setAddress2("Lützowplatz 17");
-        purchaseInfo.setCity("Berlin");
-        purchaseInfo.setZip("10115");
-        purchaseInfo.setPhone("+498888999281");
+//        purchaseInfo.setEmail("info@berlinspaceflowers.com");
+//        purchaseInfo.setFirstName("Anton");
+//        purchaseInfo.setLastName("Angelov");
+//        purchaseInfo.setCompany("Space Flowers");
+//        purchaseInfo.setCountry("Germany");
+//        purchaseInfo.setAddress1("1 Willi Brandt Avenue Tiergarten");
+//        purchaseInfo.setAddress2("Lützowplatz 17");
+//        purchaseInfo.setCity("Berlin");
+//        purchaseInfo.setZip("10115");
+//        purchaseInfo.setPhone("+498888999281");
 
         var checkoutPage = app().create(CheckoutPage.class);
         checkoutPage.fillBillingInfo(purchaseInfo);
