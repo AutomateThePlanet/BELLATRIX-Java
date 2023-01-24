@@ -29,6 +29,7 @@ import solutions.bellatrix.core.utilities.DebugInformation;
 import solutions.bellatrix.core.utilities.InstanceFactory;
 import solutions.bellatrix.core.utilities.Log;
 import solutions.bellatrix.web.components.contracts.Component;
+import solutions.bellatrix.web.components.contracts.ComponentVisible;
 import solutions.bellatrix.web.configuration.WebSettings;
 import solutions.bellatrix.web.findstrategies.*;
 import solutions.bellatrix.web.infrastructure.Browser;
@@ -49,7 +50,7 @@ import java.util.Optional;
 
 import static org.apache.commons.text.StringEscapeUtils.unescapeHtml4;
 
-public class WebComponent extends LayoutComponentValidationsBuilder implements Component {
+public class WebComponent extends LayoutComponentValidationsBuilder implements Component, ComponentVisible {
     public final static EventListener<ComponentActionEventArgs> HOVERING = new EventListener<>();
     public final static EventListener<ComponentActionEventArgs> HOVERED = new EventListener<>();
     public final static EventListener<ComponentActionEventArgs> FOCUSING = new EventListener<>();
@@ -874,5 +875,10 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
         }
 
         SCROLLED_TO_VISIBLE.broadcast(new ComponentActionEventArgs(this));
+    }
+
+    @Override
+    public boolean isVisible() {
+        return getWrappedElement().isDisplayed();
     }
 }
