@@ -14,11 +14,17 @@
 package solutions.bellatrix.android.services;
 
 import io.appium.java_client.android.Activity;
+import lombok.SneakyThrows;
 import org.openqa.selenium.ContextAware;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import solutions.bellatrix.android.configuration.AndroidSettings;
+import solutions.bellatrix.android.infrastructure.DriverService;
+import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.core.utilities.RuntimeInformation;
 
 import java.time.Duration;
-import java.util.stream.Stream;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.BooleanSupplier;
 
 public class AppService extends MobileService {
     public String getCurrentActivity() {
@@ -86,6 +92,16 @@ public class AppService extends MobileService {
         ((ContextAware)getWrappedAndroidDriver()).context(lastContext);
     }
 
+    @SneakyThrows
+    public void switchToWebViewUrlContains(String url) {
+        switchToWebView(() -> getWrappedAndroidDriver().getCurrentUrl().contains(url));
+    }
+
+    @SneakyThrows
+    public void switchToWebViewTitleContains(String title) {
+        switchToWebView(() -> getWrappedAndroidDriver().getTitle().contains(title));
+    }
+
     public void installApp(String appPath) {
         if (RuntimeInformation.IS_MAC) {
             appPath = appPath.replace('\\', '/');
@@ -104,5 +120,29 @@ public class AppService extends MobileService {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    @SneakyThrows
+    private void switchToWebView(BooleanSupplier filterConditionToSwitchWebView) {
+        AtomicBoolean switchedToRightWebView = new AtomicBoolean(false);
+        var timeoutInterval = ConfigurationService.get(AndroidSettings.class).getTimeoutSettings().getImplicitWaitTimeout();
+        var sleepInterval = ConfigurationService.get(AndroidSettings.class).getTimeoutSettings().getSleepInterval();
+        var webDriverWait = new WebDriverWait(DriverService.getWrappedAndroidDriver(), Duration.ofSeconds(timeoutInterval), Duration.ofSeconds(sleepInterval));
+        webDriverWait.until(d ->{
+            var contexts = ((ContextAware)getWrappedAndroidDriver()).getContextHandles();
+            contexts.stream().forEach(c -> {
+                ((ContextAware)getWrappedAndroidDriver()).context(c);
+                if (filterConditionToSwitchWebView.getAsBoolean()) {
+                    switchedToRightWebView.set(true);
+                }
+            });
+
+            if (switchedToRightWebView.get()) {
+                return true;
+            }
+
+            getWrappedAndroidDriver().switchTo().defaultContent();
+            return false;
+        });
     }
 }
