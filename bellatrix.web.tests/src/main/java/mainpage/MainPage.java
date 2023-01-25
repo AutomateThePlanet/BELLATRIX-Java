@@ -24,7 +24,7 @@ public class MainPage extends WebPage<Map, Asserts> {
 
     @Override
     protected void waitForPageLoad() {
-        map().addToCartFalcon9().toExist().waitToBe();
+//        map().addToCartFalcon9().toExist().waitToBe();
     }
 
     public void addRocketToShoppingCart(String rocketName) {

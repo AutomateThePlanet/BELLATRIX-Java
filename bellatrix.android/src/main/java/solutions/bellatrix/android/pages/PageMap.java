@@ -14,9 +14,13 @@
 package solutions.bellatrix.android.pages;
 
 import solutions.bellatrix.android.services.ComponentCreateService;
+import solutions.bellatrix.core.utilities.SingletonFactory;
 
 public abstract class PageMap {
     public ComponentCreateService create() {
         return new ComponentCreateService();
+    }
+    public solutions.bellatrix.web.services.ComponentCreateService createWeb() {
+        return SingletonFactory.getInstance(solutions.bellatrix.web.services.ComponentCreateService.class);
     }
 }

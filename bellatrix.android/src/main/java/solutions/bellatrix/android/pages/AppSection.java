@@ -13,18 +13,13 @@
 
 package solutions.bellatrix.android.pages;
 
-import solutions.bellatrix.android.services.AppService;
-import solutions.bellatrix.android.services.ComponentCreateService;
+import solutions.bellatrix.android.services.App;
 
 import java.lang.reflect.ParameterizedType;
 
 public abstract class AppSection<MapT extends PageMap, AssertionsT extends PageAsserts<MapT>> {
-    public AppService browser() {
-        return new AppService();
-    }
-
-    public ComponentCreateService create() {
-        return new ComponentCreateService();
+    public App app() {
+        return new App();
     }
 
     public MapT map() {
