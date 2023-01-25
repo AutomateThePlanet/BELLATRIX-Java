@@ -96,6 +96,7 @@ public class BaseTest extends UsesPlugins {
         try {
             var testClass = this.getClass();
             PluginExecutionEngine.preAfterClass(testClass);
+            afterAll();
             PluginExecutionEngine.postAfterClass(testClass);
         } catch (Exception e) {
             PluginExecutionEngine.afterClassFailed(e);
@@ -121,6 +122,9 @@ public class BaseTest extends UsesPlugins {
     }
 
     protected void beforeAll() throws Exception {
+    }
+
+    protected void afterAll() throws Exception {
     }
 
     protected void beforeEach() throws Exception {

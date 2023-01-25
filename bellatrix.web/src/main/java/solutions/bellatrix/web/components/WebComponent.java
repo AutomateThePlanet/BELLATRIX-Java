@@ -879,6 +879,10 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
 
     @Override
     public boolean isVisible() {
-        return getWrappedElement().isDisplayed();
+        try {
+            return getWrappedElement().isDisplayed();
+        } catch (NotFoundException e) {
+            return false;
+        }
     }
 }

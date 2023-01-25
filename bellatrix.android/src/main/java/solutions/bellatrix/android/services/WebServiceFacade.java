@@ -41,7 +41,7 @@ public class WebServiceFacade extends MobileService {
         return SingletonFactory.getInstance(solutions.bellatrix.web.services.ComponentCreateService.class);
     }
 
-    public solutions.bellatrix.android.services.ComponentWaitService waitFor() {
-        return SingletonFactory.getInstance(ComponentWaitService.class);
+    public solutions.bellatrix.web.services.ComponentWaitService waitFor() {
+        return SingletonFactory.getInstance(solutions.bellatrix.web.services.ComponentWaitService.class);
     }
 }

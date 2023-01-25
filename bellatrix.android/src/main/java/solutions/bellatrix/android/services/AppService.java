@@ -23,6 +23,7 @@ import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.core.utilities.RuntimeInformation;
 
 import java.time.Duration;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.BooleanSupplier;
 
@@ -44,6 +45,13 @@ public class AppService extends MobileService {
         activity.setAppWaitActivity(appWaitActivity);
         activity.setAppWaitPackage(appWaitPackage);
         activity.setStopApp(stopApp);
+        getWrappedAndroidDriver().startActivity(activity);
+    }
+
+    public void startActivity(
+            String appPackage,
+            String appActivity) {
+        var activity = new Activity(appPackage, appActivity);
         getWrappedAndroidDriver().startActivity(activity);
     }
 
@@ -85,6 +93,11 @@ public class AppService extends MobileService {
         getWrappedAndroidDriver().resetApp();
     }
 
+    public List<String> getWebViews() {
+        var contexts = ((ContextAware)getWrappedAndroidDriver()).getContextHandles();
+        return contexts.stream().toList();
+    }
+
     public void switchToWebView() {
         var contexts = ((ContextAware)getWrappedAndroidDriver()).getContextHandles();
         long count = contexts.stream().count();
@@ -92,14 +105,21 @@ public class AppService extends MobileService {
         ((ContextAware)getWrappedAndroidDriver()).context(lastContext);
     }
 
+    public void switchToFirstWebView() {
+        var contexts = ((ContextAware)getWrappedAndroidDriver()).getContextHandles();
+        long count = contexts.stream().count();
+        var firstContext = contexts.stream().findFirst().get();
+        ((ContextAware)getWrappedAndroidDriver()).context(firstContext);
+    }
+
     @SneakyThrows
     public void switchToWebViewUrlContains(String url) {
-        switchToWebView(() -> getWrappedAndroidDriver().getCurrentUrl().contains(url));
+        switchToWebView(() -> getWrappedAndroidDriver().getCurrentUrl() != null && getWrappedAndroidDriver().getCurrentUrl().contains(url));
     }
 
     @SneakyThrows
     public void switchToWebViewTitleContains(String title) {
-        switchToWebView(() -> getWrappedAndroidDriver().getTitle().contains(title));
+        switchToWebView(() -> getWrappedAndroidDriver().getTitle() != null && getWrappedAndroidDriver().getTitle().contains(title));
     }
 
     public void installApp(String appPath) {
@@ -131,9 +151,13 @@ public class AppService extends MobileService {
         webDriverWait.until(d ->{
             var contexts = ((ContextAware)getWrappedAndroidDriver()).getContextHandles();
             contexts.stream().forEach(c -> {
-                ((ContextAware)getWrappedAndroidDriver()).context(c);
-                if (filterConditionToSwitchWebView.getAsBoolean()) {
-                    switchedToRightWebView.set(true);
+                try {
+                    ((ContextAware)getWrappedAndroidDriver()).context(c);
+                    if (filterConditionToSwitchWebView.getAsBoolean()) {
+                        switchedToRightWebView.set(true);
+                    }
+                } catch (Exception e) {
+                    // ignore
                 }
             });
 

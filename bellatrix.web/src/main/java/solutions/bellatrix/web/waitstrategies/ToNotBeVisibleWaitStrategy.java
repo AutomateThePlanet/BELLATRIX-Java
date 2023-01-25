@@ -40,8 +40,8 @@ public class ToNotBeVisibleWaitStrategy extends WaitStrategy {
     }
 
     private boolean elementIsInvisible(SearchContext searchContext, By by) {
-        var element = findElement(searchContext, by);
         try {
+            var element = findElement(searchContext, by);
             return element != null && !element.isDisplayed();
         } catch (StaleElementReferenceException | NoSuchElementException e) {
             return true;

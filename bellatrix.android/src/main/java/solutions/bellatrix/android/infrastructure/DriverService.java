@@ -29,6 +29,7 @@ import solutions.bellatrix.core.utilities.DebugInformation;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
 
 public class DriverService {
     private static final ThreadLocal<Boolean> DISPOSED;
@@ -75,7 +76,7 @@ public class DriverService {
             driver = initializeDriverGridMode(gridSettings.get());
         }
 
-//        driver.manage().timeouts().implicitlyWait(androidSettings.getTimeoutSettings().getImplicitWaitTimeout(), TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(androidSettings.getTimeoutSettings().getImplicitWaitTimeout(), TimeUnit.SECONDS);
         WRAPPED_ANDROID_DRIVER.set(driver);
         solutions.bellatrix.web.infrastructure.DriverService.setWrappedDriver(driver);
         return driver;

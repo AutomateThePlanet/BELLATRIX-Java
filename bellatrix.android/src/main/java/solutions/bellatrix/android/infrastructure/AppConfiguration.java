@@ -13,11 +13,12 @@
 
 package solutions.bellatrix.android.infrastructure;
 
+import com.google.common.base.Objects;
 import lombok.Getter;
+import org.apache.commons.lang3.StringUtils;
 import solutions.bellatrix.android.configuration.AndroidSettings;
 import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.core.utilities.PathNormalizer;
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.HashMap;
 
@@ -30,6 +31,18 @@ public class AppConfiguration {
     @Getter private String androidVersion;
     @Getter private final Boolean isMobileWebExecution;
     @Getter HashMap<String, String> appiumOptions;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof AppConfiguration that)) return false;
+        return Objects.equal(appPath, that.appPath) && lifecycle == that.lifecycle && Objects.equal(deviceName, that.deviceName) && Objects.equal(appPackage, that.appPackage) && Objects.equal(appActivity, that.appActivity) && Objects.equal(androidVersion, that.androidVersion) && Objects.equal(isMobileWebExecution, that.isMobileWebExecution);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(appPath, lifecycle, deviceName, appPackage, appActivity, androidVersion, isMobileWebExecution, appiumOptions);
+    }
 
     public AppConfiguration(boolean isMobileWebExecution) {
         this.isMobileWebExecution = isMobileWebExecution;
