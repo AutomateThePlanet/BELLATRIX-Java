@@ -15,6 +15,9 @@ package solutions.bellatrix.web.services;
 
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.NotFoundException;
+import org.openqa.selenium.StaleElementReferenceException;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -25,6 +28,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.core.utilities.InstanceFactory;
+import solutions.bellatrix.core.utilities.Wait;
 import solutions.bellatrix.web.components.Frame;
 import solutions.bellatrix.web.configuration.WebSettings;
 import solutions.bellatrix.web.infrastructure.BrowserConfiguration;
@@ -78,6 +82,30 @@ public class BrowserService extends WebService {
     public void switchToLastTab() {
         var handles = getWrappedDriver().getWindowHandles();
         getWrappedDriver().switchTo().window(handles.stream().reduce((first, second) -> second).orElse(""));
+    }
+
+    public void switchToTab(Runnable condition) throws InterruptedException {
+        Wait.retry(() -> {
+                    var handles = getWrappedDriver().getWindowHandles();
+                    Boolean shouldThrowException = true;
+                    for (var currentHandle : handles) {
+                        getWrappedDriver().switchTo().window(currentHandle);
+                        try {
+                            condition.run();
+                            shouldThrowException = false;
+                            break;
+                        } catch (Exception ex) {
+                            // ignore
+                        }
+                    }
+
+                    if (shouldThrowException) {
+                        throw new TimeoutException();
+                    }
+                },
+                5,
+                0,
+                TimeoutException.class, NotFoundException.class, StaleElementReferenceException.class);
     }
 
     public void switchToTab(String tabName) {
