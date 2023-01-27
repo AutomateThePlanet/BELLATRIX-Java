@@ -68,7 +68,7 @@ public final class PluginExecutionEngine {
         }
     }
 
-    public static void preAfterTest(TestResult result, Method memberInfo) {
+    public static void preAfterTest(TestResult result, Method memberInfo) throws Exception {
         for (var currentObserver : PLUGINS) {
             currentObserver.preAfterTest(result, memberInfo);
         }

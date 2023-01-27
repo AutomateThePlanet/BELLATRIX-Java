@@ -41,15 +41,19 @@ public class FFmpegVideoRecorder implements AutoCloseable {
             if (RuntimeInformation.IS_WINDOWS) {
                 var recorderFile = FileDownloader.downloadToUsersFolder("https://github.com/AutomateThePlanet/BELLATRIX/releases/download/1.0/ffmpeg_windows.exe");
                 var videoFilePathWithExtension = String.format("%s.mpg", FilenameUtils.removeExtension(videoFullPath));
-                Runtime.getRuntime().exec(recorderFile + " -f gdigrab" + " -framerate 30" + String.format(" -i desktop %s", videoFilePathWithExtension));
+                var args = recorderFile + " -f gdigrab" + " -framerate 30" + String.format(" -i desktop %s", videoFilePathWithExtension);
+                Runtime.getRuntime().exec(args);
+                return videoFilePathWithExtension;
             } else if (RuntimeInformation.IS_MAC) {
                 var recorderFile = FileDownloader.downloadToUsersFolder("https://github.com/AutomateThePlanet/BELLATRIX/releases/download/1.0/ffmpeg_osx");
                 var videoFilePathWithExtension = String.format("%s.mkv", FilenameUtils.removeExtension(videoFullPath));
                 Runtime.getRuntime().exec(recorderFile + " -f avfoundation" + " -framerate 10" + String.format(" -i \"0:0\" %s", videoFilePathWithExtension));
+                return videoFilePathWithExtension;
             } else {
                 var recorderFile = FileDownloader.downloadToUsersFolder("https://github.com/AutomateThePlanet/BELLATRIX/releases/download/1.0/ffmpeg_linux");
                 var videoFilePathWithExtension = String.format("%s.mp4", FilenameUtils.removeExtension(videoFullPath));
                 Runtime.getRuntime().exec(recorderFile + " -f x11grab" + " -framerate 30" + String.format(" -i :0.0+100,200 %s", videoFilePathWithExtension));
+                return videoFilePathWithExtension;
             }
         } catch (Exception e) {
             e.printStackTrace();

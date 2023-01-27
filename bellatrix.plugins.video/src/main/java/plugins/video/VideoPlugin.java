@@ -13,7 +13,6 @@
 
 package plugins.video;
 
-import lombok.SneakyThrows;
 import org.apache.commons.io.FileUtils;
 import solutions.bellatrix.core.plugins.EventListener;
 import solutions.bellatrix.core.plugins.Plugin;
@@ -21,6 +20,8 @@ import solutions.bellatrix.core.plugins.TestResult;
 
 import java.io.File;
 import java.lang.reflect.Method;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public abstract class VideoPlugin extends Plugin {
@@ -49,7 +50,6 @@ public abstract class VideoPlugin extends Plugin {
         }
     }
 
-    @SneakyThrows
     public void preAfterTest(TestResult testResult, Method memberInfo) {
         if (isEnabled) {
             var videoSaveDir = getOutputFolder();
@@ -59,13 +59,18 @@ public abstract class VideoPlugin extends Plugin {
             if (testResult == TestResult.FAILURE) {
                 VIDEO_GENERATED.broadcast(new VideoPluginEventArgs(VIDEO_FULL_PATH.get()));
             } else {
-                FileUtils.forceDeleteOnExit(new File(videoFullPath));
+                try {
+                    FileUtils.forceDeleteOnExit(new File(VIDEO_FULL_PATH.get()));
+                    Files.delete(Path.of(VIDEO_FULL_PATH.get()));
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
             }
         }
     }
 
     protected void takeVideo(String screenshotSaveDir, String filename) {
-        var videoFullOPath = FMPEG_VIDEO_RECORDER.startRecording(screenshotSaveDir, filename);
-        VIDEO_FULL_PATH.set(videoFullOPath);
+        var videoFullPath = FMPEG_VIDEO_RECORDER.startRecording(screenshotSaveDir, filename);
+        VIDEO_FULL_PATH.set(videoFullPath);
     }
 }

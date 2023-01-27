@@ -13,6 +13,7 @@
 
 package solutions.bellatrix.core.plugins;
 
+import java.io.IOException;
 import java.lang.reflect.Method;
 
 public abstract class Plugin {
@@ -38,7 +39,7 @@ public abstract class Plugin {
     public void beforeTestFailed(Exception e) {
     }
 
-    public void preAfterTest(TestResult testResult, Method memberInfo) {
+    public void preAfterTest(TestResult testResult, Method memberInfo) throws IOException {
     }
 
     public void postAfterTest(TestResult testResult, Method memberInfo) {
