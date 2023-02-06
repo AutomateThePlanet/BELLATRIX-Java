@@ -30,7 +30,7 @@ public abstract class Plugin {
     public void beforeClassFailed(Exception e) {
     }
 
-    public void preBeforeTest(TestResult testResult, Method memberInfo) {
+    public void preBeforeTest(TestResult testResult, Method memberInfo) throws Exception {
     }
 
     public void postBeforeTest(TestResult testResult, Method memberInfo) {

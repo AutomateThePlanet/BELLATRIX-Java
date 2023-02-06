@@ -25,6 +25,7 @@ import sun.misc.Unsafe;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -33,6 +34,7 @@ public class BaseTest extends UsesPlugins {
     static final ThreadLocal<TestResult> CURRENT_TEST_RESULT = new ThreadLocal<>();
     private static final ThreadLocal<Boolean> CONFIGURATION_EXECUTED = new ThreadLocal<>();
     private static final List<String> ALREADY_EXECUTED_BEFORE_CLASSES = Collections.synchronizedList(new ArrayList<>());
+    private TestInfo testInfo;
 
     public BaseTest() {
         try {
@@ -51,6 +53,7 @@ public class BaseTest extends UsesPlugins {
     public void beforeMethodCore(TestInfo testInfo) throws Exception {
         try {
             assert testInfo.getTestClass().isPresent();
+            this.testInfo = testInfo;
             var currentTestClassName = testInfo.getTestClass().get().getName();
             if (!ALREADY_EXECUTED_BEFORE_CLASSES.contains(currentTestClassName)) {
                 beforeClassCore();
@@ -59,7 +62,7 @@ public class BaseTest extends UsesPlugins {
 
             var testClass = this.getClass();
             assert testInfo.getTestMethod().isPresent();
-            var methodInfo = testClass.getMethod(testInfo.getTestMethod().get().getName());
+            var methodInfo = Arrays.stream(testClass.getMethods()).filter(m -> m.getName() == testInfo.getTestMethod().get().getName()).findFirst().get();
             PluginExecutionEngine.preBeforeTest(CURRENT_TEST_RESULT.get(), methodInfo);
             beforeEach();
             PluginExecutionEngine.postBeforeTest(CURRENT_TEST_RESULT.get(), methodInfo);
@@ -109,6 +112,10 @@ public class BaseTest extends UsesPlugins {
         } catch (Exception e) {
             PluginExecutionEngine.afterClassFailed(e);
         }
+    }
+
+    protected String getTestName() {
+        return this.testInfo.getTestMethod().get().getName();
     }
 
     protected void configure() {

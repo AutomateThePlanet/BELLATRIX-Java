@@ -50,7 +50,7 @@ public final class PluginExecutionEngine {
         }
     }
 
-    public static void preBeforeTest(TestResult result, Method memberInfo) {
+    public static void preBeforeTest(TestResult result, Method memberInfo) throws Exception {
         for (var currentObserver : PLUGINS) {
             currentObserver.preBeforeTest(result, memberInfo);
         }
