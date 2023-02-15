@@ -143,6 +143,23 @@ public class BrowserService extends WebService {
         }
     }
 
+    public void removeItemFromLocalStorage(String item) {
+        ((JavascriptExecutor)getWrappedDriver()).executeScript(String.format("window.localStorage.removeItem('%s');", item));
+    }
+
+    public boolean isItemPresentInLocalStorage(String item) {
+        return !(((JavascriptExecutor)getWrappedDriver()).executeScript(String.format("return window.localStorage.getItem('%s');", item)) == null);
+    }
+
+    public String getItemFromLocalStorage(String key) {
+        return (String) ((JavascriptExecutor)getWrappedDriver()).executeScript(String.format("return window.localStorage.getItem('%s');", key));
+    }
+
+
+    public void setItemInLocalStorage(String item, String value) {
+        ((JavascriptExecutor)getWrappedDriver()).executeScript(String.format("window.localStorage.setItem('%s','%s');", item, value));
+    }
+
     public void clearLocalStorage() {
         var browserConfig = InstanceFactory.create(BrowserConfiguration.class);
         switch (browserConfig.getBrowser()) {
