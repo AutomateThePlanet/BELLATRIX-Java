@@ -21,6 +21,7 @@ import java.util.List;
 
 public class GridSettings {
     @Getter @Setter private String providerName;
+    @Getter @Setter private String optionsName;
     @Getter @Setter private String url;
     @Getter @Setter private List<HashMap<String, String>> arguments;
 }

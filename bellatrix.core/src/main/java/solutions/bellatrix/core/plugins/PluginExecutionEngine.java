@@ -34,73 +34,85 @@ public final class PluginExecutionEngine {
 
     public static void preBeforeClass(Class type) {
         for (var currentObserver : PLUGINS) {
-            currentObserver.preBeforeClass(type);
+            if (currentObserver != null)
+                currentObserver.preBeforeClass(type);
         }
     }
 
     public static void postBeforeClass(Class type) {
         for (var currentObserver : PLUGINS) {
-            currentObserver.postBeforeClass(type);
+            if (currentObserver != null)
+                currentObserver.postBeforeClass(type);
         }
     }
 
     public static void beforeClassFailed(Exception e) {
         for (var currentObserver : PLUGINS) {
-            currentObserver.beforeClassFailed(e);
+            if (currentObserver != null)
+                currentObserver.beforeClassFailed(e);
         }
     }
 
     public static void preBeforeTest(TestResult result, Method memberInfo) throws Exception {
         for (var currentObserver : PLUGINS) {
-            currentObserver.preBeforeTest(result, memberInfo);
+            if (currentObserver != null)
+                currentObserver.preBeforeTest(result, memberInfo);
         }
     }
 
     public static void postBeforeTest(TestResult result, Method memberInfo) {
         for (var currentObserver : PLUGINS) {
-            currentObserver.postBeforeTest(result, memberInfo);
+            if (currentObserver != null)
+                currentObserver.postBeforeTest(result, memberInfo);
         }
     }
 
     public static void beforeTestFailed(Exception e) {
         for (var currentObserver : PLUGINS) {
-            currentObserver.beforeTestFailed(e);
+            if (currentObserver != null)
+                currentObserver.beforeTestFailed(e);
         }
     }
 
     public static void preAfterTest(TestResult result, Method memberInfo) throws Exception {
         for (var currentObserver : PLUGINS) {
-            currentObserver.preAfterTest(result, memberInfo);
+            if (currentObserver != null)
+                currentObserver.preAfterTest(result, memberInfo);
         }
     }
 
     public static void postAfterTest(TestResult result, Method memberInfo) {
         for (var currentObserver : PLUGINS) {
-            currentObserver.postAfterTest(result, memberInfo);
+            if (currentObserver != null)
+                currentObserver.postAfterTest(result, memberInfo);
         }
     }
 
     public static void afterTestFailed(Exception e) {
         for (var currentObserver : PLUGINS) {
-            currentObserver.afterTestFailed(e);
+            if (currentObserver != null)
+                currentObserver.afterTestFailed(e);
         }
     }
 
     public static void preAfterClass(Class type) {
         for (var currentObserver : PLUGINS) {
-            currentObserver.preAfterClass(type);
+            if (currentObserver != null)
+                currentObserver.preAfterClass(type);
         }
     }
 
     public static void postAfterClass(Class type) {
         for (var currentObserver : PLUGINS) {
-            currentObserver.postAfterClass(type);
+            if (currentObserver != null)
+                currentObserver.postAfterClass(type);
         }
     }
 
     public static void afterClassFailed(Exception e) {
         for (var currentObserver : PLUGINS) {
-            currentObserver.afterClassFailed(e);
+            if (currentObserver != null)
+                currentObserver.afterClassFailed(e);
         }
     }
 }
