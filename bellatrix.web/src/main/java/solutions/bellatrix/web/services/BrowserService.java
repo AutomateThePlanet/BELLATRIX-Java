@@ -34,6 +34,7 @@ import solutions.bellatrix.web.configuration.WebSettings;
 import solutions.bellatrix.web.infrastructure.BrowserConfiguration;
 
 import java.time.Duration;
+import java.util.Objects;
 
 public class BrowserService extends WebService {
     private final JavascriptExecutor javascriptExecutor;
@@ -146,7 +147,42 @@ public class BrowserService extends WebService {
         long sleepInterval = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getSleepInterval();
         var webDriverWait = new WebDriverWait(getWrappedDriver(), Duration.ofSeconds(ajaxTimeout), Duration.ofSeconds(sleepInterval));
         var javascriptExecutor = (JavascriptExecutor)getWrappedDriver();
-        webDriverWait.until(d -> (boolean)javascriptExecutor.executeScript("return window.jQuery != undefined && jQuery.active == 0"));
+        webDriverWait.until(d -> {
+                    var numberOfAjaxConnections = javascriptExecutor.executeScript("return !isNaN(window.openHTTPs) ? window.openHTTPs : null");
+                    if (Objects.nonNull(numberOfAjaxConnections)) {
+                        int ajaxConnections = Integer.parseInt(numberOfAjaxConnections.toString());
+                        return ajaxConnections == 0;
+                    } else {
+                        monkeyPatchXMLHttpRequest();
+                    }
+
+                    return false;
+                }
+        );
+    }
+
+    private void monkeyPatchXMLHttpRequest() {
+        var numberOfAjaxConnections = javascriptExecutor.executeScript(("return !isNaN(window.openHTTPs) ? window.openHTTPs : null"));
+
+        if (Objects.nonNull(numberOfAjaxConnections)) {
+            var ajaxConnections = Integer.parseInt(numberOfAjaxConnections.toString());
+        } else {
+            var script = "  (function() {" +
+                    "var oldOpen = XMLHttpRequest.prototype.open;" +
+                    "window.openHTTPs = 0;" +
+                    "XMLHttpRequest.prototype.open = function(method, url, async, user, pass) {" +
+                    "window.openHTTPs++;" +
+                    "this.addEventListener('readystatechange', function() {" +
+                    "if(this.readyState == 4) {" +
+                    "window.openHTTPs--;" +
+                    "}" +
+                    "}, false);" +
+                    "oldOpen.call(this, method, url, async, user, pass);" +
+                    "}" +
+                    "})();";
+
+            javascriptExecutor.executeScript(script);
+        }
     }
 
     public void waitForAjaxRequest(String requestPartialUrl, int additionalTimeoutInSeconds) {
