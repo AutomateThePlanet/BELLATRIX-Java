@@ -66,7 +66,7 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
     public final static EventListener<ComponentActionEventArgs> CREATED_ELEMENTS = new EventListener<>();
 
     @Setter(AccessLevel.PROTECTED) private WebElement wrappedElement;
-    @Getter @Setter private WebElement parentWrappedElement;
+    @Getter @Setter private SearchContext parentWrappedElement;
     @Getter @Setter private int elementIndex;
     @Getter @Setter private FindStrategy findStrategy;
     @Getter private final WebDriver wrappedDriver;
@@ -112,6 +112,20 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
         SETTING_ATTRIBUTE.broadcast(new ComponentActionEventArgs(this, value, name));
         javaScriptService.execute(String.format("arguments[0].setAttribute('%s', '%s');", name, value), this);
         ATTRIBUTE_SET.broadcast(new ComponentActionEventArgs(this));
+    }
+
+    protected <TComponent extends WebComponent, TFindStrategy extends FindStrategy> TComponent shadowRootCreate(Class<TComponent> componentClass, TFindStrategy findStrategy) {
+        CREATING_ELEMENT.broadcast(new ComponentActionEventArgs(this));
+        findElement();
+        var component = InstanceFactory.create(componentClass);
+        component.setFindStrategy(findStrategy);
+        component.setParentWrappedElement(getWrappedElement().getShadowRoot());
+        CREATED_ELEMENT.broadcast(new ComponentActionEventArgs(this));
+        return component;
+    }
+
+    public SearchContext shadowRoot() {
+        return getWrappedElement().getShadowRoot();
     }
 
     public void focus() {

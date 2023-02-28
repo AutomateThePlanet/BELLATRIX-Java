@@ -81,10 +81,15 @@ public class DriverService {
             var executionType = webSettings.getExecutionType();
             if (executionType.equals("regular")) {
                 driver = initializeDriverRegularMode();
-            } else {
+            } else if (executionType.equals("grid") || executionType.equals("selenoid")) {
                 var gridSettings = webSettings.getGridSettings().stream().filter(g -> g.getProviderName().equals(executionType.toLowerCase())).findFirst();
                 assert gridSettings.isPresent() : String.format("The specified execution type '%s' is not declared in the configuration", executionType);
                 driver = initializeDriverGridMode(gridSettings.get());
+            }
+            else {
+                var gridSettings = webSettings.getGridSettings().stream().filter(g -> g.getProviderName().equals(executionType.toLowerCase())).findFirst();
+                assert gridSettings.isPresent() : String.format("The specified execution type '%s' is not declared in the configuration", executionType);
+                driver = initializeDriverCloudGridMode(gridSettings.get());
             }
 
             driver.manage().timeouts().pageLoadTimeout(ConfigurationService.get(WebSettings.class).getTimeoutSettings().getPageLoadTimeout(), TimeUnit.SECONDS);
@@ -95,6 +100,56 @@ public class DriverService {
 
             return driver;
         } else return WRAPPED_DRIVER.get();
+    }
+
+    private static WebDriver initializeDriverCloudGridMode(GridSettings gridSettings) {
+        MutableCapabilities caps = new MutableCapabilities();
+//        if (BROWSER_CONFIGURATION.get().getPlatform() != Platform.ANY) {
+//            caps.setCapability("platform", BROWSER_CONFIGURATION.get().getPlatform());
+//        }
+
+//        if (BROWSER_CONFIGURATION.get().getVersion() != 0) {
+//            caps.setCapability("version", BROWSER_CONFIGURATION.get().getVersion());
+//        } else {
+//            caps.setCapability("version", "latest");
+//        }
+
+        switch (BROWSER_CONFIGURATION.get().getBrowser()) {
+            case CHROME_HEADLESS:
+            case CHROME: {
+                var chromeOptions = new ChromeOptions();
+                caps.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
+                break;
+            }
+            case FIREFOX_HEADLESS:
+            case FIREFOX: {
+                var firefoxOptions = new FirefoxOptions();
+                caps.setCapability(ChromeOptions.CAPABILITY, firefoxOptions);
+                break;
+            }
+            case EDGE: {
+                var edgeOptions = new EdgeOptions();
+                caps.setCapability(ChromeOptions.CAPABILITY, edgeOptions);
+                break;
+            }
+            case SAFARI: {
+                var safariOptions = new SafariOptions();
+                caps.setCapability(ChromeOptions.CAPABILITY, safariOptions);
+                break;
+            }
+        }
+
+        HashMap<String, Object> options = new HashMap<String, Object>();
+        addGridOptions(options, gridSettings);
+        caps.setCapability(gridSettings.getOptionsName(), options);
+        WebDriver driver = null;
+        try {
+            driver = new RemoteWebDriver(new URL(gridSettings.getUrl()), caps);
+        } catch (MalformedURLException e) {
+            DebugInformation.printStackTrace(e);
+        }
+
+        return driver;
     }
 
     private static WebDriver initializeDriverGridMode(GridSettings gridSettings) {
@@ -115,27 +170,32 @@ public class DriverService {
                 var chromeOptions = new ChromeOptions();
                 addGridOptions(chromeOptions, gridSettings);
                 caps.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
+                break;
             }
             case FIREFOX_HEADLESS:
             case FIREFOX: {
                 var firefoxOptions = new FirefoxOptions();
                 addGridOptions(firefoxOptions, gridSettings);
                 caps.setCapability(ChromeOptions.CAPABILITY, firefoxOptions);
+                break;
             }
             case EDGE: {
                 var edgeOptions = new EdgeOptions();
                 addGridOptions(edgeOptions, gridSettings);
                 caps.setCapability(ChromeOptions.CAPABILITY, edgeOptions);
+                break;
             }
             case SAFARI: {
                 var safariOptions = new SafariOptions();
                 addGridOptions(safariOptions, gridSettings);
                 caps.setCapability(ChromeOptions.CAPABILITY, safariOptions);
+                break;
             }
             case INTERNET_EXPLORER: {
                 var ieOptions = new InternetExplorerOptions();
                 addGridOptions(ieOptions, gridSettings);
                 caps.setCapability(ChromeOptions.CAPABILITY, ieOptions);
+                break;
             }
         }
 
@@ -234,6 +294,19 @@ public class DriverService {
         }
 
         return driver;
+    }
+
+    private static <TOption extends MutableCapabilities> void addGridOptions(HashMap<String, Object> options, GridSettings gridSettings) {
+        for (var entry : gridSettings.getArguments()) {
+            for (var c : entry.entrySet()) {
+                if (c.getKey().startsWith("env_")) {
+                    var envValue = System.getProperty(c.getKey().replace("env_", ""));
+                    options.put(c.getKey(), envValue);
+                } else {
+                    options.put(c.getKey(), c.getValue());
+                }
+            }
+        }
     }
 
     private static <TOption extends MutableCapabilities> void addGridOptions(TOption options, GridSettings gridSettings) {

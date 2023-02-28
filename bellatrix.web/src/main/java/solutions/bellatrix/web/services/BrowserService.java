@@ -117,61 +117,28 @@ public class BrowserService extends WebService {
     }
 
     public void clearSessionStorage() {
-        var browserConfig = InstanceFactory.create(BrowserConfiguration.class);
-        switch (browserConfig.getBrowser()) {
-            case CHROME, CHROME_HEADLESS -> {
-                var chromeDriver = (ChromeDriver)getWrappedDriver();
-                chromeDriver.getSessionStorage().clear();
-            }
-            case FIREFOX, FIREFOX_HEADLESS -> {
-                var firefoxDriver = (FirefoxDriver)getWrappedDriver();
-                firefoxDriver.getSessionStorage().clear();
-            }
-            case INTERNET_EXPLORER -> {
-                var ieDriver = (InternetExplorerDriver)getWrappedDriver();
-                ((JavascriptExecutor)ieDriver).executeScript("sessionStorage.clear()");
-            }
-            case EDGE -> {
-                // case EDGE_HEADLESS:
-                var edgeDriver = (EdgeDriver)getWrappedDriver();
-                ((JavascriptExecutor)edgeDriver).executeScript("sessionStorage.clear()");
-            }
-            case SAFARI -> {
-                var safariDriver = (SafariDriver)getWrappedDriver();
-                ((JavascriptExecutor)safariDriver).executeScript("sessionStorage.clear()");
-            }
-        }
+        ((JavascriptExecutor)getWrappedDriver()).executeScript("sessionStorage.clear()");
+    }
+
+    public void removeItemFromLocalStorage(String item) {
+        ((JavascriptExecutor)getWrappedDriver()).executeScript(String.format("window.localStorage.removeItem('%s');", item));
+    }
+
+    public boolean isItemPresentInLocalStorage(String item) {
+        return !(((JavascriptExecutor)getWrappedDriver()).executeScript(String.format("return window.localStorage.getItem('%s');", item)) == null);
+    }
+
+    public String getItemFromLocalStorage(String key) {
+        return (String) ((JavascriptExecutor)getWrappedDriver()).executeScript(String.format("return window.localStorage.getItem('%s');", key));
+    }
+
+
+    public void setItemInLocalStorage(String item, String value) {
+        ((JavascriptExecutor)getWrappedDriver()).executeScript(String.format("window.localStorage.setItem('%s','%s');", item, value));
     }
 
     public void clearLocalStorage() {
-        var browserConfig = InstanceFactory.create(BrowserConfiguration.class);
-        switch (browserConfig.getBrowser()) {
-            case CHROME, CHROME_HEADLESS -> {
-                var chromeDriver = (ChromeDriver)getWrappedDriver();
-                chromeDriver.getLocalStorage().clear();
-            }
-            case FIREFOX, FIREFOX_HEADLESS -> {
-                var firefoxDriver = (FirefoxDriver)getWrappedDriver();
-                firefoxDriver.getLocalStorage().clear();
-            }
-            case INTERNET_EXPLORER -> {
-                var ieDriver = (InternetExplorerDriver)getWrappedDriver();
-                ((JavascriptExecutor)ieDriver).executeScript("localStorage.clear()");
-            }
-            case EDGE -> {
-                // case EDGE_HEADLESS:
-                var edgeDriver = (EdgeDriver)getWrappedDriver();
-                ((JavascriptExecutor)edgeDriver).executeScript("localStorage.clear()");
-            }
-            case OPERA -> {
-                var operaDriver = (OperaDriver)getWrappedDriver();
-                operaDriver.getLocalStorage().clear();
-            }
-            case SAFARI -> {
-                var safariDriver = (SafariDriver)getWrappedDriver();
-                ((JavascriptExecutor)safariDriver).executeScript("localStorage.clear()");
-            }
-        }
+        ((JavascriptExecutor)getWrappedDriver()).executeScript("localStorage.clear()");
     }
 
     public void waitForAjax() {
