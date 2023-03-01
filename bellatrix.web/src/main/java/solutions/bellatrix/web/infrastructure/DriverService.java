@@ -14,6 +14,7 @@
 package solutions.bellatrix.web.infrastructure;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
+import net.lightbody.bmp.client.ClientUtil;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -212,12 +213,8 @@ public class DriverService {
     private static WebDriver initializeDriverRegularMode() {
         WebDriver driver = null;
         boolean shouldCaptureHttpTraffic = ConfigurationService.get(WebSettings.class).getShouldCaptureHttpTraffic();
-        int port = ProxyServer.init();
-        String proxyUrl = "127.0.0.1:" + port;
-        final var proxyConfig = new Proxy()
-                .setHttpProxy(proxyUrl)
-                .setSslProxy(proxyUrl)
-                .setFtpProxy(proxyUrl);
+        ProxyServer.init();
+        Proxy proxyConfig = ClientUtil.createSeleniumProxy(ProxyServer.get());
 
         switch (BROWSER_CONFIGURATION.get().getBrowser()) {
             case CHROME -> {
