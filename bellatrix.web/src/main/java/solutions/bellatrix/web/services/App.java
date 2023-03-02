@@ -33,10 +33,6 @@ public class App implements AutoCloseable {
         return SingletonFactory.getInstance(CookiesService.class);
     }
 
-    public ProxyServer requests() {
-        return SingletonFactory.getInstance(ProxyServer.class);
-    }
-
     public DialogService dialogs() {
         return SingletonFactory.getInstance(DialogService.class);
     }
