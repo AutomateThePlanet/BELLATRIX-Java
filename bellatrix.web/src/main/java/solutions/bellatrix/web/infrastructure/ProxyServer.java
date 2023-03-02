@@ -15,10 +15,12 @@ package solutions.bellatrix.web.infrastructure;
 
 import lombok.SneakyThrows;
 import net.lightbody.bmp.BrowserMobProxyServer;
+import net.lightbody.bmp.core.har.HarEntry;
 import org.testng.Assert;
 
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.util.List;
 
 public class ProxyServer {
     private static final ThreadLocal<BrowserMobProxyServer> PROXY_SERVER = new ThreadLocal<>();
@@ -35,6 +37,10 @@ public class ProxyServer {
         if (PROXY_SERVER.get() != null) {
             PROXY_SERVER.get().stop();
         }
+    }
+
+    public List<HarEntry> getCapturedEntries() {
+        return PROXY_SERVER.get().getHar().getLog().getEntries();
     }
 
     public void assertNoErrorCodes() {
