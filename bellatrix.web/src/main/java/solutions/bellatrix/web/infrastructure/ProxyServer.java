@@ -23,6 +23,7 @@ import net.lightbody.bmp.proxy.CaptureType;
 import org.openqa.selenium.NotFoundException;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.TimeoutException;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.http.HttpMethod;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -101,10 +102,10 @@ public class ProxyServer {
         Log.info(String.format("The proxy history with %s entries is cleared!", oldHarCount));
     }
 
-    public static void waitForRequest(App app, String requestPartialUrl, HttpMethod httpMethod, int additionalTimeoutInSeconds) {
+    public static void waitForRequest(WebDriver driver, String requestPartialUrl, HttpMethod httpMethod, int additionalTimeoutInSeconds) {
         long timeout = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getWaitForAjaxTimeout();
         long sleepInterval = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getSleepInterval();
-        var webDriverWait = new WebDriverWait(app.browser().getWrappedDriver(), Duration.ofSeconds(timeout + additionalTimeoutInSeconds), Duration.ofSeconds(sleepInterval));
+        var webDriverWait = new WebDriverWait(driver, Duration.ofSeconds(timeout + additionalTimeoutInSeconds), Duration.ofSeconds(sleepInterval));
 
         webDriverWait.until(d -> {
             var harEntries = PROXY_SERVER.get().getHar().getLog().getEntries();
