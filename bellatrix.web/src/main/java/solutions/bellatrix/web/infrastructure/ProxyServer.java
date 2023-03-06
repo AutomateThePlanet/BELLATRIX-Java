@@ -16,12 +16,28 @@ package solutions.bellatrix.web.infrastructure;
 import com.google.gson.Gson;
 import lombok.SneakyThrows;
 import net.lightbody.bmp.BrowserMobProxyServer;
+import net.lightbody.bmp.core.har.Har;
 import net.lightbody.bmp.core.har.HarEntry;
+import net.lightbody.bmp.core.har.HarLog;
 import net.lightbody.bmp.proxy.CaptureType;
+import org.openqa.selenium.NotFoundException;
+import org.openqa.selenium.StaleElementReferenceException;
+import org.openqa.selenium.TimeoutException;
+import org.openqa.selenium.remote.http.HttpMethod;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import solutions.bellatrix.core.configuration.ConfigurationService;
+import solutions.bellatrix.core.utilities.Log;
+import solutions.bellatrix.core.utilities.Wait;
+import solutions.bellatrix.web.configuration.WebSettings;
+import solutions.bellatrix.web.services.App;
+import solutions.bellatrix.web.waitstrategies.WaitStrategy;
 
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.time.Duration;
 import java.util.List;
 
 public class ProxyServer {
@@ -76,6 +92,30 @@ public class ProxyServer {
         var areRequestsMade = harEntries.stream().anyMatch(r -> r.getRequest().getUrl().contains(url));
 
         Assert.assertTrue(areRequestsMade);
+    }
+
+    public static void clearHistory() {
+        var oldHarCount = PROXY_SERVER.get().getHar().getLog().getEntries().stream().count();
+
+        PROXY_SERVER.get().newHar();
+        Log.info(String.format("The proxy history with %s entries is cleared!", oldHarCount));
+    }
+
+    public static void waitForRequest(App app, String requestPartialUrl, HttpMethod httpMethod, int additionalTimeoutInSeconds) {
+        long timeout = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getWaitForAjaxTimeout();
+        long sleepInterval = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getSleepInterval();
+        var webDriverWait = new WebDriverWait(app.browser().getWrappedDriver(), Duration.ofSeconds(timeout + additionalTimeoutInSeconds), Duration.ofSeconds(sleepInterval));
+
+        webDriverWait.until(d -> {
+            var harEntries = PROXY_SERVER.get().getHar().getLog().getEntries();
+            var areRequestsMade = harEntries.stream().anyMatch(r -> r.getRequest().getUrl().contains(requestPartialUrl) && r.getRequest().getMethod().equals(httpMethod.toString()));
+
+            return areRequestsMade;
+
+//            String script = String.format("return performance.getEntriesByType('resource').filter(item => item.name.toLowerCase().includes('%s'))[0] !== undefined;", requestPartialUrl);
+//            boolean result = (boolean)javascriptExecutor.executeScript(script);
+//            return result;
+        });
     }
 
     public static void assertNoLargeImagesRequested() {
@@ -149,7 +189,7 @@ public class ProxyServer {
     public static <T> T getResponseByUrl(String url, String httpMethod, Class<T> responseModelClass) {
         var harEntries = getCapturedEntries();
         var harEntry = harEntries.stream()
-                .filter(r -> r.getRequest().getUrl().equals(url) && r.getRequest().getMethod().equals(httpMethod))
+                .filter(r -> r.getRequest().getUrl().contains(url) && r.getRequest().getMethod().equals(httpMethod))
                 .findFirst()
                 .orElse(null);
         if (harEntry == null) {

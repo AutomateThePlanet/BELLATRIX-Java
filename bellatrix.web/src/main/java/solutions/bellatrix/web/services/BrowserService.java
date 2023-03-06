@@ -14,10 +14,7 @@
 package solutions.bellatrix.web.services;
 
 import org.apache.commons.lang3.StringUtils;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.NotFoundException;
-import org.openqa.selenium.StaleElementReferenceException;
-import org.openqa.selenium.TimeoutException;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -83,6 +80,10 @@ public class BrowserService extends WebService {
     public void switchToLastTab() {
         var handles = getWrappedDriver().getWindowHandles();
         getWrappedDriver().switchTo().window(handles.stream().reduce((first, second) -> second).orElse(""));
+    }
+
+    public void switchToNewTab() {
+        getWrappedDriver().switchTo().newWindow(WindowType.TAB);
     }
 
     public void switchToTab(Runnable condition) throws InterruptedException {
