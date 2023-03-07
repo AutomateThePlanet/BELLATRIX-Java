@@ -36,7 +36,7 @@ public abstract class Plugin {
     public void postBeforeTest(TestResult testResult, Method memberInfo) {
     }
 
-    public void beforeTestFailed(Exception e) {
+    public void beforeTestFailed(Exception e) throws Exception {
     }
 
     public void preAfterTest(TestResult testResult, Method memberInfo) throws IOException {

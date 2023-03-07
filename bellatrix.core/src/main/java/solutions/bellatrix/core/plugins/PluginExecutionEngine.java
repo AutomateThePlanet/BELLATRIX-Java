@@ -67,7 +67,7 @@ public final class PluginExecutionEngine {
         }
     }
 
-    public static void beforeTestFailed(Exception e) {
+    public static void beforeTestFailed(Exception e) throws Exception {
         for (var currentObserver : PLUGINS) {
             if (currentObserver != null)
                 currentObserver.beforeTestFailed(e);

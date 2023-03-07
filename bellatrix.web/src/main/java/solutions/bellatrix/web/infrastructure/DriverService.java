@@ -14,6 +14,7 @@
 package solutions.bellatrix.web.infrastructure;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
+import lombok.experimental.UtilityClass;
 import net.lightbody.bmp.client.ClientUtil;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -24,8 +25,6 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.ie.InternetExplorerOptions;
-import org.openqa.selenium.opera.OperaDriver;
-import org.openqa.selenium.opera.OperaOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.safari.SafariDriver;
@@ -35,9 +34,12 @@ import solutions.bellatrix.core.utilities.DebugInformation;
 import solutions.bellatrix.web.configuration.GridSettings;
 import solutions.bellatrix.web.configuration.WebSettings;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
 public class DriverService {
@@ -105,15 +107,6 @@ public class DriverService {
 
     private static WebDriver initializeDriverCloudGridMode(GridSettings gridSettings) {
         MutableCapabilities caps = new MutableCapabilities();
-//        if (BROWSER_CONFIGURATION.get().getPlatform() != Platform.ANY) {
-//            caps.setCapability("platform", BROWSER_CONFIGURATION.get().getPlatform());
-//        }
-
-//        if (BROWSER_CONFIGURATION.get().getVersion() != 0) {
-//            caps.setCapability("version", BROWSER_CONFIGURATION.get().getVersion());
-//        } else {
-//            caps.setCapability("version", "latest");
-//        }
 
         switch (BROWSER_CONFIGURATION.get().getBrowser()) {
             case CHROME_HEADLESS:
@@ -141,7 +134,16 @@ public class DriverService {
         }
 
         HashMap<String, Object> options = new HashMap<String, Object>();
+
+        // Anton: maybe this is something else for other clouds, should be tested.
+        // If this is the case, we need to have branching per provider name.
+        options.put("sessionName", getBrowserConfiguration().getTestName());
+//        if (gridSettings.getProviderName() == "browserstack") {
+//            options.put("sessionName", getBrowserConfiguration().getTestName());
+//        }
+
         addGridOptions(options, gridSettings);
+
         caps.setCapability(gridSettings.getOptionsName(), options);
         WebDriver driver = null;
         try {
@@ -213,8 +215,13 @@ public class DriverService {
     private static WebDriver initializeDriverRegularMode() {
         WebDriver driver = null;
         boolean shouldCaptureHttpTraffic = ConfigurationService.get(WebSettings.class).getShouldCaptureHttpTraffic();
-        ProxyServer.init();
-        Proxy proxyConfig = ClientUtil.createSeleniumProxy(ProxyServer.get());
+
+        Proxy proxyConfig = null;
+        if (shouldCaptureHttpTraffic) {
+            ProxyServer.init();
+            proxyConfig = ClientUtil.createSeleniumProxy(ProxyServer.get());
+        }
+
 
         switch (BROWSER_CONFIGURATION.get().getBrowser()) {
             case CHROME -> {
@@ -265,14 +272,6 @@ public class DriverService {
                 if (shouldCaptureHttpTraffic) edgeOptions.setProxy(proxyConfig);
                 driver = new EdgeDriver(edgeOptions);
             }
-            // case EDGE_HEADLESS
-            case OPERA -> {
-                WebDriverManager.operadriver().setup();
-                var operaOptions = new OperaOptions();
-                addDriverOptions(operaOptions);
-                if (shouldCaptureHttpTraffic) operaOptions.setProxy(proxyConfig);
-                driver = new OperaDriver(operaOptions);
-            }
             case SAFARI -> {
                 System.setProperty("webdriver.safari.driver", "/usr/bin/safaridriver");
                 var safariOptions = new SafariOptions();
@@ -296,11 +295,21 @@ public class DriverService {
     private static <TOption extends MutableCapabilities> void addGridOptions(HashMap<String, Object> options, GridSettings gridSettings) {
         for (var entry : gridSettings.getArguments()) {
             for (var c : entry.entrySet()) {
-                if (c.getKey().startsWith("env_")) {
-                    var envValue = System.getProperty(c.getKey().replace("env_", ""));
-                    options.put(c.getKey(), envValue);
-                } else {
-                    options.put(c.getKey(), c.getValue());
+                if (c.getKey().toLowerCase().contains("build")) {
+                    var buildName = getBuildName();
+                    if (buildName == null) {
+                        buildName = c.getValue();
+                    }
+
+                    options.put(c.getKey(), buildName);
+                }
+                else {
+                    if (c.getValue().startsWith("env_")) {
+                        var envValue = System.getProperty(c.getValue().replace("env_", ""));
+                        options.put(c.getKey(), envValue);
+                    } else {
+                        options.put(c.getKey(), c.getValue());
+                    }
                 }
             }
         }
@@ -309,8 +318,8 @@ public class DriverService {
     private static <TOption extends MutableCapabilities> void addGridOptions(TOption options, GridSettings gridSettings) {
         for (var entry : gridSettings.getArguments()) {
             for (var c : entry.entrySet()) {
-                if (c.getKey().startsWith("env_")) {
-                    var envValue = System.getProperty(c.getKey().replace("env_", ""));
+                if (c.getValue().startsWith("env_")) {
+                    var envValue = System.getProperty(c.getValue().replace("env_", ""));
                     options.setCapability(c.getKey(), envValue);
                 } else {
                     options.setCapability(c.getKey(), c.getValue());
@@ -333,19 +342,39 @@ public class DriverService {
         } catch (Exception ignored) {}
     }
 
+    private static String getBuildName() {
+        String buildName = System.getProperty("buildName");
+        if (buildName == null) {
+            InputStream input = ConfigurationService.class.getResourceAsStream("/application.properties");
+            var p = new Properties();
+            try {
+                p.load(input);
+            } catch (IOException e) {
+                return null;
+            }
+
+            buildName = p.getProperty("buildName");
+        }
+
+        return buildName;
+    }
+
     public static void close() {
         if (DISPOSED.get()) {
             return;
         }
 
         if (WRAPPED_DRIVER.get() != null) {
-            WRAPPED_DRIVER.get().close();
+            WRAPPED_DRIVER.get().quit();
             if (CUSTOM_DRIVER_OPTIONS.get() != null) {
                 CUSTOM_DRIVER_OPTIONS.get().clear();
             }
         }
 
-        ProxyServer.close();
+        boolean shouldCaptureHttpTraffic = ConfigurationService.get(WebSettings.class).getShouldCaptureHttpTraffic();
+        if (shouldCaptureHttpTraffic) {
+            ProxyServer.close();
+        }
 
         DISPOSED.set(true);
     }

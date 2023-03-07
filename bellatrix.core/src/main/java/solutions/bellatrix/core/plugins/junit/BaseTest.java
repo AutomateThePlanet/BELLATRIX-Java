@@ -21,9 +21,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import solutions.bellatrix.core.plugins.PluginExecutionEngine;
 import solutions.bellatrix.core.plugins.TestResult;
 import solutions.bellatrix.core.plugins.UsesPlugins;
-import sun.misc.Unsafe;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -37,15 +35,15 @@ public class BaseTest extends UsesPlugins {
     private TestInfo testInfo;
 
     public BaseTest() {
-        try {
-            Field theUnsafe = Unsafe.class.getDeclaredField("theUnsafe");
-            theUnsafe.setAccessible(true);
-            Unsafe u = (Unsafe)theUnsafe.get(null);
-
-            Class<?> cls = Class.forName("jdk.internal.module.IllegalAccessLogger");
-            Field logger = cls.getDeclaredField("logger");
-            u.putObjectVolatile(cls, u.staticFieldOffset(logger), null);
-        } catch (Exception ignored) {}
+//        try {
+//            Field theUnsafe = Unsafe.class.getDeclaredField("theUnsafe");
+//            theUnsafe.setAccessible(true);
+//            Unsafe u = (Unsafe)theUnsafe.get(null);
+//
+//            Class<?> cls = Class.forName("jdk.internal.module.IllegalAccessLogger");
+//            Field logger = cls.getDeclaredField("logger");
+//            u.putObjectVolatile(cls, u.staticFieldOffset(logger), null);
+//        } catch (Exception ignored) {}
         CONFIGURATION_EXECUTED.set(false);
     }
 
