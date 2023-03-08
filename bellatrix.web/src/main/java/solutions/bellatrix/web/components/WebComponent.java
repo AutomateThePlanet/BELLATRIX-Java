@@ -190,6 +190,12 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
         return (TElementType)this;
     }
 
+    public <TElementType extends WebComponent> TElementType toShadowRootToBeAttached() {
+        var waitStrategy = new ToShadowRootToBeAttachedWaitStrategy();
+        ensureState(waitStrategy);
+        return (TElementType)this;
+    }
+
     public <TElementType extends WebComponent> TElementType toNotExist() {
         var waitStrategy = new ToNotExistWaitStrategy();
         ensureState(waitStrategy);

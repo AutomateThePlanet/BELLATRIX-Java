@@ -26,6 +26,7 @@ import java.util.function.Function;
 public abstract class WaitStrategy {
     @Getter protected long timeoutInterval;
     @Getter protected long sleepInterval;
+    @Getter protected WebDriverWait webDriverWait;
 
     public WaitStrategy() {
     }
@@ -38,7 +39,7 @@ public abstract class WaitStrategy {
     public abstract void waitUntil(SearchContext searchContext, By by);
 
     protected void waitUntil(Function<SearchContext, Boolean> waitCondition) {
-        var webDriverWait = new WebDriverWait(DriverService.getWrappedDriver(), Duration.ofSeconds(timeoutInterval), Duration.ofSeconds(sleepInterval));
+        webDriverWait = new WebDriverWait(DriverService.getWrappedDriver(), Duration.ofSeconds(timeoutInterval), Duration.ofSeconds(sleepInterval));
         webDriverWait.until(waitCondition);
     }
 
