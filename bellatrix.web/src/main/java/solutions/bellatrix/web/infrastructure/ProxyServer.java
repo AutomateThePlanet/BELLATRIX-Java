@@ -16,25 +16,15 @@ package solutions.bellatrix.web.infrastructure;
 import com.google.gson.Gson;
 import lombok.SneakyThrows;
 import net.lightbody.bmp.BrowserMobProxyServer;
-import net.lightbody.bmp.core.har.Har;
 import net.lightbody.bmp.core.har.HarEntry;
-import net.lightbody.bmp.core.har.HarLog;
 import net.lightbody.bmp.proxy.CaptureType;
-import org.openqa.selenium.NotFoundException;
-import org.openqa.selenium.StaleElementReferenceException;
-import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.http.HttpMethod;
-import org.openqa.selenium.support.ui.ExpectedCondition;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.core.utilities.Log;
-import solutions.bellatrix.core.utilities.Wait;
 import solutions.bellatrix.web.configuration.WebSettings;
-import solutions.bellatrix.web.services.App;
-import solutions.bellatrix.web.waitstrategies.WaitStrategy;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -156,7 +146,7 @@ public class ProxyServer {
         return getCapturedEntries().stream()
                 .map(HarEntry::getResponse)
                 .filter(response -> response.getContent() != null)
-                .map(response -> new Gson().fromJson(response.getContent().getText(), responseModelClass))
+                .map(response -> new Gson().fromJson(checkDataObject(response.getContent().getText()), responseModelClass))
                 .reduce((first, second) -> second)
                 .orElse(null);
     }
@@ -171,7 +161,7 @@ public class ProxyServer {
     public static <T> T getResponseByIndex(int index, Class<T> responseModelClass) {
         var harEntry = getCapturedEntries().get(index);
         String json = harEntry.getResponse().getContent().getText();
-        return new Gson().fromJson(json, responseModelClass);
+        return new Gson().fromJson(checkDataObject(json), responseModelClass);
     }
 
     public static <T> T getRequestByUrl(String url, String httpMethod, Class<T> requestModelClass) {
@@ -197,6 +187,17 @@ public class ProxyServer {
             return null;
         }
         String json = harEntry.getResponse().getContent().getText();
-        return new Gson().fromJson(json, responseModelClass);
+        return new Gson().fromJson(checkDataObject(json), responseModelClass);
+    }
+
+    private static String checkDataObject(String jsonString) {
+        String formatedJson = "";
+        if (jsonString.substring(0,7).contains("data")) {
+            var startIndex = jsonString.indexOf("\"data\":{") + 7;
+            var lastIndex = jsonString.lastIndexOf("}");
+            formatedJson = jsonString.substring(startIndex, lastIndex);
+        }
+
+        return formatedJson;
     }
 }
