@@ -27,7 +27,7 @@ public class BddToastNotificationsLogging extends Listener {
     @Override
     public void addListener() {
         isBddLoggingTurnedOn = ConfigurationService.get(WebSettings.class).getToastNotificationBddLogging();
-        if (!isBddLoggingTurnedOn) {
+        if (isBddLoggingTurnedOn) {
             Anchor.CLICKING.addListener((x) -> new BrowserService().injectInfoNotificationToast("clicking %s", x.getComponent().getComponentName()));
             Button.CLICKING.addListener((x) -> new BrowserService().injectInfoNotificationToast("clicking %s", x.getComponent().getComponentName()));
             CheckBox.CHECKING.addListener((x) -> new BrowserService().injectInfoNotificationToast("checking %s", x.getComponent().getComponentName()));
