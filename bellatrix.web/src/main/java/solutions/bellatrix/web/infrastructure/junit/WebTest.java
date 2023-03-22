@@ -13,7 +13,9 @@
 
 package solutions.bellatrix.web.infrastructure.junit;
 
+import org.junit.jupiter.api.extension.ExtendWith;
 import solutions.bellatrix.core.plugins.junit.BaseTest;
+import solutions.bellatrix.core.plugins.junit.TestResultWatcher;
 import solutions.bellatrix.web.components.listeners.BddConsoleLogging;
 import solutions.bellatrix.web.components.listeners.HighlightElements;
 import solutions.bellatrix.web.infrastructure.BrowserLifecyclePlugin;
@@ -21,6 +23,7 @@ import solutions.bellatrix.web.infrastructure.WebScreenshotPlugin;
 import solutions.bellatrix.web.infrastructure.WebVideoPlugin;
 import solutions.bellatrix.web.services.App;
 
+@ExtendWith(TestResultWatcher.class)
 public class WebTest extends BaseTest {
 
     public App app() {

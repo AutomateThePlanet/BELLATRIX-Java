@@ -27,7 +27,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-@ExtendWith(TestResultListener.class)
+@ExtendWith(TestResultWatcher.class)
 public class BaseTest extends UsesPlugins {
     static final ThreadLocal<TestResult> CURRENT_TEST_RESULT = new ThreadLocal<>();
     private static final ThreadLocal<Boolean> CONFIGURATION_EXECUTED = new ThreadLocal<>();
@@ -93,7 +93,7 @@ public class BaseTest extends UsesPlugins {
             var methodInfo = testClass.getMethod(testInfo.getTestMethod().get().getName());
             PluginExecutionEngine.preAfterTest(CURRENT_TEST_RESULT.get(), methodInfo);
             afterEach();
-            PluginExecutionEngine.postAfterTest(CURRENT_TEST_RESULT.get(), methodInfo);
+//            PluginExecutionEngine.postAfterTest(CURRENT_TEST_RESULT.get(), methodInfo);
         } catch (Exception e) {
             PluginExecutionEngine.afterTestFailed(e);
         }

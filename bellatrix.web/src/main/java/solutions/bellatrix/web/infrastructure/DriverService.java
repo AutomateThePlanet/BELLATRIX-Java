@@ -14,7 +14,6 @@
 package solutions.bellatrix.web.infrastructure;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
-import lombok.experimental.UtilityClass;
 import net.lightbody.bmp.client.ClientUtil;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -31,6 +30,7 @@ import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.safari.SafariOptions;
 import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.core.utilities.DebugInformation;
+import solutions.bellatrix.core.utilities.TimestampBuilder;
 import solutions.bellatrix.web.configuration.GridSettings;
 import solutions.bellatrix.web.configuration.WebSettings;
 
@@ -47,6 +47,8 @@ public class DriverService {
     private static final ThreadLocal<BrowserConfiguration> BROWSER_CONFIGURATION;
     private static final ThreadLocal<HashMap<String, String>> CUSTOM_DRIVER_OPTIONS;
     private static final ThreadLocal<WebDriver> WRAPPED_DRIVER;
+    private static boolean isBuildNameSet = false;
+    private  static String buildName;
 
     static {
         CUSTOM_DRIVER_OPTIONS = new ThreadLocal<>();
@@ -228,7 +230,7 @@ public class DriverService {
                 WebDriverManager.chromedriver().setup();
                 var chromeOptions = new ChromeOptions();
                 addDriverOptions(chromeOptions);
-                chromeOptions.addArguments("--log-level=3");
+                chromeOptions.addArguments("--log-level=3","--remote-allow-origins=*");
                 chromeOptions.setAcceptInsecureCerts(true);
                 System.setProperty("webdriver.chrome.silentOutput", "true");
                 if (shouldCaptureHttpTraffic) chromeOptions.setProxy(proxyConfig);
@@ -343,7 +345,7 @@ public class DriverService {
     }
 
     private static String getBuildName() {
-        String buildName = System.getProperty("buildName");
+        buildName = System.getProperty("buildName");
         if (buildName == null) {
             InputStream input = ConfigurationService.class.getResourceAsStream("/application.properties");
             var p = new Properties();
@@ -354,6 +356,11 @@ public class DriverService {
             }
 
             buildName = p.getProperty("buildName");
+
+            if (buildName.equals("{randomNumber}") && !isBuildNameSet) {
+                buildName = TimestampBuilder.buildUniqueTextByPrefix("LE_");
+                isBuildNameSet = true;
+            }
         }
 
         return buildName;
