@@ -14,6 +14,9 @@
 package solutions.bellatrix.web.infrastructure;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import lombok.SneakyThrows;
 import net.lightbody.bmp.BrowserMobProxyServer;
 import net.lightbody.bmp.core.har.HarEntry;
@@ -26,6 +29,7 @@ import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.core.utilities.Log;
 import solutions.bellatrix.web.configuration.WebSettings;
 
+import java.io.Console;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.time.Duration;
@@ -146,7 +150,7 @@ public class ProxyServer {
         return getCapturedEntries().stream()
                 .map(HarEntry::getResponse)
                 .filter(response -> response.getContent() != null)
-                .map(response -> new Gson().fromJson(checkDataObject(response.getContent().getText()), responseModelClass))
+                .map(response -> new Gson().fromJson(getDataObject(response.getContent().getText()), responseModelClass))
                 .reduce((first, second) -> second)
                 .orElse(null);
     }
@@ -161,13 +165,13 @@ public class ProxyServer {
     public static <T> T getResponseByIndex(int index, Class<T> responseModelClass) {
         var harEntry = getCapturedEntries().get(index);
         String json = harEntry.getResponse().getContent().getText();
-        return new Gson().fromJson(checkDataObject(json), responseModelClass);
+        return new Gson().fromJson(getDataObject(json), responseModelClass);
     }
 
     public static <T> T getRequestByUrl(String url, String httpMethod, Class<T> requestModelClass) {
         var harEntries = getCapturedEntries();
         var harEntry = harEntries.stream()
-                .filter(r -> r.getRequest().getUrl().equals(url) && r.getRequest().getMethod().equals(httpMethod))
+                .filter(r -> r.getRequest().getUrl().contains(url) && r.getRequest().getMethod().equals(httpMethod))
                 .findFirst()
                 .orElse(null);
         if (harEntry == null) {
@@ -184,20 +188,33 @@ public class ProxyServer {
                 .findFirst()
                 .orElse(null);
         if (harEntry == null) {
+            System.out.println("There is no match!");
             return null;
         }
         String json = harEntry.getResponse().getContent().getText();
-        return new Gson().fromJson(checkDataObject(json), responseModelClass);
+        return new Gson().fromJson(getDataObject(json), responseModelClass);
     }
 
-    private static String checkDataObject(String jsonString) {
-        String formatedJson = "";
-        if (jsonString.substring(0,7).contains("data")) {
-            var startIndex = jsonString.indexOf("\"data\":{") + 7;
-            var lastIndex = jsonString.lastIndexOf("}");
-            formatedJson = jsonString.substring(startIndex, lastIndex);
+    private static String getDataObject(String jsonString) {
+        JsonParser parser = new JsonParser();
+        JsonObject jsonObject = (JsonObject) parser.parse(jsonString);
+
+        JsonObject dataObject = null;
+        JsonArray dataArray = null;
+
+        if (jsonObject.has("data")){
+            if (jsonObject.get("data").isJsonObject()){
+                dataObject = jsonObject.getAsJsonObject("data");
+            } else {
+                dataArray = jsonObject.getAsJsonArray("data");
+            }
         }
 
-        return formatedJson;
+        if (dataObject == null){
+//            return dataArray.toString();
+            return jsonString;
+        } else {
+            return dataObject.toString();
+        }
     }
 }
