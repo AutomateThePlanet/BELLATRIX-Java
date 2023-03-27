@@ -221,7 +221,7 @@ public class DriverService {
                 WebDriverManager.chromedriver().setup();
                 var chromeOptions = new ChromeOptions();
                 addDriverOptions(chromeOptions);
-                chromeOptions.addArguments("--log-level=3");
+                chromeOptions.addArguments("--log-level=3", "--remote-allow-origins=*");
                 chromeOptions.setAcceptInsecureCerts(true);
                 System.setProperty("webdriver.chrome.silentOutput", "true");
                 if (shouldCaptureHttpTraffic) chromeOptions.setProxy(proxyConfig);
