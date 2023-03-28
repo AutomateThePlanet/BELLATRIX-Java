@@ -32,6 +32,7 @@ import solutions.bellatrix.web.infrastructure.BrowserConfiguration;
 
 import java.time.Duration;
 import java.util.Objects;
+import java.util.function.Function;
 
 public class BrowserService extends WebService {
     private final JavascriptExecutor javascriptExecutor;
@@ -206,6 +207,14 @@ public class BrowserService extends WebService {
         long sleepInterval = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getSleepInterval();
         var webDriverWait = new WebDriverWait(getWrappedDriver(), Duration.ofSeconds(waitUntilReadyTimeout), Duration.ofSeconds(sleepInterval));
         webDriverWait.until(d -> javascriptExecutor.executeScript("return document.readyState").toString().equals("complete"));
+    }
+
+    // TODO Refactor the other methods to reuse this one
+    public void waitUntil(Function function) {
+        long waitUntilReadyTimeout = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getWaitUntilReadyTimeout();
+        long sleepInterval = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getSleepInterval();
+        var webDriverWait = new WebDriverWait(getWrappedDriver(), Duration.ofSeconds(waitUntilReadyTimeout), Duration.ofSeconds(sleepInterval));
+        webDriverWait.until(function);
     }
 
     public void waitForJavaScriptAnimations() {
