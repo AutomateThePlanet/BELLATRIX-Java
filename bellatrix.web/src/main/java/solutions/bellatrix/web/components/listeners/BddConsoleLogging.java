@@ -18,7 +18,7 @@ import solutions.bellatrix.core.utilities.Log;
 import solutions.bellatrix.web.components.*;
 import solutions.bellatrix.web.validations.ComponentValidator;
 
-public class BddLogging extends Listener {
+public class BddConsoleLogging extends Listener {
     private static boolean isBddLoggingTurnedOn = false;
 
     @Override

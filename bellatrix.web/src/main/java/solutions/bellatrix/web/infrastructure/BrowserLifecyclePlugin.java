@@ -35,19 +35,19 @@ public class BrowserLifecyclePlugin extends Plugin {
         IS_BROWSER_STARTED_CORRECTLY = new ThreadLocal<>();
     }
 
-    @Override
-    public void preBeforeClass(Class type) {
-        CURRENT_BROWSER_CONFIGURATION.set(getExecutionBrowserClassLevel(type));
-        if (shouldRestartBrowser()) {
-            restartBrowser();
-            // TODO: maybe we can simplify and remove this parameter.
-            IS_BROWSER_STARTED_DURING_PRE_BEFORE_CLASS.set(true);
-        } else {
-            IS_BROWSER_STARTED_DURING_PRE_BEFORE_CLASS.set(false);
-        }
-
-        super.preBeforeClass(type);
-    }
+//    @Override
+//    public void preBeforeClass(Class type) {
+//        CURRENT_BROWSER_CONFIGURATION.set(getExecutionBrowserClassLevel(type));
+//        if (shouldRestartBrowser()) {
+//            restartBrowser();
+//            // TODO: maybe we can simplify and remove this parameter.
+//            IS_BROWSER_STARTED_DURING_PRE_BEFORE_CLASS.set(true);
+//        } else {
+//            IS_BROWSER_STARTED_DURING_PRE_BEFORE_CLASS.set(false);
+//        }
+//
+//        super.preBeforeClass(type);
+//    }
 
     @Override
     public void postAfterClass(Class type) {
@@ -60,21 +60,29 @@ public class BrowserLifecyclePlugin extends Plugin {
     public void preBeforeTest(TestResult testResult, Method memberInfo) {
         CURRENT_BROWSER_CONFIGURATION.set(getBrowserConfiguration(memberInfo));
 
-        if (!IS_BROWSER_STARTED_DURING_PRE_BEFORE_CLASS.get()) {
-            if (shouldRestartBrowser()) {
-                restartBrowser();
-            }
+        if (shouldRestartBrowser()) {
+            restartBrowser();
         }
+//        if (!IS_BROWSER_STARTED_DURING_PRE_BEFORE_CLASS.get()) {
+//            if (shouldRestartBrowser()) {
+//                restartBrowser();
+//            }
+//        }
 
-        IS_BROWSER_STARTED_DURING_PRE_BEFORE_CLASS.set(false);
+//        IS_BROWSER_STARTED_DURING_PRE_BEFORE_CLASS.set(false);
+    }
+
+    @Override
+    public void beforeTestFailed(Exception ex) throws Exception {
+        throw ex;
     }
 
     @Override
     public void postAfterTest(TestResult testResult, Method memberInfo) {
-        if (CURRENT_BROWSER_CONFIGURATION.get().getLifecycle() ==
-                Lifecycle.RESTART_ON_FAIL && testResult == TestResult.FAILURE) {
+        if (CURRENT_BROWSER_CONFIGURATION.get().getLifecycle() !=
+                Lifecycle.REUSE_IF_STARTED && testResult == TestResult.FAILURE) {
             shutdownBrowser();
-            IS_BROWSER_STARTED_DURING_PRE_BEFORE_CLASS.set(false);
+//            IS_BROWSER_STARTED_DURING_PRE_BEFORE_CLASS.set(false);
         }
     }
 
@@ -118,7 +126,8 @@ public class BrowserLifecyclePlugin extends Plugin {
         var classBrowserType = getExecutionBrowserClassLevel(memberInfo.getDeclaringClass());
         var methodBrowserType = getExecutionBrowserMethodLevel(memberInfo);
         result = Objects.requireNonNullElse(methodBrowserType, classBrowserType);
-
+        String testFullName = String.format("%s.%s", memberInfo.getDeclaringClass().getName(), memberInfo.getName());
+        result.setTestName(testFullName);
         return result;
     }
 

@@ -18,9 +18,7 @@ import org.testng.annotations.*;
 import solutions.bellatrix.core.plugins.PluginExecutionEngine;
 import solutions.bellatrix.core.plugins.TestResult;
 import solutions.bellatrix.core.plugins.UsesPlugins;
-import sun.misc.Unsafe;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -32,15 +30,15 @@ public class BaseTest extends UsesPlugins {
     private static final List<String> ALREADY_EXECUTED_BEFORE_CLASSES = Collections.synchronizedList(new ArrayList<>());
 
     public BaseTest() {
-        try {
-            Field theUnsafe = Unsafe.class.getDeclaredField("theUnsafe");
-            theUnsafe.setAccessible(true);
-            Unsafe u = (Unsafe)theUnsafe.get(null);
-
-            Class<?> cls = Class.forName("jdk.internal.module.IllegalAccessLogger");
-            Field logger = cls.getDeclaredField("logger");
-            u.putObjectVolatile(cls, u.staticFieldOffset(logger), null);
-        } catch (Exception ignored) {}
+//        try {
+//            Field theUnsafe = Unsafe.class.getDeclaredField("theUnsafe");
+//            theUnsafe.setAccessible(true);
+//            Unsafe u = (Unsafe)theUnsafe.get(null);
+//
+//            Class<?> cls = Class.forName("jdk.internal.module.IllegalAccessLogger");
+//            Field logger = cls.getDeclaredField("logger");
+//            u.putObjectVolatile(cls, u.staticFieldOffset(logger), null);
+//        } catch (Exception ignored) {}
         CONFIGURATION_EXECUTED.set(false);
     }
 
@@ -61,7 +59,7 @@ public class BaseTest extends UsesPlugins {
     }
 
     @BeforeMethod
-    public void beforeMethodCore(ITestResult result) {
+    public void beforeMethodCore(ITestResult result) throws Exception {
         try {
 //            var currentTestClassName = this.getClass().getName();
 //            if (!ALREADY_EXECUTED_BEFORE_CLASSES.contains(currentTestClassName)) {

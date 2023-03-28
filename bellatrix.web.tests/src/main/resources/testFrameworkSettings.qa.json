@@ -13,10 +13,12 @@
     "waitForAngular": "false",
     "shouldHighlightElements": "true",
     "shouldCaptureHttpTraffic": "false",
+    "toastNotificationBddLogging": "true",
     "screenshotsOnFailEnabled": "false",
     "screenshotsSaveLocation": "${user.home}/BELLATRIX/Screenshots",
     "videosOnFailEnabled": "false",
     "videosSaveLocation": "${user.home}/BELLATRIX/Videos",
+    "notificationToastTimeout": "3000",
     "timeoutSettings": {
       "elementWaitTimeout": "30",
       "pageLoadTimeout": "30",
