@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ComponentCreateService extends WebService {
-    public <TComponent extends WebComponent, TFindStrategy extends FindStrategy> TComponent create(Class<TFindStrategy> findStrategyClass, Class<TComponent> componentClass, Object... args) {
+    public <TFindStrategy extends FindStrategy, TComponent extends WebComponent> TComponent create(Class<TFindStrategy> findStrategyClass, Class<TComponent> componentClass, Object... args) {
         var findStrategy = InstanceFactory.create(findStrategyClass, args);
         return by(componentClass, findStrategy);
     }

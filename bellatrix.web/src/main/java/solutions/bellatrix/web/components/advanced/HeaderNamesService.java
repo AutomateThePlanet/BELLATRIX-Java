@@ -5,12 +5,10 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.apache.commons.text.StringEscapeUtils;
 import org.jsoup.nodes.Element;
-import org.modelmapper.spi.PropertyInfo;
 
 public class HeaderNamesService {
     private String _xpathToNameElement;
@@ -68,7 +66,7 @@ public class HeaderNamesService {
         return headerName;
     }
 
-    public IHeaderInfo getHeaderInfoByProperty(Method method) {
+    public IHeaderInfo getHeaderInfoByProperty(PropertyDescriptor method) {
         Annotation headerNameAnnotation = method.getAnnotation(HeaderNameAnnotation.class);
         String headerName = headerNameAnnotation == null ? method.getName()
                 : ((HeaderNameAnnotation) headerNameAnnotation).name();

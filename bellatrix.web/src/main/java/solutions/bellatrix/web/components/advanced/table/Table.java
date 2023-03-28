@@ -135,6 +135,27 @@ public class Table extends WebComponent {
         return getCell(position.get(), row);
     }
 
+    public <T extends Table> T setColumn(String headerName) {
+        if (this.columnHeaderNames == null) {
+            this.columnHeaderNames = new ArrayList<>();
+        }
+
+        this.columnHeaderNames.add(new HeaderInfo(headerName));
+
+        return (T) this;
+    }
+
+    public <T extends Table> T setColumns(List<HeaderInfo> headerNames) {
+        if (this.columnHeaderNames == null) {
+            this.columnHeaderNames = new ArrayList<>();
+        }
+
+        this.columnHeaderNames.addAll(headerNames);
+
+        return (T) this;
+    }
+
+
 //    public <TDto> TableCell getCell(Expression<Func<TDto, Object>> expression, int row) {
 //        String headerName
 //        Integer position = getHeaderNamesService().getHeaderPosition(headerNames, columnHeaderNames.stream().map(i -> (IHeaderInfo)i).collect(Collectors.toList()));

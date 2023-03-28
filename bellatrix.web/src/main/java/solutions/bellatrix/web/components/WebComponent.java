@@ -65,7 +65,7 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
     public final static EventListener<ComponentActionEventArgs> CREATING_ELEMENTS = new EventListener<>();
     public final static EventListener<ComponentActionEventArgs> CREATED_ELEMENTS = new EventListener<>();
 
-    @Setter(AccessLevel.PROTECTED) private WebElement wrappedElement;
+    @Setter private WebElement wrappedElement;
     @Getter @Setter private SearchContext parentWrappedElement;
     @Getter @Setter private int elementIndex;
     @Getter @Setter private FindStrategy findStrategy;

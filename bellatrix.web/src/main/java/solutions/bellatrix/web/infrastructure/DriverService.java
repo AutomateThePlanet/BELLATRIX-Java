@@ -345,23 +345,27 @@ public class DriverService {
     }
 
     private static String getBuildName() {
-        buildName = System.getProperty("buildName");
-        if (buildName == null) {
-            InputStream input = ConfigurationService.class.getResourceAsStream("/application.properties");
-            var p = new Properties();
-            try {
-                p.load(input);
-            } catch (IOException e) {
-                return null;
-            }
+        if (!isBuildNameSet) {
+            buildName = System.getProperty("buildName");
+            if (buildName == null) {
+                InputStream input = ConfigurationService.class.getResourceAsStream("/application.properties");
+                var p = new Properties();
+                try {
+                    p.load(input);
+                } catch (IOException e) {
+                    return null;
+                }
 
-            buildName = p.getProperty("buildName");
+                buildName = p.getProperty("buildName");
+            }
 
             if (buildName.equals("{randomNumber}") && !isBuildNameSet) {
                 buildName = TimestampBuilder.buildUniqueTextByPrefix("LE_");
-                isBuildNameSet = true;
             }
+
+            isBuildNameSet = true;
         }
+
 
         return buildName;
     }
@@ -373,6 +377,7 @@ public class DriverService {
 
         if (WRAPPED_DRIVER.get() != null) {
             WRAPPED_DRIVER.get().quit();
+            WRAPPED_DRIVER.set(null);
             if (CUSTOM_DRIVER_OPTIONS.get() != null) {
                 CUSTOM_DRIVER_OPTIONS.get().clear();
             }

@@ -1,6 +1,8 @@
 package solutions.bellatrix.core.utilities;
 
 import java.time.Duration;
+import java.time.Instant;
+import java.util.function.Supplier;
 
 public class Wait {
     public static void retry(Runnable action, int timesToRetry, long sleepInterval, Class<? extends Throwable> ... exceptionsToIgnore) throws InterruptedException {
@@ -55,6 +57,32 @@ public class Wait {
                 if (shouldThrowException) {
                     throw exc;
                 }
+            }
+        }
+    }
+
+    public static void forConditionUntilTimeout(Supplier<Boolean> condition, int totalRunTimeoutMilliseconds, Runnable onTimeout, int sleepTimeMilliseconds) {
+        Instant startTime = Instant.now();
+        Instant timeout = startTime.plusMillis(totalRunTimeoutMilliseconds);
+
+        while (true) {
+            boolean conditionFinished = condition.get();
+            if (conditionFinished) {
+                break;
+            }
+
+            if (Instant.now().compareTo(timeout) >= 0) {
+                if (onTimeout != null) {
+                    onTimeout.run();
+                }
+
+                break;
+            }
+
+            try {
+                Thread.sleep(sleepTimeMilliseconds);
+            } catch (InterruptedException e) {
+                // Handle the exception as appropriate
             }
         }
     }
