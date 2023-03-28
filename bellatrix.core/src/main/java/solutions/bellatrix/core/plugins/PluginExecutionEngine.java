@@ -14,14 +14,13 @@
 package solutions.bellatrix.core.plugins;
 
 import java.lang.reflect.Method;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public final class PluginExecutionEngine {
-    private final static Set<Plugin> PLUGINS;
+    private final static LinkedHashSet<Plugin> PLUGINS;
 
     static {
-        PLUGINS = new HashSet<>();
+        PLUGINS = new LinkedHashSet<>();
     }
 
     public static void addPlugin(Plugin plugin) {
