@@ -35,19 +35,19 @@ public class BrowserLifecyclePlugin extends Plugin {
         IS_BROWSER_STARTED_CORRECTLY = new ThreadLocal<>();
     }
 
-//    @Override
-//    public void preBeforeClass(Class type) {
-//        CURRENT_BROWSER_CONFIGURATION.set(getExecutionBrowserClassLevel(type));
-//        if (shouldRestartBrowser()) {
-//            restartBrowser();
-//            // TODO: maybe we can simplify and remove this parameter.
-//            IS_BROWSER_STARTED_DURING_PRE_BEFORE_CLASS.set(true);
-//        } else {
-//            IS_BROWSER_STARTED_DURING_PRE_BEFORE_CLASS.set(false);
-//        }
-//
-//        super.preBeforeClass(type);
-//    }
+    @Override
+    public void preBeforeClass(Class type) {
+        CURRENT_BROWSER_CONFIGURATION.set(getExecutionBrowserClassLevel(type));
+        if (shouldRestartBrowser()) {
+            restartBrowser();
+            // TODO: maybe we can simplify and remove this parameter.
+            IS_BROWSER_STARTED_DURING_PRE_BEFORE_CLASS.set(true);
+        } else {
+            IS_BROWSER_STARTED_DURING_PRE_BEFORE_CLASS.set(false);
+        }
+
+        super.preBeforeClass(type);
+    }
 
     @Override
     public void postAfterClass(Class type) {
@@ -60,16 +60,13 @@ public class BrowserLifecyclePlugin extends Plugin {
     public void preBeforeTest(TestResult testResult, Method memberInfo) {
         CURRENT_BROWSER_CONFIGURATION.set(getBrowserConfiguration(memberInfo));
 
-        if (shouldRestartBrowser()) {
-            restartBrowser();
+        if (!IS_BROWSER_STARTED_DURING_PRE_BEFORE_CLASS.get()) {
+            if (shouldRestartBrowser()) {
+                restartBrowser();
+            }
         }
-//        if (!IS_BROWSER_STARTED_DURING_PRE_BEFORE_CLASS.get()) {
-//            if (shouldRestartBrowser()) {
-//                restartBrowser();
-//            }
-//        }
 
-//        IS_BROWSER_STARTED_DURING_PRE_BEFORE_CLASS.set(false);
+        IS_BROWSER_STARTED_DURING_PRE_BEFORE_CLASS.set(false);
     }
 
     @Override
@@ -114,6 +111,8 @@ public class BrowserLifecyclePlugin extends Plugin {
             return true;
         } else if (!previousConfiguration.equals(currentConfiguration)) {
             return true;
+        } else if (currentConfiguration.getLifecycle() == Lifecycle.REUSE_IF_STARTED) {
+            return false;
         } else if (currentConfiguration.getLifecycle() == Lifecycle.RESTART_EVERY_TIME) {
             return true;
         } else {
