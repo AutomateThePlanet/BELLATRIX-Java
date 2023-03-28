@@ -57,8 +57,6 @@ public class BrowserConfiguration {
             return false;
         if (this.getHeight() != that.getHeight())
             return false;
-        if (this.getTestName() != that.getTestName())
-            return false;
         if (this.getWidth() != that.getWidth())
             return false;
         if (this.getVersion() != that.getVersion())
