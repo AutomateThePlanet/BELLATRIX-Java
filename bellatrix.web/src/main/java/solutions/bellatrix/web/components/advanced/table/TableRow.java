@@ -37,7 +37,7 @@ public class TableRow extends WebComponent implements ComponentHtml {
     }
 
     public TableCell get(int i) {
-        return getCells().toList().get(i);
+        return getCells().get(i);
     }
 
     public void setParentTable(Table table) {
@@ -92,8 +92,8 @@ public class TableRow extends WebComponent implements ComponentHtml {
         return (T)_parentTable.castRow(this, this.getClass());
     }
 
-    public <T> void assertRow(T expectedItem) throws IllegalAccessException, InstantiationException {
-        T actualItem = (T)getItem(expectedItem.getClass());
+    public <T> void assertRow(T expectedItem, Class<T> itemType) throws Exception {
+        T actualItem = getItem(itemType);
 
         EntitiesAsserter.assertAreEqual(expectedItem, actualItem);
     }
