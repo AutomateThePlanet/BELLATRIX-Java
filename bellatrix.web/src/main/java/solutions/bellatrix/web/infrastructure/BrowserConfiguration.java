@@ -13,17 +13,20 @@
 
 package solutions.bellatrix.web.infrastructure;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.openqa.selenium.Platform;
 
 import java.util.HashMap;
 
 public class BrowserConfiguration {
-    private final Browser browser;
-    private final Lifecycle lifecycle;
-    private int height;
-    private int width;
-    private int version;
-    private Platform platform;
+    @Setter @Getter private final Browser browser;
+    @Setter @Getter private final Lifecycle lifecycle;
+    @Setter @Getter private int height;
+    @Setter @Getter private int width;
+    @Setter @Getter private int version;
+    @Setter @Getter private Platform platform;
+    @Setter @Getter private String testName;
     final HashMap<String, String> driverOptions;
 
     public HashMap<String, String> getDriverOptions() {
@@ -36,28 +39,11 @@ public class BrowserConfiguration {
         driverOptions = new HashMap<>();
     }
 
-    public int getWidth() {
-        return width;
-    }
-
-    public int getHeight() {
-        return height;
-    }
-
-    public int getVersion() {
-        return version;
-    }
-
-    public Platform getPlatform() {
-        return platform;
-    }
-
-    public Lifecycle getLifecycle() {
-        return lifecycle;
-    }
-
-    public Browser getBrowser() {
-        return browser;
+    public BrowserConfiguration(Browser browser, Lifecycle browserBehavior, String testName) {
+        this.browser = browser;
+        this.lifecycle = browserBehavior;
+        this.testName = testName;
+        driverOptions = new HashMap<>();
     }
 
     @Override

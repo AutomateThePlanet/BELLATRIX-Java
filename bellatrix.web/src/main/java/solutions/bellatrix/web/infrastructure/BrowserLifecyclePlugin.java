@@ -70,11 +70,16 @@ public class BrowserLifecyclePlugin extends Plugin {
     }
 
     @Override
+    public void beforeTestFailed(Exception ex) throws Exception {
+        throw ex;
+    }
+
+    @Override
     public void postAfterTest(TestResult testResult, Method memberInfo) {
-        if (CURRENT_BROWSER_CONFIGURATION.get().getLifecycle() ==
-                Lifecycle.RESTART_ON_FAIL && testResult == TestResult.FAILURE) {
+        if (CURRENT_BROWSER_CONFIGURATION.get().getLifecycle() !=
+                Lifecycle.REUSE_IF_STARTED && testResult == TestResult.FAILURE) {
             shutdownBrowser();
-            IS_BROWSER_STARTED_DURING_PRE_BEFORE_CLASS.set(false);
+//            IS_BROWSER_STARTED_DURING_PRE_BEFORE_CLASS.set(false);
         }
     }
 
@@ -106,6 +111,8 @@ public class BrowserLifecyclePlugin extends Plugin {
             return true;
         } else if (!previousConfiguration.equals(currentConfiguration)) {
             return true;
+        } else if (currentConfiguration.getLifecycle() == Lifecycle.REUSE_IF_STARTED) {
+            return false;
         } else if (currentConfiguration.getLifecycle() == Lifecycle.RESTART_EVERY_TIME) {
             return true;
         } else {
@@ -118,7 +125,8 @@ public class BrowserLifecyclePlugin extends Plugin {
         var classBrowserType = getExecutionBrowserClassLevel(memberInfo.getDeclaringClass());
         var methodBrowserType = getExecutionBrowserMethodLevel(memberInfo);
         result = Objects.requireNonNullElse(methodBrowserType, classBrowserType);
-
+        String testFullName = String.format("%s.%s", memberInfo.getDeclaringClass().getName(), memberInfo.getName());
+        result.setTestName(testFullName);
         return result;
     }
 
