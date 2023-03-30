@@ -1033,7 +1033,7 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
     private void scrollToVisible(WebElement wrappedElement, boolean shouldWait) {
         SCROLLING_TO_VISIBLE.broadcast(new ComponentActionEventArgs(this));
         try {
-            javaScriptService.execute("arguments[0].scrollIntoView(true);", wrappedElement);
+            javaScriptService.execute("arguments[0].scrollIntoView({ block: \"center\" });", wrappedElement);
             if (shouldWait) {
                 Thread.sleep(500);
                 toExist().waitToBe();
