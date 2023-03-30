@@ -15,10 +15,7 @@ package solutions.bellatrix.web.services;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.StringEscapeUtils;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.NotFoundException;
-import org.openqa.selenium.StaleElementReferenceException;
-import org.openqa.selenium.TimeoutException;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import solutions.bellatrix.core.configuration.ConfigurationService;
