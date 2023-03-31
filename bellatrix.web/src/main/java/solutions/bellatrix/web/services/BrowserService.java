@@ -25,6 +25,7 @@ import solutions.bellatrix.web.configuration.WebSettings;
 
 import java.time.Duration;
 import java.util.Objects;
+import java.util.function.Function;
 
 public class BrowserService extends WebService {
     private final JavascriptExecutor javascriptExecutor;
@@ -281,6 +282,14 @@ public class BrowserService extends WebService {
         var webDriverWait = new WebDriverWait(getWrappedDriver(), Duration.ofSeconds(waitUntilReadyTimeout), Duration.ofSeconds(sleepInterval));
         webDriverWait.until(d -> javascriptExecutor.executeScript("return document.querySelector('[data-reactroot]') !== null"));
         webDriverWait.until(d -> javascriptExecutor.executeScript("return window.performance.timing.loadEventEnd > 0"));
+    }
+
+    // TODO Refactor the other methods to reuse this one
+    public void waitUntil(Function function) {
+        long waitUntilReadyTimeout = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getWaitUntilReadyTimeout();
+        long sleepInterval = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getSleepInterval();
+        var webDriverWait = new WebDriverWait(getWrappedDriver(), Duration.ofSeconds(waitUntilReadyTimeout), Duration.ofSeconds(sleepInterval));
+        webDriverWait.until(function);
     }
 
     public void waitForJavaScriptAnimations() {

@@ -21,6 +21,7 @@ import lombok.SneakyThrows;
 import net.lightbody.bmp.BrowserMobProxyServer;
 import net.lightbody.bmp.core.har.HarEntry;
 import net.lightbody.bmp.proxy.CaptureType;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.http.HttpMethod;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -89,6 +90,13 @@ public class ProxyServer {
         Assert.assertTrue(areRequestsMade);
     }
 
+    public static void assertRequestNotMade(String url, HttpMethod httpMethod) {
+        var harEntries = PROXY_SERVER.get().getHar().getLog().getEntries();
+        var areRequestsMade = harEntries.stream().anyMatch(r -> r.getRequest().getUrl().contains(url) && r.getRequest().getMethod().equals(httpMethod.toString()));
+
+        Assert.assertFalse(areRequestsMade);
+    }
+
     public static void clearHistory() {
         var oldHarCount = PROXY_SERVER.get().getHar().getLog().getEntries().stream().count();
 
@@ -106,7 +114,7 @@ public class ProxyServer {
             var areRequestsMade = harEntries.stream().anyMatch(r -> r.getRequest().getUrl().contains(requestPartialUrl) && r.getRequest().getMethod().equals(httpMethod.toString()));
 
             return areRequestsMade;
-
+//            var javascriptExecutor = (JavascriptExecutor)driver;
 //            String script = String.format("return performance.getEntriesByType('resource').filter(item => item.name.toLowerCase().includes('%s'))[0] !== undefined;", requestPartialUrl);
 //            boolean result = (boolean)javascriptExecutor.executeScript(script);
 //            return result;
@@ -193,6 +201,18 @@ public class ProxyServer {
         }
         String json = harEntry.getResponse().getContent().getText();
         return new Gson().fromJson(getDataObject(json), responseModelClass);
+    }
+
+    public static void blockRequestByUrl(String url, HttpMethod httpMethod) {
+        PROXY_SERVER.get().blacklistRequests(url,407, httpMethod.toString());
+    }
+
+    public static void blockRequestByUrl(String url) {
+        PROXY_SERVER.get().blacklistRequests(url,407);
+    }
+
+    public static void clearblockRequestList() {
+        PROXY_SERVER.get().clearBlacklist();
     }
 
     private static String getDataObject(String jsonString) {
