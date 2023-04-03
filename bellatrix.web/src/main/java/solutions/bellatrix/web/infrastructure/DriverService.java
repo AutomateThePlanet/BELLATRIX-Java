@@ -24,6 +24,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.ie.InternetExplorerOptions;
+import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.safari.SafariDriver;
@@ -232,6 +233,7 @@ public class DriverService {
                 addDriverOptions(chromeOptions);
                 chromeOptions.addArguments("--log-level=3","--remote-allow-origins=*");
                 chromeOptions.setAcceptInsecureCerts(true);
+                chromeOptions.setCapability(CapabilityType.UNHANDLED_PROMPT_BEHAVIOUR, UnexpectedAlertBehaviour.ACCEPT);
                 System.setProperty("webdriver.chrome.silentOutput", "true");
                 if (shouldCaptureHttpTraffic) chromeOptions.setProxy(proxyConfig);
 
@@ -243,6 +245,7 @@ public class DriverService {
                 addDriverOptions(chromeHeadlessOptions);
                 chromeHeadlessOptions.setAcceptInsecureCerts(true);
                 chromeHeadlessOptions.addArguments("--log-level=3");
+                chromeHeadlessOptions.setCapability(CapabilityType.UNHANDLED_PROMPT_BEHAVIOUR, UnexpectedAlertBehaviour.ACCEPT);
                 chromeHeadlessOptions.setHeadless(true);
                 System.setProperty("webdriver.chrome.silentOutput", "true");
                 if (shouldCaptureHttpTraffic) chromeHeadlessOptions.setProxy(proxyConfig);
