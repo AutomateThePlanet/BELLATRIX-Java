@@ -223,6 +223,7 @@ public class DriverService {
         if (shouldCaptureHttpTraffic) {
             ProxyServer.init();
             proxyConfig = ClientUtil.createSeleniumProxy(ProxyServer.get());
+            ProxyServer.newHar();
         }
 
 
