@@ -22,10 +22,12 @@ import net.lightbody.bmp.BrowserMobProxyServer;
 import net.lightbody.bmp.core.har.HarEntry;
 import net.lightbody.bmp.proxy.CaptureType;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.http.HttpMethod;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import software.amazon.awssdk.services.secretsmanager.endpoints.internal.Value;
 import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.core.utilities.Log;
 import solutions.bellatrix.web.configuration.WebSettings;
@@ -87,7 +89,7 @@ public class ProxyServer {
         var harEntries = PROXY_SERVER.get().getHar().getLog().getEntries();
         var areRequestsMade = harEntries.stream().anyMatch(r -> r.getRequest().getUrl().contains(url));
 
-        Assert.assertTrue(areRequestsMade);
+        Assert.assertTrue(areRequestsMade, String.format("The expected url '%s' was not loaded!", url));
     }
 
     public static void assertRequestNotMade(String url, HttpMethod httpMethod) {
@@ -109,16 +111,17 @@ public class ProxyServer {
         long sleepInterval = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getSleepInterval();
         var webDriverWait = new WebDriverWait(driver, Duration.ofSeconds(timeout + additionalTimeoutInSeconds), Duration.ofSeconds(sleepInterval));
 
-        webDriverWait.until(d -> {
-            var harEntries = PROXY_SERVER.get().getHar().getLog().getEntries();
-            var areRequestsMade = harEntries.stream().anyMatch(r -> r.getRequest().getUrl().contains(requestPartialUrl) && r.getRequest().getMethod().equals(httpMethod.toString()));
+        try {
+            webDriverWait.until(d -> {
+                var harEntries = PROXY_SERVER.get().getHar().getLog().getEntries();
+                var areRequestsMade = harEntries.stream().anyMatch(r -> r.getRequest().getUrl().contains(requestPartialUrl) && r.getRequest().getMethod().equals(httpMethod.toString()));
 
-            return areRequestsMade;
-//            var javascriptExecutor = (JavascriptExecutor)driver;
-//            String script = String.format("return performance.getEntriesByType('resource').filter(item => item.name.toLowerCase().includes('%s'))[0] !== undefined;", requestPartialUrl);
-//            boolean result = (boolean)javascriptExecutor.executeScript(script);
-//            return result;
-        });
+                return areRequestsMade;
+            });
+        }
+        catch (TimeoutException exception){
+            throw new TimeoutException(String.format("The expected request with URL '%s' is not loaded!", requestPartialUrl));
+        }
     }
 
     public static void assertNoLargeImagesRequested() {
