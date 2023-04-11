@@ -18,6 +18,7 @@ import plugins.screenshots.ScreenshotPlugin;
 import ru.yandex.qatools.ashot.AShot;
 import ru.yandex.qatools.ashot.shooting.ShootingStrategies;
 import solutions.bellatrix.core.configuration.ConfigurationService;
+import solutions.bellatrix.core.utilities.Log;
 import solutions.bellatrix.core.utilities.PathNormalizer;
 import solutions.bellatrix.web.configuration.WebSettings;
 
@@ -38,6 +39,7 @@ public class WebScreenshotPlugin extends ScreenshotPlugin {
                 .shootingStrategy(ShootingStrategies.viewportPasting(100))
                 .takeScreenshot(DriverService.getWrappedDriver());
         var destFile = new File(Paths.get(screenshotSaveDir, filename).toString());
+        Log.info("Saving screenshot with path: " + destFile);
         ImageIO.write(screenshot.getImage(), "png", destFile);
     }
 
