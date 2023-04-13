@@ -50,7 +50,7 @@ public abstract class VideoPlugin extends Plugin {
         }
     }
 
-    public void preAfterTest(TestResult testResult, Method memberInfo) {
+    public void postAfterTest(TestResult testResult, Method memberInfo) {
         if (isEnabled) {
             var videoSaveDir = getOutputFolder();
             var videoFileName = getUniqueFileName(memberInfo.getName());
