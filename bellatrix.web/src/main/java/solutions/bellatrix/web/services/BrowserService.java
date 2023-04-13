@@ -313,6 +313,18 @@ public class BrowserService extends WebService {
         webDriverWait.until(ExpectedConditions.numberOfWindowsToBe(numberOfWindows));
     }
 
+    public void waitForRequest(String partialUrl) {
+        var javascriptExecutor = (JavascriptExecutor)getWrappedDriver();
+        String script = String.format("return performance.getEntriesByType('resource').filter(item => item.name.toLowerCase().includes('%s'))[0] !== undefined;", partialUrl);
+
+        try {
+            waitUntil(e -> (boolean)javascriptExecutor.executeScript(script));
+        }
+        catch (TimeoutException exception){
+            throw new TimeoutException(String.format("The expected request with URL '%s' is not loaded!", partialUrl));
+        }
+    }
+
     public void waitForAngular() {
         long angularTimeout = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getWaitForAngularTimeout();
         long sleepInterval = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getSleepInterval();
