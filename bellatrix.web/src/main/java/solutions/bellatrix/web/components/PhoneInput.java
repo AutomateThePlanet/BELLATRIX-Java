@@ -16,9 +16,9 @@ package solutions.bellatrix.web.components;
 import solutions.bellatrix.core.plugins.EventListener;
 import solutions.bellatrix.web.components.contracts.*;
 
-public class PasswordField extends WebComponent implements ComponentDisabled, ComponentValue, ComponentPassword, ComponentAutoComplete, ComponentReadonly, ComponentRequired, ComponentMaxLength, ComponentMinLength, ComponentSize, ComponentPlaceholder {
-    public final static EventListener<ComponentActionEventArgs> SETTING_PASSWORD = new EventListener<>();
-    public final static EventListener<ComponentActionEventArgs> PASSWORD_SET = new EventListener<>();
+public class PhoneInput extends WebComponent implements ComponentDisabled, ComponentValue, ComponentPhone, ComponentAutoComplete, ComponentReadonly, ComponentRequired, ComponentMaxLength, ComponentMinLength, ComponentSize, ComponentPlaceholder {
+    public final static EventListener<ComponentActionEventArgs> SETTING_PHONE = new EventListener<>();
+    public final static EventListener<ComponentActionEventArgs> PHONE_SET = new EventListener<>();
 
     @Override
     public Class<?> getComponentClass() {
@@ -26,13 +26,13 @@ public class PasswordField extends WebComponent implements ComponentDisabled, Co
     }
 
     @Override
-    public String getPassword() {
+    public String getPhone() {
         return getValue();
     }
 
     @Override
-    public void setPassword(String value) {
-        defaultSetText(SETTING_PASSWORD, PASSWORD_SET, value);
+    public void setPhone(String value) {
+        setValue(SETTING_PHONE, PHONE_SET, value);
     }
 
     @Override

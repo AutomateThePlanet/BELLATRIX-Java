@@ -11,13 +11,12 @@
  * limitations under the License.
  */
 
-package searchsection;
+package O12_page_objects.checkoutpage;
 
-import solutions.bellatrix.web.components.TextInput;
-import solutions.bellatrix.web.pages.PageMap;
+import solutions.bellatrix.web.pages.PageAsserts;
 
-public class Map extends PageMap {
-    public TextInput searchField() {
-        return create().byId(TextInput.class, "woocommerce-product-search-field-0");
+public class Asserts extends PageAsserts<Map> {
+    public void orderReceived() {
+        map().receivedMessage().validateTextIs("Order received");
     }
 }
