@@ -16,9 +16,9 @@ package solutions.bellatrix.web.components;
 import solutions.bellatrix.core.plugins.EventListener;
 import solutions.bellatrix.web.components.contracts.*;
 
-public class TextField extends WebComponent implements ComponentDisabled, ComponentText, ComponentHtml, ComponentValue, ComponentAutoComplete, ComponentReadonly, ComponentRequired, ComponentMaxLength, ComponentMinLength, ComponentSize, ComponentPlaceholder {
-    public final static EventListener<ComponentActionEventArgs> SETTING_TEXT = new EventListener<>();
-    public final static EventListener<ComponentActionEventArgs> TEXT_SET = new EventListener<>();
+public class PasswordInput extends WebComponent implements ComponentDisabled, ComponentValue, ComponentPassword, ComponentAutoComplete, ComponentReadonly, ComponentRequired, ComponentMaxLength, ComponentMinLength, ComponentSize, ComponentPlaceholder {
+    public final static EventListener<ComponentActionEventArgs> SETTING_PASSWORD = new EventListener<>();
+    public final static EventListener<ComponentActionEventArgs> PASSWORD_SET = new EventListener<>();
 
     @Override
     public Class<?> getComponentClass() {
@@ -26,18 +26,13 @@ public class TextField extends WebComponent implements ComponentDisabled, Compon
     }
 
     @Override
-    public String getText() {
-        String text = defaultGetText();
-
-        if (text.isEmpty()) {
-            return defaultGetValue();
-        }
-
-        return text;
+    public String getPassword() {
+        return getValue();
     }
 
-    public void setText(String value) {
-        defaultSetText(SETTING_TEXT, TEXT_SET, value);
+    @Override
+    public void setPassword(String value) {
+        defaultSetText(SETTING_PASSWORD, PASSWORD_SET, value);
     }
 
     @Override
@@ -48,11 +43,6 @@ public class TextField extends WebComponent implements ComponentDisabled, Compon
     @Override
     public boolean isDisabled() {
         return defaultGetDisabledAttribute();
-    }
-
-    @Override
-    public String getHtml() {
-        return defaultGetInnerHtmlAttribute();
     }
 
     @Override

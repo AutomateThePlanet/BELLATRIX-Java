@@ -52,6 +52,12 @@ public class BrowserService extends WebService {
     public void back() {
         getWrappedDriver().navigate().back();
     }
+    public void maximize() {
+        getWrappedDriver().manage().window().maximize();
+    }
+    public void minimize() {
+        getWrappedDriver().manage().window().minimize();
+    }
 
     public void forward() {
         getWrappedDriver().navigate().forward();
