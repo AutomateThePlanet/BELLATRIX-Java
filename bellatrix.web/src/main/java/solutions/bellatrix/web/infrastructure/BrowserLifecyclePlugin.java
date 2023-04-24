@@ -37,11 +37,15 @@ public class BrowserLifecyclePlugin extends Plugin {
 
     @Override
     public void preBeforeClass(Class type) {
-        CURRENT_BROWSER_CONFIGURATION.set(getExecutionBrowserClassLevel(type));
-        if (shouldRestartBrowser()) {
-            restartBrowser();
-            // TODO: maybe we can simplify and remove this parameter.
-            IS_BROWSER_STARTED_DURING_PRE_BEFORE_CLASS.set(true);
+        if (ConfigurationService.get(WebSettings.class).getExecutionType() == "regular") {
+            CURRENT_BROWSER_CONFIGURATION.set(getExecutionBrowserClassLevel(type));
+            if (shouldRestartBrowser()) {
+                restartBrowser();
+                // TODO: maybe we can simplify and remove this parameter.
+                IS_BROWSER_STARTED_DURING_PRE_BEFORE_CLASS.set(true);
+            } else {
+                IS_BROWSER_STARTED_DURING_PRE_BEFORE_CLASS.set(false);
+            }
         } else {
             IS_BROWSER_STARTED_DURING_PRE_BEFORE_CLASS.set(false);
         }

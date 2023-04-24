@@ -150,7 +150,7 @@ public class DriverService {
         WebDriver driver = null;
         try {
             driver = new RemoteWebDriver(new URL(gridSettings.getUrl()), caps);
-        } catch (MalformedURLException e) {
+        } catch (Exception e) {
             DebugInformation.printStackTrace(e);
         }
 
