@@ -34,6 +34,7 @@ import solutions.bellatrix.web.configuration.WebSettings;
 
 import java.io.Console;
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.net.ServerSocket;
 import java.time.Duration;
 import java.util.List;
@@ -206,6 +207,20 @@ public class ProxyServer {
         return new Gson().fromJson(getDataObject(json), responseModelClass);
     }
 
+    public static <T> T getResponseByUrl(String url, String httpMethod, Type responseModelType) {
+        var harEntries = getCapturedEntries();
+        var harEntry = harEntries.stream()
+                .filter(r -> r.getRequest().getUrl().contains(url) && r.getRequest().getMethod().equals(httpMethod))
+                .findFirst()
+                .orElse(null);
+        if (harEntry == null) {
+            System.out.println("There is no match!");
+            return null;
+        }
+        String json = harEntry.getResponse().getContent().getText();
+        return new Gson().fromJson(getDataObject(json), responseModelType);
+    }
+
     public static void blockRequestByUrl(String url, HttpMethod httpMethod) {
         PROXY_SERVER.get().blacklistRequests(url,407, httpMethod.toString());
     }
@@ -220,22 +235,33 @@ public class ProxyServer {
 
     private static String getDataObject(String jsonString) {
         JsonParser parser = new JsonParser();
-        JsonObject jsonObject = (JsonObject) parser.parse(jsonString);
+        JsonObject jsonObject = null;
+        JsonArray jsonArray = null;
+        boolean isObject = false;
+
+        try {
+            jsonObject = (JsonObject) parser.parse(jsonString);
+            isObject = true;
+        } catch (Exception exception) {
+            jsonArray = (JsonArray) parser.parse(jsonString);
+        }
 
         JsonObject dataObject = null;
         JsonArray dataArray = null;
 
-        if (jsonObject.has("data")){
+        if (isObject == true && jsonObject.has("data")){
             if (jsonObject.get("data").isJsonObject()){
                 dataObject = jsonObject.getAsJsonObject("data");
             } else {
                 dataArray = jsonObject.getAsJsonArray("data");
             }
+        } else {
+            dataArray = jsonArray.getAsJsonArray();
         }
 
-        if (dataObject == null){
-//            return dataArray.toString();
-            return jsonString;
+        if (isObject == false){
+            return dataArray.toString();
+//            return jsonString;
         } else {
             return dataObject.toString();
         }
