@@ -193,6 +193,19 @@ public class ProxyServer {
         return new Gson().fromJson(json, requestModelClass);
     }
 
+    public static <T> T getRequestByUrl(String url, String httpMethod, Type modelType) {
+        var harEntries = getCapturedEntries();
+        var harEntry = harEntries.stream()
+                .filter(r -> r.getRequest().getUrl().contains(url) && r.getRequest().getMethod().equals(httpMethod))
+                .findFirst()
+                .orElse(null);
+        if (harEntry == null) {
+            return null;
+        }
+        String json = harEntry.getRequest().getPostData().getText();
+        return new Gson().fromJson(getDataObject(json), modelType);
+    }
+
     public static <T> T getResponseByUrl(String url, String httpMethod, Class<T> responseModelClass) {
         var harEntries = getCapturedEntries();
         var harEntry = harEntries.stream()
@@ -248,20 +261,33 @@ public class ProxyServer {
 
         JsonObject dataObject = null;
         JsonArray dataArray = null;
-
-        if (isObject == true && jsonObject.has("data")){
-            if (jsonObject.get("data").isJsonObject()){
-                dataObject = jsonObject.getAsJsonObject("data");
+        if (isObject == true) {
+            if (jsonObject.has("data")){
+                if (jsonObject.get("data").isJsonObject()){
+                    dataObject = jsonObject.getAsJsonObject("data");
+                } else {
+                    dataArray = jsonObject.getAsJsonArray("data");
+                }
             } else {
-                dataArray = jsonObject.getAsJsonArray("data");
+                dataObject = jsonObject.getAsJsonObject();
             }
         } else {
             dataArray = jsonArray.getAsJsonArray();
         }
 
-        if (isObject == false){
-            return dataArray.toString();
-//            return jsonString;
+//        if (jsonObject.has("data")){
+//            if (jsonObject.get("data").isJsonObject()){
+//                dataObject = jsonObject.getAsJsonObject("data");
+//            } else {
+//                dataArray = jsonObject.getAsJsonArray("data");
+//            }
+//        } else {
+//            dataArray = jsonArray.getAsJsonArray();
+//        }
+
+        if (dataObject == null){
+//            return dataArray.toString();
+            return jsonString;
         } else {
             return dataObject.toString();
         }
