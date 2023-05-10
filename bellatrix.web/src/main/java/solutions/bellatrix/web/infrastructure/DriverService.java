@@ -345,7 +345,10 @@ public class DriverService {
     }
 
     private static String getBuildName() {
-        buildName = System.getProperty("buildName");
+        if (!isBuildNameSet) {
+            buildName = System.getProperty("buildName");
+        }
+
         if (buildName == null) {
             InputStream input = ConfigurationService.class.getResourceAsStream("/application.properties");
             var p = new Properties();
@@ -355,7 +358,9 @@ public class DriverService {
                 return null;
             }
 
-            buildName = p.getProperty("buildName");
+            if (!isBuildNameSet) {
+                buildName = p.getProperty("buildName");
+            }
 
             if (buildName.equals("{randomNumber}") && !isBuildNameSet) {
                 buildName = TimestampBuilder.buildUniqueTextByPrefix("LE_");
