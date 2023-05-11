@@ -30,6 +30,7 @@ import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.safari.SafariOptions;
 import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.core.utilities.DebugInformation;
+import solutions.bellatrix.core.utilities.Log;
 import solutions.bellatrix.core.utilities.TimestampBuilder;
 import solutions.bellatrix.web.configuration.GridSettings;
 import solutions.bellatrix.web.configuration.WebSettings;
@@ -295,6 +296,8 @@ public class DriverService {
     }
 
     private static <TOption extends MutableCapabilities> void addGridOptions(HashMap<String, Object> options, GridSettings gridSettings) {
+        Log.info("Add WebDriver options");
+        Log.info("");
         for (var entry : gridSettings.getArguments()) {
             for (var c : entry.entrySet()) {
                 if (c.getKey().toLowerCase().contains("build")) {
@@ -304,16 +307,21 @@ public class DriverService {
                     }
 
                     options.put(c.getKey(), buildName);
+                    Log.info(c.getKey() + " " + buildName);
                 }
                 else {
                     if (c.getValue().startsWith("env_")) {
                         var envValue = System.getProperty(c.getValue().replace("env_", ""));
                         options.put(c.getKey(), envValue);
+                        Log.info(c.getKey() + " " + envValue);
                     } else {
                         options.put(c.getKey(), c.getValue());
+                        Log.info(c.getKey() + " " + c.getValue());
                     }
                 }
             }
+
+            Log.info("");
         }
     }
 
@@ -377,6 +385,7 @@ public class DriverService {
         }
 
         if (WRAPPED_DRIVER.get() != null) {
+            DebugInformation.debugInfo("SHUTTING DOWN WRAPPED_DRIVER");
             WRAPPED_DRIVER.get().quit();
             if (CUSTOM_DRIVER_OPTIONS.get() != null) {
                 CUSTOM_DRIVER_OPTIONS.get().clear();

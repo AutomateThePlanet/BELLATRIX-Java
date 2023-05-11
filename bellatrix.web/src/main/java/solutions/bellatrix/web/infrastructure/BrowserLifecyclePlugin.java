@@ -17,6 +17,7 @@ import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.core.plugins.Plugin;
 import solutions.bellatrix.core.plugins.TestResult;
 import solutions.bellatrix.core.utilities.DebugInformation;
+import solutions.bellatrix.core.utilities.Log;
 import solutions.bellatrix.web.configuration.WebSettings;
 
 import java.lang.reflect.Method;
@@ -37,6 +38,7 @@ public class BrowserLifecyclePlugin extends Plugin {
 
     @Override
     public void preBeforeClass(Class type) {
+        DebugInformation.debugInfo("preBeforeClass - BrowserLifecyclePlugin");
         if (ConfigurationService.get(WebSettings.class).getExecutionType() == "regular") {
             CURRENT_BROWSER_CONFIGURATION.set(getExecutionBrowserClassLevel(type));
             if (shouldRestartBrowser()) {
@@ -62,6 +64,7 @@ public class BrowserLifecyclePlugin extends Plugin {
 
     @Override
     public void preBeforeTest(TestResult testResult, Method memberInfo) {
+        DebugInformation.debugInfo("preBeforeTest - BrowserLifecyclePlugin");
         CURRENT_BROWSER_CONFIGURATION.set(getBrowserConfiguration(memberInfo));
 
         if (!IS_BROWSER_STARTED_DURING_PRE_BEFORE_CLASS.get()) {
@@ -80,6 +83,7 @@ public class BrowserLifecyclePlugin extends Plugin {
 
     @Override
     public void postAfterTest(TestResult testResult, Method memberInfo) {
+        DebugInformation.debugInfo("postAfterTest - BrowserLifecyclePlugin");
         if (CURRENT_BROWSER_CONFIGURATION.get().getLifecycle() !=
                 Lifecycle.REUSE_IF_STARTED && testResult == TestResult.FAILURE) {
             shutdownBrowser();

@@ -19,6 +19,7 @@ import solutions.bellatrix.core.plugins.junit.TestResultWatcher;
 import solutions.bellatrix.web.components.listeners.BddConsoleLogging;
 import solutions.bellatrix.web.components.listeners.HighlightElements;
 import solutions.bellatrix.web.infrastructure.BrowserLifecyclePlugin;
+import solutions.bellatrix.web.infrastructure.LogLifecyclePlugin;
 import solutions.bellatrix.web.infrastructure.WebScreenshotPlugin;
 import solutions.bellatrix.web.infrastructure.WebVideoPlugin;
 import solutions.bellatrix.web.services.App;
@@ -35,6 +36,7 @@ public class WebTest extends BaseTest {
         addPlugin(BrowserLifecyclePlugin.class);
         addPlugin(WebScreenshotPlugin.class);
         addPlugin(WebVideoPlugin.class);
+        addPlugin(LogLifecyclePlugin.class);
         addListener(BddConsoleLogging.class);
         addListener(HighlightElements.class);
     }
