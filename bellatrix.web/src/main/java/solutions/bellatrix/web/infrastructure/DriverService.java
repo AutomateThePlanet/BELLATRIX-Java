@@ -296,7 +296,7 @@ public class DriverService {
     }
 
     private static <TOption extends MutableCapabilities> void addGridOptions(HashMap<String, Object> options, GridSettings gridSettings) {
-        Log.info("Add WebDriver options");
+        Log.info("Add WebDriver Options:");
         Log.info("");
         for (var entry : gridSettings.getArguments()) {
             for (var c : entry.entrySet()) {
@@ -307,16 +307,16 @@ public class DriverService {
                     }
 
                     options.put(c.getKey(), buildName);
-                    Log.info(c.getKey() + " " + buildName);
+                    Log.info(c.getKey() + "= " + buildName);
                 }
                 else {
                     if (c.getValue().startsWith("env_")) {
                         var envValue = System.getProperty(c.getValue().replace("env_", ""));
                         options.put(c.getKey(), envValue);
-                        Log.info(c.getKey() + " " + envValue);
+                        Log.info(c.getKey() + "= " + envValue);
                     } else {
                         options.put(c.getKey(), c.getValue());
-                        Log.info(c.getKey() + " " + c.getValue());
+                        Log.info(c.getKey() + "= " + c.getValue());
                     }
                 }
             }

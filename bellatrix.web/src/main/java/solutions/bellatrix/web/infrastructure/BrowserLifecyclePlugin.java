@@ -17,7 +17,6 @@ import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.core.plugins.Plugin;
 import solutions.bellatrix.core.plugins.TestResult;
 import solutions.bellatrix.core.utilities.DebugInformation;
-import solutions.bellatrix.core.utilities.Log;
 import solutions.bellatrix.web.configuration.WebSettings;
 
 import java.lang.reflect.Method;
@@ -38,11 +37,11 @@ public class BrowserLifecyclePlugin extends Plugin {
 
     @Override
     public void preBeforeClass(Class type) {
-        DebugInformation.debugInfo("preBeforeClass - BrowserLifecyclePlugin");
         if (ConfigurationService.get(WebSettings.class).getExecutionType() == "regular") {
             CURRENT_BROWSER_CONFIGURATION.set(getExecutionBrowserClassLevel(type));
             if (shouldRestartBrowser()) {
-                restartBrowser();
+                shutdownBrowser();
+                startBrowser();
                 // TODO: maybe we can simplify and remove this parameter.
                 IS_BROWSER_STARTED_DURING_PRE_BEFORE_CLASS.set(true);
             } else {
@@ -64,12 +63,11 @@ public class BrowserLifecyclePlugin extends Plugin {
 
     @Override
     public void preBeforeTest(TestResult testResult, Method memberInfo) {
-        DebugInformation.debugInfo("preBeforeTest - BrowserLifecyclePlugin");
         CURRENT_BROWSER_CONFIGURATION.set(getBrowserConfiguration(memberInfo));
 
         if (!IS_BROWSER_STARTED_DURING_PRE_BEFORE_CLASS.get()) {
             if (shouldRestartBrowser()) {
-                restartBrowser();
+                startBrowser();
             }
         }
 
@@ -82,13 +80,18 @@ public class BrowserLifecyclePlugin extends Plugin {
     }
 
     @Override
-    public void postAfterTest(TestResult testResult, Method memberInfo) {
-        DebugInformation.debugInfo("postAfterTest - BrowserLifecyclePlugin");
-        if (CURRENT_BROWSER_CONFIGURATION.get().getLifecycle() !=
-                Lifecycle.REUSE_IF_STARTED && testResult == TestResult.FAILURE) {
-            shutdownBrowser();
-//            IS_BROWSER_STARTED_DURING_PRE_BEFORE_CLASS.set(false);
+    public void postAfterTest(TestResult testResult, Method memberInfo, Throwable failedTestException) {
+
+        if (CURRENT_BROWSER_CONFIGURATION.get().getLifecycle() == Lifecycle.REUSE_IF_STARTED) {
+           return;
         }
+
+        if (CURRENT_BROWSER_CONFIGURATION.get().getLifecycle() ==
+                Lifecycle.RESTART_ON_FAIL && testResult != TestResult.FAILURE ) {
+            return;
+        }
+
+        shutdownBrowser();
     }
 
     private void shutdownBrowser() {
@@ -96,8 +99,8 @@ public class BrowserLifecyclePlugin extends Plugin {
         PREVIOUS_BROWSER_CONFIGURATION.set(null);
     }
 
-    private void restartBrowser() {
-        shutdownBrowser();
+    private void startBrowser() {
+//        shutdownBrowser();
         try {
             DriverService.start(CURRENT_BROWSER_CONFIGURATION.get());
             IS_BROWSER_STARTED_CORRECTLY.set(true);

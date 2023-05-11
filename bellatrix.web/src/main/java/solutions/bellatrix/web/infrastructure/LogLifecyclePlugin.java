@@ -35,7 +35,7 @@ public class LogLifecyclePlugin extends Plugin {
     }
 
     @Override
-    public void postAfterTest(TestResult testResult, Method memberInfo) {
+    public void postAfterTest(TestResult testResult, Method memberInfo, Throwable failedTestException) {
         Log.info("");
         Log.info("==================================================================================");
         Log.info("");

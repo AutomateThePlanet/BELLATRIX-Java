@@ -82,10 +82,10 @@ public final class PluginExecutionEngine {
         }
     }
 
-    public static void postAfterTest(TestResult result, Method memberInfo) {
+    public static void postAfterTest(TestResult result, Method memberInfo, Throwable failedTestException) {
         for (var currentObserver : PLUGINS) {
             if (currentObserver != null)
-                currentObserver.postAfterTest(result, memberInfo);
+                currentObserver.postAfterTest(result, memberInfo, failedTestException);
         }
     }
 
