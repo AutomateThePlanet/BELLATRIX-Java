@@ -72,6 +72,7 @@ public class BaseTest extends UsesPlugins {
             beforeEach();
             PluginExecutionEngine.postBeforeTest(CURRENT_TEST_RESULT.get(), methodInfo);
         } catch (Exception e) {
+            e.printStackTrace();
             PluginExecutionEngine.beforeTestFailed(e);
         }
     }

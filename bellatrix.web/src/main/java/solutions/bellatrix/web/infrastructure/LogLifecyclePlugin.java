@@ -30,7 +30,7 @@ public class LogLifecyclePlugin extends Plugin {
     public void preBeforeTest(TestResult testResult, Method memberInfo) {
         Log.info("");
         Log.info("==================================================================================");
-        Log.info("Start Test " + memberInfo.getDeclaringClass().getName(), " " + memberInfo.getName());
+        Log.info("Start Test " + memberInfo.getDeclaringClass().getName() + " " + memberInfo.getName());
         Log.info("");
     }
 
