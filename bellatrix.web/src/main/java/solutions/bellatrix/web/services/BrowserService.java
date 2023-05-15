@@ -13,6 +13,7 @@
 
 package solutions.bellatrix.web.services;
 
+import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.StringEscapeUtils;
 import org.openqa.selenium.JavascriptExecutor;
@@ -206,50 +207,59 @@ public class BrowserService extends WebService {
         webDriverWait.until(webDriver -> ((JavascriptExecutor) webDriver).executeScript("return document.readyState").equals("complete"));
     }
 
+    @SneakyThrows
     public void injectInfoNotificationToast(String message) {
         var timeout = ConfigurationService.get(WebSettings.class).getNotificationToastTimeout();
         injectNotificationToast(message, timeout, ToastNotificationType.Information);
     }
 
+    @SneakyThrows
     public void injectInfoNotificationToast(String format, Object... args) {
         String message = String.format(format, args);
         var timeout = ConfigurationService.get(WebSettings.class).getNotificationToastTimeout();
         injectNotificationToast(message, timeout, ToastNotificationType.Information);
     }
 
+    @SneakyThrows
     public void injectSuccessNotificationToast(String message) {
         var timeout = ConfigurationService.get(WebSettings.class).getNotificationToastTimeout();
         injectNotificationToast(message, timeout, ToastNotificationType.Success);
     }
 
+    @SneakyThrows
     public void injectSuccessNotificationToast(String format, Object... args) {
         String message = String.format(format, args);
         var timeout = ConfigurationService.get(WebSettings.class).getNotificationToastTimeout();
         injectNotificationToast(message, timeout, ToastNotificationType.Success);
     }
 
+    @SneakyThrows
     public void injectErrorNotificationToast(String message) {
         var timeout = ConfigurationService.get(WebSettings.class).getNotificationToastTimeout();
         injectNotificationToast(message, timeout, ToastNotificationType.Error);
     }
 
+    @SneakyThrows
     public void injectErrorNotificationToast(String format, Object... args) {
         String message = String.format(format, args);
         var timeout = ConfigurationService.get(WebSettings.class).getNotificationToastTimeout();
         injectNotificationToast(message, timeout, ToastNotificationType.Error);
     }
 
+    @SneakyThrows
     public void injectWarningNotificationToast(String message) {
         var timeout = ConfigurationService.get(WebSettings.class).getNotificationToastTimeout();
         injectNotificationToast(message, timeout, ToastNotificationType.Warning);
     }
 
+    @SneakyThrows
     public void injectWarningNotificationToast(String format, Object... args) {
         String message = String.format(format, args);
         var timeout = ConfigurationService.get(WebSettings.class).getNotificationToastTimeout();
         injectNotificationToast(message, timeout, ToastNotificationType.Warning);
     }
 
+    @SneakyThrows
     public void injectNotificationToast(String message, long timeoutMillis, ToastNotificationType type) {
         String escapedMessage = StringEscapeUtils.escapeEcmaScript(message);
         String executionScript = """

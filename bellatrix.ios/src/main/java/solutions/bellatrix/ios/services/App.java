@@ -21,35 +21,35 @@ public class App implements AutoCloseable {
     private boolean disposed = false;
 
     public AppService appService() {
-        return SingletonFactory.getInstance(AppService.class);
+        return new AppService();
     }
 
     public ComponentCreateService create() {
-        return SingletonFactory.getInstance(ComponentCreateService.class);
+        return new ComponentCreateService();
     }
 
     public ComponentWaitService waitFor() {
-        return SingletonFactory.getInstance(ComponentWaitService.class);
+        return new ComponentWaitService();
     }
 
     public DeviceService device() {
-        return SingletonFactory.getInstance(DeviceService.class);
+        return new DeviceService();
     }
 
     public FileSystemService fileSystem() {
-        return SingletonFactory.getInstance(FileSystemService.class);
+        return new FileSystemService();
     }
 
     public KeyboardService keyboard() {
-        return SingletonFactory.getInstance(KeyboardService.class);
+        return new KeyboardService();
     }
 
     public TouchActionsService touch() {
-        return SingletonFactory.getInstance(TouchActionsService.class);
+        return new TouchActionsService();
     }
 
     public WebServiceFacade web() {
-        return SingletonFactory.getInstance(WebServiceFacade.class);
+        return new WebServiceFacade();
     }
 
     public void addDriverOptions(String key, String value) {
