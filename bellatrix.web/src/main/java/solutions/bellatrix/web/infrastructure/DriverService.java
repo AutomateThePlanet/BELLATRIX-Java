@@ -39,6 +39,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
@@ -98,8 +99,8 @@ public class DriverService {
                 driver = initializeDriverCloudGridMode(gridSettings.get());
             }
 
-            driver.manage().timeouts().pageLoadTimeout(ConfigurationService.get(WebSettings.class).getTimeoutSettings().getPageLoadTimeout(), TimeUnit.SECONDS);
-            driver.manage().timeouts().setScriptTimeout(ConfigurationService.get(WebSettings.class).getTimeoutSettings().getScriptTimeout(), TimeUnit.SECONDS);
+            driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(ConfigurationService.get(WebSettings.class).getTimeoutSettings().getPageLoadTimeout()));
+            driver.manage().timeouts().setScriptTimeout(Duration.ofSeconds(ConfigurationService.get(WebSettings.class).getTimeoutSettings().getScriptTimeout()));
             driver.manage().window().maximize();
             changeWindowSize(driver);
             WRAPPED_DRIVER.set(driver);
@@ -244,7 +245,7 @@ public class DriverService {
                 addDriverOptions(chromeHeadlessOptions);
                 chromeHeadlessOptions.setAcceptInsecureCerts(true);
                 chromeHeadlessOptions.addArguments("--log-level=3");
-                chromeHeadlessOptions.setHeadless(true);
+                chromeHeadlessOptions.addArguments("--headless");
                 System.setProperty("webdriver.chrome.silentOutput", "true");
                 if (shouldCaptureHttpTraffic) chromeHeadlessOptions.setProxy(proxyConfig);
 
@@ -263,7 +264,7 @@ public class DriverService {
                 var firefoxHeadlessOptions = new FirefoxOptions();
                 addDriverOptions(firefoxHeadlessOptions);
                 firefoxHeadlessOptions.setAcceptInsecureCerts(true);
-                firefoxHeadlessOptions.setHeadless(true);
+                firefoxHeadlessOptions.addArguments("--headless");
                 if (shouldCaptureHttpTraffic) firefoxHeadlessOptions.setProxy(proxyConfig);
                 driver = new FirefoxDriver(firefoxHeadlessOptions);
             }

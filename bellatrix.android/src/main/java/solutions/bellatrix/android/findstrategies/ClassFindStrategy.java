@@ -13,7 +13,7 @@
 
 package solutions.bellatrix.android.findstrategies;
 
-import io.appium.java_client.MobileBy;
+import io.appium.java_client.AppiumBy;
 import io.appium.java_client.android.AndroidDriver;
 import org.openqa.selenium.WebElement;
 
@@ -28,12 +28,12 @@ public class ClassFindStrategy extends FindStrategy {
 
     @Override
     public WebElement findElement(AndroidDriver driver) {
-        return driver.findElement(MobileBy.androidUIAutomator(String.format(CLASS_EXPRESSION, getValue())));
+        return driver.findElement(AppiumBy.androidUIAutomator(String.format(CLASS_EXPRESSION, getValue())));
     }
 
     @Override
     public List<WebElement> findAllElements(AndroidDriver driver) {
-        return driver.findElements(MobileBy.androidUIAutomator(String.format(CLASS_EXPRESSION, getValue())));
+        return driver.findElements(AppiumBy.androidUIAutomator(String.format(CLASS_EXPRESSION, getValue())));
     }
 
     @Override
