@@ -30,16 +30,12 @@ public class AppService extends MobileService {
         getWrappedIOSDriver().runAppInBackground(Duration.ofSeconds(seconds));
     }
 
-    public void closeApp() {
-        getWrappedIOSDriver().closeApp();
+    public void terminateApp(String appId) {
+        getWrappedIOSDriver().terminateApp(appId);
     }
 
-    public void launchApp() {
-        getWrappedIOSDriver().launchApp();
-    }
-
-    public void resetApp() {
-        getWrappedIOSDriver().resetApp();
+    public void activateApp(String appId) {
+        getWrappedIOSDriver().activateApp(appId);
     }
 
     public void installApp(String appPath) {

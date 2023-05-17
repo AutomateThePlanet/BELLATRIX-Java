@@ -81,16 +81,12 @@ public class AppService extends MobileService {
         getWrappedAndroidDriver().runAppInBackground(Duration.ofSeconds(seconds));
     }
 
-    public void closeApp() {
-        getWrappedAndroidDriver().closeApp();
+    public void terminateApp(String appId) {
+        getWrappedAndroidDriver().terminateApp(appId);
     }
 
-    public void launchApp() {
-        getWrappedAndroidDriver().launchApp();
-    }
-
-    public void resetApp() {
-        getWrappedAndroidDriver().resetApp();
+    public void activateApp(String appId) {
+        getWrappedAndroidDriver().activateApp(appId);
     }
 
     public List<String> getWebViews() {

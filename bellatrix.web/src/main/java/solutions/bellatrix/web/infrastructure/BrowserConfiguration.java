@@ -20,8 +20,8 @@ import org.openqa.selenium.Platform;
 import java.util.HashMap;
 
 public class BrowserConfiguration {
-    @Setter @Getter private final Browser browser;
-    @Setter @Getter private final Lifecycle lifecycle;
+    @Setter @Getter private Browser browser;
+    @Setter @Getter private Lifecycle lifecycle;
     @Setter @Getter private int height;
     @Setter @Getter private int width;
     @Setter @Getter private int version;

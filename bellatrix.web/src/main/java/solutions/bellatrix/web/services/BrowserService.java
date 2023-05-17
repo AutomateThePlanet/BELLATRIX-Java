@@ -22,11 +22,16 @@ import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
 import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.core.utilities.Wait;
 import solutions.bellatrix.web.components.Frame;
 import solutions.bellatrix.web.configuration.WebSettings;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.Objects;
 
@@ -336,5 +341,77 @@ public class BrowserService extends WebService {
                 }
             }
         }
+    }
+
+    public void assertLandedOnPage(String partialUrl) {
+        assertLandedOnPage(partialUrl, false);
+    }
+
+    public void assertLandedOnPage(String partialUrl, boolean shouldUrlEncode) {
+        if (shouldUrlEncode) {
+            partialUrl = URLEncoder.encode(partialUrl, StandardCharsets.UTF_8);
+        }
+
+        waitUntilPageLoadsCompletely();
+
+        String currentBrowserUrl = getWrappedDriver().getCurrentUrl().toLowerCase();
+
+        Assert.assertTrue(currentBrowserUrl.contains(partialUrl.toLowerCase()),
+                "The expected partialUrl: '" + partialUrl + "' was not found in the PageUrl: '" + currentBrowserUrl + "'");
+    }
+
+    public void assertNotLandedOnPage(String partialUrl) {
+        assertNotLandedOnPage(partialUrl, false);
+    }
+
+    public void assertNotLandedOnPage(String partialUrl, boolean shouldUrlEncode) {
+        if (shouldUrlEncode) {
+            partialUrl = URLEncoder.encode(partialUrl, StandardCharsets.UTF_8);
+        }
+
+        String currentBrowserUrl = getWrappedDriver().getCurrentUrl().toString();
+        Assert.assertFalse(currentBrowserUrl.contains(partialUrl),
+                "The expected partialUrl: '" + partialUrl + "' was found in the PageUrl: '" + currentBrowserUrl + "'");
+    }
+
+    public void assertUrl(String fullUrl) {
+        String currentBrowserUrl = getWrappedDriver().getCurrentUrl().toString();
+        URI actualUri = null;
+        URI expectedUri = null;
+        try {
+            actualUri = new URI(currentBrowserUrl);
+            expectedUri = new URI(fullUrl);
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
+
+        Assert.assertEquals(expectedUri.toASCIIString(), actualUri.toASCIIString(),
+                "Expected URL is different than the Actual one.");
+    }
+
+    public void assertUrlPath(String urlPath) {
+        String currentBrowserUrl = getWrappedDriver().getCurrentUrl().toString();
+        URI actualUri = null;
+        try {
+            actualUri = new URI(currentBrowserUrl);
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
+
+        Assert.assertEquals(urlPath, actualUri.getPath(),
+                "Expected URL path is different than the Actual one.");
+    }
+
+    public void assertUrlPathAndQuery(String pathAndQuery) {
+        String currentBrowserUrl = getWrappedDriver().getCurrentUrl().toString();
+        URI actualUri = null;
+        try {
+            actualUri = new URI(currentBrowserUrl);
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
+
+        Assert.assertEquals(pathAndQuery, actualUri.getPath() + "?" + actualUri.getQuery(),
+                "Expected URL is different than the Actual one.");
     }
 }
