@@ -125,6 +125,23 @@ public class ProxyServer {
         }
     }
 
+    public static void waitForResponse(WebDriver driver, String requestPartialUrl, HttpMethod httpMethod, int additionalTimeoutInSeconds) {
+        long timeout = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getWaitForAjaxTimeout();
+        long sleepInterval = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getSleepInterval();
+        var webDriverWait = new WebDriverWait(driver, Duration.ofSeconds(timeout + additionalTimeoutInSeconds), Duration.ofSeconds(sleepInterval));
+
+        try {
+            webDriverWait.until(d -> {
+                var harEntries = PROXY_SERVER.get().getHar().getLog().getEntries();
+                var request = harEntries.stream().filter(r -> r.getRequest().getUrl().contains(requestPartialUrl) && r.getRequest().getMethod().equals(httpMethod.toString())).findFirst().get();
+                return request.getResponse().getStatus() == 200 && !request.getResponse().getContent().getText().isEmpty();
+            });
+        }
+        catch (TimeoutException exception){
+            throw new TimeoutException(String.format("The expected response with request URL '%s' is not loaded!", requestPartialUrl));
+        }
+    }
+
     public static void assertNoLargeImagesRequested() {
         var harEntries = PROXY_SERVER.get().getHar().getLog().getEntries();
         var areThereLargeImages = harEntries.stream().anyMatch(r
