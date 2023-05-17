@@ -36,6 +36,16 @@ public interface ComponentChecked extends Component {
     }
 
     @SneakyThrows
+    default void validateIsChecked(boolean value) {
+        if (value){
+            validateIsChecked();
+        }
+        else {
+            validateIsUnchecked();
+        }
+    }
+
+    @SneakyThrows
     default void validateIsUnchecked() {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeTrue", WebComponent.class, BooleanSupplier.class, String.class);
