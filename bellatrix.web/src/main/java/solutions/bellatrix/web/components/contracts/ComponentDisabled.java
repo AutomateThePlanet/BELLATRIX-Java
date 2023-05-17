@@ -26,7 +26,7 @@ public interface ComponentDisabled extends Component {
     boolean isDisabled();
 
     @SneakyThrows
-    default void validateIsDisabled(String value) {
+    default void validateIsDisabled() {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeTrue", WebComponent.class, BooleanSupplier.class, String.class);
             method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, (BooleanSupplier)this::isDisabled, "disabled");
