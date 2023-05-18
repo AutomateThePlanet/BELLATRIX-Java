@@ -133,8 +133,14 @@ public class ProxyServer {
         try {
             webDriverWait.until(d -> {
                 var harEntries = PROXY_SERVER.get().getHar().getLog().getEntries();
-                var request = harEntries.stream().filter(r -> r.getRequest().getUrl().contains(requestPartialUrl) && r.getRequest().getMethod().equals(httpMethod.toString())).findFirst().get();
-                return request.getResponse().getStatus() == 200 && !request.getResponse().getContent().getText().isEmpty();
+                var isResponseReceived = harEntries.stream().anyMatch(
+                        r -> r.getRequest().getUrl().contains(requestPartialUrl)
+                        && r.getRequest().getMethod().equals(httpMethod.toString())
+                        && r.getResponse().getStatus() == 200
+                        && !r.getResponse().getContent().getText().isEmpty()
+                );
+
+                return isResponseReceived;
             });
         }
         catch (TimeoutException exception){
