@@ -75,7 +75,7 @@ public class AppLifecyclePlugin extends Plugin {
     }
 
     @Override
-    public void postAfterTest(TestResult testResult, Method memberInfo) {
+    public void postAfterTest(TestResult testResult, Method memberInfo, Throwable failedTestException) {
         if (CURRENT_APP_CONFIGURATION.get().getLifecycle() ==
                 Lifecycle.RESTART_ON_FAIL && testResult == TestResult.FAILURE) {
             shutdownApp();

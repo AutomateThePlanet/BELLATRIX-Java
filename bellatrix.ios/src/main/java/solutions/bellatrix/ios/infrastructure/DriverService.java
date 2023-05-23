@@ -27,6 +27,7 @@ import solutions.bellatrix.ios.configuration.IOSSettings;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
@@ -75,7 +76,7 @@ public class DriverService {
             driver = initializeDriverGridMode(gridSettings.get());
         }
 
-        driver.manage().timeouts().implicitlyWait(IOSSettings.getTimeoutSettings().getImplicitWaitTimeout(), TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(IOSSettings.getTimeoutSettings().getImplicitWaitTimeout()));
         WRAPPED_IOS_DRIVER.set(driver);
         solutions.bellatrix.web.infrastructure.DriverService.setWrappedDriver(driver);
 

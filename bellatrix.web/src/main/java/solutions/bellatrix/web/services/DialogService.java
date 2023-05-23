@@ -15,6 +15,7 @@ package solutions.bellatrix.web.services;
 
 import org.openqa.selenium.Alert;
 
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 public class DialogService extends WebService {
@@ -28,5 +29,38 @@ public class DialogService extends WebService {
             alert.dismiss();
             getWrappedDriver().switchTo().defaultContent();
         }
+    }
+
+    public void handle(Consumer<Alert> function, DialogButton dialogButton) {
+        var alert = getWrappedDriver().switchTo().alert();
+        function.accept(alert);
+        if (dialogButton == DialogButton.OK) {
+            alert.accept();
+            getWrappedDriver().switchTo().defaultContent();
+        } else {
+            alert.dismiss();
+            getWrappedDriver().switchTo().defaultContent();
+        }
+    }
+
+    public void handle(DialogButton dialogButton) {
+        var alert = getWrappedDriver().switchTo().alert();
+        if (dialogButton == DialogButton.OK) {
+            alert.accept();
+            getWrappedDriver().switchTo().defaultContent();
+        } else {
+            alert.dismiss();
+            getWrappedDriver().switchTo().defaultContent();
+        }
+    }
+
+    public void handle() {
+        handle((a) -> {
+        }, DialogButton.OK);
+    }
+
+    public String getText() {
+        var alert = getWrappedDriver().switchTo().alert();
+        return alert.getText();
     }
 }

@@ -20,7 +20,6 @@ import io.appium.java_client.touch.WaitOptions;
 import io.appium.java_client.touch.offset.PointOption;
 import solutions.bellatrix.ios.components.IOSComponent;
 import solutions.bellatrix.ios.infrastructure.DriverService;
-
 import java.time.Duration;
 
 public class TouchActionsService extends MobileService {

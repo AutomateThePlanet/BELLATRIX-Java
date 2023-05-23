@@ -21,15 +21,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import solutions.bellatrix.core.plugins.PluginExecutionEngine;
 import solutions.bellatrix.core.plugins.TestResult;
 import solutions.bellatrix.core.plugins.UsesPlugins;
-import sun.misc.Unsafe;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-@ExtendWith(TestResultListener.class)
+@ExtendWith(TestResultWatcher.class)
 public class BaseTest extends UsesPlugins {
     static final ThreadLocal<TestResult> CURRENT_TEST_RESULT = new ThreadLocal<>();
     private static final ThreadLocal<Boolean> CONFIGURATION_EXECUTED = new ThreadLocal<>();
@@ -37,15 +35,15 @@ public class BaseTest extends UsesPlugins {
     private TestInfo testInfo;
 
     public BaseTest() {
-        try {
-            Field theUnsafe = Unsafe.class.getDeclaredField("theUnsafe");
-            theUnsafe.setAccessible(true);
-            Unsafe u = (Unsafe)theUnsafe.get(null);
-
-            Class<?> cls = Class.forName("jdk.internal.module.IllegalAccessLogger");
-            Field logger = cls.getDeclaredField("logger");
-            u.putObjectVolatile(cls, u.staticFieldOffset(logger), null);
-        } catch (Exception ignored) {}
+//        try {
+//            Field theUnsafe = Unsafe.class.getDeclaredField("theUnsafe");
+//            theUnsafe.setAccessible(true);
+//            Unsafe u = (Unsafe)theUnsafe.get(null);
+//
+//            Class<?> cls = Class.forName("jdk.internal.module.IllegalAccessLogger");
+//            Field logger = cls.getDeclaredField("logger");
+//            u.putObjectVolatile(cls, u.staticFieldOffset(logger), null);
+//        } catch (Exception ignored) {}
         CONFIGURATION_EXECUTED.set(false);
     }
 
@@ -67,6 +65,7 @@ public class BaseTest extends UsesPlugins {
             beforeEach();
             PluginExecutionEngine.postBeforeTest(CURRENT_TEST_RESULT.get(), methodInfo);
         } catch (Exception e) {
+            e.printStackTrace();
             onBeforeEachFailure();
             PluginExecutionEngine.beforeTestFailed(e);
         }
@@ -83,6 +82,7 @@ public class BaseTest extends UsesPlugins {
             beforeAll();
             PluginExecutionEngine.postBeforeClass(testClass);
         } catch (Exception e) {
+            e.printStackTrace();
             PluginExecutionEngine.beforeClassFailed(e);
         }
     }
@@ -95,8 +95,9 @@ public class BaseTest extends UsesPlugins {
             var methodInfo = testClass.getMethod(testInfo.getTestMethod().get().getName());
             PluginExecutionEngine.preAfterTest(CURRENT_TEST_RESULT.get(), methodInfo);
             afterEach();
-            PluginExecutionEngine.postAfterTest(CURRENT_TEST_RESULT.get(), methodInfo);
+//            PluginExecutionEngine.postAfterTest(CURRENT_TEST_RESULT.get(), methodInfo);
         } catch (Exception e) {
+            e.printStackTrace();
             PluginExecutionEngine.afterTestFailed(e);
         }
     }
@@ -110,6 +111,7 @@ public class BaseTest extends UsesPlugins {
                 PluginExecutionEngine.postAfterClass(testClass.get());
             }
         } catch (Exception e) {
+            e.printStackTrace();
             PluginExecutionEngine.afterClassFailed(e);
         }
     }

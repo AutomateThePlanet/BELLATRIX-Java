@@ -15,13 +15,14 @@ package solutions.bellatrix.core.plugins;
 
 import java.lang.reflect.Method;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 public final class PluginExecutionEngine {
     private final static Set<Plugin> PLUGINS;
 
     static {
-        PLUGINS = new HashSet<>();
+        PLUGINS = new LinkedHashSet<>();
     }
 
     public static void addPlugin(Plugin plugin) {
@@ -67,7 +68,7 @@ public final class PluginExecutionEngine {
         }
     }
 
-    public static void beforeTestFailed(Exception e) {
+    public static void beforeTestFailed(Exception e) throws Exception {
         for (var currentObserver : PLUGINS) {
             if (currentObserver != null)
                 currentObserver.beforeTestFailed(e);
@@ -81,10 +82,10 @@ public final class PluginExecutionEngine {
         }
     }
 
-    public static void postAfterTest(TestResult result, Method memberInfo) {
+    public static void postAfterTest(TestResult result, Method memberInfo, Throwable failedTestException) {
         for (var currentObserver : PLUGINS) {
             if (currentObserver != null)
-                currentObserver.postAfterTest(result, memberInfo);
+                currentObserver.postAfterTest(result, memberInfo, failedTestException);
         }
     }
 

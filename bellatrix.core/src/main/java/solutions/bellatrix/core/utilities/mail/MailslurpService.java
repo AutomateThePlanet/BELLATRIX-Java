@@ -79,7 +79,10 @@ public class MailslurpService {
                 600000L,
                 false,
                 String.valueOf(InboxDto.InboxTypeEnum.HTTP_INBOX),
-                false);
+                false,
+                true,
+                null,
+                "bellatrix.com");
 
         return inbox;
     }

@@ -10,20 +10,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package solutions.bellatrix.core.plugins.junit;
 
-import org.junit.jupiter.api.extension.AfterTestExecutionCallback;
-import org.junit.jupiter.api.extension.ExtensionContext;
-import solutions.bellatrix.core.plugins.TestResult;
+package O12_page_objects.checkoutpage;
 
-public class TestResultListener implements AfterTestExecutionCallback {
+import solutions.bellatrix.web.pages.PageAsserts;
 
-    @Override
-    public void afterTestExecution(ExtensionContext extensionContext) {
-        if (extensionContext.getExecutionException().isPresent()) {
-            BaseTest.CURRENT_TEST_RESULT.set(TestResult.FAILURE);
-        } else {
-            BaseTest.CURRENT_TEST_RESULT.set(TestResult.SUCCESS);
-        }
+public class Asserts extends PageAsserts<Map> {
+    public void orderReceived() {
+        map().receivedMessage().validateTextIs("Order received");
     }
 }

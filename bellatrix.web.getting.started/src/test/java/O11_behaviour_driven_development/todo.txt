@@ -1,0 +1,3 @@
+    1. Execute some of your already written tests
+    2. Locate the testFrameworkSettings file and change some of the logs settings
+    3. Change the outputTemplate following the official documentation and rerun your tests

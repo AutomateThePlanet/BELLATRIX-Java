@@ -45,6 +45,8 @@ public class WebSettings {
     @Getter @Setter private Boolean waitForAngular;
     @Getter @Setter private Boolean shouldHighlightElements;
     @Getter @Setter private Boolean shouldCaptureHttpTraffic;
+    @Getter @Setter private Boolean toastNotificationBddLogging;
+    @Getter @Setter private long notificationToastTimeout;
 
     @Getter @Setter private Boolean screenshotsOnFailEnabled;
     @Getter @Setter private String screenshotsSaveLocation;

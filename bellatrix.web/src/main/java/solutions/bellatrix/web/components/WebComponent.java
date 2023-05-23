@@ -190,6 +190,12 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
         return (TElementType)this;
     }
 
+    public <TElementType extends WebComponent> TElementType toShadowRootToBeAttached() {
+        var waitStrategy = new ToShadowRootToBeAttachedWaitStrategy();
+        ensureState(waitStrategy);
+        return (TElementType)this;
+    }
+
     public <TElementType extends WebComponent> TElementType toNotExist() {
         var waitStrategy = new ToNotExistWaitStrategy();
         ensureState(waitStrategy);
@@ -542,19 +548,15 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
             var originalElementBackground = getWrappedElement().getCssValue("background");
             var originalElementColor = getWrappedElement().getCssValue("color");
             var originalElementOutline = getWrappedElement().getCssValue("outline");
-            javaScriptService.execute("arguments[0].style.background='yellow';arguments[0].style.color='black';arguments[0].style.outline='1px solid black';return;", wrappedElement);
 
-            var runnable = new Runnable() {
-                @SneakyThrows
-                public void run() {
-                    Thread.sleep(100);
-                    try {
-                        javaScriptService.execute("arguments[0].style.background='" + originalElementBackground + "';arguments[0].style.color='" + originalElementColor + "';arguments[0].style.outline='" + originalElementOutline + "';return;", wrappedElement);
-                    } catch (NoSuchSessionException | NullPointerException ignored) {
-                    }
-                }
-            };
-            new Thread(runnable).start();
+            String script = "arguments[0].style.background='yellow';arguments[0].style.color='black';arguments[0].style.outline='1px solid black';" +
+                    "setTimeout(function() {" +
+                    "arguments[0].style.background='" + originalElementBackground + "';" +
+                    "arguments[0].style.color='" + originalElementColor + "';" +
+                    "arguments[0].style.outline='" + originalElementOutline + "';" +
+                    "}, 100);";
+
+            javaScriptService.execute(script, wrappedElement);
         } catch (Exception ignored) {
         }
     }

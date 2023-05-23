@@ -1,0 +1,14 @@
+    HOVERING - an event executed before button hover
+    HOVERED - an event executed after the button is hovered
+    FOCUSING - an event executed before button focus
+    FOCUSED - an event executed after the button is focused
+    SCROLLING_TO_VISIBLE - an event executed before the button is scrolled to be visible
+    SCROLLED_TO_VISIBLE - an event executed after the button is scrolled to be visible
+    SETTING_ATTRIBUTE - an event executed before the button’s attribute is set to a value
+    ATTRIBUTE_SET - an event executed after the button’s attribute is set to a value
+    CREATING_ELEMENT - an event executed before the button component is created
+    CREATED_ELEMENT - an event executed after the button component is created
+    CREATING_ELEMENTS - an event executed before the button components are created
+    CREATED_ELEMENTS - an event executed after the button components are created
+    You need to implement the event handlers for these events and add listeners them. Use them in the test in
+    ElementActionHooksTests.class

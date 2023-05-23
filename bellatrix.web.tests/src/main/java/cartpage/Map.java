@@ -16,20 +16,20 @@ package cartpage;
 import solutions.bellatrix.web.components.Button;
 import solutions.bellatrix.web.components.Div;
 import solutions.bellatrix.web.components.Span;
-import solutions.bellatrix.web.components.TextField;
+import solutions.bellatrix.web.components.TextInput;
 import solutions.bellatrix.web.pages.PageMap;
 
 public class Map extends PageMap {
-    public TextField couponCodeTextField() {
-        return create().byId(TextField.class, "coupon_code");
+    public TextInput couponCodeTextField() {
+        return create().byId(TextInput.class, "coupon_code");
     }
 
     public Button applyCouponButton() {
         return create().byCss(Button.class, "[value*='Apply coupon']");
     }
 
-    public TextField quantityBox() {
-        return create().byCss(TextField.class, "[class*='input-text qty text']");
+    public TextInput quantityBox() {
+        return create().byCss(TextInput.class, "[class*='input-text qty text']");
     }
 
     public Button updateCart() {
