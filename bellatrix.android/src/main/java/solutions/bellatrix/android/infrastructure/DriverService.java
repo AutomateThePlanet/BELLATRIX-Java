@@ -25,10 +25,15 @@ import solutions.bellatrix.android.configuration.AndroidSettings;
 import solutions.bellatrix.android.configuration.GridSettings;
 import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.core.utilities.DebugInformation;
+import solutions.bellatrix.core.utilities.Log;
+import solutions.bellatrix.core.utilities.TimestampBuilder;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
 public class DriverService {
@@ -36,6 +41,8 @@ public class DriverService {
     private static final ThreadLocal<AppConfiguration> APP_CONFIGURATION;
     private static final ThreadLocal<HashMap<String, String>> CUSTOM_DRIVER_OPTIONS;
     private static final ThreadLocal<AndroidDriver> WRAPPED_ANDROID_DRIVER;
+    private static boolean isBuildNameSet = false;
+    private  static String buildName;
 
     static {
         DISPOSED = new ThreadLocal<>();
@@ -84,9 +91,22 @@ public class DriverService {
 
     private static AndroidDriver initializeDriverGridMode(GridSettings gridSettings) {
         var caps = new DesiredCapabilities();
-        caps.setCapability("platform", Platform.WIN10);
-        caps.setCapability("version", "latest");
+        caps.setCapability(MobileCapabilityType.PLATFORM_NAME, "android");
+        caps.setCapability(MobileCapabilityType.PLATFORM_VERSION, getAppConfiguration().getAndroidVersion());
+        caps.setCapability(MobileCapabilityType.DEVICE_NAME, getAppConfiguration().getDeviceName());
 
+        if (getAppConfiguration().getIsMobileWebExecution()) {
+            caps.setCapability(MobileCapabilityType.BROWSER_NAME, ConfigurationService.get(AndroidSettings.class).getDefaultBrowser());
+        } else {
+            caps.setCapability(MobileCapabilityType.APP, "bs://3f3ba7ba84b1039867b932263c3b711a6b8b6cae");
+            caps.setCapability(AndroidMobileCapabilityType.APP_PACKAGE, getAppConfiguration().getAppPackage());
+            caps.setCapability(AndroidMobileCapabilityType.APP_ACTIVITY, getAppConfiguration().getAppActivity());
+        }
+        HashMap<String, Object> options = new HashMap<String, Object>();
+        options.put("sessionName", "TEST");
+
+        addGridOptions(options, gridSettings);
+        caps.setCapability(gridSettings.getOptionsName(), options);
         AndroidDriver driver = null;
         try {
             driver = new AndroidDriver(new URL(gridSettings.getUrl()), caps);
@@ -96,6 +116,63 @@ public class DriverService {
         }
 
         return driver;
+    }
+
+    private static <TOption extends MutableCapabilities> void addGridOptions(HashMap<String, Object> options, GridSettings gridSettings) {
+        Log.info("Add Mobile Options:");
+        Log.info("");
+        for (var entry : gridSettings.getArguments()) {
+            for (var c : entry.entrySet()) {
+                if (c.getKey().toLowerCase().contains("build")) {
+                    var buildName = getBuildName();
+                    if (buildName == null) {
+                        buildName = c.getValue();
+                    }
+
+                    options.put(c.getKey(), buildName);
+                    Log.info(c.getKey() + "= " + buildName);
+                }
+                else {
+                    if (c.getValue().startsWith("env_")) {
+                        var envValue = System.getProperty(c.getValue().replace("env_", ""));
+                        options.put(c.getKey(), envValue);
+                        Log.info(c.getKey() + "= " + envValue);
+                    } else {
+                        options.put(c.getKey(), c.getValue());
+                        Log.info(c.getKey() + "= " + c.getValue());
+                    }
+                }
+            }
+
+            Log.info("");
+        }
+    }
+
+    private static String getBuildName() {
+        if (!isBuildNameSet) {
+            buildName = System.getProperty("buildName");
+        }
+
+        if (buildName == null) {
+            InputStream input = ConfigurationService.class.getResourceAsStream("/application.properties");
+            var p = new Properties();
+            try {
+                p.load(input);
+            } catch (IOException e) {
+                return null;
+            }
+
+            if (!isBuildNameSet) {
+                buildName = p.getProperty("buildName");
+            }
+
+            if (buildName.equals("{randomNumber}") && !isBuildNameSet) {
+                buildName = TimestampBuilder.buildUniqueTextByPrefix("LE_");
+                isBuildNameSet = true;
+            }
+        }
+
+        return buildName;
     }
 
     @SneakyThrows
