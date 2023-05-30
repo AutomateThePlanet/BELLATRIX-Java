@@ -14,9 +14,14 @@
 package solutions.bellatrix.web.pages;
 
 import solutions.bellatrix.core.utilities.InstanceFactory;
+import solutions.bellatrix.web.services.App;
 
 public abstract class PageAsserts<ComponentsT extends PageMap> {
     protected ComponentsT map() {
         return InstanceFactory.createByTypeParameter(getClass(), 0);
+    }
+
+    public App app() {
+        return new App();
     }
 }
