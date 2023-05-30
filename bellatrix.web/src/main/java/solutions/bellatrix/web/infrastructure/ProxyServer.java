@@ -21,6 +21,7 @@ import lombok.SneakyThrows;
 import net.lightbody.bmp.BrowserMobProxyServer;
 import net.lightbody.bmp.core.har.HarEntry;
 import net.lightbody.bmp.proxy.CaptureType;
+import org.apache.http.HttpStatus;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
@@ -37,11 +38,21 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.net.ServerSocket;
 import java.time.Duration;
+import java.util.Arrays;
 import java.util.List;
 
 public class ProxyServer {
     private static final ThreadLocal<BrowserMobProxyServer> PROXY_SERVER = ThreadLocal.withInitial(BrowserMobProxyServer::new);
     private static final ThreadLocal<Integer> PORT = new ThreadLocal<>();
+    private static final List<Integer> successHttpStatusesList = Arrays.asList(
+            HttpStatus.SC_OK,
+            HttpStatus.SC_CREATED,
+            HttpStatus.SC_ACCEPTED,
+            HttpStatus.SC_NON_AUTHORITATIVE_INFORMATION,
+            HttpStatus.SC_NO_CONTENT,
+            HttpStatus.SC_RESET_CONTENT,
+            HttpStatus.SC_PARTIAL_CONTENT,
+            HttpStatus.SC_MULTI_STATUS);
 
     @SneakyThrows
     public static int init() {
@@ -136,7 +147,7 @@ public class ProxyServer {
                 var isResponseReceived = harEntries.stream().anyMatch(
                         r -> r.getRequest().getUrl().contains(requestPartialUrl)
                         && r.getRequest().getMethod().equals(httpMethod.toString())
-                        && r.getResponse().getStatus() == 200
+                        && successHttpStatusesList.contains(r.getResponse().getStatus())
                         && !r.getResponse().getContent().getText().isEmpty()
                 );
 
