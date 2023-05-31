@@ -639,13 +639,16 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
             addArtificialDelay();
 
             waitStrategies.clear();
-        } catch (WebDriverException ex) {
-            Log.error("%n%nThe component: %n" +
-                            "     Type: \"\u001B[1m%s\u001B[0m\"%n" +
-                            "  Locator: \"\u001B[1m%s\u001B[0m\"%n" +
+        } catch (Exception ex) {
+            var formattedException = String.format("The component: \n" +
+                            "     Type: %s" +
+                            "  Locator: %s" +
+                            "  URL: %s\"%n" +
                             "Was not found on the page or didn't fulfill the specified conditions.%n%n",
-                    getComponentClass().getSimpleName(), findStrategy.toString());
-            throw ex;
+                    getComponentClass().getSimpleName(), findStrategy.toString(), getWrappedDriver().getCurrentUrl());
+            Log.error(formattedException);
+
+            throw new WebDriverException(formattedException, ex);
         }
 
         RETURNING_WRAPPED_ELEMENT.broadcast(new ComponentActionEventArgs(this));
