@@ -13,7 +13,6 @@
 
 package solutions.bellatrix.web.validations;
 
-import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
@@ -29,6 +28,7 @@ import solutions.bellatrix.web.infrastructure.DriverService;
 import solutions.bellatrix.web.services.BrowserService;
 
 import java.time.Duration;
+import java.util.List;
 import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
 
@@ -98,7 +98,13 @@ public class ComponentValidator {
         VALIDATED_ATTRIBUTE.broadcast(new ComponentActionEventArgs(component, null, String.format("validated %s is not %s", component.getComponentName(), attributeName)));
     }
 
-    private <T> void waitUntil(BooleanSupplier condition, WebComponent component, String attributeName, String value, Supplier<T> supplier, String prefix) {
+    public <Entity> void defaultValidateCollectionIs(WebComponent component, Supplier<List<Entity>> supplier, List<Entity> value, String attributeName) {
+        VALIDATING_ATTRIBUTE.broadcast(new ComponentActionEventArgs(component, value.toString(), String.format("validating %s's %s is '%s'", component.getComponentName(), attributeName, value)));
+        waitUntil(() -> supplier.get().equals(value), component, attributeName, value, supplier, "be");
+        VALIDATED_ATTRIBUTE.broadcast(new ComponentActionEventArgs(component, value.toString(), String.format("validated %s's %s is '%s'", component.getComponentName(), attributeName, value)));
+    }
+
+    private <T, V> void waitUntil(BooleanSupplier condition, WebComponent component, String attributeName, V value, Supplier<T> supplier, String prefix) {
         var validationTimeout = timeoutSettings.getValidationsTimeout();
         var sleepInterval = timeoutSettings.getSleepInterval();
 
