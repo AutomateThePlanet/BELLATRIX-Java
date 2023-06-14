@@ -16,14 +16,12 @@ package solutions.bellatrix.web.services;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.StringEscapeUtils;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.NotFoundException;
-import org.openqa.selenium.StaleElementReferenceException;
-import org.openqa.selenium.TimeoutException;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import solutions.bellatrix.core.configuration.ConfigurationService;
+import solutions.bellatrix.core.utilities.Log;
 import solutions.bellatrix.core.utilities.Wait;
 import solutions.bellatrix.web.components.Frame;
 import solutions.bellatrix.web.configuration.WebSettings;
@@ -150,22 +148,30 @@ public class BrowserService extends WebService {
     }
 
     public void waitForAjax() {
-        long ajaxTimeout = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getWaitForAjaxTimeout();
-        long sleepInterval = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getSleepInterval();
-        var webDriverWait = new WebDriverWait(getWrappedDriver(), Duration.ofSeconds(ajaxTimeout), Duration.ofSeconds(sleepInterval));
-        var javascriptExecutor = (JavascriptExecutor)getWrappedDriver();
-        webDriverWait.until(d -> {
-                    var numberOfAjaxConnections = javascriptExecutor.executeScript("return !isNaN(window.openHTTPs) ? window.openHTTPs : null");
-                    if (Objects.nonNull(numberOfAjaxConnections)) {
-                        int ajaxConnections = Integer.parseInt(numberOfAjaxConnections.toString());
-                        return ajaxConnections == 0;
-                    } else {
-                        monkeyPatchXMLHttpRequest();
-                    }
+        try {
+            long ajaxTimeout = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getWaitForAjaxTimeout();
+            long sleepInterval = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getSleepInterval();
+            var webDriverWait = new WebDriverWait(getWrappedDriver(), Duration.ofSeconds(ajaxTimeout), Duration.ofSeconds(sleepInterval));
+            var javascriptExecutor = (JavascriptExecutor)getWrappedDriver();
+            webDriverWait.until(d -> {
+                        var numberOfAjaxConnections = javascriptExecutor.executeScript("return !isNaN(window.openHTTPs) ? window.openHTTPs : null");
+                        if (Objects.nonNull(numberOfAjaxConnections)) {
+                            int ajaxConnections = Integer.parseInt(numberOfAjaxConnections.toString());
+                            return ajaxConnections == 0;
+                        } else {
+                            monkeyPatchXMLHttpRequest();
+                        }
 
-                    return false;
-                }
-        );
+                        return false;
+                    }
+            );
+        } catch (Exception ex) {
+            var formattedException = String.format("The wait for ajax requests timeout. \n" +
+                            "  URL: %s\"%n", getWrappedDriver().getCurrentUrl());
+            Log.error(formattedException);
+
+            throw new WebDriverException(formattedException, ex);
+        }
     }
 
     private void monkeyPatchXMLHttpRequest() {
@@ -208,10 +214,19 @@ public class BrowserService extends WebService {
     }
 
     public void waitUntilPageLoadsCompletely() {
-        long waitUntilReadyTimeout = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getWaitUntilReadyTimeout();
-        long sleepInterval = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getSleepInterval();
-        var webDriverWait = new WebDriverWait(getWrappedDriver(), Duration.ofSeconds(waitUntilReadyTimeout), Duration.ofSeconds(sleepInterval));
-        webDriverWait.until(webDriver -> ((JavascriptExecutor)webDriver).executeScript("return document.readyState").equals("complete"));
+        try {
+            long waitUntilReadyTimeout = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getWaitUntilReadyTimeout();
+            long sleepInterval = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getSleepInterval();
+            var webDriverWait = new WebDriverWait(getWrappedDriver(), Duration.ofSeconds(waitUntilReadyTimeout), Duration.ofSeconds(sleepInterval));
+            webDriverWait.until(webDriver -> ((JavascriptExecutor)webDriver).executeScript("return document.readyState").equals("complete"));
+        } catch (Exception ex) {
+            var formattedException = String.format("The wait until ready timeout. \n" +
+                    "  URL: %s\"%n", getWrappedDriver().getCurrentUrl());
+            Log.error(formattedException);
+
+            throw new WebDriverException(formattedException, ex);
+        }
+
     }
 
     @SneakyThrows
