@@ -4,14 +4,14 @@ import org.junit.jupiter.api.Test;
 import solutions.bellatrix.web.components.*;
 import solutions.bellatrix.web.infrastructure.junit.WebTest;
 
-public class ValidateAssertions extends WebTest {
+public class ValidateAssertionsTests extends WebTest {
     @Test
     public void assertValidateCartPageFields() {
         app().navigate().to("http://demos.bellatrix.solutions/?add-to-cart=26");
 
         app().navigate().to("http://demos.bellatrix.solutions/cart/");
 
-        TextField couponCodeTextField = app().create().byId(TextField.class, "coupon_code");
+        TextInput couponCodeTextField = app().create().byId(TextInput.class, "coupon_code");
 
         couponCodeTextField.validatePlaceholderIs("Coupon code");
         // If we use the validate methods, BELLATRIX waits some time for the condition to pass. After this period if it

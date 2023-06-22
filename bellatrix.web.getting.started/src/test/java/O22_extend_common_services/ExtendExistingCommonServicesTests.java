@@ -15,14 +15,14 @@ public class ExtendExistingCommonServicesTests extends WebTest {
     public void purchaseRocket() {
         app().navigate().viaJavaScript("http://demos.bellatrix.solutions/");
 
-        Select sortDropDown = app().create().byNameEndingWith(Select.class, "orderby");
+        Select sortDropDown = app().create().byNameEnding(Select.class, "orderby");
         Anchor protonMReadMoreButton =
                 app().create().byInnerTextContaining(Anchor.class, "Read more");
         Anchor addToCartFalcon9 =
                 app().create().byAttributeContaining(Anchor.class, "data-product_id", "28").toBeClickable();
         Anchor viewCartButton =
                 app().create().byClassContaining(Anchor.class, "added_to_cart wc-forward").toBeClickable();
-        TextField couponCodeTextField = app().create().byId(TextField.class, "coupon_code");
+        TextInput couponCodeTextField = app().create().byId(TextInput.class, "coupon_code");
         Button applyCouponButton = app().create().byValueContaining(Button.class, "Apply coupon");
         NumberInput quantityBox = app().create().byClassContaining(NumberInput.class, "input-text qty text");
         Div messageAlert = app().create().byClassContaining(Div.class, "woocommerce-message");

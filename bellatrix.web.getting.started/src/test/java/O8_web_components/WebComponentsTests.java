@@ -10,7 +10,7 @@ public class WebComponentsTests extends WebTest {
     public void purchaseRocket() {
         app().navigate().to("http://demos.bellatrix.solutions/");
 
-        Select sortDropDown = app().create().byNameEndingWith(Select.class, "orderby");
+        Select sortDropDown = app().create().byNameEnding(Select.class, "orderby");
         // Create methods accept a generic parameter the type of the web control. Then only the methods for this specific
         // control are accessible. Here we tell BELLATRIX to find your component by name attribute ending with ‘orderby’.
         // <select name="orderby" class="orderby">
@@ -38,9 +38,9 @@ public class WebComponentsTests extends WebTest {
         // Find the anchor by class ‘added_to_cart wc-forward’ and wait for the component again to be clickable.
         viewCartButton.click();
 
-        TextField couponCodeTextField = app().create().byId(TextField.class, "coupon_code");
+        TextInput couponCodeTextInput = app().create().byId(TextInput.class, "coupon_code");
         //Find a regular text input component by id = ‘coupon_code’.
-        couponCodeTextField.setText("happybirthday");
+        couponCodeTextInput.setText("happybirthday");
 
         Button applyCouponButton = app().create().byValueContaining(Button.class, "Apply coupon");
         applyCouponButton.click();
@@ -53,17 +53,17 @@ public class WebComponentsTests extends WebTest {
 
         messageAlert.validateTextIs("Coupon code applied successfully.");
 
-        NumberInput quantityBox = app().create().byClassContaining(NumberInput.class, "input-text qty text");
+        TextInput quantityBox = app().create().byClassContaining(TextInput.class, "input-text qty text");
 
-        quantityBox.setNumber(0);
-        quantityBox.setNumber(2);
+        quantityBox.setText("0");
+        quantityBox.setText("2");
 
         Button updateCart = app().create().byValueContaining(Button.class, "Update cart").toBeClickable();
         updateCart.click();
 
         Span totalSpan = app().create().byXPath(Span.class, "//*[@class='order-total']//span");
 
-        totalSpan.validateTextIs("95.00€");
+        totalSpan.validateTextIs("114.00€");
 
         Anchor proceedToCheckout =
                 app().create().byClassContaining(Anchor.class, "checkout-button button alt wc-forward");
@@ -77,43 +77,44 @@ public class WebComponentsTests extends WebTest {
         // All web components have multiple properties for their most important attributes and ensure methods for their
         // verification.
         showLogin.validateHrefIs("http://demos.bellatrix.solutions/checkout/#");
+        showLogin.validateHrefIs("https://demos.bellatrix.solutions/checkout/#");
 
-        TextArea orderCommentsTextArea = app().create().byId(TextArea.class, "order_comments");
+        TextInput orderCommentsTextArea = app().create().byId(TextInput.class, "order_comments");
 
         orderCommentsTextArea.scrollToVisible();
         // Here we find the order comments text area and since it is below the visible area we scroll down so that it gets
         // visible on the video recordings. Then the text is set.
         orderCommentsTextArea.setText("Please send the rocket to my door step!");
 
-        TextField billingFirstName = app().create().byId(TextField.class, "billing_first_name");
+        TextInput billingFirstName = app().create().byId(TextInput.class, "billing_first_name");
         billingFirstName.setText("In");
 
-        TextField billingLastName = app().create().byId(TextField.class, "billing_last_name");
+        TextInput billingLastName = app().create().byId(TextInput.class, "billing_last_name");
         billingLastName.setText("Deepthought");
 
-        TextField billingCompany = app().create().byId(TextField.class, "billing_company");
+        TextInput billingCompany = app().create().byId(TextInput.class, "billing_company");
         billingCompany.setText("Automate The Planet Ltd.");
 
         Select billingCountry = app().create().byId(Select.class, "billing_country");
         billingCountry.selectByText("Bulgaria");
 
-        TextField billingAddress1 = app().create().byId(TextField.class, "billing_address_1");
+        TextInput billingAddress1 = app().create().byId(TextInput.class, "billing_address_1");
 
         Assertions.assertEquals(billingAddress1.getPlaceholder(), "House number and street name");
         // Through the Placeholder, you can get the default text of the control.
         billingAddress1.setText("bul. Yerusalim 5");
 
-        TextField billingAddress2 = app().create().byId(TextField.class, "billing_address_2");
+        TextInput billingAddress2 = app().create().byId(TextInput.class, "billing_address_2");
         billingAddress2.setText("bul. Yerusalim 6");
 
-        TextField billingCity = app().create().byId(TextField.class, "billing_city");
+        TextInput billingCity = app().create().byId(TextInput.class, "billing_city");
         billingCity.setText("Sofia");
 
         Select billingState =
                 app().create().byId(Select.class, "billing_state").toBeVisible().toBeClickable();
         billingState.selectByText("Sofia-Grad");
 
-        TextField billingZip = app().create().byId(TextField.class, "billing_postcode");
+        TextInput billingZip = app().create().byId(TextInput.class, "billing_postcode");
         billingZip.setText("1000");
 
         PhoneInput billingPhone = app().create().byId(PhoneInput.class, "billing_phone");
@@ -121,7 +122,7 @@ public class WebComponentsTests extends WebTest {
         billingPhone.setPhone("+00359894646464");
         // Create the special text field control Phone it contains some additional properties unique for this web component.
 
-        EmailField billingEmail = app().create().byId(EmailField.class, "billing_email");
+        EmailInput billingEmail = app().create().byId(EmailInput.class, "billing_email");
 
         billingEmail.setEmail("info@bellatrix.solutions");
         // Here we create the special text field control Email it contains some additional properties unique for this web
@@ -157,7 +158,7 @@ public class WebComponentsTests extends WebTest {
     // Span	        getText, getHtml
     // TextArea	    getText, setText, isDisabled, isAutoComplete, isSpellCheck, isReadonly, isRequired, getPlaceholder,
     //              getMaxLength, getMinLength, getRows, getCols, getWrap
-    // TextField	    getText, setText isDisabled, isAutoComplete, isReadonly, isRequired, getPlaceholder, getMaxLength, getMinLength
+    // TextInput	    getText, setText isDisabled, isAutoComplete, isReadonly, isRequired, getPlaceholder, getMaxLength, getMinLength
 
     // HTML5 Components:
     // Component	Available properties

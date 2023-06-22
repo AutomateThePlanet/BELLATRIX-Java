@@ -19,6 +19,7 @@
         <module>bellatrix.ios</module>
         <module>bellatrix.api</module>
         <module>bellatrix.web.tests</module>
+        <module>bellatrix.web.getting.started</module>
         <module>bellatrix.desktop.tests</module>
         <module>bellatrix.android.tests</module>
         <module>bellatrix.ios.tests</module>
