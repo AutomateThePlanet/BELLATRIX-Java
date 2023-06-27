@@ -29,6 +29,7 @@ import solutions.bellatrix.core.utilities.DebugInformation;
 import solutions.bellatrix.core.utilities.InstanceFactory;
 import solutions.bellatrix.core.utilities.Log;
 import solutions.bellatrix.web.components.contracts.Component;
+import solutions.bellatrix.web.components.contracts.ComponentStyle;
 import solutions.bellatrix.web.components.contracts.ComponentVisible;
 import solutions.bellatrix.web.configuration.WebSettings;
 import solutions.bellatrix.web.findstrategies.*;
@@ -50,7 +51,7 @@ import java.util.Optional;
 
 import static org.apache.commons.text.StringEscapeUtils.unescapeHtml4;
 
-public class WebComponent extends LayoutComponentValidationsBuilder implements Component, ComponentVisible {
+public class WebComponent extends LayoutComponentValidationsBuilder implements Component, ComponentVisible, ComponentStyle {
     public final static EventListener<ComponentActionEventArgs> HOVERING = new EventListener<>();
     public final static EventListener<ComponentActionEventArgs> HOVERED = new EventListener<>();
     public final static EventListener<ComponentActionEventArgs> FOCUSING = new EventListener<>();

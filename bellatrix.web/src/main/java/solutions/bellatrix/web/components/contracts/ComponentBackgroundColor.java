@@ -14,9 +14,9 @@
 package solutions.bellatrix.web.components.contracts;
 
 import lombok.SneakyThrows;
+import org.openqa.selenium.support.Colors;
 import solutions.bellatrix.core.utilities.SingletonFactory;
 import solutions.bellatrix.web.components.WebComponent;
-import solutions.bellatrix.web.components.enums.CssStyle;
 import solutions.bellatrix.web.services.JavaScriptService;
 import solutions.bellatrix.web.validations.ComponentValidator;
 
@@ -24,19 +24,20 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.function.Supplier;
 
-public interface ComponentStyle extends Component {
-    default String getStyle(CssStyle style) {
-        var script = String.format("return window.getComputedStyle(arguments[0],null).getPropertyValue('%s');", style);
+public interface ComponentBackgroundColor extends Component {
+
+    default String getBackgroundColor(){
+        var script = "return arguments[0].style.background";
         var result = new JavaScriptService().execute(script, (WebComponent) this);
 
         return result;
     }
 
     @SneakyThrows
-    default void validateStyle(CssStyle style, String expectedValue) {
+    default void validateBackgroundColor(Colors expectedColor) {
         try {
-            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIs", WebComponent.class, Supplier.class, java.lang.String.class, java.lang.String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, (Supplier<Object>) () -> this.getStyle(style), expectedValue, java.lang.String.format("expected color should be \u001B[35m%s\u001B[0m", expectedValue));
+            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIs", WebComponent.class, Supplier.class, String.class, String.class);
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, (Supplier<String>) () -> this.getBackgroundColor(), expectedColor.getColorValue().getColor().getRGB(), String.format("expected color should be \u001B[35m%s\u001B[0m", expectedColor));
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }
