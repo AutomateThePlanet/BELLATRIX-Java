@@ -31,8 +31,8 @@ public class BrowserLifecyclePlugin extends Plugin {
     static {
         CURRENT_BROWSER_CONFIGURATION = new ThreadLocal<>();
         PREVIOUS_BROWSER_CONFIGURATION = new ThreadLocal<>();
-        IS_BROWSER_STARTED_DURING_PRE_BEFORE_CLASS = new ThreadLocal<>();
-        IS_BROWSER_STARTED_CORRECTLY = new ThreadLocal<>();
+        IS_BROWSER_STARTED_DURING_PRE_BEFORE_CLASS = ThreadLocal.withInitial(() -> false);
+        IS_BROWSER_STARTED_CORRECTLY = ThreadLocal.withInitial(() -> false);
     }
 
     @Override
