@@ -53,10 +53,10 @@ public class WebComponentsTests extends WebTest {
 
         messageAlert.validateTextIs("Coupon code applied successfully.");
 
-        TextInput quantityBox = app().create().byClassContaining(TextInput.class, "input-text qty text");
+        NumberInput quantityBox = app().create().byClassContaining(NumberInput.class, "input-text qty text");
 
-        quantityBox.setText("0");
-        quantityBox.setText("2");
+        quantityBox.setNumber(0);
+        quantityBox.setNumber(2);
 
         Button updateCart = app().create().byValueContaining(Button.class, "Update cart").toBeClickable();
         updateCart.click();
@@ -76,7 +76,6 @@ public class WebComponentsTests extends WebTest {
         Anchor showLogin = app().create().byInnerTextContaining(Anchor.class, "Click here to login");
         // All web components have multiple properties for their most important attributes and ensure methods for their
         // verification.
-        showLogin.validateHrefIs("http://demos.bellatrix.solutions/checkout/#");
         showLogin.validateHrefIs("https://demos.bellatrix.solutions/checkout/#");
 
         TextInput orderCommentsTextArea = app().create().byId(TextInput.class, "order_comments");

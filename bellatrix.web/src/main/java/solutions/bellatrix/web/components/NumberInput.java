@@ -32,7 +32,7 @@ public class NumberInput extends WebComponent implements ComponentDisabled, Comp
 
     @Override
     public void setNumber(double value) {
-        setValue(SETTING_NUMBER, NUMBER_SET, String.valueOf(value));
+        defaultSetText(SETTING_NUMBER, NUMBER_SET, String.valueOf(value));
     }
 
     @Override
