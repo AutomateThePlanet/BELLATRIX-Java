@@ -666,18 +666,18 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
         try {
             wait.until(x -> tryClick());
         } catch (TimeoutException e) {
-            toExist().toBeClickable().findElement().click();
+            toBeVisible().toBeClickable().findElement().click();
         }
     }
 
     private boolean tryClick() {
         try {
-            toExist().toBeClickable().findElement().click();
+            toBeVisible().toBeClickable().findElement().click();
             return true;
         } catch (ElementNotInteractableException e) {
             return false;
         } catch (WebDriverException e) {
-            toExist().toBeClickable().waitToBe();
+            toBeVisible().toBeClickable().waitToBe();
             return false;
         }
     }
