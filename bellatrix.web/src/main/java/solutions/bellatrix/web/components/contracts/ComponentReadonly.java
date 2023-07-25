@@ -27,21 +27,11 @@ public interface ComponentReadonly extends Component {
 
     @SneakyThrows
     default void validateIsReadonly() {
-        try {
-            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeTrue", WebComponent.class, BooleanSupplier.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, (BooleanSupplier)this::isReadonly, "readonly");
-        } catch (InvocationTargetException e) {
-            throw e.getCause();
-        }
+        ComponentValidator.defaultValidateAttributeTrue((WebComponent)this, this::isReadonly, "readonly");
     }
 
     @SneakyThrows
     default void validateNotReadonly() {
-        try {
-            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeFalse", WebComponent.class, BooleanSupplier.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, (BooleanSupplier)this::isReadonly, "readonly");
-        } catch (InvocationTargetException e) {
-            throw e.getCause();
-        }
+        ComponentValidator.defaultValidateAttributeFalse((WebComponent)this, this::isReadonly, "readonly");
     }
 }
