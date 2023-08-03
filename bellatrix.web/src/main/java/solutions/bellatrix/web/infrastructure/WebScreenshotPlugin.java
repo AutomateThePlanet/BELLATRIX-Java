@@ -14,6 +14,7 @@
 package solutions.bellatrix.web.infrastructure;
 
 import lombok.SneakyThrows;
+import org.apache.commons.codec.binary.Base64;
 import plugins.screenshots.ScreenshotPlugin;
 import ru.yandex.qatools.ashot.AShot;
 import ru.yandex.qatools.ashot.shooting.ShootingStrategies;
@@ -23,6 +24,7 @@ import solutions.bellatrix.core.utilities.PathNormalizer;
 import solutions.bellatrix.web.configuration.WebSettings;
 
 import javax.imageio.ImageIO;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.nio.file.Paths;
 import java.util.UUID;
@@ -40,6 +42,14 @@ public class WebScreenshotPlugin extends ScreenshotPlugin {
                 .takeScreenshot(DriverService.getWrappedDriver());
         var destFile = new File(Paths.get(screenshotSaveDir, filename).toString());
         Log.info("Saving screenshot with path: " + destFile);
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ImageIO.write(screenshot.getImage(), "jpg", baos);
+        baos.flush();
+        byte[] encodeBase64 = Base64.encodeBase64(baos.toByteArray());
+        var base64Encoded = new String(encodeBase64);
+        baos.close();
+        Log.info("<img src=\"data:image/png;base64," + base64Encoded + "\" alt=\"Red dot\" />");
         ImageIO.write(screenshot.getImage(), "png", destFile);
     }
 
