@@ -33,6 +33,7 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
@@ -98,13 +99,14 @@ public class DriverService {
         if (getAppConfiguration().getIsMobileWebExecution()) {
             caps.setCapability(MobileCapabilityType.BROWSER_NAME, ConfigurationService.get(AndroidSettings.class).getDefaultBrowser());
         } else {
-            caps.setCapability(MobileCapabilityType.APP, "bs://3f3ba7ba84b1039867b932263c3b711a6b8b6cae");
+            var app = getAppConfiguration().getAppPath().replace("\\", "/");
+            caps.setCapability(MobileCapabilityType.APP, app);
+            caps.setCapability("autoGrantPermissions", "true");
             caps.setCapability(AndroidMobileCapabilityType.APP_PACKAGE, getAppConfiguration().getAppPackage());
             caps.setCapability(AndroidMobileCapabilityType.APP_ACTIVITY, getAppConfiguration().getAppActivity());
         }
-        HashMap<String, Object> options = new HashMap<String, Object>();
-        options.put("sessionName", "TEST");
 
+        HashMap<String, Object> options = new HashMap<String, Object>();
         addGridOptions(options, gridSettings);
         caps.setCapability(gridSettings.getOptionsName(), options);
         AndroidDriver driver = null;
@@ -144,6 +146,12 @@ public class DriverService {
                 }
             }
 
+            Map<String, String> chromeOptions = new HashMap<>();
+
+//            chromeOptions.put("driver", "74.0.3729.6");
+            chromeOptions.put("driver", "103.0.5060.134");
+            options.put("chrome", chromeOptions);
+
             Log.info("");
         }
     }
@@ -181,6 +189,11 @@ public class DriverService {
         caps.setCapability(MobileCapabilityType.PLATFORM_NAME, "Android");
         caps.setCapability(MobileCapabilityType.PLATFORM_VERSION, getAppConfiguration().getAndroidVersion());
         caps.setCapability(MobileCapabilityType.DEVICE_NAME, getAppConfiguration().getDeviceName());
+        caps.setCapability(AndroidMobileCapabilityType.AUTO_GRANT_PERMISSIONS, true);
+        caps.setCapability("showChromedriverLog", true);
+//        caps.setCapability("autoWebview", true);
+//        caps.setCapability("autoWebviewTimeout", 30000);
+        //caps.setCapability("autoGrantPermissions", true);
 
         if (getAppConfiguration().getIsMobileWebExecution()) {
             caps.setCapability(MobileCapabilityType.BROWSER_NAME, ConfigurationService.get(AndroidSettings.class).getDefaultBrowser());
@@ -228,7 +241,7 @@ public class DriverService {
         }
 
         if (WRAPPED_ANDROID_DRIVER.get() != null) {
-            WRAPPED_ANDROID_DRIVER.get().close();
+            WRAPPED_ANDROID_DRIVER.get().quit();
             CUSTOM_DRIVER_OPTIONS.get().clear();
         }
 

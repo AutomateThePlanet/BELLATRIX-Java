@@ -32,7 +32,7 @@ public class AndroidTest extends BaseTest {
         addPlugin(AppLifecyclePlugin.class);
         addPlugin(MobileScreenshotPlugin.class);
         addPlugin(MobileVideoPlugin.class);
-        addPlugin(DownloadDemoAppsPlugin.class);
+//        addPlugin(DownloadDemoAppsPlugin.class);
         addListener(BddLogging.class);
     }
 }
