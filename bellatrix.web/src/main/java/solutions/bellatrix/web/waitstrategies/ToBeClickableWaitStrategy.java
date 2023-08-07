@@ -42,7 +42,7 @@ public class ToBeClickableWaitStrategy extends WaitStrategy {
     private boolean elementIsClickable(SearchContext searchContext, By by) {
         var element = findElement(searchContext, by);
         try {
-            return element != null && element.isEnabled();
+            return element != null && element.isEnabled() ;
         } catch (StaleElementReferenceException | NoSuchElementException e) {
             return false;
         }

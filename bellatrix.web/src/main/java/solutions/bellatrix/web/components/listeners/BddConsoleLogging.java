@@ -35,7 +35,7 @@ public class BddConsoleLogging extends Listener {
             FileInput.UPLOADING.addListener((x) -> Log.info("uploading '%s' to %s", x.getActionValue(), x.getComponent().getComponentName()));
             MonthInput.SETTING_MONTH.addListener((x) -> Log.info("setting '%s' in %s", x.getActionValue(), x.getComponent().getComponentName()));
             NumberInput.SETTING_NUMBER.addListener((x) -> Log.info("typing '%s' in %s", x.getActionValue(), x.getComponent().getComponentName()));
-            PasswordInput.SETTING_PASSWORD.addListener((x) -> Log.info("typing '%s' in %s", x.getActionValue(), x.getComponent().getComponentName()));
+            PasswordInput.SETTING_PASSWORD.addListener((x) -> Log.info("typing '*****' in %s", x.getComponent().getComponentName()));
             PhoneInput.SETTING_PHONE.addListener((x) -> Log.info("typing '%s' in %s", x.getActionValue(), x.getComponent().getComponentName()));
             RadioButton.CLICKING.addListener((x) -> System.out.printf("clicking %s%n", x.getComponent().getComponentName()));
             Range.SETTING_RANGE.addListener((x) -> Log.info("setting '%s' in %s", x.getActionValue(), x.getComponent().getComponentName()));
