@@ -22,10 +22,12 @@ import net.lightbody.bmp.BrowserMobProxyServer;
 import net.lightbody.bmp.core.har.HarEntry;
 import net.lightbody.bmp.proxy.CaptureType;
 import org.apache.http.HttpStatus;
+import org.asynchttpclient.uri.Uri;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.http.HttpMethod;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.opentest4j.AssertionFailedError;
 import org.testng.Assert;
 import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.core.utilities.Log;
@@ -35,6 +37,7 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.net.ServerSocket;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -97,8 +100,8 @@ public class ProxyServer {
     public static void assertRequestMade(String url) {
         var harEntries = PROXY_SERVER.get().getHar().getLog().getEntries();
         var areRequestsMade = harEntries.stream().anyMatch(r -> r.getRequest().getUrl().contains(url));
-
-        Assert.assertTrue(areRequestsMade, String.format("The expected url '%s' was not loaded!", url));
+        String simiarRequestsString = getSimilarRequestsString(url, harEntries);
+        Assert.assertTrue(areRequestsMade, String.format("The expected url '%s' was not loaded! Similar requests: %s", url, simiarRequestsString));
     }
 
     public static void assertRequestNotMade(String url, HttpMethod httpMethod) {
@@ -129,7 +132,7 @@ public class ProxyServer {
             });
         }
         catch (TimeoutException exception){
-            throw new TimeoutException(String.format("The expected request with URL '%s' is not loaded!", requestPartialUrl));
+            throw new AssertionFailedError(String.format("The expected request with URL '%s' is not loaded!", requestPartialUrl));
         }
     }
 
@@ -137,7 +140,7 @@ public class ProxyServer {
         long timeout = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getWaitForAjaxTimeout();
         long sleepInterval = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getSleepInterval();
         var webDriverWait = new WebDriverWait(driver, Duration.ofSeconds(timeout + additionalTimeoutInSeconds), Duration.ofSeconds(sleepInterval));
-
+        List<HarEntry> allHarEntries = new ArrayList<>();
         try {
             webDriverWait.until(d -> {
                 var harEntries = PROXY_SERVER.get().getHar().getLog().getEntries();
@@ -147,13 +150,33 @@ public class ProxyServer {
                         && successHttpStatusesList.contains(r.getResponse().getStatus())
                         && !r.getResponse().getContent().getText().isEmpty()
                 );
-
+                allHarEntries.clear();
+                allHarEntries.addAll(harEntries);
                 return isResponseReceived;
             });
         }
         catch (TimeoutException exception){
-            throw new TimeoutException(String.format("The expected response with request URL '%s' is not loaded!", requestPartialUrl));
+            String allUrlsString = getSimilarRequestsString(requestPartialUrl, allHarEntries);
+
+            throw new AssertionFailedError(String.format("The expected response with request URL '%s' is not loaded! \r\nSimilar requests: %s", requestPartialUrl, allUrlsString));
         }
+    }
+
+    private static String getSimilarRequestsString(String requestPartialUrl, List<HarEntry> allHarEntries) {
+        ArrayList<String> allUrls = new ArrayList<>();
+        allHarEntries.stream().forEach(e -> {
+            Uri uri = Uri.create(requestPartialUrl);
+            if(e.getRequest().getUrl().contains(uri.getHost())){
+                allUrls.add(e.getRequest().getUrl());
+            }
+        });
+        String allUrlsString = "";
+        for (String url:
+             allUrls) {
+            allUrlsString += url;
+            allUrlsString += "\r\n";
+        }
+        return allUrlsString;
     }
 
     public static void assertNoLargeImagesRequested() {
@@ -252,7 +275,7 @@ public class ProxyServer {
             return new Gson().fromJson(getDataObject(json), responseModelClass);
         }
         catch (Exception ex){
-            throw new RuntimeException("Cannot get JSON body from the string: " + json + ". " + harEntry.getResponse().toString());
+            throw new AssertionFailedError("Cannot get JSON body from the string: " + json + ". " + harEntry.getResponse().toString());
         }
     }
 
