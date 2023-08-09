@@ -22,18 +22,15 @@ import net.lightbody.bmp.BrowserMobProxyServer;
 import net.lightbody.bmp.core.har.HarEntry;
 import net.lightbody.bmp.proxy.CaptureType;
 import org.apache.http.HttpStatus;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.http.HttpMethod;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-import software.amazon.awssdk.services.secretsmanager.endpoints.internal.Value;
 import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.core.utilities.Log;
 import solutions.bellatrix.web.configuration.WebSettings;
 
-import java.io.Console;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.net.ServerSocket;
@@ -251,7 +248,12 @@ public class ProxyServer {
             return null;
         }
         String json = harEntry.getResponse().getContent().getText();
-        return new Gson().fromJson(getDataObject(json), responseModelClass);
+        try {
+            return new Gson().fromJson(getDataObject(json), responseModelClass);
+        }
+        catch (Exception ex){
+            throw new RuntimeException("Cannot get JSON body from the string: " + json + ". " + harEntry.getResponse().toString());
+        }
     }
 
     public static <T> T getResponseByUrl(String url, String httpMethod, Type responseModelType) {
@@ -289,7 +291,11 @@ public class ProxyServer {
         try {
             jsonObject = (JsonObject) parser.parse(jsonString);
             isObject = true;
-        } catch (Exception exception) {
+        }
+        catch (NullPointerException nullEx){
+            throw new RuntimeException("JSON data is null. " + nullEx.getMessage());
+        }
+        catch (Exception exception) {
             jsonArray = (JsonArray) parser.parse(jsonString);
         }
 
