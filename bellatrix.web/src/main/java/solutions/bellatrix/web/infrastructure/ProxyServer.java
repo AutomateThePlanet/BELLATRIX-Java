@@ -163,20 +163,27 @@ public class ProxyServer {
     }
 
     private static String getSimilarRequestsString(String requestPartialUrl, List<HarEntry> allHarEntries) {
-        ArrayList<String> allUrls = new ArrayList<>();
-        allHarEntries.stream().forEach(e -> {
-            Uri uri = Uri.create(requestPartialUrl);
-            if(e.getRequest().getUrl().contains(uri.getHost())){
-                allUrls.add(e.getRequest().getUrl());
+        try{
+            ArrayList<String> allUrls = new ArrayList<>();
+            allHarEntries.stream().forEach(e -> {
+                Uri uri = Uri.create(requestPartialUrl);
+                if(e.getRequest().getUrl().contains(uri.getHost()) || e.getRequest().getUrl().contains(requestPartialUrl)){
+                    allUrls.add(e.getRequest().getUrl());
+                }
+            });
+            String allUrlsString = "";
+            for (String url:
+                 allUrls) {
+                allUrlsString += url;
+                allUrlsString += "\r\n";
             }
-        });
-        String allUrlsString = "";
-        for (String url:
-             allUrls) {
-            allUrlsString += url;
-            allUrlsString += "\r\n";
+            return allUrlsString;
         }
-        return allUrlsString;
+        catch (Exception ex){
+            ArrayList<String> allUrls = new ArrayList<>();
+            allHarEntries.forEach(e -> allUrls.add(e.getRequest().getUrl()));
+            return allUrls.toString();
+        }
     }
 
     public static void assertNoLargeImagesRequested() {
