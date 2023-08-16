@@ -107,6 +107,13 @@ public class AppService extends MobileService {
         ((ContextAware)getWrappedAndroidDriver()).context(lastContext);
     }
 
+    public void switchToWebView(String name) {
+        var contexts = ((ContextAware)getWrappedAndroidDriver()).getContextHandles();
+        long count = contexts.stream().count();
+        var lastContext = contexts.stream().filter(c -> c.contains("name")).findFirst().get();
+        ((ContextAware)getWrappedAndroidDriver()).context(lastContext);
+    }
+
     public void switchToFirstWebView() {
         var contexts = ((ContextAware)getWrappedAndroidDriver()).getContextHandles();
         long count = contexts.stream().count();
