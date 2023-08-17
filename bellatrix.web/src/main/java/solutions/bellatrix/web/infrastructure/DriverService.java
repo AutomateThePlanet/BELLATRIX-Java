@@ -229,7 +229,6 @@ public class DriverService {
 
         switch (BROWSER_CONFIGURATION.get().getBrowser()) {
             case CHROME -> {
-                WebDriverManager.chromedriver().setup();
                 var chromeOptions = new ChromeOptions();
                 addDriverOptions(chromeOptions);
                 chromeOptions.addArguments("--log-level=3","--remote-allow-origins=*");
@@ -241,7 +240,6 @@ public class DriverService {
                 driver = new ChromeDriver(chromeOptions);
             }
             case CHROME_HEADLESS -> {
-                WebDriverManager.chromedriver().setup();
                 var chromeHeadlessOptions = new ChromeOptions();
                 addDriverOptions(chromeHeadlessOptions);
                 chromeHeadlessOptions.setAcceptInsecureCerts(true);
@@ -254,7 +252,6 @@ public class DriverService {
                 driver = new ChromeDriver(chromeHeadlessOptions);
             }
             case FIREFOX -> {
-                WebDriverManager.firefoxdriver().setup();
                 var firefoxOptions = new FirefoxOptions();
                 addDriverOptions(firefoxOptions);
                 firefoxOptions.setAcceptInsecureCerts(true);
@@ -262,7 +259,6 @@ public class DriverService {
                 driver = new FirefoxDriver(firefoxOptions);
             }
             case FIREFOX_HEADLESS -> {
-                WebDriverManager.firefoxdriver().setup();
                 var firefoxHeadlessOptions = new FirefoxOptions();
                 addDriverOptions(firefoxHeadlessOptions);
                 firefoxHeadlessOptions.setAcceptInsecureCerts(true);
@@ -271,8 +267,6 @@ public class DriverService {
                 driver = new FirefoxDriver(firefoxHeadlessOptions);
             }
             case EDGE -> {
-
-                WebDriverManager.edgedriver().setup();
                 var edgeOptions = new EdgeOptions();
                 addDriverOptions(edgeOptions);
                 if (shouldCaptureHttpTraffic) edgeOptions.setProxy(proxyConfig);
@@ -286,7 +280,6 @@ public class DriverService {
                 driver = new SafariDriver(safariOptions);
             }
             case INTERNET_EXPLORER -> {
-                WebDriverManager.iedriver().setup();
                 var internetExplorerOptions = new InternetExplorerOptions();
                 addDriverOptions(internetExplorerOptions);
                 internetExplorerOptions.introduceFlakinessByIgnoringSecurityDomains().ignoreZoomSettings();
