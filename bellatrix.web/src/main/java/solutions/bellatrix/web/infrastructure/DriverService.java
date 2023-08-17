@@ -13,7 +13,6 @@
 
 package solutions.bellatrix.web.infrastructure;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
 import net.lightbody.bmp.client.ClientUtil;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
