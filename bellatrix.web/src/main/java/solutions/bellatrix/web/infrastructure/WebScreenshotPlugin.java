@@ -42,14 +42,6 @@ public class WebScreenshotPlugin extends ScreenshotPlugin {
                 .takeScreenshot(DriverService.getWrappedDriver());
         var destFile = new File(Paths.get(screenshotSaveDir, filename).toString());
         Log.info("Saving screenshot with path: " + destFile);
-
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        ImageIO.write(screenshot.getImage(), "jpg", baos);
-        baos.flush();
-        byte[] encodeBase64 = Base64.encodeBase64(baos.toByteArray());
-        var base64Encoded = new String(encodeBase64);
-        baos.close();
-        Log.info("<img src=\"data:image/png;base64," + base64Encoded + "\" alt=\"Red dot\" />");
         ImageIO.write(screenshot.getImage(), "png", destFile);
     }
 
