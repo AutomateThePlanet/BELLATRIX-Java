@@ -13,7 +13,6 @@
 
 package solutions.bellatrix.web.infrastructure;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
 import net.lightbody.bmp.client.ClientUtil;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -229,9 +228,11 @@ public class DriverService {
 
         switch (BROWSER_CONFIGURATION.get().getBrowser()) {
             case CHROME -> {
-                WebDriverManager.chromedriver().setup();
                 var chromeOptions = new ChromeOptions();
+                System.setProperty("webdriver.chrome.driver", "C:\\CfT\\chromedriver-win64\\chromedriver.exe");
+                chromeOptions.setBinary("C:\\CfT\\chrome-win64\\chrome.exe");
                 addDriverOptions(chromeOptions);
+//                chromeOptions.setBrowserVersion("114");
                 chromeOptions.addArguments("--log-level=3","--remote-allow-origins=*");
                 chromeOptions.setAcceptInsecureCerts(true);
                 chromeOptions.setCapability(CapabilityType.UNHANDLED_PROMPT_BEHAVIOUR, UnexpectedAlertBehaviour.ACCEPT);
@@ -241,20 +242,22 @@ public class DriverService {
                 driver = new ChromeDriver(chromeOptions);
             }
             case CHROME_HEADLESS -> {
-                WebDriverManager.chromedriver().setup();
                 var chromeHeadlessOptions = new ChromeOptions();
                 addDriverOptions(chromeHeadlessOptions);
+                System.setProperty("webdriver.chrome.driver", "C:\\CfT\\chromedriver-win64\\chromedriver.exe");
+                chromeHeadlessOptions.setBinary("C:\\CfT\\chrome-win64\\chrome.exe");
                 chromeHeadlessOptions.setAcceptInsecureCerts(true);
-                chromeHeadlessOptions.addArguments("--log-level=3");
+//                chromeHeadlessOptions.addArguments("--log-level=3");
+                chromeHeadlessOptions.addArguments("--log-level=3","--remote-allow-origins=*");
                 chromeHeadlessOptions.setCapability(CapabilityType.UNHANDLED_PROMPT_BEHAVIOUR, UnexpectedAlertBehaviour.ACCEPT);
-                chromeHeadlessOptions.setHeadless(true);
+//                chromeHeadlessOptions.setHeadless(true);
+                chromeHeadlessOptions.addArguments("--headless=new");
                 System.setProperty("webdriver.chrome.silentOutput", "true");
                 if (shouldCaptureHttpTraffic) chromeHeadlessOptions.setProxy(proxyConfig);
 
                 driver = new ChromeDriver(chromeHeadlessOptions);
             }
             case FIREFOX -> {
-                WebDriverManager.firefoxdriver().setup();
                 var firefoxOptions = new FirefoxOptions();
                 addDriverOptions(firefoxOptions);
                 firefoxOptions.setAcceptInsecureCerts(true);
@@ -262,7 +265,6 @@ public class DriverService {
                 driver = new FirefoxDriver(firefoxOptions);
             }
             case FIREFOX_HEADLESS -> {
-                WebDriverManager.firefoxdriver().setup();
                 var firefoxHeadlessOptions = new FirefoxOptions();
                 addDriverOptions(firefoxHeadlessOptions);
                 firefoxHeadlessOptions.setAcceptInsecureCerts(true);
@@ -271,8 +273,6 @@ public class DriverService {
                 driver = new FirefoxDriver(firefoxHeadlessOptions);
             }
             case EDGE -> {
-
-                WebDriverManager.edgedriver().setup();
                 var edgeOptions = new EdgeOptions();
                 addDriverOptions(edgeOptions);
                 if (shouldCaptureHttpTraffic) edgeOptions.setProxy(proxyConfig);
@@ -286,7 +286,6 @@ public class DriverService {
                 driver = new SafariDriver(safariOptions);
             }
             case INTERNET_EXPLORER -> {
-                WebDriverManager.iedriver().setup();
                 var internetExplorerOptions = new InternetExplorerOptions();
                 addDriverOptions(internetExplorerOptions);
                 internetExplorerOptions.introduceFlakinessByIgnoringSecurityDomains().ignoreZoomSettings();
