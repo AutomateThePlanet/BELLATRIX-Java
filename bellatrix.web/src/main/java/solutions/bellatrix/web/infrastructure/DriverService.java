@@ -142,10 +142,10 @@ public class DriverService {
         // Anton: maybe this is something else for other clouds, should be tested.
         // If this is the case, we need to have branching per provider name.
         options.put("sessionName", getBrowserConfiguration().getTestName());
-//        if (gridSettings.getProviderName() == "browserstack") {
-//            options.put("sessionName", getBrowserConfiguration().getTestName());
-//        }
 
+        if (gridSettings.getProviderName() == "lambdatest") {
+            caps.setCapability("lambdaMaskCommands", new String[] {"setValues", "setCookies", "getCookies"});
+        }
         addGridOptions(options, gridSettings);
 
         caps.setCapability(gridSettings.getOptionsName(), options);
