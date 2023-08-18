@@ -229,8 +229,10 @@ public class DriverService {
         switch (BROWSER_CONFIGURATION.get().getBrowser()) {
             case CHROME -> {
                 var chromeOptions = new ChromeOptions();
+                System.setProperty("webdriver.chrome.driver", "C:\\CfT\\chromedriver-win64\\chromedriver.exe");
+                chromeOptions.setBinary("C:\\CfT\\chrome-win64\\chrome.exe");
                 addDriverOptions(chromeOptions);
-                chromeOptions.setBrowserVersion("114");
+//                chromeOptions.setBrowserVersion("114");
                 chromeOptions.addArguments("--log-level=3","--remote-allow-origins=*");
                 chromeOptions.setAcceptInsecureCerts(true);
                 chromeOptions.setCapability(CapabilityType.UNHANDLED_PROMPT_BEHAVIOUR, UnexpectedAlertBehaviour.ACCEPT);
