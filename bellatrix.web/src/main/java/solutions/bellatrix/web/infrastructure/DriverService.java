@@ -343,7 +343,7 @@ public class DriverService {
     private static void changeWindowSize(WebDriver wrappedDriver) {
         try {
             if (getBrowserConfiguration().getHeight() != 0 && getBrowserConfiguration().getWidth() != 0) {
-                wrappedDriver.manage().window().setSize(new Dimension(getBrowserConfiguration().getHeight(), getBrowserConfiguration().getWidth()));
+                wrappedDriver.manage().window().setSize(new Dimension(getBrowserConfiguration().getWidth(), getBrowserConfiguration().getHeight()));
             }
         } catch (Exception ignored) {}
     }

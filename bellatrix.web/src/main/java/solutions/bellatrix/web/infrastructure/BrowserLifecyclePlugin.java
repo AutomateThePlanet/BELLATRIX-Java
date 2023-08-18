@@ -141,12 +141,22 @@ public class BrowserLifecyclePlugin extends Plugin {
 
     private BrowserConfiguration getExecutionBrowserClassLevel(Class<?> type) {
         var executionBrowserAnnotation = (ExecutionBrowser)type.getDeclaredAnnotation(ExecutionBrowser.class);
-        if (executionBrowserAnnotation == null) {
-            var defaultBrowser = Browser.fromText(ConfigurationService.get(WebSettings.class).getDefaultBrowser());
-            var defaultLifecycle = Lifecycle.fromText(ConfigurationService.get(WebSettings.class).getDefaultLifeCycle());
-            return new BrowserConfiguration(defaultBrowser, defaultLifecycle);
-        }
 
-        return new BrowserConfiguration(executionBrowserAnnotation.browser(), executionBrowserAnnotation.lifecycle());
+        var defaultBrowser = Browser.fromText(ConfigurationService.get(WebSettings.class).getDefaultBrowser());
+        var defaultLifecycle = Lifecycle.fromText(ConfigurationService.get(WebSettings.class).getDefaultLifeCycle());
+        var defaultWidth = ConfigurationService.get(WebSettings.class).getDefaultBrowserWidth();
+        var defaultHeight = ConfigurationService.get(WebSettings.class).getDefaultBrowserHeight();
+
+        var finalBrowser = executionBrowserAnnotation.browser() != defaultBrowser ? executionBrowserAnnotation.browser() : defaultBrowser;
+        var finalLifecycle = executionBrowserAnnotation.lifecycle() != defaultLifecycle ? executionBrowserAnnotation.lifecycle() : defaultLifecycle;
+        var finalWidth = executionBrowserAnnotation.width() != 0 ? executionBrowserAnnotation.width() : defaultWidth;
+        var finalHeight = executionBrowserAnnotation.height() != 0 ? executionBrowserAnnotation.height() : defaultHeight;
+
+        if (executionBrowserAnnotation == null) {
+            return new BrowserConfiguration(defaultBrowser, defaultLifecycle, defaultWidth, defaultHeight);
+        }
+        else {
+            return new BrowserConfiguration(finalBrowser, finalLifecycle, finalWidth, finalHeight);
+        }
     }
 }

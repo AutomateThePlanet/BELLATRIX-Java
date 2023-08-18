@@ -39,6 +39,14 @@ public class BrowserConfiguration {
         driverOptions = new HashMap<>();
     }
 
+    public BrowserConfiguration(Browser browser, Lifecycle browserBehavior, Integer browserWidth, Integer browserHeight) {
+        this.browser = browser;
+        this.lifecycle = browserBehavior;
+        this.width = browserWidth;
+        this.height = browserHeight;
+        driverOptions = new HashMap<>();
+    }
+
     public BrowserConfiguration(Browser browser, Lifecycle browserBehavior, String testName) {
         this.browser = browser;
         this.lifecycle = browserBehavior;
