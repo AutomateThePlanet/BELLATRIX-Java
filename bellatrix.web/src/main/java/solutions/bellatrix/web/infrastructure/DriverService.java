@@ -230,6 +230,7 @@ public class DriverService {
             case CHROME -> {
                 var chromeOptions = new ChromeOptions();
                 addDriverOptions(chromeOptions);
+                chromeOptions.setBrowserVersion("114");
                 chromeOptions.addArguments("--log-level=3","--remote-allow-origins=*");
                 chromeOptions.setAcceptInsecureCerts(true);
                 chromeOptions.setCapability(CapabilityType.UNHANDLED_PROMPT_BEHAVIOUR, UnexpectedAlertBehaviour.ACCEPT);
