@@ -25,7 +25,7 @@
 
     <properties>
         <selenium.version>4.8.1</selenium.version>
-        <appium.version>8.5.0</appium.version>
+        <appium.version>8.3.0</appium.version>
         <testng.version>7.7.0</testng.version>
         <junit.version>5.9.2</junit.version>
     </properties>
