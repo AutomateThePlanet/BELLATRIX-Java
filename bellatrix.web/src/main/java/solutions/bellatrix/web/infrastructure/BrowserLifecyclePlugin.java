@@ -147,7 +147,7 @@ public class BrowserLifecyclePlugin extends Plugin {
         var defaultWidth = ConfigurationService.get(WebSettings.class).getDefaultBrowserWidth();
         var defaultHeight = ConfigurationService.get(WebSettings.class).getDefaultBrowserHeight();
 
-        var finalBrowser = executionBrowserAnnotation.browser() != defaultBrowser ? executionBrowserAnnotation.browser() : defaultBrowser;
+        var finalBrowser = executionBrowserAnnotation.browser() != Browser.NOT_SET && executionBrowserAnnotation.browser() != defaultBrowser ? executionBrowserAnnotation.browser() : defaultBrowser;
         var finalLifecycle = executionBrowserAnnotation.lifecycle() != defaultLifecycle ? executionBrowserAnnotation.lifecycle() : defaultLifecycle;
         var finalWidth = executionBrowserAnnotation.width() != 0 ? executionBrowserAnnotation.width() : defaultWidth;
         var finalHeight = executionBrowserAnnotation.height() != 0 ? executionBrowserAnnotation.height() : defaultHeight;

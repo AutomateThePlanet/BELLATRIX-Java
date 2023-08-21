@@ -24,6 +24,7 @@ public enum Browser {
     // EDGE_HEADLESS("edge"), // Unsupported by Selenium 3, Selenium 4 has support
     OPERA("opera"),
     SAFARI("safari"),
+    NOT_SET("not_set"),
     INTERNET_EXPLORER("ie");
 
     private final String value;
