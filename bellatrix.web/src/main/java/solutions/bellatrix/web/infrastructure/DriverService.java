@@ -344,7 +344,7 @@ public class DriverService {
             if (getBrowserConfiguration().getHeight() != 0 && getBrowserConfiguration().getWidth() != 0) {
                 wrappedDriver.manage().window().setSize(new Dimension(getBrowserConfiguration().getWidth(), getBrowserConfiguration().getHeight()));
             }
-        } catch (Exception ignored) {}
+        } catch (Exception ex) { System.out.println("Error while resizing browser window: " + ex.getMessage());}
     }
 
     private static String getBuildName() {
