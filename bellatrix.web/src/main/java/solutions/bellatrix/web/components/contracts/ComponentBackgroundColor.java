@@ -37,7 +37,7 @@ public interface ComponentBackgroundColor extends Component {
     default void validateBackgroundColor(Colors expectedColor) {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIs", WebComponent.class, Supplier.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, (Supplier<String>) () -> this.getBackgroundColor(), expectedColor.getColorValue().getColor().getRGB(), String.format("expected color should be \u001B[35m%s\u001B[0m", expectedColor));
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, (Supplier<String>) () -> this.getBackgroundColor(), expectedColor.getColorValue().getColor().getRGB(), String.format("expected color should be %s", expectedColor));
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }

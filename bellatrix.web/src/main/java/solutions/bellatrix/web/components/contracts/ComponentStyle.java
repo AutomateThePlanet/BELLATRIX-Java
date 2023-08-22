@@ -36,7 +36,7 @@ public interface ComponentStyle extends Component {
     default void validateStyle(CssStyle style, String expectedValue) {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIs", WebComponent.class, Supplier.class, java.lang.String.class, java.lang.String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, (Supplier<Object>) () -> this.getStyle(style), expectedValue, java.lang.String.format("expected color should be \u001B[35m%s\u001B[0m", expectedValue));
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, (Supplier<Object>) () -> this.getStyle(style), expectedValue, java.lang.String.format("expected color should be %s", expectedValue));
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }

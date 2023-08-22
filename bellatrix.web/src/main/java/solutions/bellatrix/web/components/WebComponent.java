@@ -646,8 +646,8 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
             waitStrategies.clear();
         } catch (WebDriverException ex) {
             Log.error("%n%nThe component: %n" +
-                            "     Type: \"\u001B[1m%s\u001B[0m\"%n" +
-                            "  Locator: \"\u001B[1m%s\u001B[0m\"%n" +
+                            "     Type: \"%s\"%n" +
+                            "  Locator: \"%s\"%n" +
                             "Was not found on the page or didn't fulfill the specified conditions.%n%n",
                     getComponentClass().getSimpleName(), findStrategy.toString());
             throw ex;
