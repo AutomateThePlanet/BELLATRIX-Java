@@ -229,10 +229,7 @@ public class DriverService {
         switch (BROWSER_CONFIGURATION.get().getBrowser()) {
             case CHROME -> {
                 var chromeOptions = new ChromeOptions();
-//                System.setProperty("webdriver.chrome.driver", "C:\\CfT\\chromedriver-win64\\chromedriver.exe");
-//                chromeOptions.setBinary("C:\\CfT\\chrome-win64\\chrome.exe");
                 addDriverOptions(chromeOptions);
-//                chromeOptions.setBrowserVersion("114");
                 chromeOptions.addArguments("--log-level=3","--remote-allow-origins=*");
                 chromeOptions.setAcceptInsecureCerts(true);
                 chromeOptions.setCapability(CapabilityType.UNHANDLED_PROMPT_BEHAVIOUR, UnexpectedAlertBehaviour.ACCEPT);
@@ -244,14 +241,10 @@ public class DriverService {
             case CHROME_HEADLESS -> {
                 var chromeHeadlessOptions = new ChromeOptions();
                 addDriverOptions(chromeHeadlessOptions);
-//                System.setProperty("webdriver.chrome.driver", "C:\\CfT\\chromedriver-win64\\chromedriver.exe");
-//                chromeHeadlessOptions.setBinary("C:\\CfT\\chrome-win64\\chrome.exe");
                 chromeHeadlessOptions.setAcceptInsecureCerts(true);
-//                chromeHeadlessOptions.addArguments("--log-level=3");
                 chromeHeadlessOptions.addArguments("--log-level=3","--remote-allow-origins=*");
                 chromeHeadlessOptions.setCapability(CapabilityType.UNHANDLED_PROMPT_BEHAVIOUR, UnexpectedAlertBehaviour.ACCEPT);
-//                chromeHeadlessOptions.setHeadless(true);
-                chromeHeadlessOptions.addArguments("--headless=new");
+                chromeHeadlessOptions.addArguments("--headless=old");
                 System.setProperty("webdriver.chrome.silentOutput", "true");
                 if (shouldCaptureHttpTraffic) chromeHeadlessOptions.setProxy(proxyConfig);
 
