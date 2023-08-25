@@ -38,7 +38,7 @@ public class WebScreenshotPlugin extends ScreenshotPlugin {
     @SneakyThrows
     protected void takeScreenshot(String screenshotSaveDir, String filename) {
         var screenshot = new AShot()
-                .shootingStrategy(ShootingStrategies.viewportPasting(100))
+                .shootingStrategy(ShootingStrategies.simple())
                 .takeScreenshot(DriverService.getWrappedDriver());
         var destFile = new File(Paths.get(screenshotSaveDir, filename).toString());
         Log.info("Saving screenshot with path: " + destFile);
