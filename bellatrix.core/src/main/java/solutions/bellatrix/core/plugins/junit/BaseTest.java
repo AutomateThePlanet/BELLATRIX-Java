@@ -95,7 +95,7 @@ public class BaseTest extends UsesPlugins {
             var methodInfo = testClass.getMethod(testInfo.getTestMethod().get().getName());
             PluginExecutionEngine.preAfterTest(CURRENT_TEST_RESULT.get(), methodInfo);
             afterEach();
-//            PluginExecutionEngine.postAfterTest(CURRENT_TEST_RESULT.get(), methodInfo);
+           // PluginExecutionEngine.postAfterTest(CURRENT_TEST_RESULT.get(), methodInfo);
         } catch (Exception e) {
             e.printStackTrace();
             PluginExecutionEngine.afterTestFailed(e);

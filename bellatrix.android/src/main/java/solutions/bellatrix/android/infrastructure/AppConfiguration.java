@@ -15,6 +15,7 @@ package solutions.bellatrix.android.infrastructure;
 
 import com.google.common.base.Objects;
 import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 import solutions.bellatrix.android.configuration.AndroidSettings;
 import solutions.bellatrix.core.configuration.ConfigurationService;
@@ -29,6 +30,7 @@ public class AppConfiguration {
     @Getter private String appPackage;
     @Getter private String appActivity;
     @Getter private String androidVersion;
+    @Setter @Getter private String testName;
     @Getter private final Boolean isMobileWebExecution;
     @Getter HashMap<String, String> appiumOptions;
 
