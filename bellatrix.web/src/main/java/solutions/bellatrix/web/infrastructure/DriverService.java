@@ -322,6 +322,10 @@ public class DriverService {
                 }
             }
 
+            if ("lambdatest".equalsIgnoreCase(gridSettings.getProviderName())) {
+                options.put("lambdaMaskCommands", new String[]{"setValues", "setCookies", "getCookies"});
+            }
+
             Log.info("");
         }
     }
@@ -336,6 +340,10 @@ public class DriverService {
                     options.setCapability(c.getKey(), c.getValue());
                 }
             }
+        }
+
+        if ("lambdatest".equalsIgnoreCase(gridSettings.getProviderName())) {
+            options.setCapability("lambdaMaskCommands", new String[]{"setValues", "setCookies", "getCookies"});
         }
     }
 
