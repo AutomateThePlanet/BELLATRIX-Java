@@ -343,4 +343,15 @@ public class BrowserService extends WebService {
             }
         }
     }
+
+    public String getLastClipboardEntry(){
+        JavaScriptService jsService = new JavaScriptService();
+        Object lastCopyObject = jsService.execute("return await window.navigator.clipboard.readText();");
+        if (lastCopyObject != null){
+            return lastCopyObject.toString();
+        }
+        else {
+            return "";
+        }
+    }
 }
