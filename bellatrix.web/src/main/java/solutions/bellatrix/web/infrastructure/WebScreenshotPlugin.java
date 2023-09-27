@@ -14,7 +14,6 @@
 package solutions.bellatrix.web.infrastructure;
 
 import lombok.SneakyThrows;
-import org.apache.commons.codec.binary.Base64;
 import plugins.screenshots.ScreenshotPlugin;
 import ru.yandex.qatools.ashot.AShot;
 import ru.yandex.qatools.ashot.shooting.ShootingStrategies;
@@ -24,7 +23,6 @@ import solutions.bellatrix.core.utilities.PathNormalizer;
 import solutions.bellatrix.web.configuration.WebSettings;
 
 import javax.imageio.ImageIO;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.nio.file.Paths;
 import java.util.UUID;
