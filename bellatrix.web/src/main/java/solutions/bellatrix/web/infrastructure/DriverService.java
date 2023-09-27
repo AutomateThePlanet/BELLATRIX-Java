@@ -39,6 +39,7 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
@@ -230,6 +231,7 @@ public class DriverService {
             case CHROME -> {
                 var chromeOptions = new ChromeOptions();
                 addDriverOptions(chromeOptions);
+                addDriverCapabilities(chromeOptions);
                 chromeOptions.addArguments("--log-level=3","--remote-allow-origins=*");
                 chromeOptions.setAcceptInsecureCerts(true);
                 chromeOptions.setCapability(CapabilityType.UNHANDLED_PROMPT_BEHAVIOUR, UnexpectedAlertBehaviour.ACCEPT);
@@ -241,6 +243,7 @@ public class DriverService {
             case CHROME_HEADLESS -> {
                 var chromeHeadlessOptions = new ChromeOptions();
                 addDriverOptions(chromeHeadlessOptions);
+                addDriverCapabilities(chromeHeadlessOptions);
                 chromeHeadlessOptions.setAcceptInsecureCerts(true);
                 chromeHeadlessOptions.addArguments("--log-level=3","--remote-allow-origins=*");
                 chromeHeadlessOptions.setCapability(CapabilityType.UNHANDLED_PROMPT_BEHAVIOUR, UnexpectedAlertBehaviour.ACCEPT);
@@ -288,6 +291,25 @@ public class DriverService {
         }
 
         return driver;
+    }
+
+    private static DesiredCapabilities addDriverCapabilities(ChromeOptions chromeOptions) {
+        DesiredCapabilities caps = new DesiredCapabilities();
+        // INIT CHROME OPTIONS
+        Map<String, Object> prefs = new HashMap<String, Object>();
+        Map<String, Object> profile = new HashMap<String, Object>();
+        Map<String, Object> contentSettings = new HashMap<String, Object>();
+
+        // SET CHROME OPTIONS
+        // 0 - Default, 1 - Allow, 2 - Block
+        contentSettings.put("notifications", 1);
+        profile.put("managed_default_content_settings", contentSettings);
+        prefs.put("profile", profile);
+        chromeOptions.setExperimentalOption("prefs", prefs);
+
+        // SET CAPABILITY
+        caps.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
+        return caps;
     }
 
     private static <TOption extends MutableCapabilities> void addGridOptions(HashMap<String, Object> options, GridSettings gridSettings) {
