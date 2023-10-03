@@ -38,11 +38,13 @@ import solutions.bellatrix.web.configuration.WebSettings;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
-import java.net.URL;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Properties;
-import java.util.concurrent.TimeUnit;
+
+import static io.restassured.RestAssured.given;
 
 public class DriverService {
     private static final ThreadLocal<Boolean> DISPOSED = ThreadLocal.withInitial(() -> true);
@@ -142,16 +144,16 @@ public class DriverService {
         // Anton: maybe this is something else for other clouds, should be tested.
         // If this is the case, we need to have branching per provider name.
         options.put("sessionName", getBrowserConfiguration().getTestName());
-//        if (gridSettings.getProviderName() == "browserstack") {
-//            options.put("sessionName", getBrowserConfiguration().getTestName());
-//        }
+        // if (gridSettings.getProviderName() == "browserstack") {
+        // options.put("sessionName", getBrowserConfiguration().getTestName());
+        // }
 
         addGridOptions(options, gridSettings);
 
         caps.setCapability(gridSettings.getOptionsName(), options);
         WebDriver driver = null;
         try {
-            driver = new RemoteWebDriver(new URL(gridSettings.getUrl()), caps);
+            driver = new RemoteWebDriver(new URI(gridSettings.getUrl()).toURL(), caps);
         } catch (Exception e) {
             DebugInformation.printStackTrace(e);
         }
@@ -208,8 +210,8 @@ public class DriverService {
 
         WebDriver driver = null;
         try {
-            driver = new RemoteWebDriver(new URL(gridSettings.getUrl()), caps);
-        } catch (MalformedURLException e) {
+            driver = new RemoteWebDriver(new URI(gridSettings.getUrl()).toURL(), caps);
+        } catch (MalformedURLException | URISyntaxException e) {
             DebugInformation.printStackTrace(e);
         }
 
@@ -304,26 +306,39 @@ public class DriverService {
                 if (c.getKey().toLowerCase().contains("build")) {
                     var buildName = getBuildName();
                     if (buildName == null) {
-                        buildName = c.getValue();
+                        buildName = c.getValue().toString();
                     }
 
                     options.put(c.getKey(), buildName);
-                    Log.info(c.getKey() + "= " + buildName);
+                    Log.info(c.getKey() + " = " + buildName);
                 }
                 else {
-                    if (c.getValue().startsWith("env_")) {
-                        var envValue = System.getProperty(c.getValue().replace("env_", ""));
+                    if (c.getValue() instanceof String && c.getValue().toString().startsWith("env_")) {
+                        var envValue = System.getProperty(c.getValue().toString().replace("env_", ""));
                         options.put(c.getKey(), envValue);
-                        Log.info(c.getKey() + "= " + envValue);
+                        Log.info(c.getKey() + " = " + envValue);
                     } else {
                         options.put(c.getKey(), c.getValue());
-                        Log.info(c.getKey() + "= " + c.getValue());
+                        Log.info(c.getKey() + " = " + c.getValue());
                     }
                 }
             }
 
             if ("lambdatest".equalsIgnoreCase(gridSettings.getProviderName())) {
                 options.put("lambdaMaskCommands", new String[]{"setValues", "setCookies", "getCookies"});
+
+                try {
+                    var userInfo = new URI(gridSettings.getUrl()).getUserInfo().split(":");
+
+                    var res = given().auth().preemptive().basic(userInfo[0], userInfo[1])
+                            .get("https://api.lambdatest.com/automation/api/v1/user-files");
+
+                    options.put("lambda:userFiles", res.body().jsonPath().getList("data.key"));
+                } catch (Exception e) {
+                    DebugInformation.printStackTrace(e);
+                }
+
+
             }
 
             Log.info("");
@@ -333,8 +348,8 @@ public class DriverService {
     private static <TOption extends MutableCapabilities> void addGridOptions(TOption options, GridSettings gridSettings) {
         for (var entry : gridSettings.getArguments()) {
             for (var c : entry.entrySet()) {
-                if (c.getValue().startsWith("env_")) {
-                    var envValue = System.getProperty(c.getValue().replace("env_", ""));
+                if (c.getValue() instanceof String && c.getValue().toString().startsWith("env_")) {
+                    var envValue = System.getProperty(c.getValue().toString().replace("env_", ""));
                     options.setCapability(c.getKey(), envValue);
                 } else {
                     options.setCapability(c.getKey(), c.getValue());
