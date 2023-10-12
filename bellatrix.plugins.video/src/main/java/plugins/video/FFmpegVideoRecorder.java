@@ -17,7 +17,7 @@ import org.apache.commons.io.FilenameUtils;
 import solutions.bellatrix.core.utilities.FileDownloader;
 import solutions.bellatrix.core.utilities.RuntimeInformation;
 
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Paths;
 
 public class FFmpegVideoRecorder implements AutoCloseable {
@@ -25,43 +25,43 @@ public class FFmpegVideoRecorder implements AutoCloseable {
     public void close() {
         try {
             if (RuntimeInformation.IS_WINDOWS) {
-                new ProcessBuilder("taskkill", "/IM", "ffmpeg_windows.exe", "/F").start().waitFor();
+                new ProcessBuilder("taskkill", "/IM", "ffmpeg_windows.exe", "/F").inheritIO().start().waitFor();
             } else if (RuntimeInformation.IS_MAC) {
-                new ProcessBuilder("killall", "ffmpeg_osx").start().waitFor();
+                new ProcessBuilder("killall", "ffmpeg_osx").inheritIO().start().waitFor();
             } else {
-                new ProcessBuilder("killall", "ffmpeg_linux").start().waitFor();
+                new ProcessBuilder("killall", "ffmpeg_linux").inheritIO().start().waitFor();
             }
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
     }
 
+
     public String startRecording(String videoSaveDir, String videoFileName) {
         var videoFullPath = Paths.get(videoSaveDir, videoFileName).toString();
         try {
+            String[] args;
             if (RuntimeInformation.IS_WINDOWS) {
-                var recorderFile = FileDownloader.downloadToUsersFolder("https://github.com/AutomateThePlanet/BELLATRIX/releases/download/1.0/ffmpeg_windows.exe");
+                var recorderFile = FileDownloader.downloadToUsersFolder("https://github.com/AutomateThePlanet/BELLATRIX/releases/download/1.3/ffmpeg_windows.exe");
                 var videoFilePathWithExtension = String.format("%s.mpg", FilenameUtils.removeExtension(videoFullPath));
-                var args = new String[]{recorderFile, "-f", "gdigrab", "-framerate", "30", "-i", "desktop", videoFilePathWithExtension};
-                new ProcessBuilder(args).start();
-                return videoFilePathWithExtension;
+                args = new String[]{recorderFile, "-f", "gdigrab", "-framerate", "30", "-i", "desktop", videoFilePathWithExtension};
             } else if (RuntimeInformation.IS_MAC) {
-                var recorderFile = FileDownloader.downloadToUsersFolder("https://github.com/AutomateThePlanet/BELLATRIX/releases/download/1.0/ffmpeg_osx");
+                var recorderFile = FileDownloader.downloadToUsersFolder("https://github.com/AutomateThePlanet/BELLATRIX/releases/download/1.3/ffmpeg");
                 var videoFilePathWithExtension = String.format("%s.mkv", FilenameUtils.removeExtension(videoFullPath));
-                var args = new String[]{recorderFile, "-f", "avfoundation", "-framerate", "10", "-i", "\"0:0\"", videoFilePathWithExtension};
-                new ProcessBuilder(args).start();
-                return videoFilePathWithExtension;
+                args = new String[]{recorderFile, "-f", "avfoundation", "-framerate", "10", "-i", "\"0:0\"", videoFilePathWithExtension};
             } else {
                 var recorderFile = FileDownloader.downloadToUsersFolder("https://github.com/AutomateThePlanet/BELLATRIX/releases/download/1.0/ffmpeg_linux");
                 var videoFilePathWithExtension = String.format("%s.mp4", FilenameUtils.removeExtension(videoFullPath));
-                var args = new String[]{recorderFile, "-f", "x11grab", "-framerate", "30", "-i", ":0.0+100,200", videoFilePathWithExtension};
-                new ProcessBuilder(args).start();
-                return videoFilePathWithExtension;
+                args = new String[]{recorderFile, "-f", "x11grab", "-framerate", "30", "-i", ":0.0+100,200", videoFilePathWithExtension};
             }
+
+            new ProcessBuilder(args).inheritIO().start();
+
+            return videoFullPath;
+
         } catch (IOException e) {
             e.printStackTrace();
+            return videoFullPath;
         }
-
-        return videoFullPath;
     }
 }

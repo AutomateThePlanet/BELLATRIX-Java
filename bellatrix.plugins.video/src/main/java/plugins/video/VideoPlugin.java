@@ -50,11 +50,8 @@ public abstract class VideoPlugin extends Plugin {
         }
     }
 
-    public void preAfterTest(TestResult testResult, Method memberInfo) {
+    public void postAfterTest(TestResult testResult, Method memberInfo, Throwable failedTestException) {
         if (isEnabled) {
-            var videoSaveDir = getOutputFolder();
-            var videoFileName = getUniqueFileName(memberInfo.getName());
-            var videoFullPath = Paths.get(videoSaveDir, videoFileName).toString();
             FMPEG_VIDEO_RECORDER.close();
             if (testResult == TestResult.FAILURE) {
                 VIDEO_GENERATED.broadcast(new VideoPluginEventArgs(VIDEO_FULL_PATH.get()));
