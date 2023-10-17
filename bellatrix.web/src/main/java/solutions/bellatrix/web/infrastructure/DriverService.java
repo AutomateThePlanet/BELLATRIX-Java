@@ -30,6 +30,7 @@ import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.safari.SafariOptions;
 import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.core.utilities.DebugInformation;
+import solutions.bellatrix.core.utilities.Log;
 import solutions.bellatrix.core.utilities.TimestampBuilder;
 import solutions.bellatrix.web.configuration.GridSettings;
 import solutions.bellatrix.web.configuration.WebSettings;
@@ -100,8 +101,16 @@ public class DriverService {
 
             driver.manage().timeouts().pageLoadTimeout(ConfigurationService.get(WebSettings.class).getTimeoutSettings().getPageLoadTimeout(), TimeUnit.SECONDS);
             driver.manage().timeouts().setScriptTimeout(ConfigurationService.get(WebSettings.class).getTimeoutSettings().getScriptTimeout(), TimeUnit.SECONDS);
-            driver.manage().window().maximize();
-            changeWindowSize(driver);
+
+            if(getBrowserConfiguration().getHeight() != 0 && getBrowserConfiguration().getWidth() != 0) {
+                changeWindowSize(driver);
+            }
+            else {
+                driver.manage().window().maximize();
+            }
+
+            Log.info(String.format("Window resized to dimensions: %s", driver.manage().window().getSize().toString()));
+
             WRAPPED_DRIVER.set(driver);
 
             return driver;
@@ -357,6 +366,7 @@ public class DriverService {
     private static void changeWindowSize(WebDriver wrappedDriver) {
         try {
             if (getBrowserConfiguration().getHeight() != 0 && getBrowserConfiguration().getWidth() != 0) {
+                Log.info(String.format("Setting window size to %sx%s",getBrowserConfiguration().getWidth(), getBrowserConfiguration().getHeight()));
                 wrappedDriver.manage().window().setSize(new Dimension(getBrowserConfiguration().getWidth(), getBrowserConfiguration().getHeight()));
             }
         } catch (Exception ex) { System.out.println("Error while resizing browser window: " + ex.getMessage());}
