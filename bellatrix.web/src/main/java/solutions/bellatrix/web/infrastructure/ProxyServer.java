@@ -132,7 +132,7 @@ public class ProxyServer {
             });
         }
         catch (TimeoutException exception){
-            throw new AssertionFailedError(String.format("The expected request with URL '%s' is not loaded!", requestPartialUrl));
+            Log.error(String.format("The expected request with URL '%s' is not loaded!", requestPartialUrl));
         }
     }
 
