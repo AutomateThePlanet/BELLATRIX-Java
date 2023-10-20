@@ -41,6 +41,7 @@ import solutions.bellatrix.web.services.ComponentWaitService;
 import solutions.bellatrix.web.services.JavaScriptService;
 import solutions.bellatrix.web.waitstrategies.*;
 
+import java.lang.reflect.Type;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
@@ -147,6 +148,10 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
 
     public String getTitle() {
         return getAttribute("title");
+    }
+
+    public WebComponent getParent() {
+        return createByXPath(WebComponent.class, "./..");
     }
 
     public String getTabIndex() {
