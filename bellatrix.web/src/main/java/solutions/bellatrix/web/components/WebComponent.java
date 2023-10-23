@@ -1004,6 +1004,14 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
         valueSet.broadcast(new ComponentActionEventArgs(this, value));
     }
 
+    protected void defaultUpload(EventListener<ComponentActionEventArgs> settingValue, EventListener<ComponentActionEventArgs> valueSet, String value) {
+        settingValue.broadcast(new ComponentActionEventArgs(this, value));
+
+        getWrappedElement().sendKeys(value);
+
+        valueSet.broadcast(new ComponentActionEventArgs(this, value));
+    }
+
     private WebElement findNativeElement() {
         if (parentWrappedElement == null) {
             return wrappedDriver.findElements(findStrategy.convert()).get(elementIndex);
