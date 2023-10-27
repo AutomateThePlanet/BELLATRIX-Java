@@ -14,7 +14,7 @@ public class LayoutTestingTests extends WebTest {
     public void testPageLayout() {
         app().navigate().to("http://demos.bellatrix.solutions/");
 
-        Select sortDropDown = app().create().byNameEndingWith(Select.class, "orderby");
+        Select sortDropDown = app().create().byNameEnding(Select.class, "orderby");
         Anchor protonRocketAnchor =
                 app().create().byAttributeContaining(Anchor.class, "href", "/proton-rocket/");
         Anchor protonMAnchor =

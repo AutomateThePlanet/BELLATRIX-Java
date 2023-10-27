@@ -9,7 +9,7 @@ public class BDDLoggingTests extends WebTest {
     public void purchaseRocketWithLogs() {
         app().navigate().to("http://demos.bellatrix.solutions/");
 
-        Select sortDropDown = app().create().byNameEndingWith(Select.class, "orderby");
+        Select sortDropDown = app().create().byNameEnding(Select.class, "orderby");
         Anchor protonMReadMoreButton = app().create().byInnerTextContaining(Anchor.class, "Read more");
         Anchor addToCartFalcon9 =
                 app().create().byAttributeContaining(Anchor.class, "data-product_id", "28").toBeClickable();
@@ -22,7 +22,7 @@ public class BDDLoggingTests extends WebTest {
         addToCartFalcon9.click();
         viewCartButton.click();
 
-        TextField couponCodeTextField = app().create().byId(TextField.class, "coupon_code");
+        TextInput couponCodeTextInput = app().create().byId(TextInput.class, "coupon_code");
         Button applyCouponButton = app().create().byValueContaining(Button.class, "Apply coupon");
         Div messageAlert = app().create().byClassContaining(Div.class, "woocommerce-message");
         NumberInput quantityBox = app().create().byClassContaining(NumberInput.class, "input-text qty text");
@@ -31,7 +31,7 @@ public class BDDLoggingTests extends WebTest {
         Anchor proceedToCheckout =
                 app().create().byClassContaining(Anchor.class, "checkout-button button alt wc-forward");
 
-        couponCodeTextField.setText("happybirthday");
+        couponCodeTextInput.setText("happybirthday");
         applyCouponButton.click();
         messageAlert.toBeVisible().waitToBe();
         messageAlert.validateTextIs("Coupon code applied successfully.");
@@ -43,17 +43,17 @@ public class BDDLoggingTests extends WebTest {
         Heading billingDetailsHeading = app().create().byInnerTextContaining(Heading.class, "Billing details");
         Anchor showLogin = app().create().byInnerTextContaining(Anchor.class, "Click here to login");
         TextArea orderCommentsTextArea = app().create().byId(TextArea.class, "order_comments");
-        TextField billingFirstName = app().create().byId(TextField.class, "billing_first_name");
-        TextField billingLastName = app().create().byId(TextField.class, "billing_last_name");
-        TextField billingCompany = app().create().byId(TextField.class, "billing_company");
+        TextInput billingFirstName = app().create().byId(TextInput.class, "billing_first_name");
+        TextInput billingLastName = app().create().byId(TextInput.class, "billing_last_name");
+        TextInput billingCompany = app().create().byId(TextInput.class, "billing_company");
         Select billingCountry = app().create().byId(Select.class, "billing_country");
-        TextField billingAddress1 = app().create().byId(TextField.class, "billing_address_1");
-        TextField billingAddress2 = app().create().byId(TextField.class, "billing_address_2");
-        TextField billingCity = app().create().byId(TextField.class, "billing_city");
+        TextInput billingAddress1 = app().create().byId(TextInput.class, "billing_address_1");
+        TextInput billingAddress2 = app().create().byId(TextInput.class, "billing_address_2");
+        TextInput billingCity = app().create().byId(TextInput.class, "billing_city");
         Select billingState = app().create().byId(Select.class, "billing_state").toBeVisible().toBeClickable();
-        TextField billingZip = app().create().byId(TextField.class, "billing_postcode");
+        TextInput billingZip = app().create().byId(TextInput.class, "billing_postcode");
         PhoneInput billingPhone = app().create().byId(PhoneInput.class, "billing_phone");
-        EmailField billingEmail = app().create().byId(EmailField.class, "billing_email");
+        EmailInput billingEmail = app().create().byId(EmailInput.class, "billing_email");
         CheckBox createAccountCheckBox = app().create().byId(CheckBox.class, "createaccount");
         RadioButton checkPaymentsRadioButton =
                 app().create().byAttributeContaining(RadioButton.class, "for", "payment_method_cheque");
@@ -83,7 +83,7 @@ public class BDDLoggingTests extends WebTest {
         // focusing Anchor (data-product_id containing 28)
         // clicking Anchor (data-product_id containing 28)
         // clicking Anchor (class containing added_to_cart wc-forward)
-        // typing 'happybirthday' in TextField (id = coupon_code)
+        // typing 'happybirthday' in TextInput (id = coupon_code)
         // clicking Button (value containing Apply coupon)
         // validating Div (class containing woocommerce-message)'s inner text is 'Coupon code applied successfully.'
         // typing '0.0' in NumberInput (class containing input-text qty text)
@@ -93,16 +93,16 @@ public class BDDLoggingTests extends WebTest {
         // validating Anchor (text containing Click here to login)'s href is 'https://demos.bellatrix.solutions/checkout/#'
         // scrolling to TextArea (id = order_comments)
         // typing 'Please send the rocket to my door step!' in TextArea (id = order_comments)
-        // typing 'In' in TextField (id = billing_first_name)
-        // typing 'Deepthought' in TextField (id = billing_last_name)
-        // typing 'Automate The Planet Ltd.' in TextField (id = billing_company)
+        // typing 'In' in TextInput (id = billing_first_name)
+        // typing 'Deepthought' in TextInput (id = billing_last_name)
+        // typing 'Automate The Planet Ltd.' in TextInput (id = billing_company)
         // selecting 'Bulgaria' from Select (id = billing_country)
-        // validating TextField (id = billing_address_1)'s placeholder is 'House number and street name'
-        // typing 'bul. Yerusalim 5' in TextField (id = billing_address_1)
-        // typing 'bul. Yerusalim 6' in TextField (id = billing_address_2)
-        // typing 'Sofia' in TextField (id = billing_city)
+        // validating TextInput (id = billing_address_1)'s placeholder is 'House number and street name'
+        // typing 'bul. Yerusalim 5' in TextInput (id = billing_address_1)
+        // typing 'bul. Yerusalim 6' in TextInput (id = billing_address_2)
+        // typing 'Sofia' in TextInput (id = billing_city)
         // selecting 'Sofia-Grad' from Select (id = billing_state)
-        // typing '1000' in TextField (id = billing_postcode)
+        // typing '1000' in TextInput (id = billing_postcode)
         // typing '+00359894646464' in PhoneField (id = billing_phone)
         // typing 'info@bellatrix.solutions' in EmailField (id = billing_email)
         // checking CheckBox (id = createaccount)

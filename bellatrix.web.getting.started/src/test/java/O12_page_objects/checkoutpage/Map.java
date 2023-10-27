@@ -17,48 +17,48 @@ import solutions.bellatrix.web.components.*;
 import solutions.bellatrix.web.pages.PageMap;
 
 public class Map extends PageMap {
-    public TextField billingFirstName() {
-        return create().byId(TextField.class, "billing_first_name");
+    public TextInput billingFirstName() {
+        return create().byId(TextInput.class, "billing_first_name");
     }
 
-    public TextField billingLastName() {
-        return create().byId(TextField.class, "billing_last_name");
+    public TextInput billingLastName() {
+        return create().byId(TextInput.class, "billing_last_name");
     }
 
-    public TextField billingCompany() {
-        return create().byId(TextField.class, "billing_company");
+    public TextInput billingCompany() {
+        return create().byId(TextInput.class, "billing_company");
     }
 
     public Button billingCountryWrapper() {
         return create().byId(Button.class, "select2-billing_country-container");
     }
 
-    public TextField billingCountryFilter() {
-        return create().byClass(TextField.class, "select2-search__field");
+    public TextInput billingCountryFilter() {
+        return create().byClass(TextInput.class, "select2-search__field");
     }
 
-    public TextField billingAddress1() {
-        return create().byId(TextField.class, "billing_address_1");
+    public TextInput billingAddress1() {
+        return create().byId(TextInput.class, "billing_address_1");
     }
 
-    public TextField billingAddress2() {
-        return create().byId(TextField.class, "billing_address_2");
+    public TextInput billingAddress2() {
+        return create().byId(TextInput.class, "billing_address_2");
     }
 
-    public TextField billingCity() {
-        return create().byId(TextField.class, "billing_city");
+    public TextInput billingCity() {
+        return create().byId(TextInput.class, "billing_city");
     }
 
-    public TextField billingZip() {
-        return create().byId(TextField.class, "billing_postcode");
+    public TextInput billingZip() {
+        return create().byId(TextInput.class, "billing_postcode");
     }
 
-    public TextField billingPhone() {
-        return create().byId(TextField.class, "billing_phone");
+    public TextInput billingPhone() {
+        return create().byId(TextInput.class, "billing_phone");
     }
 
-    public TextField billingEmail() {
-        return create().byId(TextField.class, "billing_email");
+    public TextInput billingEmail() {
+        return create().byId(TextInput.class, "billing_email");
     }
 
     public CheckBox createAccountCheckBox() {

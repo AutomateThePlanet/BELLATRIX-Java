@@ -74,6 +74,12 @@ public class ComponentValidator {
         VALIDATED_ATTRIBUTE.broadcast(new ComponentActionEventArgs(component, value.toString(), String.format("validated %s's %s is '%s'", component.getComponentName(), attributeName, value)));
     }
 
+    public void defaultValidateAttributeIs(WebComponent component, Supplier<Object> supplier, Object value, String attributeName) {
+        VALIDATING_ATTRIBUTE.broadcast(new ComponentActionEventArgs(component, value.toString(), String.format("validating %s's %s is '%s'", component.getComponentName(), attributeName, value)));
+        waitUntil(() -> supplier.get().equals(value), component, attributeName, value, supplier, "be");
+        VALIDATED_ATTRIBUTE.broadcast(new ComponentActionEventArgs(component, value.toString(), String.format("validated %s's %s is '%s'", component.getComponentName(), attributeName, value)));
+    }
+
     public void defaultValidateAttributeContains(WebComponent component, Supplier<String> supplier, String value, String attributeName) {
         VALIDATING_ATTRIBUTE.broadcast(new ComponentActionEventArgs(component, value, String.format("validating %s's %s contains '%s'", component.getComponentName(), attributeName, value)));
         waitUntil(() -> supplier.get().strip().contains(value), component, attributeName, value, supplier, "contain");

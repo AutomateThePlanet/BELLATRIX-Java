@@ -6,14 +6,14 @@ import org.testng.asserts.SoftAssert;
 import solutions.bellatrix.web.components.*;
 import solutions.bellatrix.web.infrastructure.junit.WebTest;
 
-public class NormalAssertions extends WebTest {
+public class NormalAssertionsTests extends WebTest {
     @Test
     public void assertCartPageFields() {
         app().navigate().to("http://demos.bellatrix.solutions/?add-to-cart=26");
 
         app().navigate().to("http://demos.bellatrix.solutions/cart/");
 
-        TextField couponCodeTextField = app().create().byId(TextField.class, "coupon_code");
+        TextInput couponCodeTextField = app().create().byId(TextInput.class, "coupon_code");
 
         Assert.assertEquals(couponCodeTextField.getPlaceholder(), "Coupon code");
 
