@@ -109,5 +109,9 @@
   "urlSettings": {
     "shopUrl": "http://demos.bellatrix.solutions/cart/",
     "accountUrl": "http://demos.bellatrix.solutions/account/"
+  },
+  "keyVaultSettings": {
+    "keyVaultEndpoint": "",
+    "isEnabled": "true"
   }
 }

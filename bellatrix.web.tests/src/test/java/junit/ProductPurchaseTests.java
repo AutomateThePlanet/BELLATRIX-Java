@@ -18,6 +18,7 @@ import checkoutpage.CheckoutPage;
 import checkoutpage.PurchaseInfo;
 import mainpage.MainPage;
 import org.junit.jupiter.api.Test;
+import solutions.bellatrix.core.integrations.azure.KeyVault;
 import solutions.bellatrix.web.components.Anchor;
 import solutions.bellatrix.web.infrastructure.Browser;
 import solutions.bellatrix.web.infrastructure.ExecutionBrowser;
@@ -32,6 +33,7 @@ public class ProductPurchaseTests extends WebTest {
 
     @Test
     public void completePurchaseSuccessfully_first() {
+       // var key = KeyVault.getSecret("AzureDevOpsAutomateThePlanetURL");
         app().navigate().to("http://demos.bellatrix.solutions/");
         var addToCartFalcon9 = app().create().byCss(Anchor.class, "[data-product_id*='28']");
         var blogLink = app().create().byInnerTextContaining(Anchor.class, "Blog");
