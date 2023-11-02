@@ -33,78 +33,78 @@ import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
 
 public class ComponentValidator {
-    private final TimeoutSettings timeoutSettings = ConfigurationService.get(WebSettings.class).getTimeoutSettings();
-    private final BrowserService browserService = new BrowserService();
+    private final static TimeoutSettings timeoutSettings = ConfigurationService.get(WebSettings.class).getTimeoutSettings();
+    private final static BrowserService browserService = new BrowserService();
     public final static EventListener<ComponentActionEventArgs> VALIDATING_ATTRIBUTE = new EventListener<>();
     public final static EventListener<ComponentActionEventArgs> VALIDATED_ATTRIBUTE = new EventListener<>();
 
-    public void defaultValidateAttributeIsNull(WebComponent component, Supplier<Object> supplier, String attributeName) {
+    public static void defaultValidateAttributeIsNull(WebComponent component, Supplier<Object> supplier, String attributeName) {
         VALIDATING_ATTRIBUTE.broadcast(new ComponentActionEventArgs(component, null, String.format("validating %s's %s is null", component.getComponentName(), attributeName)));
         waitUntil(() -> (supplier.get() == null), component, attributeName, "null", supplier, "be");
         VALIDATED_ATTRIBUTE.broadcast(new ComponentActionEventArgs(component, null, String.format("validated %s's %s is null", component.getComponentName(), attributeName)));
     }
 
-    public void defaultValidateAttributeNotNull(WebComponent component, Supplier<Object> supplier, String attributeName) {
+    public static void defaultValidateAttributeNotNull(WebComponent component, Supplier<Object> supplier, String attributeName) {
         VALIDATING_ATTRIBUTE.broadcast(new ComponentActionEventArgs(component, null, String.format("validating %s's %s is set", component.getComponentName(), attributeName)));
         waitUntil(() -> (supplier.get() != null), component, attributeName, "not null", (Supplier<String>)() -> "null", "not be");
         VALIDATED_ATTRIBUTE.broadcast(new ComponentActionEventArgs(component, null, String.format("validated %s's %s is set", component.getComponentName(), attributeName)));
     }
 
-    public void defaultValidateAttributeIsSet(WebComponent component, Supplier<String> supplier, String attributeName) {
+    public static void defaultValidateAttributeIsSet(WebComponent component, Supplier<String> supplier, String attributeName) {
         VALIDATING_ATTRIBUTE.broadcast(new ComponentActionEventArgs(component, null, String.format("validating %s's %s is set", component.getComponentName(), attributeName)));
         waitUntil(() -> !StringUtils.isEmpty(supplier.get()), component, attributeName, "set", (Supplier<String>)() -> "not set", "be");
         VALIDATED_ATTRIBUTE.broadcast(new ComponentActionEventArgs(component, null, String.format("validated %s's %s is set", component.getComponentName(), attributeName)));
     }
 
-    public void defaultValidateAttributeNotSet(WebComponent component, Supplier<String> supplier, String attributeName) {
+    public static void defaultValidateAttributeNotSet(WebComponent component, Supplier<String> supplier, String attributeName) {
         VALIDATING_ATTRIBUTE.broadcast(new ComponentActionEventArgs(component, null, String.format("validating %s's %s is null", component.getComponentName(), attributeName)));
         waitUntil(() -> StringUtils.isEmpty(supplier.get()), component, attributeName, "not set", supplier, "be");
         VALIDATED_ATTRIBUTE.broadcast(new ComponentActionEventArgs(component, null, String.format("validated %s's %s is null", component.getComponentName(), attributeName)));
     }
 
-    public void defaultValidateAttributeIs(WebComponent component, Supplier<String> supplier, String value, String attributeName) {
+    public static void defaultValidateAttributeIs(WebComponent component, Supplier<String> supplier, String value, String attributeName) {
         VALIDATING_ATTRIBUTE.broadcast(new ComponentActionEventArgs(component, value, String.format("validating %s's %s is '%s'", component.getComponentName(), attributeName, value)));
         waitUntil(() -> supplier.get().strip().equals(value), component, attributeName, value, supplier, "be");
         VALIDATED_ATTRIBUTE.broadcast(new ComponentActionEventArgs(component, value, String.format("validated %s's %s is '%s'", component.getComponentName(), attributeName, value)));
     }
 
-    public void defaultValidateAttributeIs(WebComponent component, Supplier<Number> supplier, Number value, String attributeName) {
+    public static void defaultValidateAttributeIs(WebComponent component, Supplier<Number> supplier, Number value, String attributeName) {
         VALIDATING_ATTRIBUTE.broadcast(new ComponentActionEventArgs(component, value.toString(), String.format("validating %s's %s is '%s'", component.getComponentName(), attributeName, value)));
         waitUntil(() -> supplier.get().equals(value), component, attributeName, value.toString(), supplier, "be");
         VALIDATED_ATTRIBUTE.broadcast(new ComponentActionEventArgs(component, value.toString(), String.format("validated %s's %s is '%s'", component.getComponentName(), attributeName, value)));
     }
 
-    public void defaultValidateAttributeContains(WebComponent component, Supplier<String> supplier, String value, String attributeName) {
+    public static void defaultValidateAttributeContains(WebComponent component, Supplier<String> supplier, String value, String attributeName) {
         VALIDATING_ATTRIBUTE.broadcast(new ComponentActionEventArgs(component, value, String.format("validating %s's %s contains '%s'", component.getComponentName(), attributeName, value)));
         waitUntil(() -> supplier.get().strip().contains(value), component, attributeName, value, supplier, "contain");
         VALIDATED_ATTRIBUTE.broadcast(new ComponentActionEventArgs(component, value, String.format("validated %s's %s contains '%s'", component.getComponentName(), attributeName, value)));
     }
 
-    public void defaultValidateAttributeNotContains(WebComponent component, Supplier<String> supplier, String value, String attributeName) {
+    public static void defaultValidateAttributeNotContains(WebComponent component, Supplier<String> supplier, String value, String attributeName) {
         VALIDATING_ATTRIBUTE.broadcast(new ComponentActionEventArgs(component, value, String.format("validating %s's %s doesn't contain '%s'", component.getComponentName(), attributeName, value)));
         waitUntil(() -> !supplier.get().strip().contains(value), component, attributeName, value, supplier, "not contain");
         VALIDATED_ATTRIBUTE.broadcast(new ComponentActionEventArgs(component, value, String.format("validated %s's %s doesn't contain '%s'", component.getComponentName(), attributeName, value)));
     }
 
-    public void defaultValidateAttributeTrue(WebComponent component, BooleanSupplier supplier, String attributeName) {
+    public static void defaultValidateAttributeTrue(WebComponent component, BooleanSupplier supplier, String attributeName) {
         VALIDATING_ATTRIBUTE.broadcast(new ComponentActionEventArgs(component, null, String.format("validating %s is %s", component.getComponentName(), attributeName)));
         waitUntil(supplier, component, attributeName, "true", (Supplier<String>)() -> "false", "be");
         VALIDATED_ATTRIBUTE.broadcast(new ComponentActionEventArgs(component, null, String.format("validated %s is %s", component.getComponentName(), attributeName)));
     }
 
-    public void defaultValidateAttributeFalse(WebComponent component, BooleanSupplier supplier, String attributeName) {
+    public static void defaultValidateAttributeFalse(WebComponent component, BooleanSupplier supplier, String attributeName) {
         VALIDATING_ATTRIBUTE.broadcast(new ComponentActionEventArgs(component, null, String.format("validating %s is not %s", component.getComponentName(), attributeName)));
         waitUntil(() -> !supplier.getAsBoolean(), component, attributeName, "false", (Supplier<String>)() -> "true", "be");
         VALIDATED_ATTRIBUTE.broadcast(new ComponentActionEventArgs(component, null, String.format("validated %s is not %s", component.getComponentName(), attributeName)));
     }
 
-    public <Entity> void defaultValidateCollectionIs(WebComponent component, Supplier<List<Entity>> supplier, List<Entity> value, String attributeName) {
+    public static <Entity> void defaultValidateCollectionIs(WebComponent component, Supplier<List<Entity>> supplier, List<Entity> value, String attributeName) {
         VALIDATING_ATTRIBUTE.broadcast(new ComponentActionEventArgs(component, value.toString(), String.format("validating %s's %s is '%s'", component.getComponentName(), attributeName, value)));
         waitUntil(() -> supplier.get().equals(value), component, attributeName, value, supplier, "be");
         VALIDATED_ATTRIBUTE.broadcast(new ComponentActionEventArgs(component, value.toString(), String.format("validated %s's %s is '%s'", component.getComponentName(), attributeName, value)));
     }
 
-    private <T, V> void waitUntil(BooleanSupplier condition, WebComponent component, String attributeName, V value, Supplier<T> supplier, String prefix) {
+    private static <T, V> void waitUntil(BooleanSupplier condition, WebComponent component, String attributeName, V value, Supplier<T> supplier, String prefix) {
         var validationTimeout = timeoutSettings.getValidationsTimeout();
         var sleepInterval = timeoutSettings.getSleepInterval();
 

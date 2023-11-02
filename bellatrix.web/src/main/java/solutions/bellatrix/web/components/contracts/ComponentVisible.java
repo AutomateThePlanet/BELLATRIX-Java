@@ -14,6 +14,7 @@
 package solutions.bellatrix.web.components.contracts;
 
 import lombok.SneakyThrows;
+import org.openqa.selenium.NotFoundException;
 import solutions.bellatrix.core.utilities.SingletonFactory;
 import solutions.bellatrix.web.components.WebComponent;
 import solutions.bellatrix.web.validations.ComponentValidator;
@@ -27,21 +28,15 @@ public interface ComponentVisible extends Component {
 
     @SneakyThrows
     default void validateIsVisible() {
-        try {
-            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeTrue", WebComponent.class, BooleanSupplier.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, (BooleanSupplier)this::isVisible, "visible");
-        } catch (InvocationTargetException e) {
-            throw e.getCause();
-        }
+        ComponentValidator.defaultValidateAttributeTrue((WebComponent)this, this::isVisible, "visible");
     }
 
     @SneakyThrows
     default void validateNotVisible() {
         try {
-            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeFalse", WebComponent.class, BooleanSupplier.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, (BooleanSupplier)this::isVisible, "visible");
-        } catch (InvocationTargetException e) {
-            throw e.getCause();
+            ComponentValidator.defaultValidateAttributeFalse((WebComponent)this, this::isVisible, "visible");
+        } catch (NotFoundException e) {
+            // component is not visible
         }
     }
 }

@@ -27,21 +27,11 @@ public interface ComponentRequired extends Component {
 
     @SneakyThrows
     default void validateIsRequired() {
-        try {
-            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeTrue", WebComponent.class, BooleanSupplier.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, (BooleanSupplier)this::isRequired, "required");
-        } catch (InvocationTargetException e) {
-            throw e.getCause();
-        }
+        ComponentValidator.defaultValidateAttributeTrue((WebComponent)this, this::isRequired, "required");
     }
 
     @SneakyThrows
     default void validateNotRequired() {
-        try {
-            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeFalse", WebComponent.class, BooleanSupplier.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, (BooleanSupplier)this::isRequired, "required");
-        } catch (InvocationTargetException e) {
-            throw e.getCause();
-        }
+        ComponentValidator.defaultValidateAttributeFalse((WebComponent)this, this::isRequired, "required");
     }
 }

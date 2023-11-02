@@ -648,7 +648,7 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
                     getComponentClass().getSimpleName(), findStrategy.toString(), getWrappedDriver().getCurrentUrl());
             Log.error(formattedException);
 
-            throw new WebDriverException(formattedException, ex);
+            throw new NotFoundException(formattedException, ex);
         }
 
         RETURNING_WRAPPED_ELEMENT.broadcast(new ComponentActionEventArgs(this));
