@@ -14,7 +14,6 @@
 package solutions.bellatrix.web.infrastructure;
 
 import plugins.screenshots.ScreenshotPlugin;
-import plugins.screenshots.ScreenshotPluginEventArgs;
 import ru.yandex.qatools.ashot.AShot;
 import ru.yandex.qatools.ashot.shooting.ShootingStrategies;
 import solutions.bellatrix.core.configuration.ConfigurationService;
@@ -45,7 +44,6 @@ public class WebScreenshotPlugin extends ScreenshotPlugin {
         } catch (IOException e) {
             Log.error(e.toString());
         }
-        SCREENSHOT_GENERATED.broadcast(new ScreenshotPluginEventArgs(Paths.get(screenshotSaveDir, filename).toString(), filename));
     }
 
     @Override
