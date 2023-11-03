@@ -13,6 +13,7 @@
 
 package solutions.bellatrix.api.configuration;
 
+
 import lombok.Getter;
 import lombok.Setter;
 
