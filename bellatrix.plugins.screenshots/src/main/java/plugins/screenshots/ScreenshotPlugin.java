@@ -42,6 +42,6 @@ public abstract class ScreenshotPlugin extends Plugin {
         var screenshotSaveDir = getOutputFolder();
         var screenshotFileName = getUniqueFileName(memberInfo.getName());
         takeScreenshot(screenshotSaveDir, screenshotFileName);
-        SCREENSHOT_GENERATED.broadcast(new ScreenshotPluginEventArgs(Paths.get(screenshotSaveDir, screenshotFileName).toString()));
+        SCREENSHOT_GENERATED.broadcast(new ScreenshotPluginEventArgs(Paths.get(screenshotSaveDir, screenshotFileName).toString(), screenshotFileName));
     }
 }

@@ -13,8 +13,8 @@
 
 package solutions.bellatrix.web.infrastructure;
 
-import lombok.SneakyThrows;
 import plugins.screenshots.ScreenshotPlugin;
+import plugins.screenshots.ScreenshotPluginEventArgs;
 import ru.yandex.qatools.ashot.AShot;
 import ru.yandex.qatools.ashot.shooting.ShootingStrategies;
 import solutions.bellatrix.core.configuration.ConfigurationService;
@@ -24,6 +24,7 @@ import solutions.bellatrix.web.configuration.WebSettings;
 
 import javax.imageio.ImageIO;
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.UUID;
 
@@ -33,14 +34,18 @@ public class WebScreenshotPlugin extends ScreenshotPlugin {
     }
 
     @Override
-    @SneakyThrows
     protected void takeScreenshot(String screenshotSaveDir, String filename) {
         var screenshot = new AShot()
                 .shootingStrategy(ShootingStrategies.viewportPasting(100))
                 .takeScreenshot(DriverService.getWrappedDriver());
         var destFile = new File(Paths.get(screenshotSaveDir, filename).toString());
         Log.info("Saving screenshot with path: " + destFile);
-        ImageIO.write(screenshot.getImage(), "png", destFile);
+        try {
+            ImageIO.write(screenshot.getImage(), "png", destFile);
+        } catch (IOException e) {
+            Log.error(e.toString());
+        }
+        SCREENSHOT_GENERATED.broadcast(new ScreenshotPluginEventArgs(Paths.get(screenshotSaveDir, filename).toString(), filename));
     }
 
     @Override
