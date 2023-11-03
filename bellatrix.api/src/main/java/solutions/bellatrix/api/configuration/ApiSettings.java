@@ -19,8 +19,9 @@ import lombok.Setter;
 import java.util.HashMap;
 import java.util.List;
 
+@Getter @Setter
 public class ApiSettings {
-    @Getter @Setter private String baseUri;
-    @Getter @Setter private String basePath;
-    @Getter @Setter private List<HashMap<String, String>> headers;
+    private String baseUri;
+    private String basePath;
+    private List<HashMap<String, String>> headers;
 }
