@@ -15,7 +15,10 @@ package solutions.bellatrix.web.services;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.StringEscapeUtils;
+import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.*;
+import org.openqa.selenium.logging.LogEntry;
+import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import solutions.bellatrix.core.configuration.ConfigurationService;
@@ -24,8 +27,11 @@ import solutions.bellatrix.web.components.Frame;
 import solutions.bellatrix.web.configuration.WebSettings;
 
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
+import java.util.logging.Level;
 
 public class BrowserService extends WebService {
     private final JavascriptExecutor javascriptExecutor;
@@ -135,6 +141,30 @@ public class BrowserService extends WebService {
 
     public void clearLocalStorage() {
         ((JavascriptExecutor)getWrappedDriver()).executeScript("localStorage.clear()");
+    }
+
+    public List<LogEntry> getBrowserLogs() {
+        return getLogsByType(LogType.BROWSER);
+    }
+
+    public List<LogEntry> getLogsByType(String type) {
+        return getWrappedDriver().manage().logs().get(type.toString()).toJson();
+    }
+
+    public void assertConsoleNoErrorsLogged() {
+            Assertions.assertEquals(new ArrayList<LogEntry>(),
+                    getSevereLogEntries(),
+                    "Severe Errors found in console. If they are expected, add them to the whitelist.");
+    }
+
+    public List<LogEntry> getSevereLogEntries() {
+        ArrayList<String> whiteList = ConfigurationService.get(WebSettings.class).getConsoleErrorsWhitelist();
+        var logs = getBrowserLogs().stream().filter(
+                (logEntry ->
+                        (logEntry.getLevel() == Level.SEVERE) &&
+                                !(whiteList.stream().anyMatch(listEntry -> logEntry.getMessage().contains(listEntry)))
+                )).toList();
+        return logs;
     }
 
     public void waitForAjax() {
