@@ -168,7 +168,7 @@ public class ProxyServer {
             allHarEntries.stream().forEach(e -> {
                 Uri uri = Uri.create(requestPartialUrl);
                 if(e.getRequest().getUrl().contains(uri.getHost()) || e.getRequest().getUrl().contains(requestPartialUrl)){
-                    allUrls.add(e.getRequest().getUrl());
+                    allUrls.add(String.format("%s[%s]", e.getRequest().getUrl(), e.getResponse().getStatusText()));
                 }
             });
             String allUrlsString = "";
