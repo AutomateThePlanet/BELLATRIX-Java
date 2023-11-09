@@ -148,10 +148,10 @@ public class BrowserService extends WebService {
     }
 
     public List<LogEntry> getLogsByType(String type) {
-        return getWrappedDriver().manage().logs().get(type.toString()).toJson();
+        return getWrappedDriver().manage().logs().get(type).toJson();
     }
 
-    public void assertConsoleNoErrorsLogged() {
+    public void assertNoConsoleErrorsLogged() {
             Assertions.assertEquals(new ArrayList<LogEntry>(),
                     getSevereLogEntries(),
                     "Severe Errors found in console. If they are expected, add them to the whitelist.");
@@ -159,6 +159,7 @@ public class BrowserService extends WebService {
 
     public List<LogEntry> getSevereLogEntries() {
         ArrayList<String> whiteList = ConfigurationService.get(WebSettings.class).getConsoleErrorsWhitelist();
+
         var logs = getBrowserLogs().stream().filter(
                 (logEntry ->
                         (logEntry.getLevel() == Level.SEVERE) &&
