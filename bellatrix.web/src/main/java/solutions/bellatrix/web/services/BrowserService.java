@@ -157,6 +157,15 @@ public class BrowserService extends WebService {
                     "Severe Errors found in console. If they are expected, add them to the whitelist.");
     }
 
+    public void assertConsoleErrorLogged(String errorMessage, Level severity) {
+        var errorLogs = getLogsByType(LogType.BROWSER);
+        var filteredLog = errorLogs.stream().filter((log) -> log.getMessage().contains(errorMessage)).findFirst();
+        Assertions.assertTrue(filteredLog.isPresent(), "Expected message '%s' not found in console. Actual Log: %s".formatted(errorMessage, errorLogs));
+        Assertions.assertEquals(severity,
+                filteredLog.get().getLevel(),
+                "Log severity is not as expected for message '%s'.".formatted(errorMessage));
+    }
+
     public List<LogEntry> getSevereLogEntries() {
         ArrayList<String> whiteList = ConfigurationService.get(WebSettings.class).getConsoleErrorsWhitelist();
 
