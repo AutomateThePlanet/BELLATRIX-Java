@@ -156,5 +156,15 @@
             <version>${rest.assured.version}</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>com.azure</groupId>
+            <artifactId>azure-security-keyvault-secrets</artifactId>
+            <version>4.2.3</version>
+        </dependency>
+        <dependency>
+            <groupId>com.azure</groupId>
+            <artifactId>azure-identity</artifactId>
+            <version>1.2.0</version>
+        </dependency>
     </dependencies>
 </project>
