@@ -210,7 +210,12 @@ public class DriverService {
 
         WebDriver driver = null;
         try {
-            driver = new RemoteWebDriver(new URI(gridSettings.getUrl()).toURL(), caps);
+            var gridUrl = gridSettings.getUrl();
+            if (gridUrl.startsWith("env_")) {
+                gridUrl = System.getProperty(gridSettings.getUrl()).replace("env_", "");
+            }
+
+            driver = new RemoteWebDriver(new URI(gridUrl).toURL(), caps);
         } catch (MalformedURLException | URISyntaxException e) {
             DebugInformation.printStackTrace(e);
         }
