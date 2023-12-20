@@ -251,7 +251,12 @@ public class ProxyServer {
             return null;
         }
         String json = harEntry.getRequest().getPostData().getText();
-        return new Gson().fromJson(json, requestModelClass);
+        try {
+            return new Gson().fromJson(json, requestModelClass);
+        }
+        catch (Exception e) {
+            throw new RuntimeException("Error occurred while converting json to model. Json was: %s".formatted(json), e);
+        }
     }
 
     public static <T> T getRequestByUrl(String url, String httpMethod, Type modelType) {
@@ -264,7 +269,12 @@ public class ProxyServer {
             return null;
         }
         String json = harEntry.getRequest().getPostData().getText();
-        return new Gson().fromJson(getDataObject(json), modelType);
+        try {
+            return new Gson().fromJson(json, modelType);
+        }
+        catch (Exception e) {
+            throw new RuntimeException("Error occurred while converting json to model. Json was: %s".formatted(json), e);
+        }
     }
 
     public static <T> T getResponseByUrl(String url, String httpMethod, Class<T> responseModelClass) {
