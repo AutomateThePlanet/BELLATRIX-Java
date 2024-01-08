@@ -158,7 +158,7 @@ public class ProxyServer {
         catch (TimeoutException exception){
             String allUrlsString = getSimilarRequestsString(requestPartialUrl, allHarEntries);
 
-            throw new AssertionFailedError(String.format("The expected response with request URL '%s' is not loaded! \r\nSimilar requests: %s", requestPartialUrl, allUrlsString));
+            throw new AssertionFailedError(String.format("The expected response with request URL '%s' with method %s is not loaded! \r\nSimilar requests: %s", requestPartialUrl, httpMethod, allUrlsString));
         }
     }
 
@@ -168,7 +168,7 @@ public class ProxyServer {
             allHarEntries.stream().forEach(e -> {
                 Uri uri = Uri.create(requestPartialUrl);
                 if(e.getRequest().getUrl().contains(uri.getHost()) || e.getRequest().getUrl().contains(requestPartialUrl)){
-                    allUrls.add(String.format("%s[%s]", e.getRequest().getUrl(), e.getResponse().getStatusText()));
+                    allUrls.add(String.format("[%s]%s[%s]", e.getRequest().getMethod(), e.getRequest().getUrl(), e.getResponse().getStatusText()));
                 }
             });
             String allUrlsString = "";
