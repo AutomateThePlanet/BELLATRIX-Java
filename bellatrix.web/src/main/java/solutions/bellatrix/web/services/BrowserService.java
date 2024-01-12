@@ -126,6 +126,14 @@ public class BrowserService extends WebService {
         ((JavascriptExecutor)getWrappedDriver()).executeScript(String.format("window.localStorage.removeItem('%s');", item));
     }
 
+    public void scrollToBottom() {
+        ((JavascriptExecutor)getWrappedDriver()).executeScript("window.scrollTo(0, document.body.scrollHeight)");
+    }
+
+    public void scrollToTop() {
+        ((JavascriptExecutor)getWrappedDriver()).executeScript("window.scrollTo(0, 0)");
+    }
+
     public boolean isItemPresentInLocalStorage(String item) {
         return !(((JavascriptExecutor)getWrappedDriver()).executeScript(String.format("return window.localStorage.getItem('%s');", item)) == null);
     }

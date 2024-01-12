@@ -1044,7 +1044,7 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
                 Thread.sleep(500);
                 toExist().waitToBe();
             }
-        } catch (ElementNotInteractableException | InterruptedException ex) {
+        } catch (ElementNotInteractableException | InterruptedException | ScriptTimeoutException ex) {
             DebugInformation.printStackTrace(ex);
         }
 
