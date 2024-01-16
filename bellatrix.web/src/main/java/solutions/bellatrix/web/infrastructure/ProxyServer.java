@@ -51,6 +51,7 @@ public class ProxyServer {
             HttpStatus.SC_NON_AUTHORITATIVE_INFORMATION,
             HttpStatus.SC_NO_CONTENT,
             HttpStatus.SC_RESET_CONTENT,
+            HttpStatus.SC_UNPROCESSABLE_ENTITY,
             HttpStatus.SC_PARTIAL_CONTENT,
             HttpStatus.SC_MULTI_STATUS);
 
