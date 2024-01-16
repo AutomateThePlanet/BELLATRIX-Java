@@ -22,6 +22,7 @@ import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import solutions.bellatrix.core.configuration.ConfigurationService;
+import solutions.bellatrix.core.utilities.Log;
 import solutions.bellatrix.core.utilities.Wait;
 import solutions.bellatrix.web.components.Frame;
 import solutions.bellatrix.web.configuration.WebSettings;
@@ -370,6 +371,18 @@ public class BrowserService extends WebService {
         }
         catch (TimeoutException exception){
             throw new TimeoutException(String.format("The expected request with URL '%s' is not loaded!", partialUrl));
+        }
+    }
+
+    public void tryWaitForRequest(String partialUrl) {
+        var javascriptExecutor = (JavascriptExecutor)getWrappedDriver();
+        String script = String.format("return performance.getEntriesByType('resource').filter(item => item.name.toLowerCase().includes('%s'))[0] !== undefined;", partialUrl);
+
+        try {
+            waitUntil(e -> (boolean)javascriptExecutor.executeScript(script));
+        }
+        catch (TimeoutException exception){
+            Log.error(String.format("The expected request with URL '%s' is not loaded!", partialUrl));
         }
     }
 
