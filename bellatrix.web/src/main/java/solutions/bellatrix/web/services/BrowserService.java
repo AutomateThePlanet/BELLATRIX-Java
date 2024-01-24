@@ -341,6 +341,18 @@ public class BrowserService extends WebService {
         webDriverWait.until(function);
     }
 
+    public void tryWaitUntil(Function function) {
+        long waitUntilReadyTimeout = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getWaitUntilReadyTimeout();
+        long sleepInterval = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getSleepInterval();
+        var webDriverWait = new WebDriverWait(getWrappedDriver(), Duration.ofSeconds(waitUntilReadyTimeout), Duration.ofSeconds(sleepInterval));
+        try {
+            webDriverWait.until(function);
+        }
+        catch (TimeoutException exception){
+            Log.error(String.format("Timed out waiting for the condition! %s", function.toString()));
+        }
+    }
+
     public void waitForJavaScriptAnimations() {
         long waitForJavaScriptAnimationsTimeout = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getWaitForJavaScriptAnimationsTimeout();
         long sleepInterval = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getSleepInterval();
