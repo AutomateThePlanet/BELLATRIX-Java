@@ -149,7 +149,7 @@ public class ProxyServer {
                         r -> r.getRequest().getUrl().contains(requestPartialUrl)
                         && r.getRequest().getMethod().equals(httpMethod.toString())
                         && successHttpStatusesList.contains(r.getResponse().getStatus())
-                        && !r.getResponse().getContent().getText().isEmpty()
+                        && (httpMethod.equals(HttpMethod.DELETE)? true : !r.getResponse().getContent().getText().isEmpty())
                 );
                 allHarEntries.clear();
                 allHarEntries.addAll(harEntries);
@@ -293,7 +293,7 @@ public class ProxyServer {
             return new Gson().fromJson(getDataObject(json), responseModelClass);
         }
         catch (Exception ex){
-            throw new AssertionFailedError("Cannot get JSON body from the string: " + json + ". " + harEntry.getResponse().toString());
+            throw new AssertionFailedError("Cannot get JSON body from the string: " + json + ". Error was: " + ex.getMessage());
         }
     }
 
