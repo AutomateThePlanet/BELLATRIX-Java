@@ -394,7 +394,7 @@ public class BrowserService extends WebService {
             waitUntil(e -> (boolean)javascriptExecutor.executeScript(script));
         }
         catch (Exception exception){
-            Log.error("The expected request with URL '" + partialUrl + "' is not loaded!");
+            Log.error("The expected request with URL '%s' is not loaded!", partialUrl);
         }
     }
 
