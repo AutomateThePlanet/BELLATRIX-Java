@@ -388,13 +388,13 @@ public class BrowserService extends WebService {
 
     public void tryWaitForRequest(String partialUrl) {
         var javascriptExecutor = (JavascriptExecutor)getWrappedDriver();
-        String script = String.format("return performance.getEntriesByType('resource').filter(item => item.name.toLowerCase().includes('%s'))[0] !== undefined;", partialUrl);
+        String script = "return performance.getEntriesByType('resource').filter(item => item.name.toLowerCase().includes('" + partialUrl + "'))[0] !== undefined;";
 
         try {
             waitUntil(e -> (boolean)javascriptExecutor.executeScript(script));
         }
-        catch (TimeoutException exception){
-            Log.error(String.format("The expected request with URL '%s' is not loaded!", partialUrl));
+        catch (Exception exception){
+            Log.error("The expected request with URL '" + partialUrl + "' is not loaded!");
         }
     }
 
