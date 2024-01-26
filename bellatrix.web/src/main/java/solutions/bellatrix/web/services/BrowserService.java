@@ -322,7 +322,12 @@ public class BrowserService extends WebService {
     }
     window.$bellatrixToastContainer.appendChild($bellatrixToast);
     setTimeout($bellatrixToast.remove.bind($bellatrixToast), $timeout);""";
-        ((JavascriptExecutor) getWrappedDriver()).executeScript(executionScript);
+        try {
+            ((JavascriptExecutor) getWrappedDriver()).executeScript(executionScript);
+        }
+        catch (Exception ex) {
+            Log.error("Failed to inject notification toast.");
+        }
     }
 
     public void waitForReactPageLoadsCompletely() {
