@@ -149,7 +149,7 @@ public class ProxyServer {
                         r -> r.getRequest().getUrl().contains(requestPartialUrl)
                         && r.getRequest().getMethod().equals(httpMethod.toString())
                         && successHttpStatusesList.contains(r.getResponse().getStatus())
-                        && (httpMethod.equals(HttpMethod.DELETE)? true : !r.getResponse().getContent().getText().isEmpty())
+                        && (httpMethod.equals(HttpMethod.DELETE)? true : (r.getResponse().getContent().getText() != null && !r.getResponse().getContent().getText().isEmpty()))
                 );
                 allHarEntries.clear();
                 allHarEntries.addAll(harEntries);
