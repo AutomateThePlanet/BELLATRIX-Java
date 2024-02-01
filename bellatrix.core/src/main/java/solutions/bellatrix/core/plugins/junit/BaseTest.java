@@ -90,7 +90,7 @@ public class BaseTest extends UsesPlugins {
         try {
             var testClass = this.getClass();
             assert testInfo.getTestMethod().isPresent();
-            var methodInfo = testClass.getMethod(testInfo.getTestMethod().get().getName());
+            var methodInfo = testClass.getMethod(testInfo.getTestMethod().get().getName(), testInfo.getTestMethod().get().getParameterTypes());
             PluginExecutionEngine.preAfterTest(CURRENT_TEST_RESULT.get(), methodInfo);
             afterEach();
 //            PluginExecutionEngine.postAfterTest(CURRENT_TEST_RESULT.get(), methodInfo);
