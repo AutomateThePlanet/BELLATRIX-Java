@@ -1,9 +1,7 @@
 package solutions.bellatrix.core.utilities;
 
 import java.awt.*;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.UnsupportedFlavorException;
+import java.awt.datatransfer.*;
 import java.io.IOException;
 
 public class ClipboardManager {
@@ -19,5 +17,11 @@ public class ClipboardManager {
         }
 
         return lastCopiedEntity;
+    }
+
+    public static void copyTextToClipboard(String text) {
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        Transferable transferable = new StringSelection(text);
+        clipboard.setContents(transferable, null);
     }
 }
