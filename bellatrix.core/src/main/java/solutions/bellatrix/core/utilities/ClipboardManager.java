@@ -20,8 +20,7 @@ public class ClipboardManager {
     }
 
     public static void copyTextToClipboard(String text) {
-        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
         Transferable transferable = new StringSelection(text);
-        clipboard.setContents(transferable, null);
+        systemClipboard.setContents(transferable, null);
     }
 }
