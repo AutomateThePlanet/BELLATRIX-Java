@@ -107,7 +107,15 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
     }
 
     public void scrollToVisible() {
-        scrollToVisible(getWrappedElement(), false);
+        scrollToVisible(getWrappedElement(), false, "center");
+    }
+
+    public void scrollToTop() {
+        scrollToVisible(getWrappedElement(), false, "start");
+    }
+
+    public void scrollToBottom() {
+        scrollToVisible(getWrappedElement(), false, "end");
     }
 
     public void setAttribute(String name, String value) {
@@ -1032,14 +1040,15 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
     private void scrollToMakeElementVisible(WebElement wrappedElement) {
         // createBy default scroll down to make the element visible.
         if (webSettings.getAutomaticallyScrollToVisible()) {
-            scrollToVisible(wrappedElement, false);
+            scrollToVisible(wrappedElement, false, "center");
         }
     }
 
-    private void scrollToVisible(WebElement wrappedElement, boolean shouldWait) {
+
+    private void scrollToVisible(WebElement wrappedElement, boolean shouldWait, String scrollPosition) {
         SCROLLING_TO_VISIBLE.broadcast(new ComponentActionEventArgs(this));
         try {
-            javaScriptService.execute("arguments[0].scrollIntoView({ block: \"center\" });", wrappedElement);
+            javaScriptService.execute("arguments[0].scrollIntoView({ block: \"" + scrollPosition + "\", behavior: \"smooth\", inline: \"nearest\" });", wrappedElement);
             if (shouldWait) {
                 Thread.sleep(500);
                 toExist().waitToBe();
