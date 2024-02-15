@@ -157,7 +157,14 @@ public class BrowserService extends WebService {
     }
 
     public List<LogEntry> getLogsByType(String type) {
-        return getWrappedDriver().manage().logs().get(type).toJson();
+        try {
+            return getWrappedDriver().manage().logs().get(type).toJson();
+        }
+
+        catch (UnsupportedCommandException ex) {
+            // Unsupported browser
+            return new ArrayList<>();
+        }
     }
 
     public void assertNoConsoleErrorsLogged() {
