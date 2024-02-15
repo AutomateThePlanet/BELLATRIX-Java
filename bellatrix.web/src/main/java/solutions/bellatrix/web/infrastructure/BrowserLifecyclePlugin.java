@@ -17,6 +17,7 @@ import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.core.plugins.Plugin;
 import solutions.bellatrix.core.plugins.TestResult;
 import solutions.bellatrix.core.utilities.DebugInformation;
+import solutions.bellatrix.core.utilities.SecretsResolver;
 import solutions.bellatrix.web.configuration.WebSettings;
 
 import java.lang.reflect.Method;
@@ -142,7 +143,7 @@ public class BrowserLifecyclePlugin extends Plugin {
     private BrowserConfiguration getExecutionBrowserClassLevel(Class<?> type) {
         var executionBrowserAnnotation = (ExecutionBrowser)type.getDeclaredAnnotation(ExecutionBrowser.class);
 
-        var defaultBrowser = Browser.fromText(ConfigurationService.get(WebSettings.class).getDefaultBrowser());
+        var defaultBrowser = Browser.fromText(SecretsResolver.getSecret(ConfigurationService.get(WebSettings.class).getDefaultBrowser()));
         var defaultLifecycle = Lifecycle.fromText(ConfigurationService.get(WebSettings.class).getDefaultLifeCycle());
         var defaultWidth = ConfigurationService.get(WebSettings.class).getDefaultBrowserWidth();
         var defaultHeight = ConfigurationService.get(WebSettings.class).getDefaultBrowserHeight();
