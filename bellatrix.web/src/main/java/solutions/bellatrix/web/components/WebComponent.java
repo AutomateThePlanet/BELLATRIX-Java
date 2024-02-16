@@ -41,7 +41,6 @@ import solutions.bellatrix.web.services.ComponentWaitService;
 import solutions.bellatrix.web.services.JavaScriptService;
 import solutions.bellatrix.web.waitstrategies.*;
 
-import java.lang.reflect.Type;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
@@ -1048,7 +1047,7 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
     private void scrollToVisible(WebElement wrappedElement, boolean shouldWait, String scrollPosition) {
         SCROLLING_TO_VISIBLE.broadcast(new ComponentActionEventArgs(this));
         try {
-            javaScriptService.execute("arguments[0].scrollIntoView({ block: \"" + scrollPosition + "\", behavior: \"smooth\", inline: \"nearest\" });", wrappedElement);
+            javaScriptService.execute("arguments[0].scrollIntoView({ block: \"" + scrollPosition + "\", behavior: \"instant\", inline: \"nearest\" });", wrappedElement);
             if (shouldWait) {
                 Thread.sleep(500);
                 toExist().waitToBe();
