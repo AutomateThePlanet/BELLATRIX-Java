@@ -31,6 +31,7 @@ import org.openqa.selenium.safari.SafariOptions;
 import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.core.utilities.DebugInformation;
 import solutions.bellatrix.core.utilities.Log;
+import solutions.bellatrix.core.utilities.SecretsResolver;
 import solutions.bellatrix.core.utilities.TimestampBuilder;
 import solutions.bellatrix.web.configuration.GridSettings;
 import solutions.bellatrix.web.configuration.WebSettings;
@@ -41,8 +42,12 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Properties;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static io.restassured.RestAssured.given;
 
@@ -52,7 +57,7 @@ public class DriverService {
     private static final ThreadLocal<HashMap<String, String>> CUSTOM_DRIVER_OPTIONS;
     private static final ThreadLocal<WebDriver> WRAPPED_DRIVER;
     private static boolean isBuildNameSet = false;
-    private  static String buildName;
+    private static String buildName;
 
     static {
         CUSTOM_DRIVER_OPTIONS = new ThreadLocal<>();
@@ -94,8 +99,7 @@ public class DriverService {
                 var gridSettings = webSettings.getGridSettings().stream().filter(g -> g.getProviderName().equals(executionType.toLowerCase())).findFirst();
                 assert gridSettings.isPresent() : String.format("The specified execution type '%s' is not declared in the configuration", executionType);
                 driver = initializeDriverGridMode(gridSettings.get());
-            }
-            else {
+            } else {
                 var gridSettings = webSettings.getGridSettings().stream().filter(g -> g.getProviderName().equals(executionType.toLowerCase())).findFirst();
                 assert gridSettings.isPresent() : String.format("The specified execution type '%s' is not declared in the configuration", executionType);
                 driver = initializeDriverCloudGridMode(gridSettings.get());
@@ -153,8 +157,10 @@ public class DriverService {
         caps.setCapability(gridSettings.getOptionsName(), options);
         WebDriver driver = null;
         try {
-            driver = new RemoteWebDriver(new URI(gridSettings.getUrl()).toURL(), caps);
+            var url = getUrl(gridSettings.getUrl());
+            driver = new RemoteWebDriver(new URI(url).toURL(), caps);
         } catch (Exception e) {
+            ;
             DebugInformation.printStackTrace(e);
         }
 
@@ -211,11 +217,9 @@ public class DriverService {
         WebDriver driver = null;
         try {
             var gridUrl = gridSettings.getUrl();
-            if (gridUrl.startsWith("env_")) {
-                gridUrl = System.getProperty(gridSettings.getUrl()).replace("env_", "");
-            }
+            var url  = getUrl(gridUrl);
 
-            driver = new RemoteWebDriver(new URI(gridUrl).toURL(), caps);
+            driver = new RemoteWebDriver(new URI(url).toURL(), caps);
         } catch (MalformedURLException | URISyntaxException e) {
             DebugInformation.printStackTrace(e);
         }
@@ -236,10 +240,10 @@ public class DriverService {
 
         switch (BROWSER_CONFIGURATION.get().getBrowser()) {
             case CHROME -> {
-                WebDriverManager.chromedriver().setup();
+                //WebDriverManager.chromedriver().setup();
                 var chromeOptions = new ChromeOptions();
                 addDriverOptions(chromeOptions);
-                chromeOptions.addArguments("--log-level=3","--remote-allow-origins=*");
+                chromeOptions.addArguments("--log-level=3", "--remote-allow-origins=*");
                 chromeOptions.setAcceptInsecureCerts(true);
                 System.setProperty("webdriver.chrome.silentOutput", "true");
                 if (shouldCaptureHttpTraffic) chromeOptions.setProxy(proxyConfig);
@@ -316,10 +320,9 @@ public class DriverService {
 
                     options.put(c.getKey(), buildName);
                     Log.info(c.getKey() + " = " + buildName);
-                }
-                else {
-                    if (c.getValue() instanceof String && c.getValue().toString().startsWith("env_")) {
-                        var envValue = System.getProperty(c.getValue().toString().replace("env_", ""));
+                } else {
+                    if (c.getValue() instanceof String && c.getValue().toString().startsWith("{env_")) {
+                        var envValue = SecretsResolver.getSecret(c.getValue().toString());
                         options.put(c.getKey(), envValue);
                         Log.info(c.getKey() + " = " + envValue);
                     } else {
@@ -333,9 +336,12 @@ public class DriverService {
                 options.put("lambdaMaskCommands", new String[]{"setValues", "setCookies", "getCookies"});
 
                 try {
-                    var userInfo = new URI(gridSettings.getUrl()).getUserInfo().split(":");
+                    var usernameSecret = gridSettings.getArguments().get(0).get("username").toString();
+                    var accessKeySecret = gridSettings.getArguments().get(0).get("accessKey").toString();
+                    var usernameValue = SecretsResolver.getSecret(usernameSecret);
+                    var accessKeyValue = SecretsResolver.getSecret(accessKeySecret);
 
-                    var res = given().auth().preemptive().basic(userInfo[0], userInfo[1])
+                    var res = given().auth().preemptive().basic(usernameValue, accessKeyValue)
                             .get("https://api.lambdatest.com/automation/api/v1/user-files");
 
                     options.put("lambda:userFiles", res.body().jsonPath().getList("data.key"));
@@ -353,8 +359,8 @@ public class DriverService {
     private static <TOption extends MutableCapabilities> void addGridOptions(TOption options, GridSettings gridSettings) {
         for (var entry : gridSettings.getArguments()) {
             for (var c : entry.entrySet()) {
-                if (c.getValue() instanceof String && c.getValue().toString().startsWith("env_")) {
-                    var envValue = System.getProperty(c.getValue().toString().replace("env_", ""));
+                if (c.getValue() instanceof String && c.getValue().toString().startsWith("{env_")) {
+                    var envValue = SecretsResolver.getSecret(c.getValue().toString());
                     options.setCapability(c.getKey(), envValue);
                 } else {
                     options.setCapability(c.getKey(), c.getValue());
@@ -406,6 +412,28 @@ public class DriverService {
         }
 
         return buildName;
+    }
+
+    private static String getUrl(String url) {
+        String result = url;
+        if (url.startsWith("{env_")) {
+            result = SecretsResolver.getSecret(url);
+        } else if (url.contains("{env_")) {
+            String pattern = "\\{env_.*?\\}";
+            Pattern compiledPattern = Pattern.compile(pattern);
+            Matcher matcher = compiledPattern.matcher(url);
+            List<String> allMatches = new ArrayList<String>();
+
+            while (matcher.find()) {
+                allMatches.add(matcher.group());
+            }
+
+            for (String match : allMatches) {
+                result = result.replace(match, SecretsResolver.getSecret(match));
+            }
+        }
+
+        return result;
     }
 
     public static void close() {
