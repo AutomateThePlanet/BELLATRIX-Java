@@ -353,6 +353,8 @@ public class BrowserService extends WebService {
         long waitUntilReadyTimeout = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getWaitUntilReadyTimeout();
         long sleepInterval = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getSleepInterval();
         var webDriverWait = new WebDriverWait(getWrappedDriver(), Duration.ofSeconds(waitUntilReadyTimeout), Duration.ofSeconds(sleepInterval));
+        String message = Thread.currentThread().getStackTrace()[2].getMethodName();
+        webDriverWait.withMessage("Timed out while executing method: %s".formatted(message));
         webDriverWait.until(function);
     }
 
@@ -361,6 +363,8 @@ public class BrowserService extends WebService {
         long sleepInterval = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getSleepInterval();
         var webDriverWait = new WebDriverWait(getWrappedDriver(), Duration.ofSeconds(waitUntilReadyTimeout), Duration.ofSeconds(sleepInterval));
         try {
+            String message = Thread.currentThread().getStackTrace()[2].getMethodName();
+            webDriverWait.withMessage("Timed out while executing method: %s".formatted(message));
             webDriverWait.until(function);
         } catch (TimeoutException exception) {
             Log.error(String.format("Timed out waiting for the condition! %s", function.toString()));
