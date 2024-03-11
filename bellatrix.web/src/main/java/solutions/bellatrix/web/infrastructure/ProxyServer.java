@@ -342,7 +342,7 @@ public class ProxyServer {
 
         JsonObject dataObject = null;
         JsonArray dataArray = null;
-        if (isObject == true) {
+        if (isObject) {
             if (jsonObject.has("data")){
                 if (jsonObject.get("data").isJsonObject()){
                     dataObject = jsonObject.getAsJsonObject("data");
@@ -356,21 +356,14 @@ public class ProxyServer {
             dataArray = jsonArray.getAsJsonArray();
         }
 
-//        if (jsonObject.has("data")){
-//            if (jsonObject.get("data").isJsonObject()){
-//                dataObject = jsonObject.getAsJsonObject("data");
-//            } else {
-//                dataArray = jsonObject.getAsJsonArray("data");
-//            }
-//        } else {
-//            dataArray = jsonArray.getAsJsonArray();
-//        }
-
-        if (dataObject == null){
-//            return dataArray.toString();
-            return jsonString;
-        } else {
+        if (dataObject != null){
             return dataObject.toString();
+        }
+        else if (dataArray != null) {
+            return dataArray.toString();
+        }
+        else {
+            return jsonString;
         }
     }
 }
