@@ -13,6 +13,8 @@
 
 package solutions.bellatrix.web.pages;
 
+import solutions.bellatrix.web.infrastructure.Browser;
+import solutions.bellatrix.web.services.App;
 import solutions.bellatrix.web.services.BrowserService;
 import solutions.bellatrix.web.services.ComponentCreateService;
 import solutions.bellatrix.web.services.JavaScriptService;
@@ -31,6 +33,10 @@ public abstract class WebPage<MapT extends PageMap, AssertsT extends PageAsserts
 
     public ComponentCreateService create() {
         return new ComponentCreateService();
+    }
+
+    public App app() {
+        return new App();
     }
 
     public MapT map() {
@@ -55,7 +61,9 @@ public abstract class WebPage<MapT extends PageMap, AssertsT extends PageAsserts
         return new NavigationService();
     }
 
-    protected abstract String getUrl();
+    protected String getUrl() {
+        return "";
+    }
 
     public void open() {
         navigate().to(getUrl());

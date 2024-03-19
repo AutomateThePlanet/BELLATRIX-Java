@@ -65,6 +65,7 @@ public class BaseTest extends UsesPlugins {
             beforeEach();
             PluginExecutionEngine.postBeforeTest(CURRENT_TEST_RESULT.get(), methodInfo);
         } catch (Exception e) {
+            e.printStackTrace();
             onBeforeEachFailure();
             PluginExecutionEngine.beforeTestFailed(e);
         }
@@ -81,6 +82,7 @@ public class BaseTest extends UsesPlugins {
             beforeAll();
             PluginExecutionEngine.postBeforeClass(testClass);
         } catch (Exception e) {
+            e.printStackTrace();
             PluginExecutionEngine.beforeClassFailed(e);
         }
     }
@@ -93,8 +95,9 @@ public class BaseTest extends UsesPlugins {
             var methodInfo = testClass.getMethod(testInfo.getTestMethod().get().getName(), testInfo.getTestMethod().get().getParameterTypes());
             PluginExecutionEngine.preAfterTest(CURRENT_TEST_RESULT.get(), methodInfo);
             afterEach();
-//            PluginExecutionEngine.postAfterTest(CURRENT_TEST_RESULT.get(), methodInfo);
+           // PluginExecutionEngine.postAfterTest(CURRENT_TEST_RESULT.get(), methodInfo);
         } catch (Exception e) {
+            e.printStackTrace();
             PluginExecutionEngine.afterTestFailed(e);
         }
     }
@@ -108,6 +111,7 @@ public class BaseTest extends UsesPlugins {
                 PluginExecutionEngine.postAfterClass(testClass.get());
             }
         } catch (Exception e) {
+            e.printStackTrace();
             PluginExecutionEngine.afterClassFailed(e);
         }
     }

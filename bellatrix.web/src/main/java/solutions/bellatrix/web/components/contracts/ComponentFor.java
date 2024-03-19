@@ -27,31 +27,16 @@ public interface ComponentFor extends Component {
 
     @SneakyThrows
     default void validateForIs(String value) {
-        try {
-            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIs", WebComponent.class, Supplier.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, (Supplier<String>)this::getFor, value, "for");
-        } catch (InvocationTargetException e) {
-            throw e.getCause();
-        }
+        ComponentValidator.defaultValidateAttributeIs((WebComponent)this, this::getFor, value, "for");
     }
 
     @SneakyThrows
     default void validateForIsSet() {
-        try {
-            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIsSet", WebComponent.class, Supplier.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, (Supplier<String>)this::getFor, "for");
-        } catch (InvocationTargetException e) {
-            throw e.getCause();
-        }
+        ComponentValidator.defaultValidateAttributeIsSet((WebComponent)this, this::getFor, "for");
     }
 
     @SneakyThrows
     default void validateForNotSet() {
-        try {
-            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeNotSet", WebComponent.class, Supplier.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, (Supplier<String>)this::getFor, "for");
-        } catch (InvocationTargetException e) {
-            throw e.getCause();
-        }
+        ComponentValidator.defaultValidateAttributeNotSet((WebComponent)this, this::getFor, "for");
     }
 }

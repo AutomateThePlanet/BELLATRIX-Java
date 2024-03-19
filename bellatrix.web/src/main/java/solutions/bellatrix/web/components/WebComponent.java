@@ -561,19 +561,15 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
             var originalElementBackground = getWrappedElement().getCssValue("background");
             var originalElementColor = getWrappedElement().getCssValue("color");
             var originalElementOutline = getWrappedElement().getCssValue("outline");
-            javaScriptService.execute("arguments[0].style.background='yellow';arguments[0].style.color='black';arguments[0].style.outline='1px solid black';return;", wrappedElement);
 
-            var runnable = new Runnable() {
-                @SneakyThrows
-                public void run() {
-                    Thread.sleep(100);
-                    try {
-                        javaScriptService.execute("arguments[0].style.background='" + originalElementBackground + "';arguments[0].style.color='" + originalElementColor + "';arguments[0].style.outline='" + originalElementOutline + "';return;", wrappedElement);
-                    } catch (NoSuchSessionException | NullPointerException ignored) {
-                    }
-                }
-            };
-            new Thread(runnable).start();
+            String script = "arguments[0].style.background='yellow';arguments[0].style.color='black';arguments[0].style.outline='1px solid black';" +
+                    "setTimeout(function() {" +
+                    "arguments[0].style.background='" + originalElementBackground + "';" +
+                    "arguments[0].style.color='" + originalElementColor + "';" +
+                    "arguments[0].style.outline='" + originalElementOutline + "';" +
+                    "}, 100);";
+
+            javaScriptService.execute(script, wrappedElement);
         } catch (Exception ignored) {
         }
     }
@@ -656,13 +652,16 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
             addArtificialDelay();
 
             waitStrategies.clear();
-        } catch (WebDriverException ex) {
-            Log.error("%n%nThe component: %n" +
-                            "     Type: \"%s\"%n" +
-                            "  Locator: \"%s\"%n" +
+        } catch (Exception ex) {
+            var formattedException = String.format("The component: \n" +
+                            "     Type: %s" +
+                            "  Locator: %s" +
+                            "  URL: %s\"%n" +
                             "Was not found on the page or didn't fulfill the specified conditions.%n%n",
-                    getComponentClass().getSimpleName(), findStrategy.toString());
-            throw ex;
+                    getComponentClass().getSimpleName(), findStrategy.toString(), getWrappedDriver().getCurrentUrl());
+            Log.error(formattedException);
+
+            throw new NotFoundException(formattedException, ex);
         }
 
         RETURNING_WRAPPED_ELEMENT.broadcast(new ComponentActionEventArgs(this));
@@ -680,18 +679,18 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
         try {
             wait.until(x -> tryClick());
         } catch (TimeoutException e) {
-            toExist().toBeClickable().findElement().click();
+            toBeVisible().toBeClickable().findElement().click();
         }
     }
 
     private boolean tryClick() {
         try {
-            toExist().toBeClickable().findElement().click();
+            toBeVisible().toBeClickable().findElement().click();
             return true;
         } catch (ElementNotInteractableException e) {
             return false;
         } catch (WebDriverException e) {
-            toExist().toBeClickable().waitToBe();
+            toBeVisible().toBeClickable().waitToBe();
             return false;
         }
     }
@@ -1013,6 +1012,14 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
         settingValue.broadcast(new ComponentActionEventArgs(this, value));
 
         getWrappedElement().clear();
+        getWrappedElement().sendKeys(value);
+
+        valueSet.broadcast(new ComponentActionEventArgs(this, value));
+    }
+
+    protected void defaultUpload(EventListener<ComponentActionEventArgs> settingValue, EventListener<ComponentActionEventArgs> valueSet, String value) {
+        settingValue.broadcast(new ComponentActionEventArgs(this, value));
+
         getWrappedElement().sendKeys(value);
 
         valueSet.broadcast(new ComponentActionEventArgs(this, value));

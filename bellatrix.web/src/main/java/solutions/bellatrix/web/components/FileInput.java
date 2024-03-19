@@ -28,7 +28,7 @@ public class FileInput extends WebComponent implements ComponentRequired, Compon
     }
 
     public void upload(String file) {
-        defaultSetText(UPLOADING, UPLOADED, file);
+        defaultUpload(UPLOADING, UPLOADED, file);
     }
 
     @Override

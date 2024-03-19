@@ -19,6 +19,7 @@ import solutions.bellatrix.core.plugins.Plugin;
 import solutions.bellatrix.core.plugins.TestResult;
 import solutions.bellatrix.core.utilities.DebugInformation;
 import solutions.bellatrix.core.utilities.PathNormalizer;
+import solutions.bellatrix.web.configuration.WebSettings;
 
 import java.lang.reflect.Method;
 import java.util.Objects;
@@ -42,13 +43,15 @@ public class AppLifecyclePlugin extends Plugin {
 
     @Override
     public void preBeforeClass(Class type) {
-        CURRENT_APP_CONFIGURATION.set(getExecutionAppClassLevel(type));
-        if (shouldRestartApp()) {
-            restartApp();
-            // TODO: maybe we can simplify and remove this parameter.
-            IS_APP_STARTED_DURING_PRE_BEFORE_CLASS.set(true);
-        } else {
-            IS_APP_STARTED_DURING_PRE_BEFORE_CLASS.set(false);
+        if (ConfigurationService.get(WebSettings.class).getExecutionType() == "regular") {
+            CURRENT_APP_CONFIGURATION.set(getExecutionAppClassLevel(type));
+            if (shouldRestartApp()) {
+                restartApp();
+                // TODO: maybe we can simplify and remove this parameter.
+                IS_APP_STARTED_DURING_PRE_BEFORE_CLASS.set(true);
+            } else {
+                IS_APP_STARTED_DURING_PRE_BEFORE_CLASS.set(false);
+            }
         }
 
         super.preBeforeClass(type);
@@ -65,6 +68,9 @@ public class AppLifecyclePlugin extends Plugin {
     public void preBeforeTest(TestResult testResult, Method memberInfo) {
         CURRENT_APP_CONFIGURATION.set(getAppConfiguration(memberInfo));
 
+        String testFullName = String.format("%s.%s", memberInfo.getDeclaringClass().getName(), memberInfo.getName());
+        CURRENT_APP_CONFIGURATION.get().setTestName(testFullName);
+
         if (!IS_APP_STARTED_DURING_PRE_BEFORE_CLASS.get()) {
             if (shouldRestartApp()) {
                 restartApp();
@@ -75,12 +81,16 @@ public class AppLifecyclePlugin extends Plugin {
     }
 
     @Override
-    public void postAfterTest(TestResult testResult, Method memberInfo) {
-        if (CURRENT_APP_CONFIGURATION.get().getLifecycle() ==
-                Lifecycle.RESTART_ON_FAIL && testResult == TestResult.FAILURE) {
-            shutdownApp();
-            IS_APP_STARTED_DURING_PRE_BEFORE_CLASS.set(false);
+    public void postAfterTest(TestResult testResult, Method memberInfo, Throwable failedTestException) {
+        if (CURRENT_APP_CONFIGURATION.get().getLifecycle() == Lifecycle.REUSE_IF_STARTED) {
+            return;
         }
+
+        if (CURRENT_APP_CONFIGURATION.get().getLifecycle() == Lifecycle.RESTART_ON_FAIL && testResult != TestResult.FAILURE ) {
+            return;
+        }
+
+        shutdownApp();
     }
 
     private void shutdownApp() {
@@ -123,6 +133,8 @@ public class AppLifecyclePlugin extends Plugin {
         var classAppType = getExecutionAppClassLevel(memberInfo.getDeclaringClass());
         var methodAppType = getExecutionAppMethodLevel(memberInfo);
         result = Objects.requireNonNullElse(methodAppType, classAppType);
+        String testFullName = String.format("%s.%s", memberInfo.getDeclaringClass().getName(), memberInfo.getName());
+        result.setTestName(testFullName);
 
         return result;
     }

@@ -27,31 +27,16 @@ public interface ComponentMax extends Component {
 
     @SneakyThrows
     default void validateMaxIsSet() {
-        try {
-            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeNotNull", WebComponent.class, Supplier.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, (Supplier<Object>)this::getMax, "max");
-        } catch (InvocationTargetException e) {
-            throw e.getCause();
-        }
+        ComponentValidator.defaultValidateAttributeNotNull((WebComponent)this, this::getMax, "max");
     }
 
     @SneakyThrows
     default void validateMaxNotSet() {
-        try {
-            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIsNull", WebComponent.class, Supplier.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, (Supplier<Object>)this::getMax, "max");
-        } catch (InvocationTargetException e) {
-            throw e.getCause();
-        }
+        ComponentValidator.defaultValidateAttributeIsNull((WebComponent)this, this::getMax, "max");
     }
 
     @SneakyThrows
     default void validateMaxIs(Number value) {
-        try {
-            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIs", WebComponent.class, Supplier.class, Number.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, (Supplier<Object>)this::getMax, value, "max");
-        } catch (InvocationTargetException e) {
-            throw e.getCause();
-        }
+        ComponentValidator.defaultValidateAttributeIs((WebComponent)this, this::getMax, value, "max");
     }
 }

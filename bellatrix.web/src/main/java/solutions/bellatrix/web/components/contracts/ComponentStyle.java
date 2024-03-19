@@ -33,6 +33,31 @@ public interface ComponentStyle extends Component {
     }
 
     @SneakyThrows
+    default void validateStyleIs(String value) {
+        ComponentValidator.defaultValidateAttributeIs((WebComponent)this, this::getStyle, value, "style");
+    }
+
+    @SneakyThrows
+    default void validateStyleIsSet() {
+        ComponentValidator.defaultValidateAttributeIsSet((WebComponent)this, this::getStyle, "style");
+    }
+
+    @SneakyThrows
+    default void validateStyleNotSet() {
+        ComponentValidator.defaultValidateAttributeNotSet((WebComponent)this, this::getStyle, "style");
+    }
+
+    @SneakyThrows
+    default void validateStyleContains(String value) {
+        ComponentValidator.defaultValidateAttributeContains((WebComponent)this, this::getStyle, value, "style");
+    }
+
+    @SneakyThrows
+    default void validateStyleNotContains(String value) {
+        ComponentValidator.defaultValidateAttributeNotContains((WebComponent)this, this::getStyle, value, "style");
+    }
+
+    @SneakyThrows
     default void validateStyle(CssStyle style, String expectedValue) {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIs", WebComponent.class, Supplier.class, java.lang.String.class, java.lang.String.class);

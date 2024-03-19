@@ -29,11 +29,6 @@ public interface ComponentNumber extends Component {
 
     @SneakyThrows
     default void validateNumberIs(Number value) {
-        try {
-            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIs", WebComponent.class, Supplier.class, Number.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, (Supplier<Number>)this::getNumber, value, "number");
-        } catch (InvocationTargetException e) {
-            throw e.getCause();
-        }
+        ComponentValidator.defaultValidateAttributeIs((WebComponent)this, this::getNumber, value, "number");
     }
 }

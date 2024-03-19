@@ -20,7 +20,6 @@ import solutions.bellatrix.core.plugins.TestResult;
 
 import java.io.File;
 import java.lang.reflect.Method;
-import java.nio.file.Paths;
 
 public abstract class VideoPlugin extends Plugin {
     public static final EventListener<VideoPluginEventArgs> VIDEO_GENERATED = new EventListener<>();
@@ -48,11 +47,8 @@ public abstract class VideoPlugin extends Plugin {
         }
     }
 
-    public void postAfterTest(TestResult testResult, Method memberInfo) {
+    public void postAfterTest(TestResult testResult, Method memberInfo, Throwable failedTestException) {
         if (isEnabled) {
-            var videoSaveDir = getOutputFolder();
-            var videoFileName = getUniqueFileName(memberInfo.getName());
-            var videoFullPath = Paths.get(videoSaveDir, videoFileName).toString();
             FMPEG_VIDEO_RECORDER.close();
             if (testResult == TestResult.FAILURE) {
                 VIDEO_GENERATED.broadcast(new VideoPluginEventArgs(VIDEO_FULL_PATH.get()));

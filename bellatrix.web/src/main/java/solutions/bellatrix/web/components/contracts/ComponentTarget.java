@@ -27,31 +27,16 @@ public interface ComponentTarget extends Component {
 
     @SneakyThrows
     default void validateTargetIs(String value) {
-        try {
-            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIs", WebComponent.class, Supplier.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, (Supplier<String>)this::getTarget, value, "target");
-        } catch (InvocationTargetException e) {
-            throw e.getCause();
-        }
+        ComponentValidator.defaultValidateAttributeIs((WebComponent)this, this::getTarget, value, "target");
     }
 
     @SneakyThrows
     default void validateTargetIsSet() {
-        try {
-            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIsSet", WebComponent.class, Supplier.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, (Supplier<String>)this::getTarget, "target");
-        } catch (InvocationTargetException e) {
-            throw e.getCause();
-        }
+        ComponentValidator.defaultValidateAttributeIsSet((WebComponent)this, this::getTarget, "target");
     }
 
     @SneakyThrows
     default void validateTargetNotSet() {
-        try {
-            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeNotSet", WebComponent.class, Supplier.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, (Supplier<String>)this::getTarget, "target");
-        } catch (InvocationTargetException e) {
-            throw e.getCause();
-        }
+        ComponentValidator.defaultValidateAttributeNotSet((WebComponent)this, this::getTarget, "target");
     }
 }

@@ -13,11 +13,11 @@
 
 package searchsection;
 
-import solutions.bellatrix.web.components.TextField;
+import solutions.bellatrix.web.components.TextInput;
 import solutions.bellatrix.web.pages.PageMap;
 
 public class Map extends PageMap {
-    public TextField searchField() {
-        return create().byId(TextField.class, "woocommerce-product-search-field-0");
+    public TextInput searchField() {
+        return create().byId(TextInput.class, "woocommerce-product-search-field-0");
     }
 }

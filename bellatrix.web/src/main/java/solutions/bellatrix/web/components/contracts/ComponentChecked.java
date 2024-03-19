@@ -27,12 +27,7 @@ public interface ComponentChecked extends Component {
 
     @SneakyThrows
     default void validateIsChecked() {
-        try {
-            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeTrue", WebComponent.class, BooleanSupplier.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, (BooleanSupplier)this::isChecked, "checked");
-        } catch (InvocationTargetException e) {
-            throw e.getCause();
-        }
+        ComponentValidator.defaultValidateAttributeTrue((WebComponent)this, this::isChecked, "checked");
     }
 
     @SneakyThrows
@@ -47,11 +42,6 @@ public interface ComponentChecked extends Component {
 
     @SneakyThrows
     default void validateIsUnchecked() {
-        try {
-            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeTrue", WebComponent.class, BooleanSupplier.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, (BooleanSupplier)() -> !isChecked(), "unchecked");
-        } catch (InvocationTargetException e) {
-            throw e.getCause();
-        }
+        ComponentValidator.defaultValidateAttributeTrue((WebComponent)this, () -> !isChecked(), "unchecked");
     }
 }

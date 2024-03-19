@@ -27,31 +27,16 @@ public interface ComponentRows extends Component {
 
     @SneakyThrows
     default void validateRowsIsSet() {
-        try {
-            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeNotNull", WebComponent.class, Supplier.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, (Supplier<Object>)this::getRows, "rows");
-        } catch (InvocationTargetException e) {
-            throw e.getCause();
-        }
+        ComponentValidator.defaultValidateAttributeNotNull((WebComponent)this, this::getRows, "rows");
     }
 
     @SneakyThrows
     default void validateRowsNotSet() {
-        try {
-            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIsNull", WebComponent.class, Supplier.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, (Supplier<Object>)this::getRows, "rows");
-        } catch (InvocationTargetException e) {
-            throw e.getCause();
-        }
+        ComponentValidator.defaultValidateAttributeIsNull((WebComponent)this, this::getRows, "rows");
     }
 
     @SneakyThrows
     default void validateRowsIs(int value) {
-        try {
-            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIs", WebComponent.class, Supplier.class, Number.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent)this, (Supplier<Number>)this::getRows, value, "rows");
-        } catch (InvocationTargetException e) {
-            throw e.getCause();
-        }
+        ComponentValidator.defaultValidateAttributeIs((WebComponent)this, this::getRows, value, "rows");
     }
 }

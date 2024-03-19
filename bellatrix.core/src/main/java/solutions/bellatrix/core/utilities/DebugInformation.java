@@ -22,4 +22,10 @@ public class DebugInformation {
             ex.printStackTrace();
         }
     }
+
+    public static void debugInfo(String message, Object... args) {
+        if (ConfigurationService.get(TroubleshootingSettings.class).getDebugInformationEnabled()) {
+            Log.info(message);
+        }
+    }
 }

@@ -27,7 +27,7 @@ public class JavaScriptService extends WebService {
 
     public Object execute(String script) {
         try {
-            var result = (String)javascriptExecutor.executeScript(script);
+            var result = javascriptExecutor.executeScript(script);
             return result;
         } catch (Exception ex) {
             DebugInformation.printStackTrace(ex);

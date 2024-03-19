@@ -25,10 +25,15 @@ import solutions.bellatrix.android.configuration.AndroidSettings;
 import solutions.bellatrix.android.configuration.GridSettings;
 import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.core.utilities.DebugInformation;
+import solutions.bellatrix.core.utilities.Log;
+import solutions.bellatrix.core.utilities.TimestampBuilder;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
 public class DriverService {
@@ -36,6 +41,8 @@ public class DriverService {
     private static final ThreadLocal<AppConfiguration> APP_CONFIGURATION;
     private static final ThreadLocal<HashMap<String, String>> CUSTOM_DRIVER_OPTIONS;
     private static final ThreadLocal<AndroidDriver> WRAPPED_ANDROID_DRIVER;
+    private static boolean isBuildNameSet = false;
+    private  static String buildName;
 
     static {
         DISPOSED = new ThreadLocal<>();
@@ -71,9 +78,10 @@ public class DriverService {
         if (executionType.equals("regular")) {
             driver = initializeDriverRegularMode(androidSettings.getServiceUrl());
         } else {
+            var testName = getAppConfiguration().getTestName();
             var gridSettings = androidSettings.getGridSettings().stream().filter(g -> g.getProviderName().equals(executionType.toLowerCase())).findFirst();
             assert gridSettings.isPresent() : String.format("The specified execution type '%s' is not declared in the configuration", executionType);
-            driver = initializeDriverGridMode(gridSettings.get());
+            driver = initializeDriverGridMode(gridSettings.get(), testName);
         }
 
         driver.manage().timeouts().implicitlyWait(androidSettings.getTimeoutSettings().getImplicitWaitTimeout(), TimeUnit.SECONDS);
@@ -82,16 +90,30 @@ public class DriverService {
         return driver;
     }
 
-    private static AndroidDriver initializeDriverGridMode(GridSettings gridSettings) {
+    private static AndroidDriver initializeDriverGridMode(GridSettings gridSettings, String testName) {
         var caps = new DesiredCapabilities();
-        caps.setCapability("platform", Platform.WIN10);
-        caps.setCapability("version", "latest");
+        HashMap<String, Object> options = new HashMap<String, Object>();
+        options.put(MobileCapabilityType.PLATFORM_NAME, "Android");
+        options.put(MobileCapabilityType.PLATFORM_VERSION, getAppConfiguration().getAndroidVersion());
+        options.put(MobileCapabilityType.DEVICE_NAME, getAppConfiguration().getDeviceName());
+
+        if (getAppConfiguration().getIsMobileWebExecution()) {
+            options.put(MobileCapabilityType.BROWSER_NAME, ConfigurationService.get(AndroidSettings.class).getDefaultBrowser());
+        } else {
+            options.put(MobileCapabilityType.APP, getAppConfiguration().getAppPath().replace("\\", "/"));
+            options.put(AndroidMobileCapabilityType.APP_PACKAGE, getAppConfiguration().getAppPackage());
+            options.put(AndroidMobileCapabilityType.APP_ACTIVITY, getAppConfiguration().getAppActivity());
+        }
+
+        options.put("name", testName);
+        addGridOptions(options, gridSettings);
+        caps.setCapability(gridSettings.getOptionsName(), options);
 
         AndroidDriver driver = null;
         try {
             driver = new AndroidDriver(new URL(gridSettings.getUrl()), caps);
             solutions.bellatrix.web.infrastructure.DriverService.setWrappedDriver(driver);
-        } catch (MalformedURLException e) {
+        } catch (Exception e) {
             DebugInformation.printStackTrace(e);
         }
 
@@ -120,17 +142,70 @@ public class DriverService {
         return driver;
     }
 
-    private static <TOption extends MutableCapabilities> void addGridOptions(TOption options, GridSettings gridSettings) {
+    private static void addGridOptions(HashMap<String, Object> options, GridSettings gridSettings) {
+        Log.info("Add Appium Options:");
+        Log.info("");
+
         for (var entry : gridSettings.getArguments()) {
             for (var c : entry.entrySet()) {
-                if (c.getKey().startsWith("env_")) {
-                    var envValue = System.getProperty(c.getKey().replace("env_", ""));
-                    options.setCapability(c.getKey(), envValue);
-                } else {
-                    options.setCapability(c.getKey(), c.getValue());
+                String key = c.getKey();
+                Object value = c.getValue();
+
+                if (key.toLowerCase().contains("build")) {
+                    var buildName = getBuildName();
+                    if (buildName == null) {
+                        buildName = value.toString();
+                    }
+                    value = buildName;
+                } else if (value instanceof String && ((String) value).startsWith("env_")) {
+                    value = System.getProperty(((String) value).replace("env_", ""));
                 }
+
+                // Handle boolean values
+                if ("true".equalsIgnoreCase(value.toString())) {
+                    value = true;
+                } else if ("false".equalsIgnoreCase(value.toString())) {
+                    value = false;
+                }
+
+                options.put(key, value);
+                Log.info(key + "= " + value);
+            }
+
+            if ("lambdatest".equalsIgnoreCase(gridSettings.getProviderName())) {
+                options.put("lambdaMaskCommands", new String[]{"setValues", "setCookies", "getCookies"});
+            }
+
+            Log.info("");
+        }
+    }
+
+
+    private static String getBuildName() {
+        if (!isBuildNameSet) {
+            buildName = System.getProperty("buildName");
+        }
+
+        if (buildName == null) {
+            InputStream input = ConfigurationService.class.getResourceAsStream("/application.properties");
+            var p = new Properties();
+            try {
+                p.load(input);
+            } catch (IOException e) {
+                return null;
+            }
+
+            if (!isBuildNameSet) {
+                buildName = p.getProperty("buildName");
+            }
+
+            if (buildName.equals("{randomNumber}") && !isBuildNameSet) {
+                buildName = TimestampBuilder.buildUniqueTextByPrefix("LE_");
+                isBuildNameSet = true;
             }
         }
+
+        return buildName;
     }
 
     private static <TOption extends MutableCapabilities> void addDriverConfigOptions(TOption chromeOptions) {
@@ -151,7 +226,7 @@ public class DriverService {
         }
 
         if (WRAPPED_ANDROID_DRIVER.get() != null) {
-            WRAPPED_ANDROID_DRIVER.get().close();
+            WRAPPED_ANDROID_DRIVER.get().quit();
             CUSTOM_DRIVER_OPTIONS.get().clear();
         }
 

@@ -17,7 +17,7 @@ import org.openqa.selenium.Keys;
 import solutions.bellatrix.core.plugins.EventListener;
 import solutions.bellatrix.web.components.contracts.*;
 
-public class TextField extends WebComponent implements ComponentDisabled, ComponentText, ComponentHtml, ComponentValue, ComponentAutoComplete, ComponentReadonly, ComponentRequired, ComponentMaxLength, ComponentMinLength, ComponentSize, ComponentPlaceholder {
+public class TextInput extends WebComponent implements ComponentDisabled, ComponentText, ComponentHtml, ComponentValue, ComponentAutoComplete, ComponentReadonly, ComponentRequired, ComponentMaxLength, ComponentMinLength, ComponentSize, ComponentPlaceholder {
     public final static EventListener<ComponentActionEventArgs> SETTING_TEXT = new EventListener<>();
     public final static EventListener<ComponentActionEventArgs> TEXT_SET = new EventListener<>();
 

@@ -13,6 +13,7 @@
 
 package solutions.bellatrix.android.infrastructure.junit;
 
+import org.junit.jupiter.api.extension.ExtendWith;
 import solutions.bellatrix.android.components.listeners.BddLogging;
 import solutions.bellatrix.android.infrastructure.AppLifecyclePlugin;
 import solutions.bellatrix.android.infrastructure.DownloadDemoAppsPlugin;
@@ -20,7 +21,9 @@ import solutions.bellatrix.android.infrastructure.MobileScreenshotPlugin;
 import solutions.bellatrix.android.infrastructure.MobileVideoPlugin;
 import solutions.bellatrix.android.services.App;
 import solutions.bellatrix.core.plugins.junit.BaseTest;
+import solutions.bellatrix.core.plugins.junit.TestResultWatcher;
 
+@ExtendWith(TestResultWatcher.class)
 public class AndroidTest extends BaseTest {
 
     public App app() {
@@ -32,7 +35,7 @@ public class AndroidTest extends BaseTest {
         addPlugin(AppLifecyclePlugin.class);
         addPlugin(MobileScreenshotPlugin.class);
         addPlugin(MobileVideoPlugin.class);
-        addPlugin(DownloadDemoAppsPlugin.class);
+        //addPlugin(DownloadDemoAppsPlugin.class);
         addListener(BddLogging.class);
     }
 }

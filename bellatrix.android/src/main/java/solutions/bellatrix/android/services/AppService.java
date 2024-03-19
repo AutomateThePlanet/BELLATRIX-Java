@@ -81,16 +81,12 @@ public class AppService extends MobileService {
         getWrappedAndroidDriver().runAppInBackground(Duration.ofSeconds(seconds));
     }
 
-    public void closeApp() {
-        getWrappedAndroidDriver().closeApp();
+    public void terminateApp(String appId) {
+        getWrappedAndroidDriver().terminateApp(appId);
     }
 
-    public void launchApp() {
-        getWrappedAndroidDriver().launchApp();
-    }
-
-    public void resetApp() {
-        getWrappedAndroidDriver().resetApp();
+    public void activateApp(String appId) {
+        getWrappedAndroidDriver().activateApp(appId);
     }
 
     public List<String> getWebViews() {
@@ -108,6 +104,13 @@ public class AppService extends MobileService {
         var contexts = ((ContextAware)getWrappedAndroidDriver()).getContextHandles();
         long count = contexts.stream().count();
         var lastContext = contexts.stream().skip(count - 1).findFirst().get();
+        ((ContextAware)getWrappedAndroidDriver()).context(lastContext);
+    }
+
+    public void switchToWebView(String name) {
+        var contexts = ((ContextAware)getWrappedAndroidDriver()).getContextHandles();
+        long count = contexts.stream().count();
+        var lastContext = contexts.stream().filter(c -> c.contains(name)).findFirst().get();
         ((ContextAware)getWrappedAndroidDriver()).context(lastContext);
     }
 

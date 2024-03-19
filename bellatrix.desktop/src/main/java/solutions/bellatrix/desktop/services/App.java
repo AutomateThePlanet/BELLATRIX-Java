@@ -21,15 +21,15 @@ public class App implements AutoCloseable {
     private boolean disposed = false;
 
     public AppService appService() {
-        return SingletonFactory.getInstance(AppService.class);
+        return new AppService();
     }
 
     public ComponentCreateService create() {
-        return SingletonFactory.getInstance(ComponentCreateService.class);
+        return new ComponentCreateService();
     }
 
     public ComponentWaitService waitFor() {
-        return SingletonFactory.getInstance(ComponentWaitService.class);
+        return new ComponentWaitService();
     }
 
     public void addDriverOptions(String key, String value) {

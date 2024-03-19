@@ -25,16 +25,26 @@
     </modules>
 
     <properties>
-        <maven.compiler.source>18</maven.compiler.source>
-        <maven.compiler.target>18</maven.compiler.target>
+        <maven.compiler.source>19</maven.compiler.source>
+        <maven.compiler.target>19</maven.compiler.target>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <surefire.testng>2.22.2</surefire.testng>
         <surefire.junit>3.0.0-M5</surefire.junit>
+        <lombok.version>1.18.30</lombok.version>
 
         <surefire.version>${surefire.junit}</surefire.version>
     </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
 
     <build>
         <plugins>
@@ -52,5 +62,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>
