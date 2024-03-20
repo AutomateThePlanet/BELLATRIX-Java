@@ -40,6 +40,7 @@ import solutions.bellatrix.web.services.ComponentWaitService;
 import solutions.bellatrix.web.services.JavaScriptService;
 import solutions.bellatrix.web.waitstrategies.*;
 
+import java.awt.Dimension;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
@@ -136,12 +137,14 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
         return getClass();
     }
 
-    public Point getLocation() {
-        return getWrappedElement().getLocation();
+    public java.awt.Point getLocation() {
+        var location = findElement().getLocation();
+        return new java.awt.Point(location.getX(), location.getY());
     }
 
     public Dimension getSize() {
-        return getWrappedElement().getSize();
+        var size = findElement().getSize();
+        return new java.awt.Dimension(size.getWidth(), size.getHeight());
     }
 
     public String getTitle() {

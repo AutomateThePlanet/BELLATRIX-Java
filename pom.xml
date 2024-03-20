@@ -14,6 +14,7 @@
         <module>bellatrix.plugins.screenshots</module>
         <module>bellatrix.plugins.video</module>
         <module>bellatrix.web</module>
+        <module>bellatrix.playwright</module>
         <module>bellatrix.desktop</module>
         <module>bellatrix.android</module>
         <module>bellatrix.ios</module>
@@ -22,6 +23,7 @@
         <module>bellatrix.desktop.tests</module>
         <module>bellatrix.android.tests</module>
         <module>bellatrix.ios.tests</module>
+        <module>bellatrix.playwright.getting.started</module>
     </modules>
 
     <properties>

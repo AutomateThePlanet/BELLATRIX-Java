@@ -34,6 +34,7 @@ import solutions.bellatrix.ios.services.ComponentCreateService;
 import solutions.bellatrix.ios.services.ComponentWaitService;
 import solutions.bellatrix.ios.waitstrategies.*;
 
+import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -99,14 +100,15 @@ public class IOSComponent extends LayoutComponentValidationsBuilder implements C
         return getClass();
     }
 
-    public Point getLocation() {
-        return findElement().getLocation();
+    public java.awt.Point getLocation() {
+        var location = findElement().getLocation();
+        return new java.awt.Point(location.getX(), location.getY());
     }
 
     public Dimension getSize() {
-        return findElement().getSize();
+        var size = findElement().getSize();
+        return new java.awt.Dimension(size.getWidth(), size.getHeight());
     }
-
     public String getAttribute(String name) {
         return findElement().getAttribute(name);
     }

@@ -34,12 +34,12 @@ public class Screen implements LayoutComponent {
     }
 
     @Override
-    public Point getLocation() {
-        return location;
+    public java.awt.Point getLocation() {
+        return new java.awt.Point(location.getX(), location.getY());
     }
 
     @Override
-    public Dimension getSize() {
-        return size;
+    public java.awt.Dimension getSize() {
+        return new java.awt.Dimension(size.getWidth(), size.getHeight());
     }
 }

@@ -29,7 +29,7 @@ public class TouchActionsService extends MobileService {
     public <TComponent extends AndroidComponent> TouchActionsService tap(TComponent component, int count) {
         TouchAction touchAction = new TouchAction(DriverService.getWrappedAndroidDriver());
         touchAction.tap(TapOptions.tapOptions()
-                .withPosition(PointOption.point(component.getLocation().getX(), component.getLocation().getY())).withTapsCount(count));
+                .withPosition(PointOption.point((int)component.getLocation().getX(), (int)component.getLocation().getY())).withTapsCount(count));
         wrappedMultiAction.add(touchAction);
 
         return this;
@@ -37,7 +37,7 @@ public class TouchActionsService extends MobileService {
 
     public <TComponent extends AndroidComponent> TouchActionsService press(TComponent component) {
         TouchAction touchAction = new TouchAction(DriverService.getWrappedAndroidDriver());
-        touchAction.press(PointOption.point(component.getLocation().getX(), component.getLocation().getY()));
+        touchAction.press(PointOption.point((int)component.getLocation().getX(), (int)component.getLocation().getY()));
         wrappedMultiAction.add(touchAction);
 
         return this;
@@ -53,7 +53,7 @@ public class TouchActionsService extends MobileService {
 
     public <TComponent extends AndroidComponent> TouchActionsService longPress(TComponent component) {
         TouchAction touchAction = new TouchAction(DriverService.getWrappedAndroidDriver());
-        touchAction.longPress(PointOption.point(component.getLocation().getX(), component.getLocation().getY()));
+        touchAction.longPress(PointOption.point((int)component.getLocation().getX(), (int)component.getLocation().getY()));
         wrappedMultiAction.add(touchAction);
 
         return this;
@@ -78,7 +78,7 @@ public class TouchActionsService extends MobileService {
 
     public <TComponent extends AndroidComponent> TouchActionsService moveTo(TComponent component) {
         TouchAction touchAction = new TouchAction(DriverService.getWrappedAndroidDriver());
-        touchAction.moveTo(PointOption.point(component.getLocation().getX(), component.getLocation().getY()));
+        touchAction.moveTo(PointOption.point((int)component.getLocation().getX(), (int)component.getLocation().getY()));
         wrappedMultiAction.add(touchAction);
 
         return this;
@@ -103,9 +103,9 @@ public class TouchActionsService extends MobileService {
     public <TComponent extends AndroidComponent> TouchActionsService swipe(TComponent firstComponent, TComponent secondComponent, int duration) {
         TouchAction touchAction = new TouchAction(DriverService.getWrappedAndroidDriver());
         touchAction
-                .press(PointOption.point(firstComponent.getLocation().getX(), firstComponent.getLocation().getY()))
+                .press(PointOption.point((int)firstComponent.getLocation().getX(), (int)firstComponent.getLocation().getY()))
                 .waitAction(WaitOptions.waitOptions(Duration.ofMillis(duration)))
-                .moveTo(PointOption.point(secondComponent.getLocation().getX(), secondComponent.getLocation().getY()))
+                .moveTo(PointOption.point((int)secondComponent.getLocation().getX(), (int)secondComponent.getLocation().getY()))
                 .release().perform();
         wrappedMultiAction.add(touchAction);
 

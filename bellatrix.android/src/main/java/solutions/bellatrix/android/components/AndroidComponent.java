@@ -37,6 +37,7 @@ import solutions.bellatrix.core.utilities.DebugInformation;
 import solutions.bellatrix.core.utilities.InstanceFactory;
 import solutions.bellatrix.core.utilities.Log;
 
+import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -102,12 +103,14 @@ public class AndroidComponent extends LayoutComponentValidationsBuilder implemen
         return getClass();
     }
 
-    public Point getLocation() {
-        return findElement().getLocation();
+    public java.awt.Point getLocation() {
+        var location = findElement().getLocation();
+        return new java.awt.Point(location.getX(), location.getY());
     }
 
     public Dimension getSize() {
-        return findElement().getSize();
+        var size = findElement().getSize();
+        return new java.awt.Dimension(size.getWidth(), size.getHeight());
     }
 
     public String getAttribute(String name) {

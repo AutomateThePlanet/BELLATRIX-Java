@@ -82,8 +82,8 @@ public abstract class LayoutComponentValidationsBuilder implements LayoutCompone
     }
 
     public FinishValidationBuilder alignedVerticallyAll(LayoutComponent... layoutComponents) {
-        Integer baseLineRightY = this.getLocation().getX() + this.getSize().getWidth() / 2;
-        Integer baseLineLeftY = this.getLocation().getX();
+        Integer baseLineRightY = (int)(this.getLocation().getX() + this.getSize().getWidth() / 2);
+        Integer baseLineLeftY = (int)this.getLocation().getX();
         var comparingComponentsNames = getLayoutComponentsNames(layoutComponents);
         Predicate combinedPredicate = (s) -> true;
         Arrays.stream(layoutComponents).forEach(c -> {
@@ -100,7 +100,7 @@ public abstract class LayoutComponentValidationsBuilder implements LayoutCompone
     }
 
     public FinishValidationBuilder alignedVerticallyCentered(LayoutComponent... layoutComponents) {
-        Integer baseLineRightY = this.getLocation().getX() + this.getSize().getWidth() / 2;
+        Integer baseLineRightY = (int)(this.getLocation().getX() + this.getSize().getWidth() / 2);
         var comparingComponentsNames = getLayoutComponentsNames(layoutComponents);
         Predicate combinedPredicate = (s) -> true;
         Arrays.stream(layoutComponents).forEach(c -> {
@@ -114,7 +114,7 @@ public abstract class LayoutComponentValidationsBuilder implements LayoutCompone
     }
 
     public FinishValidationBuilder alignedVerticallyRight(LayoutComponent... layoutComponents) {
-        Integer baseLineRightY = this.getLocation().getX() + this.getSize().getWidth();
+        Integer baseLineRightY = (int)(this.getLocation().getX() + this.getSize().getWidth());
         var comparingComponentsNames = getLayoutComponentsNames(layoutComponents);
         Predicate combinedPredicate = (s) -> true;
         Arrays.stream(layoutComponents).forEach(c -> {
@@ -128,7 +128,7 @@ public abstract class LayoutComponentValidationsBuilder implements LayoutCompone
     }
 
     public FinishValidationBuilder alignedVerticallyLeft(LayoutComponent... layoutComponents) {
-        Integer baseLineLeftY = this.getLocation().getX();
+        Integer baseLineLeftY = (int)this.getLocation().getX();
         var comparingComponentsNames = getLayoutComponentsNames(layoutComponents);
         Predicate combinedPredicate = (s) -> true;
         Arrays.stream(layoutComponents).forEach(c -> combinedPredicate.and((r) -> baseLineLeftY.equals(c.getLocation().getX())));
@@ -139,8 +139,8 @@ public abstract class LayoutComponentValidationsBuilder implements LayoutCompone
     }
 
     public FinishValidationBuilder alignedHorizontallyAll(LayoutComponent... layoutComponents) {
-        Integer baseLineTopY = this.getLocation().getY();
-        Integer baseLineBottomY = this.getLocation().getY() + this.getSize().getHeight();
+        Integer baseLineTopY = (int)this.getLocation().getY();
+        Integer baseLineBottomY = (int)(this.getLocation().getY() + this.getSize().getHeight());
         var comparingComponentsNames = getLayoutComponentsNames(layoutComponents);
         Predicate combinedPredicate = (s) -> true;
         Arrays.stream(layoutComponents).forEach(c -> {
@@ -157,7 +157,7 @@ public abstract class LayoutComponentValidationsBuilder implements LayoutCompone
     }
 
     public FinishValidationBuilder alignedHorizontallyCentered(LayoutComponent... layoutComponents) {
-        Integer baseLineTopY = this.getLocation().getY() + this.getSize().getHeight() / 2;
+        Integer baseLineTopY = (int)(this.getLocation().getY() + this.getSize().getHeight() / 2);
         var comparingComponentsNames = getLayoutComponentsNames(layoutComponents);
         Predicate combinedPredicate = (s) -> true;
         Arrays.stream(layoutComponents).forEach(c -> {
@@ -171,7 +171,7 @@ public abstract class LayoutComponentValidationsBuilder implements LayoutCompone
     }
 
     public FinishValidationBuilder alignedHorizontallyTop(LayoutComponent... layoutComponents) {
-        Integer baseLineTopY = this.getLocation().getY();
+        Integer baseLineTopY = (int)this.getLocation().getY();
         var comparingComponentsNames = getLayoutComponentsNames(layoutComponents);
         Predicate combinedPredicate = (s) -> true;
         Arrays.stream(layoutComponents).forEach(c -> combinedPredicate.and((r) -> baseLineTopY.equals(c.getLocation().getY())));
@@ -182,7 +182,7 @@ public abstract class LayoutComponentValidationsBuilder implements LayoutCompone
     }
 
     public FinishValidationBuilder alignedHorizontallyBottom(LayoutComponent... layoutComponents) {
-        Integer baseLineBottomY = this.getLocation().getY() + this.getSize().getHeight();
+        Integer baseLineBottomY = (int)(this.getLocation().getY() + this.getSize().getHeight());
         var comparingComponentsNames = getLayoutComponentsNames(layoutComponents);
         Predicate combinedPredicate = (s) -> true;
         Arrays.stream(layoutComponents).forEach(c -> {

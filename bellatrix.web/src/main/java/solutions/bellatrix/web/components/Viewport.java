@@ -14,8 +14,7 @@
 package solutions.bellatrix.web.components;
 
 import layout.LayoutComponent;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.Point;
+import java.awt.*;
 import solutions.bellatrix.web.services.JavaScriptService;
 
 public class Viewport implements LayoutComponent {
