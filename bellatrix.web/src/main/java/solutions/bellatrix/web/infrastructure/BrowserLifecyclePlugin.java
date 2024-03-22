@@ -38,7 +38,7 @@ public class BrowserLifecyclePlugin extends Plugin {
 
     @Override
     public void preBeforeClass(Class type) {
-        if (ConfigurationService.get(WebSettings.class).getExecutionType() == "regular") {
+        if (Objects.equals(ConfigurationService.get(WebSettings.class).getExecutionType(), "regular")) {
             CURRENT_BROWSER_CONFIGURATION.set(getExecutionBrowserClassLevel(type));
             if (shouldRestartBrowser()) {
                 shutdownBrowser();

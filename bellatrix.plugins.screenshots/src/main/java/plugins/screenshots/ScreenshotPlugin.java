@@ -35,7 +35,7 @@ public abstract class ScreenshotPlugin extends Plugin {
 
     @Override
     @SneakyThrows
-    public void postAfterTest(TestResult testResult, Method memberInfo) {
+    public void postAfterTest(TestResult testResult, Method memberInfo, Throwable failedTestException) {
         if (!isEnabled || testResult == TestResult.SUCCESS)
             return;
 

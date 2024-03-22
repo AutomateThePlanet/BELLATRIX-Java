@@ -32,7 +32,6 @@ import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.core.utilities.DebugInformation;
 import solutions.bellatrix.core.utilities.Log;
 import solutions.bellatrix.core.utilities.SecretsResolver;
-import solutions.bellatrix.core.utilities.Log;
 import solutions.bellatrix.core.utilities.TimestampBuilder;
 import solutions.bellatrix.web.configuration.GridSettings;
 import solutions.bellatrix.web.configuration.WebSettings;
@@ -43,11 +42,7 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -108,7 +103,7 @@ public class DriverService {
             }
 
             driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(ConfigurationService.get(WebSettings.class).getTimeoutSettings().getPageLoadTimeout()));
-            driver.manage().timeouts().setScriptTimeout(Duration.ofSeconds(ConfigurationService.get(WebSettings.class).getTimeoutSettings().getScriptTimeout()));
+            driver.manage().timeouts().scriptTimeout(Duration.ofSeconds(ConfigurationService.get(WebSettings.class).getTimeoutSettings().getScriptTimeout()));
 
             if(getBrowserConfiguration().getHeight() != 0 && getBrowserConfiguration().getWidth() != 0) {
                 changeWindowSize(driver);
@@ -246,26 +241,24 @@ public class DriverService {
             ProxyServer.newHar();
         }
 
-
         switch (BROWSER_CONFIGURATION.get().getBrowser()) {
             case CHROME -> {
-                //WebDriverManager.chromedriver().setup();
                 var chromeOptions = new ChromeOptions();
                 addDriverOptions(chromeOptions);
-                chromeOptions.addArguments("--log-level=3", "--remote-allow-origins=*");
                 addDriverCapabilities(chromeOptions);
                 chromeOptions.addArguments("--log-level=3","--remote-allow-origins=*");
                 chromeOptions.setAcceptInsecureCerts(true);
                 chromeOptions.setCapability(CapabilityType.UNHANDLED_PROMPT_BEHAVIOUR, UnexpectedAlertBehaviour.ACCEPT);
                 System.setProperty("webdriver.chrome.silentOutput", "true");
-                if (shouldCaptureHttpTraffic) chromeOptions.setProxy(proxyConfig);
+                if (shouldCaptureHttpTraffic) {
+                    chromeOptions.setProxy(proxyConfig);
+                }
 
                 driver = new ChromeDriver(chromeOptions);
             }
             case CHROME_HEADLESS -> {
                 var chromeHeadlessOptions = new ChromeOptions();
                 addDriverOptions(chromeHeadlessOptions);
-                addDriverCapabilities(chromeHeadlessOptions);
                 chromeHeadlessOptions.setAcceptInsecureCerts(true);
                 chromeHeadlessOptions.addArguments("--log-level=3","--remote-allow-origins=*");
                 chromeHeadlessOptions.setCapability(CapabilityType.UNHANDLED_PROMPT_BEHAVIOUR, UnexpectedAlertBehaviour.ACCEPT);

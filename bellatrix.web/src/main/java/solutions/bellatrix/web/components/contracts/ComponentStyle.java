@@ -25,12 +25,7 @@ import java.lang.reflect.Method;
 import java.util.function.Supplier;
 
 public interface ComponentStyle extends Component {
-    default String getStyle(CssStyle style) {
-        var script = String.format("return window.getComputedStyle(arguments[0],null).getPropertyValue('%s');", style);
-        var result = new JavaScriptService().execute(script, (WebComponent) this);
-
-        return result;
-    }
+    String getStyle();
 
     @SneakyThrows
     default void validateStyleIs(String value) {
@@ -55,6 +50,13 @@ public interface ComponentStyle extends Component {
     @SneakyThrows
     default void validateStyleNotContains(String value) {
         ComponentValidator.defaultValidateAttributeNotContains((WebComponent)this, this::getStyle, value, "style");
+    }
+
+    default String getStyle(CssStyle style) {
+        var script = String.format("return window.getComputedStyle(arguments[0],null).getPropertyValue('%s');", style);
+        var result = new JavaScriptService().execute(script, (WebComponent) this);
+
+        return result;
     }
 
     @SneakyThrows

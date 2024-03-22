@@ -57,10 +57,13 @@ public class ProxyServer {
 
     @SneakyThrows
     public static int init() {
+        Log.info("Starting Proxy Service...");
         int port = findFreePort();
+        PROXY_SERVER.get().setTrustAllServers(true);
         PROXY_SERVER.get().start(port);
-        PROXY_SERVER.get().enableHarCaptureTypes(CaptureType.REQUEST_CONTENT, CaptureType.RESPONSE_CONTENT);
+        PROXY_SERVER.get().enableHarCaptureTypes(CaptureType.REQUEST_CONTENT, CaptureType.RESPONSE_CONTENT, CaptureType.REQUEST_HEADERS);
         PORT.set(port);
+        Log.info("Proxy Service Started at Port %s".formatted(port));
         return port;
     }
 
@@ -77,11 +80,13 @@ public class ProxyServer {
     }
 
     public static void close() {
+        Log.info("Stopping Proxy Service...");
         BrowserMobProxyServer proxyServer = PROXY_SERVER.get();
         if (proxyServer != null) {
             proxyServer.stop();
             PROXY_SERVER.remove();
             PORT.remove();
+            Log.info("Proxy Service Stopped.");
         }
     }
 
