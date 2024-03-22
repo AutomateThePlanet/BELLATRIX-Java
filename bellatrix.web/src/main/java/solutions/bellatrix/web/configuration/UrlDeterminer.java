@@ -13,7 +13,7 @@
 
 package solutions.bellatrix.web.configuration;
 
-import org.apache.hc.core5.net.URIBuilder;
+import org.apache.http.client.utils.URIBuilder;
 import solutions.bellatrix.core.configuration.ConfigurationService;
 
 import java.net.URI;

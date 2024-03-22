@@ -17,6 +17,7 @@ import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.core.plugins.Plugin;
 import solutions.bellatrix.core.plugins.TestResult;
 import solutions.bellatrix.core.utilities.DebugInformation;
+import solutions.bellatrix.core.utilities.SecretsResolver;
 import solutions.bellatrix.web.configuration.WebSettings;
 
 import java.lang.reflect.Method;
@@ -31,13 +32,13 @@ public class BrowserLifecyclePlugin extends Plugin {
     static {
         CURRENT_BROWSER_CONFIGURATION = new ThreadLocal<>();
         PREVIOUS_BROWSER_CONFIGURATION = new ThreadLocal<>();
-        IS_BROWSER_STARTED_DURING_PRE_BEFORE_CLASS = new ThreadLocal<>();
-        IS_BROWSER_STARTED_CORRECTLY = new ThreadLocal<>();
+        IS_BROWSER_STARTED_DURING_PRE_BEFORE_CLASS = ThreadLocal.withInitial(() -> false);
+        IS_BROWSER_STARTED_CORRECTLY = ThreadLocal.withInitial(() -> false);
     }
 
     @Override
     public void preBeforeClass(Class type) {
-        if (ConfigurationService.get(WebSettings.class).getExecutionType() == "regular") {
+        if (Objects.equals(ConfigurationService.get(WebSettings.class).getExecutionType(), "regular")) {
             CURRENT_BROWSER_CONFIGURATION.set(getExecutionBrowserClassLevel(type));
             if (shouldRestartBrowser()) {
                 shutdownBrowser();
@@ -152,12 +153,22 @@ public class BrowserLifecyclePlugin extends Plugin {
 
     private BrowserConfiguration getExecutionBrowserClassLevel(Class<?> type) {
         var executionBrowserAnnotation = (ExecutionBrowser)type.getDeclaredAnnotation(ExecutionBrowser.class);
-        if (executionBrowserAnnotation == null) {
-            var defaultBrowser = Browser.fromText(ConfigurationService.get(WebSettings.class).getDefaultBrowser());
-            var defaultLifecycle = Lifecycle.fromText(ConfigurationService.get(WebSettings.class).getDefaultLifeCycle());
-            return new BrowserConfiguration(defaultBrowser, defaultLifecycle);
-        }
 
-        return new BrowserConfiguration(executionBrowserAnnotation.browser(), executionBrowserAnnotation.lifecycle());
+        var defaultBrowser = Browser.fromText(SecretsResolver.getSecret(ConfigurationService.get(WebSettings.class).getDefaultBrowser()));
+        var defaultLifecycle = Lifecycle.fromText(ConfigurationService.get(WebSettings.class).getDefaultLifeCycle());
+        var defaultWidth = ConfigurationService.get(WebSettings.class).getDefaultBrowserWidth();
+        var defaultHeight = ConfigurationService.get(WebSettings.class).getDefaultBrowserHeight();
+
+        var finalBrowser = executionBrowserAnnotation.browser() != Browser.NOT_SET && executionBrowserAnnotation.browser() != defaultBrowser ? executionBrowserAnnotation.browser() : defaultBrowser;
+        var finalLifecycle = executionBrowserAnnotation.lifecycle() != defaultLifecycle ? executionBrowserAnnotation.lifecycle() : defaultLifecycle;
+        var finalWidth = executionBrowserAnnotation.width() != 0 ? executionBrowserAnnotation.width() : defaultWidth;
+        var finalHeight = executionBrowserAnnotation.height() != 0 ? executionBrowserAnnotation.height() : defaultHeight;
+
+        if (executionBrowserAnnotation == null) {
+            return new BrowserConfiguration(defaultBrowser, defaultLifecycle, defaultWidth, defaultHeight);
+        }
+        else {
+            return new BrowserConfiguration(finalBrowser, finalLifecycle, finalWidth, finalHeight);
+        }
     }
 }

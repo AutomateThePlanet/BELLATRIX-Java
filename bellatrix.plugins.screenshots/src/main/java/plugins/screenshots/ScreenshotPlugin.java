@@ -35,13 +35,13 @@ public abstract class ScreenshotPlugin extends Plugin {
 
     @Override
     @SneakyThrows
-    public void preAfterTest(TestResult testResult, Method memberInfo) {
+    public void postAfterTest(TestResult testResult, Method memberInfo, Throwable failedTestException) {
         if (!isEnabled || testResult == TestResult.SUCCESS)
             return;
 
         var screenshotSaveDir = getOutputFolder();
         var screenshotFileName = getUniqueFileName(memberInfo.getName());
         takeScreenshot(screenshotSaveDir, screenshotFileName);
-        SCREENSHOT_GENERATED.broadcast(new ScreenshotPluginEventArgs(Paths.get(screenshotSaveDir, screenshotFileName).toString()));
+        SCREENSHOT_GENERATED.broadcast(new ScreenshotPluginEventArgs(Paths.get(screenshotSaveDir, screenshotFileName).toString(), screenshotFileName));
     }
 }

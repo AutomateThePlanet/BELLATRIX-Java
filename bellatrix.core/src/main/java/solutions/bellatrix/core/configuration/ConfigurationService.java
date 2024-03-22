@@ -30,6 +30,10 @@ import java.util.Properties;
 public final class ConfigurationService {
     private static String environment;
 
+    public static String getEnvironment() {
+        return environment;
+    }
+
     public static <T> T get(Class<T> configSection) {
         T mappedObject = (T)new Object();
         if (environment == null) {

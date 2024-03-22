@@ -29,6 +29,7 @@ import solutions.bellatrix.core.utilities.DebugInformation;
 import solutions.bellatrix.core.utilities.InstanceFactory;
 import solutions.bellatrix.core.utilities.Log;
 import solutions.bellatrix.web.components.contracts.Component;
+import solutions.bellatrix.web.components.contracts.ComponentStyle;
 import solutions.bellatrix.web.components.contracts.ComponentVisible;
 import solutions.bellatrix.web.configuration.WebSettings;
 import solutions.bellatrix.web.findstrategies.*;
@@ -50,7 +51,7 @@ import java.util.Optional;
 
 import static org.apache.commons.text.StringEscapeUtils.unescapeHtml4;
 
-public class WebComponent extends LayoutComponentValidationsBuilder implements Component, ComponentVisible {
+public class WebComponent extends LayoutComponentValidationsBuilder implements Component, ComponentVisible, ComponentStyle {
     public final static EventListener<ComponentActionEventArgs> HOVERING = new EventListener<>();
     public final static EventListener<ComponentActionEventArgs> HOVERED = new EventListener<>();
     public final static EventListener<ComponentActionEventArgs> FOCUSING = new EventListener<>();
@@ -105,7 +106,15 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
     }
 
     public void scrollToVisible() {
-        scrollToVisible(getWrappedElement(), false);
+        scrollToVisible(getWrappedElement(), false, "center");
+    }
+
+    public void scrollToTop() {
+        scrollToVisible(getWrappedElement(), false, "start");
+    }
+
+    public void scrollToBottom() {
+        scrollToVisible(getWrappedElement(), false, "end");
     }
 
     public void setAttribute(String name, String value) {
@@ -146,6 +155,10 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
 
     public String getTitle() {
         return getAttribute("title");
+    }
+
+    public WebComponent getParent() {
+        return createByXPath(WebComponent.class, "./..");
     }
 
     public String getTabIndex() {
@@ -1033,19 +1046,20 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
     private void scrollToMakeElementVisible(WebElement wrappedElement) {
         // createBy default scroll down to make the element visible.
         if (webSettings.getAutomaticallyScrollToVisible()) {
-            scrollToVisible(wrappedElement, false);
+            scrollToVisible(wrappedElement, false, "center");
         }
     }
 
-    private void scrollToVisible(WebElement wrappedElement, boolean shouldWait) {
+
+    private void scrollToVisible(WebElement wrappedElement, boolean shouldWait, String scrollPosition) {
         SCROLLING_TO_VISIBLE.broadcast(new ComponentActionEventArgs(this));
         try {
-            javaScriptService.execute("arguments[0].scrollIntoView(true);", wrappedElement);
+            javaScriptService.execute("arguments[0].scrollIntoView({ block: \"" + scrollPosition + "\", behavior: \"instant\", inline: \"nearest\" });", wrappedElement);
             if (shouldWait) {
                 Thread.sleep(500);
                 toExist().waitToBe();
             }
-        } catch (ElementNotInteractableException | InterruptedException ex) {
+        } catch (ElementNotInteractableException | InterruptedException | ScriptTimeoutException ex) {
             DebugInformation.printStackTrace(ex);
         }
 

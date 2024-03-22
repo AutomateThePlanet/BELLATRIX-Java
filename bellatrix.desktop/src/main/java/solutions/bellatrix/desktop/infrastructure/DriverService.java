@@ -15,7 +15,10 @@ package solutions.bellatrix.desktop.infrastructure;
 
 import io.appium.java_client.windows.WindowsDriver;
 import lombok.SneakyThrows;
-import org.openqa.selenium.*;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.MutableCapabilities;
+import org.openqa.selenium.Platform;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.core.utilities.DebugInformation;
@@ -25,8 +28,8 @@ import solutions.bellatrix.desktop.configuration.GridSettings;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.Duration;
 import java.util.HashMap;
-import java.util.concurrent.TimeUnit;
 
 public class DriverService {
     private static final ThreadLocal<Boolean> DISPOSED;
@@ -73,7 +76,7 @@ public class DriverService {
             driver = initializeDriverGridMode(gridSettings.get());
         }
 
-        driver.manage().timeouts().implicitlyWait(desktopSettings.getTimeoutSettings().getImplicitWaitTimeout(), TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(desktopSettings.getTimeoutSettings().getImplicitWaitTimeout()));
         driver.manage().window().maximize();
         changeWindowSize(driver);
         WRAPPED_DRIVER.set(driver);

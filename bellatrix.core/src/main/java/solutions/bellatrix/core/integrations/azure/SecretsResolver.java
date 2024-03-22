@@ -10,17 +10,10 @@ public class SecretsResolver {
             return System.getenv(configValue.replace("env_", ""));
         }
 
-        if (configValue.startsWith("vault_")) {
-            return KeyVault.getSecret(configValue.replace("vault_", ""));
-        }
-
         return configValue;
     }
 
     public static String getSecret(String name) {
-        if (KeyVault.isAvailable) {
-            return KeyVault.getSecret(name);
-        }
 
         String environmentalVariable = System.getenv(name);
 
