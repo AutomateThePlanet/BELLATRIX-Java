@@ -3,16 +3,12 @@ package solutions.bellatrix.core.utilities;
 import lombok.SneakyThrows;
 
 public class ConverterService {
-    // ToDo Dozer must be used instead
-    @SneakyThrows
     public static <SourceT, ResultT> ResultT convert(SourceT source, int index) {
         ResultT object = InstanceFactory.createByTypeParameter(source.getClass(), index);
 
         return convert(source, object);
     }
 
-    // ToDo Dozer must be used instead
-    @SneakyThrows
     public static <SourceT, ResultT> ResultT convert(SourceT source, ResultT result) {
         var object = (ResultT) InstanceFactory.create(result.getClass());
 
@@ -25,7 +21,11 @@ public class ConverterService {
                     sourceField.setAccessible(true);
                     objectField.setAccessible(true);
 
-                    objectField.set(object, sourceField.get(source));
+                    try {
+                        objectField.set(object, sourceField.get(source));
+                    } catch (IllegalAccessException e) {
+                        throw new RuntimeException(e);
+                    }
                     break;
                 }
             }
