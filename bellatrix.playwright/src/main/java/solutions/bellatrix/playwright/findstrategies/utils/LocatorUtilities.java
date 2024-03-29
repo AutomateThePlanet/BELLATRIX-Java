@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LocatorUtilities {
-    @SneakyThrows
+
     public static <T> Method getGetMethod(Class<T> type, By by, Object... args) {
         List<Class<?>> parameterTypesList = new ArrayList<>();
 
@@ -35,33 +35,36 @@ public class LocatorUtilities {
             parameterTypes[i] = parameterTypesList.get(i);
         }
 
-        switch (by) {
-            case ALT_TEXT -> {
-                return type.getDeclaredMethod("getByAltText", parameterTypes);
+        try {
+            switch (by) {
+                case ALT_TEXT -> {
+                    return type.getDeclaredMethod("getByAltText", parameterTypes);
+                }
+                case LABEL -> {
+                    return type.getDeclaredMethod("getByLabel", parameterTypes);
+                }
+                case PLACEHOLDER -> {
+                    return type.getDeclaredMethod("getByPlaceholder", parameterTypes);
+                }
+                case ROLE -> {
+                    return type.getDeclaredMethod("getByRole", parameterTypes);
+                }
+                case TEST_ID -> {
+                    return type.getDeclaredMethod("getByTestId", parameterTypes);
+                }
+                case TEXT -> {
+                    return type.getDeclaredMethod("getByText", parameterTypes);
+                }
+                case TITLE -> {
+                    return type.getDeclaredMethod("getByTitle", parameterTypes);
+                }
+                case LOCATOR -> {
+                    return type.getDeclaredMethod("locator", parameterTypes);
+                }
+                default -> throw new IllegalStateException("Unexpected value: " + by);
             }
-            case LABEL -> {
-                return type.getDeclaredMethod("getByLabel", parameterTypes);
-            }
-            case PLACEHOLDER -> {
-                return type.getDeclaredMethod("getByPlaceholder", parameterTypes);
-            }
-            case ROLE -> {
-                return type.getDeclaredMethod("getByRole", parameterTypes);
-            }
-            case TEST_ID -> {
-                return type.getDeclaredMethod("getByTestId", parameterTypes);
-            }
-            case TEXT -> {
-                return type.getDeclaredMethod("getByText", parameterTypes);
-            }
-            case TITLE -> {
-                return type.getDeclaredMethod("getByTitle", parameterTypes);
-            }
-            case LOCATOR -> {
-                return type.getDeclaredMethod("locator", parameterTypes);
-            }
-
-            default -> throw new IllegalStateException("Unexpected value: " + by);
+        } catch (NoSuchMethodException|SecurityException|IllegalStateException ex) {
+            throw new RuntimeException(ex);
         }
     }
 }
