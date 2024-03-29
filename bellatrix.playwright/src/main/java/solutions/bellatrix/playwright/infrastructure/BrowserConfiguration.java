@@ -30,13 +30,13 @@ public class BrowserConfiguration {
 
     public BrowserConfiguration(BrowserChoice browserChoice, Lifecycle browserBehavior) {
         this.browserChoice = browserChoice;
-        lifecycle = browserBehavior;
+        this.lifecycle = browserBehavior;
         playwrightOptions = new HashMap<>();
     }
 
     public BrowserConfiguration(BrowserChoice browserChoice, Lifecycle browserBehavior, String testName) {
         this.browserChoice = browserChoice;
-        lifecycle = browserBehavior;
+        this.lifecycle = browserBehavior;
         this.testName = testName;
         playwrightOptions = new HashMap<>();
     }
