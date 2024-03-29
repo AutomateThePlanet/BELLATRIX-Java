@@ -320,7 +320,7 @@ public class ComponentCreateService extends WebService {
     public <TComponent extends WebComponent, TFindStrategy extends FindStrategy> TComponent by(Class<TComponent> componentClass, TFindStrategy findStrategy) {
         wrappedBrowser().currentPage().waitForLoadState();
         var component = InstanceFactory.create(componentClass);
-        component.wrappedElement(findStrategy.convert(wrappedBrowser().currentPage()).first());
+        component.wrappedElement(findStrategy.resolve(wrappedBrowser().currentPage()).first());
         component.findStrategy(findStrategy);
 
         return component;
@@ -328,7 +328,7 @@ public class ComponentCreateService extends WebService {
 
     public <TComponent extends WebComponent, TFindStrategy extends FindStrategy> List<TComponent> allBy(Class<TComponent> componentClass, TFindStrategy findStrategy) {
         wrappedBrowser().currentPage().waitForLoadState();
-        var locators = findStrategy.convert(wrappedBrowser().currentPage()).all();
+        var locators = findStrategy.resolve(wrappedBrowser().currentPage()).all();
         List<TComponent> componentList = new ArrayList<>();
         for (var locator : locators) {
             var component = InstanceFactory.create(componentClass);

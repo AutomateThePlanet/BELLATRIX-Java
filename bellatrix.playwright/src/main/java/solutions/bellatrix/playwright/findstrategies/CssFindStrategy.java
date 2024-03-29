@@ -26,13 +26,13 @@ public class CssFindStrategy extends FindStrategy {
     }
 
     @Override
-    public WebElement convert(Page page) {
+    public WebElement resolve(Page page) {
         return get(page, By.LOCATOR, value);
 
     }
 
     @Override
-    public WebElement convert(WebElement webElement) {
+    public WebElement resolve(WebElement webElement) {
         return get(webElement, By.LOCATOR, value);
     }
 }

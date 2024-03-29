@@ -33,12 +33,12 @@ public class AriaRoleFindStrategy extends FindStrategy {
 
 
     @Override
-    public WebElement convert(Page page) {
+    public WebElement resolve(Page page) {
         return get(page, By.ROLE, role, ((RoleOptions)options).absolute());
     }
 
     @Override
-    public WebElement convert(WebElement webElement) {
+    public WebElement resolve(WebElement webElement) {
         return get(webElement, By.ROLE, role, ((RoleOptions)options).absolute());
 
     }

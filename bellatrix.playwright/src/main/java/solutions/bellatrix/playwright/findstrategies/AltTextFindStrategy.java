@@ -42,14 +42,14 @@ public class AltTextFindStrategy extends PatternStrategy {
     }
 
     @Override
-    public WebElement convert(Page page) {
+    public WebElement resolve(Page page) {
         if (text != null) return get(page, By.ALT_TEXT, text, ((AltTextOptions)options).absolute());
         if (pattern != null) return get(page, By.ALT_TEXT, pattern, ((AltTextOptions)options).absolute());
         return null;
     }
 
     @Override
-    public WebElement convert(WebElement locator) {
+    public WebElement resolve(WebElement locator) {
         if (text != null) return get(locator, By.ALT_TEXT, text, ((AltTextOptions)options).relative());
         if (pattern != null) return get(locator, By.ALT_TEXT, pattern, ((AltTextOptions)options).relative());
         return null;
