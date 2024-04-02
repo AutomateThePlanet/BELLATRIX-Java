@@ -13,7 +13,19 @@
 
 package solutions.bellatrix.playwright.components;
 
+import solutions.bellatrix.playwright.components.common.webelement.WebElement;
+
 public class Frame extends WebComponent {
+    public Frame() {
+        super();
+    }
+
+    public Frame(WebElement element) {
+        super();
+
+        wrappedElement.isFrame(true);
+    }
+
     public String getName() {
         return defaultGetName();
     }

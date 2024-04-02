@@ -88,10 +88,6 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
     public WebComponent(WebElement element) {
         this.wrappedElement = element;
 
-        if (getComponentClass().equals(Frame.class)) {
-            wrappedElement.isFrame(true);
-        }
-
         createService = new RelativeCreateService(this, CREATING, CREATED);
         webSettings = Settings.web();
     }
