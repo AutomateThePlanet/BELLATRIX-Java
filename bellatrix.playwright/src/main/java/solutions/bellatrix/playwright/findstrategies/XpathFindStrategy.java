@@ -26,13 +26,13 @@ public class XpathFindStrategy extends FindStrategy {
     }
 
     @Override
-    public WebElement resolve(Page page) {
+    public WebElement convert(Page page) {
         return get(page, By.LOCATOR, value);
 
     }
 
     @Override
-    public WebElement resolve(WebElement webElement) {
+    public WebElement convert(WebElement webElement) {
         return get(webElement, By.LOCATOR, value);
     }
 }

@@ -20,7 +20,7 @@ import java.util.HashMap;
 
 @Getter @Setter
 public class BrowserConfiguration {
-    private BrowserChoice browserChoice;
+    private BrowserTypes browserTypes;
     private Lifecycle lifecycle;
     private int height;
     private int width;
@@ -28,14 +28,14 @@ public class BrowserConfiguration {
     private String testName;
     private final HashMap<String, String> playwrightOptions;
 
-    public BrowserConfiguration(BrowserChoice browserChoice, Lifecycle browserBehavior) {
-        this.browserChoice = browserChoice;
+    public BrowserConfiguration(BrowserTypes browserTypes, Lifecycle browserBehavior) {
+        this.browserTypes = browserTypes;
         this.lifecycle = browserBehavior;
         playwrightOptions = new HashMap<>();
     }
 
-    public BrowserConfiguration(BrowserChoice browserChoice, Lifecycle browserBehavior, String testName) {
-        this.browserChoice = browserChoice;
+    public BrowserConfiguration(BrowserTypes browserTypes, Lifecycle browserBehavior, String testName) {
+        this.browserTypes = browserTypes;
         this.lifecycle = browserBehavior;
         this.testName = testName;
         playwrightOptions = new HashMap<>();
@@ -45,13 +45,9 @@ public class BrowserConfiguration {
     public boolean equals(Object obj) {
         if (!(obj instanceof BrowserConfiguration that))
             return false;
-        if (!(this.browserChoice() == null ? that.browserChoice() == null : this.browserChoice().equals(that.browserChoice())))
+        if (!(this.browserTypes() == null ? that.browserTypes() == null : this.browserTypes().equals(that.browserTypes())))
             return false;
         if (!(this.lifecycle() == null ? that.lifecycle() == null : this.lifecycle().equals(that.lifecycle())))
-            return false;
-        if (this.height() != that.height())
-            return false;
-        if (this.width() != that.width())
             return false;
         if (this.version() != that.version())
             return false;

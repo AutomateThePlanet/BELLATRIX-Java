@@ -18,7 +18,7 @@ import lombok.Getter;
 import java.util.Arrays;
 
 @Getter
-public enum BrowserChoice {
+public enum BrowserTypes {
     CHROMIUM("chromium"),
     CHROMIUM_HEADLESS("chromium"),
     CHROME("chrome"),
@@ -31,7 +31,7 @@ public enum BrowserChoice {
     WEBKIT_HEADLESS("webkit");
 
     private final String value;
-    BrowserChoice(String value) {
+    BrowserTypes(String value) {
         this.value = value;
     }
 
@@ -40,9 +40,9 @@ public enum BrowserChoice {
         return value;
     }
 
-    public static BrowserChoice fromText(String text) {
+    public static BrowserTypes fromText(String text) {
         return Arrays.stream(values())
                 .filter(l -> l.value.equalsIgnoreCase(text))
-                .findFirst().orElse(BrowserChoice.CHROME);
+                .findFirst().orElse(BrowserTypes.CHROME);
     }
 }

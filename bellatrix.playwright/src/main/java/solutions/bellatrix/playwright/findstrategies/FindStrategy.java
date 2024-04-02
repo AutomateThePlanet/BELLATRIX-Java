@@ -29,8 +29,8 @@ public abstract class FindStrategy {
     protected Options options;
     protected WebElement webElement;
 
-    public abstract WebElement resolve(Page page);
-    public abstract WebElement resolve(WebElement locator);
+    public abstract WebElement convert(Page page);
+    public abstract WebElement convert(WebElement locator);
 
     @SneakyThrows
     protected WebElement get(Page page, By by, Object... args) {

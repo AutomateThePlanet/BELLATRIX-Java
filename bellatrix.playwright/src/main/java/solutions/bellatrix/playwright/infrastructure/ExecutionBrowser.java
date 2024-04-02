@@ -21,7 +21,7 @@ import java.lang.annotation.Target;
 @Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ExecutionBrowser {
-    BrowserChoice browser() default BrowserChoice.CHROME;
+    BrowserTypes browser() default BrowserTypes.CHROME;
     Lifecycle lifecycle() default Lifecycle.RESTART_EVERY_TIME;
     int browserVersion() default 0;
     String platform() default "any";

@@ -43,7 +43,7 @@ import solutions.bellatrix.playwright.components.options.states.BoundingBoxOptio
 import solutions.bellatrix.playwright.configuration.WebSettings;
 import solutions.bellatrix.playwright.findstrategies.*;
 import solutions.bellatrix.playwright.findstrategies.options.*;
-import solutions.bellatrix.playwright.infrastructure.BrowserChoice;
+import solutions.bellatrix.playwright.infrastructure.BrowserTypes;
 import solutions.bellatrix.playwright.infrastructure.PlaywrightService;
 import solutions.bellatrix.playwright.infrastructure.WrappedBrowser;
 import solutions.bellatrix.playwright.utilities.Settings;
@@ -85,8 +85,8 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
         webSettings = Settings.web();
     }
 
-    public WebComponent(WebElement locator) {
-        this.wrappedElement = locator;
+    public WebComponent(WebElement element) {
+        this.wrappedElement = element;
 
         if (getComponentClass().equals(Frame.class)) {
             wrappedElement.isFrame(true);
@@ -195,7 +195,7 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
     // Update: We should use js, native playwright highlight() method's function is unknown.
     // Update: the js script seems to work, but not for TextField elements
     public void highlight() {
-        if (PlaywrightService.browserConfiguration().browserChoice() == BrowserChoice.CHROME_HEADLESS) {
+        if (PlaywrightService.browserConfiguration().browserTypes() == BrowserTypes.CHROME_HEADLESS) {
             return;
         }
 

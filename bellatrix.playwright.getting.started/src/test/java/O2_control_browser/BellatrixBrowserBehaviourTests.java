@@ -25,7 +25,7 @@ import solutions.bellatrix.playwright.infrastructure.junit.WebTest;
 //  the browser is reused if possible.
 //  Note: However, use this option with caution since in some rare cases if you have not properly set up your tests
 //  you may need to restart the browser if the test fails otherwise all other tests may fail too.
-@ExecutionBrowser (browser = BrowserChoice.FIREFOX, lifecycle = Lifecycle.RESTART_EVERY_TIME)
+@ExecutionBrowser (browser = BrowserTypes.FIREFOX, lifecycle = Lifecycle.RESTART_EVERY_TIME)
 public class BellatrixBrowserBehaviourTests extends WebTest {
     // 1.3 All playwright BELLATRIX test classes should inherit from the WebTest base class. This way you can use all built-in
     // BELLATRIX tools and functionalities. If you place attribute over the class all tests inherit the Lifecycle.
@@ -48,7 +48,7 @@ public class BellatrixBrowserBehaviourTests extends WebTest {
     // 1.5 As mentioned above you can override the browser Lifecycle for a particular test. The global Lifecycle for all
     // tests in the class is to reuse an instance of Firefox browser. Only for this particular test, BELLATRIX opens
     // Chrome and restarts it only on fail.
-    @ExecutionBrowser (browser = BrowserChoice.CHROME, lifecycle = Lifecycle.RESTART_ON_FAIL)
+    @ExecutionBrowser (browser = BrowserTypes.CHROME, lifecycle = Lifecycle.RESTART_ON_FAIL)
     @Test
     public void blogPageOpened_When_PromotionsButtonClicked() {
         app().navigate().to("http://demos.bellatrix.solutions/");

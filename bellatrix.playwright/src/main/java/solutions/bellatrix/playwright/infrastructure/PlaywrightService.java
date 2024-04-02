@@ -130,9 +130,9 @@ public class PlaywrightService {
     }
 
     private static Browser initializeBrowserRegularMode() {
-        BrowserChoice browserChoice = browserConfiguration().browserChoice();
+        BrowserTypes browserTypes = browserConfiguration().browserTypes();
 
-        switch (browserChoice) {
+        switch (browserTypes) {
             case CHROMIUM -> {
                 var browserType = playwright().chromium();
                 BrowserType.LaunchOptions launchOptions = new BrowserType.LaunchOptions();
@@ -281,8 +281,8 @@ public class PlaywrightService {
             String serializedSettings = URLEncoder.encode(gson.toJson(gridSettings.getArguments().get(0)), "UTF-8");
 
             if (gridSettings.getProviderName().equals("grid") || gridSettings.getProviderName().equals("selenoid")) {
-                var browserType = BROWSER_CONFIGURATION_THREAD_LOCAL.get().browserChoice();
-                if (browserType == BrowserChoice.FIREFOX || browserType == BrowserChoice.FIREFOX_HEADLESS || browserType == BrowserChoice.WEBKIT || browserType == BrowserChoice.WEBKIT_HEADLESS) {
+                var browserType = BROWSER_CONFIGURATION_THREAD_LOCAL.get().browserTypes();
+                if (browserType == BrowserTypes.FIREFOX || browserType == BrowserTypes.FIREFOX_HEADLESS || browserType == BrowserTypes.WEBKIT || browserType == BrowserTypes.WEBKIT_HEADLESS) {
                     throw new NotImplementedException("Playwright supports running in Selenium Grid only Chromium browsers.");
                 }
 

@@ -42,14 +42,14 @@ public class TitleFindStrategy extends PatternStrategy {
     }
 
     @Override
-    public WebElement resolve(Page page) {
+    public WebElement convert(Page page) {
         if (text != null) return get(page, By.TITLE, text, ((TitleOptions)options).absolute());
         if (pattern != null) return get(page, By.TITLE, pattern, ((TitleOptions)options).absolute());
         return null;
     }
 
     @Override
-    public WebElement resolve(WebElement locator) {
+    public WebElement convert(WebElement locator) {
         if (text != null) return get(locator, By.TITLE, text, ((TitleOptions)options).relative());
         if (pattern != null) return get(locator, By.TITLE, pattern, ((TitleOptions)options).relative());
         return null;

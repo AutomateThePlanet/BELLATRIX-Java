@@ -31,14 +31,14 @@ public class TestIdFindStrategy extends PatternStrategy {
     }
 
     @Override
-    public WebElement resolve(Page page) {
+    public WebElement convert(Page page) {
         if (text != null) return get(page, By.TEST_ID, text);
         if (pattern != null) return get(page, By.TEST_ID, pattern);
         return null;
     }
 
     @Override
-    public WebElement resolve(WebElement locator) {
+    public WebElement convert(WebElement locator) {
         if (text != null) return get(locator, By.TEST_ID, text);
         if (pattern != null) return get(locator, By.TEST_ID, pattern);
         return null;

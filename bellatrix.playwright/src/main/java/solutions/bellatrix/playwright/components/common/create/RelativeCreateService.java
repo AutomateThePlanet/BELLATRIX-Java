@@ -42,7 +42,7 @@ public class RelativeCreateService extends ComponentCreateService {
 
         wrappedBrowser().currentPage().waitForLoadState();
         var newComponent = InstanceFactory.create(componentClass);
-        newComponent.wrappedElement(findStrategy.resolve(baseComponent.wrappedElement()).first());
+        newComponent.wrappedElement(findStrategy.convert(baseComponent.wrappedElement()).first());
         newComponent.findStrategy(findStrategy);
         newComponent.parentWrappedComponent((WebComponent)baseComponent);
 
@@ -56,7 +56,7 @@ public class RelativeCreateService extends ComponentCreateService {
         CREATING.broadcast(new ComponentActionEventArgs((WebComponent)baseComponent));
 
         wrappedBrowser().currentPage().waitForLoadState();
-        var locators = findStrategy.resolve(baseComponent.wrappedElement()).all();
+        var locators = findStrategy.convert(baseComponent.wrappedElement()).all();
         List<TComponent> componentList = new ArrayList<>();
 
         for (var locator : locators) {

@@ -3,11 +3,11 @@ package O17_logging;
 import org.junit.jupiter.api.Test;
 import solutions.bellatrix.core.utilities.Log;
 import solutions.bellatrix.playwright.components.*;
-import solutions.bellatrix.playwright.infrastructure.BrowserChoice;
+import solutions.bellatrix.playwright.infrastructure.BrowserTypes;
 import solutions.bellatrix.playwright.infrastructure.ExecutionBrowser;
 import solutions.bellatrix.playwright.infrastructure.Lifecycle;
 import solutions.bellatrix.playwright.infrastructure.junit.WebTest;
-@ExecutionBrowser (browser = BrowserChoice.CHROME, lifecycle = Lifecycle.RESTART_EVERY_TIME)
+@ExecutionBrowser (browser = BrowserTypes.CHROME, lifecycle = Lifecycle.RESTART_EVERY_TIME)
 public class LoggingTests extends WebTest {
     @Test
     public void addCustomMessagesToLog() {
