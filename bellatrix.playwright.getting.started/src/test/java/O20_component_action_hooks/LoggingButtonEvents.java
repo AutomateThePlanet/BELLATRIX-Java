@@ -14,14 +14,14 @@ public class LoggingButtonEvents {
     public static void addEventListeners() {
         Button.CLICKING.addListener(arg -> Log.info(
                 "before clicking button; coordinates: x=%d y=%d",
-                arg.component().getLocation().getX(),
-                arg.component().getLocation().getY()
+                arg.getComponent().getLocation().getX(),
+                arg.getComponent().getLocation().getY()
         ));
 
         Button.CLICKED.addListener(arg -> Log.info(
                 "after button clicked; coordinates: x=%d y=%d",
-                arg.component().getLocation().getX(),
-                arg.component().getLocation().getY()
+                arg.getComponent().getLocation().getX(),
+                arg.getComponent().getLocation().getY()
         ));
     }
 }

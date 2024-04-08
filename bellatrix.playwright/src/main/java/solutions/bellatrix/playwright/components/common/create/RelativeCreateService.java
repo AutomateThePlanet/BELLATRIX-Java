@@ -40,11 +40,11 @@ public class RelativeCreateService extends ComponentCreateService {
     public <TComponent extends WebComponent, TFindStrategy extends FindStrategy> TComponent by(Class<TComponent> componentClass, TFindStrategy findStrategy) {
         CREATING.broadcast(new ComponentActionEventArgs((WebComponent)baseComponent));
 
-        wrappedBrowser().currentPage().waitForLoadState();
+        wrappedBrowser().getCurrentPage().waitForLoadState();
         var newComponent = InstanceFactory.create(componentClass);
-        newComponent.wrappedElement(findStrategy.convert(baseComponent.wrappedElement()).first());
-        newComponent.findStrategy(findStrategy);
-        newComponent.parentWrappedComponent((WebComponent)baseComponent);
+        newComponent.setWrappedElement(findStrategy.convert(baseComponent.getWrappedElement()).first());
+        newComponent.setFindStrategy(findStrategy);
+        newComponent.setParentWrappedComponent((WebComponent)baseComponent);
 
         CREATED.broadcast(new ComponentActionEventArgs((WebComponent)baseComponent));
 
@@ -55,20 +55,20 @@ public class RelativeCreateService extends ComponentCreateService {
     public <TComponent extends WebComponent, TFindStrategy extends FindStrategy> List<TComponent> allBy(Class<TComponent> componentClass, TFindStrategy findStrategy) {
         CREATING.broadcast(new ComponentActionEventArgs((WebComponent)baseComponent));
 
-        wrappedBrowser().currentPage().waitForLoadState();
-        var locators = findStrategy.convert(baseComponent.wrappedElement()).all();
+        wrappedBrowser().getCurrentPage().waitForLoadState();
+        var elements = findStrategy.convert(baseComponent.getWrappedElement()).all();
         List<TComponent> componentList = new ArrayList<>();
 
-        for (var locator : locators) {
+        for (var element : elements) {
             var component = InstanceFactory.create(componentClass);
-            component.wrappedElement(locator);
-            component.findStrategy(findStrategy);
+            component.setWrappedElement(element);
+            component.setFindStrategy(findStrategy);
 
             componentList.add(component);
         }
 
         for (var component : componentList) {
-            component.parentWrappedComponent((WebComponent)baseComponent);
+            component.setParentWrappedComponent((WebComponent)baseComponent);
         }
 
         CREATED.broadcast(new ComponentActionEventArgs((WebComponent)baseComponent));

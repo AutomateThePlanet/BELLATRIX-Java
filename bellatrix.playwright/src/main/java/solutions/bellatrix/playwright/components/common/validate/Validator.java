@@ -82,9 +82,9 @@ public class Validator extends WebService {
                         "  Should %s: \"\u001B[1m%s\u001B[0m\"%n" +
                         "  %" + prefix.length() + "sBut was: \"\u001B[1m%s\u001B[0m\"%n" +
                         "Test failed on URL: \u001B[1m%s\u001B[0m",
-                attributeName, component.getComponentClass().getSimpleName(), component.findStrategy(),
+                attributeName, component.getComponentClass().getSimpleName(), component.getFindStrategy(),
                 prefix, value, "", supplier.get().toString().replaceAll("%n", "%n" + String.format("%" + (prefix.length() + 12) + "s", " ")),
-                wrappedBrowser().currentPage().url());
+                wrappedBrowser().getCurrentPage().url());
 
         DebugLogger.assertAndLogOnFail(assertion, error);
     }

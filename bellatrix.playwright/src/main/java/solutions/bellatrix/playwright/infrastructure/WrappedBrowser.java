@@ -53,7 +53,7 @@ public class WrappedBrowser {
         currentPage.close();
         currentContext.close();
 
-        currentContext(context);
-        currentPage(currentContext.newPage());
+        setCurrentContext(context);
+        setCurrentPage(currentContext.newPage());
     }
 }

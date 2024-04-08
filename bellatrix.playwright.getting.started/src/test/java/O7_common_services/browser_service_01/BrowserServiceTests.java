@@ -11,7 +11,7 @@ public class BrowserServiceTests extends WebTest {
         app().navigate().to("http://demos.bellatrix.solutions/");
 
         // Get the current page’s HTML source.
-        System.out.println(app().browser().pageSource());
+        System.out.println(app().browser().getPageSource());
     }
 
     @Test
@@ -34,6 +34,6 @@ public class BrowserServiceTests extends WebTest {
         app().navigate().to("http://demos.bellatrix.solutions/");
 
         // Get the current tab URL.
-        System.out.println(app().browser().url());
+        System.out.println(app().browser().getUrl());
     }
 }

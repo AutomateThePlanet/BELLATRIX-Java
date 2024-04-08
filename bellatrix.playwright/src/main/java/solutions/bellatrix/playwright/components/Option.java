@@ -26,7 +26,7 @@ public class Option extends WebComponent implements ComponentText, ComponentValu
 
     @Override
     public boolean isSelected() {
-        return (boolean)wrappedElement.evaluate("el => { el.selected; }");
+        return (boolean)wrappedElement.evaluate("el => el.selected");
     }
 
     @Override

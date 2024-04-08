@@ -29,7 +29,7 @@ import static java.util.stream.Collectors.toList;
 @SuppressWarnings("ALL")
 public class NavigationService extends WebService {
     public void to(String url) {
-        wrappedBrowser().currentPage().navigate(url);
+        wrappedBrowser().getCurrentPage().navigate(url);
     }
 
     public void toLocalPage(String filePath) {
@@ -49,7 +49,7 @@ public class NavigationService extends WebService {
     }
 
     public List<String> getQueryParameter(String parameterName) throws MalformedURLException {
-        return splitQuery(wrappedBrowser().currentPage().url()).get(parameterName);
+        return splitQuery(wrappedBrowser().getCurrentPage().url()).get(parameterName);
     }
 
     private Map<String, List<String>> splitQuery(String url) throws MalformedURLException {

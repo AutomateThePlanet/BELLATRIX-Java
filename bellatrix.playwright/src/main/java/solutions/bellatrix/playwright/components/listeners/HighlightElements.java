@@ -25,7 +25,7 @@ public class HighlightElements extends Listener {
         if (!isHighlightElementsAdded) {
             var shouldHighlightElements = Settings.web().getShouldHighlightElements();
             if (shouldHighlightElements) {
-                WebComponent.RETURNING_WRAPPED_ELEMENT.addListener((x) -> x.component().highlight());
+                WebComponent.RETURNING_WRAPPED_ELEMENT.addListener((x) -> x.getComponent().highlight());
             }
 
             isHighlightElementsAdded = true;

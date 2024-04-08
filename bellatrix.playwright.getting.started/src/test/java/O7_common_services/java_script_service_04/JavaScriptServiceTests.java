@@ -31,7 +31,7 @@ public class JavaScriptServiceTests extends WebTest {
 
         var resultsCount = app().create().byClassContaining(WebComponent.class, "woocommerce-result-count");
 
-        String fontSize = app().script().execute("return arguments[0].style.font-size", resultsCount.wrappedElement());
+        String fontSize = app().script().execute("return arguments[0].style.font-size", resultsCount.getWrappedElement());
         // Get the results from a script. After that, get the value for a specific style and assert it.
         Assert.assertEquals(fontSize, "14px");
     }

@@ -17,15 +17,19 @@ import com.microsoft.playwright.BrowserContext;
 import com.microsoft.playwright.Request;
 import com.microsoft.playwright.Response;
 import com.microsoft.playwright.WebError;
+import org.junit.jupiter.api.Assertions;
 import org.testng.Assert;
+import solutions.bellatrix.playwright.infrastructure.httptraffic.Requests;
+import solutions.bellatrix.playwright.infrastructure.httptraffic.Responses;
 import solutions.bellatrix.playwright.infrastructure.httptraffic.Traffic;
 
+import java.util.List;
 import java.util.function.Consumer;
 
 @SuppressWarnings("ALL")
 public class NetworkService extends WebService {
     private static BrowserContext context() {
-        return wrappedBrowser().currentContext();
+        return wrappedBrowser().getCurrentContext();
     }
 
     public static void setOffline(boolean offline) {
@@ -73,7 +77,7 @@ public class NetworkService extends WebService {
     }
 
     public static void assertNoErrorCodes() {
-        var responses = Traffic.contextSpecificResponses(context());
+        var responses = Traffic.getContextSpecificResponses(context());
         var errorCodesPresent = responses.stream().anyMatch(response ->
                 response.status() > 400 && response.status() < 599);
 
@@ -81,49 +85,84 @@ public class NetworkService extends WebService {
     }
 
     public static void assertRequestMade(String url) {
-        var requests = Traffic.contextSpecificRequests(context());
+        var requests = Traffic.getContextSpecificRequests(context());
         var areRequestsMade = requests.stream().anyMatch(request -> request.url().contains(url));
 
         Assert.assertTrue(areRequestsMade);
     }
 
+    public static void assertNoLargeImagesRequested() {
+        Consumer<Response> handler = (Response response) -> {
+            var body = new String(response.body());
+
+            Assertions.assertFalse(body.contains("image") && response.body().length > 40000);
+        };
+        addResponseHandler(handler);
+    }
+
     public static Request getLastRequest() {
-        var requests = Traffic.contextSpecificRequests(context());
+        var requests = Traffic.getContextSpecificRequests(context());
         return requests.get(requests.size() - 1);
     }
 
     public static Response getLastResponse() {
-        var responses = Traffic.contextSpecificResponses(context());
+        var responses = Traffic.getContextSpecificResponses(context());
         return responses.get(responses.size() - 1);
     }
 
     public static Request getRequestByIndex(int index) {
-        return Traffic.contextSpecificRequests(context()).get(index);
+        return Traffic.getContextSpecificRequests(context()).get(index);
     }
 
     public static Response getResponseByIndex(int index) {
-        return Traffic.contextSpecificResponses(context()).get(index);
+        return Traffic.getContextSpecificResponses(context()).get(index);
     }
 
     public static Request getRequestByUrl(String url, String httpMethod) {
-        return Traffic.contextSpecificRequests(context()).stream()
+        return Traffic.getContextSpecificRequests(context()).stream()
                 .filter(request -> request.url().equals(url) && request.method().equalsIgnoreCase(httpMethod))
                 .findFirst()
                 .orElse(null);
     }
 
     public static Response getResponseByUrl(String url, String httpMethod) {
-        return Traffic.contextSpecificResponses(context()).stream()
+        return Traffic.getContextSpecificResponses(context()).stream()
                 .filter(response -> response.request().url().equals(url) && response.request().method().equalsIgnoreCase(httpMethod))
                 .findFirst()
                 .orElse(null);
     }
 
-    // ToDo public static void newHar(String name);
-    // ToDo public static void newHar();
-    // ToDo public static List<HarEntry> getCapturedEntries();
-    // ToDo public static void assertNoLargeImagesRequested();
-    // ToDo private static int findFreePort();
+    /**
+     * Use {@link Traffic}, it provides the same functionality.
+     */
+    @Deprecated
+    public static void newHar(String name) {
+        // Deprecated
+    }
+
+    /**
+     * Use {@link Traffic}, it provides the same functionality.
+     */
+    @Deprecated
+    public static void newHar() {
+        // Deprecated
+    }
+
+    public List<Requests> getRequestContainers() {
+        return Traffic.getRequestContainers();
+    }
+
+    public List<Responses> getResponseContainers() {
+        return Traffic.getResponseContainers();
+    }
+
+    public List<Request> getContextSpecificRequests(BrowserContext context) {
+        return Traffic.getContextSpecificRequests(context);
+    }
+
+    public List<Response> getContextSpecificResponses(BrowserContext context) {
+        return Traffic.getContextSpecificResponses(context);
+    }
 
     // ToDo route() and unroute() (from playwright)
     // ToDo setExtraHTTPHeaders() (from playwright)

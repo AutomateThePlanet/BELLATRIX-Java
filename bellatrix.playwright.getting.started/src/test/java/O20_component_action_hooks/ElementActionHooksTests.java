@@ -20,7 +20,7 @@ public class ElementActionHooksTests extends WebTest {
 
         Select sortDropDown = app().create().byNameEndingWith(Select.class, "orderby");
         Anchor protonMReadMoreButton =
-                app().create().byTextContaining(Anchor.class, "Read more");
+                app().create().byInnerTextContaining(Anchor.class, "Read more");
         Anchor addToCartFalcon9 =
                 app().create().byAttributeContaining(Anchor.class, "data-product_id", "28").toBeClickable();
         Anchor viewCartButton =
@@ -33,7 +33,7 @@ public class ElementActionHooksTests extends WebTest {
         Anchor proceedToCheckout =
                 app().create().byClassContaining(Anchor.class, "checkout-button button alt wc-forward");
         Heading billingDetailsHeading =
-                app().create().byTextContaining(Heading.class, "Billing details");
+                app().create().byInnerTextContaining(Heading.class, "Billing details");
         Span totalSpan = app().create().byXpath(Span.class, "//*[@class='order-total']//span");
 
         sortDropDown.selectByText("Sort by price: low to high");

@@ -42,7 +42,7 @@ public class BellatrixBrowserBehaviourTests extends WebTest {
 
         promotionsLink.click();
 
-        Assertions.assertEquals("https://demos.bellatrix.solutions/welcome/", app().browser().url());
+        Assertions.assertEquals("https://demos.bellatrix.solutions/welcome/", app().browser().getUrl());
     }
 
     // 1.5 As mentioned above you can override the browser Lifecycle for a particular test. The global Lifecycle for all

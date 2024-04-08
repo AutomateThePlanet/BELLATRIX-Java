@@ -37,19 +37,19 @@ public class Traffic {
         RESPONSES.set(new ArrayList<>());
     }
 
-    public List<Requests> requestContainers() {
+    public List<Requests> getRequestContainers() {
         return REQUESTS.get();
     }
 
-    public List<Responses> responseContainers() {
+    public List<Responses> getResponseContainers() {
         return RESPONSES.get();
     }
 
-    public List<Request> contextSpecificRequests(BrowserContext context) {
-        return Objects.requireNonNull(REQUESTS.get().stream().filter(x -> x.context().equals(context)).findFirst().orElse(null)).requests();
+    public List<Request> getContextSpecificRequests(BrowserContext context) {
+        return Objects.requireNonNull(REQUESTS.get().stream().filter(x -> x.getContext().equals(context)).findFirst().orElse(null)).getRequests();
     }
 
-    public List<Response> contextSpecificResponses(BrowserContext context) {
-        return Objects.requireNonNull(RESPONSES.get().stream().filter(x -> x.context().equals(context)).findFirst().orElse(null)).responses();
+    public List<Response> getContextSpecificResponses(BrowserContext context) {
+        return Objects.requireNonNull(RESPONSES.get().stream().filter(x -> x.getContext().equals(context)).findFirst().orElse(null)).getResponses();
     }
 }

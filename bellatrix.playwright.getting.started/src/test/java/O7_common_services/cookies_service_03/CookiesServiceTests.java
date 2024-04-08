@@ -43,7 +43,7 @@ public class CookiesServiceTests extends WebTest {
     public void deleteAllCookies() {
         app().navigate().to("http://demos.bellatrix.solutions/welcome/");
 
-        var protonRocketAddToCartBtn = app().create().allByTextContaining(Anchor.class, "Add to cart").
+        var protonRocketAddToCartBtn = app().create().allByInnerTextContaining(Anchor.class, "Add to cart").
                 stream().findFirst().orElse(null);
 
         protonRocketAddToCartBtn.click();
@@ -56,7 +56,7 @@ public class CookiesServiceTests extends WebTest {
     public void deleteSpecificCookie() {
         app().navigate().to("http://demos.bellatrix.solutions/welcome/");
 
-        var protonRocketAddToCartBtn = app().create().allByTextContaining(Anchor.class, "Add to cart").stream().findFirst().orElse(null);
+        var protonRocketAddToCartBtn = app().create().allByInnerTextContaining(Anchor.class, "Add to cart").stream().findFirst().orElse(null);
         protonRocketAddToCartBtn.click();
 
         // Delete a specific cookie by name.

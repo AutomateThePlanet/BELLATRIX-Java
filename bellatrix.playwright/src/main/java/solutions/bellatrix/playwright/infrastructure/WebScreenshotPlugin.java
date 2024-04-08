@@ -31,7 +31,7 @@ public class WebScreenshotPlugin extends ScreenshotPlugin {
     @Override
     protected void takeScreenshot(String screenshotSaveDir, String filename) {
         // ToDo test taking a screenshot
-        var screenshot = PlaywrightService.wrappedBrowser().currentPage()
+        var screenshot = PlaywrightService.wrappedBrowser().getCurrentPage()
                 .screenshot(new Page.ScreenshotOptions()
                         .setPath(Paths.get(screenshotSaveDir, filename))
                         .setType(ScreenshotType.PNG)

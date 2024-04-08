@@ -13,6 +13,6 @@ public class IdStartingWithFindStrategy extends CssFindStrategy {
 
     @Override
     public String toString() {
-        return String.format("id starting with %s", value());
+        return String.format("id starting with %s", getValue());
     }
 }

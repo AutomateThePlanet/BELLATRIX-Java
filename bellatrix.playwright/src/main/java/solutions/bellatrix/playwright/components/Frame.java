@@ -21,9 +21,7 @@ public class Frame extends WebComponent {
     }
 
     public Frame(WebElement element) {
-        super();
-
-        wrappedElement.isFrame(true);
+        super(element);
     }
 
     public String getName() {

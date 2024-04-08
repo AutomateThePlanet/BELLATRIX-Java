@@ -92,6 +92,28 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
         webSettings = Settings.web();
     }
 
+    /**
+     * Convert this component to another type of component.
+     * @param componentClass type of component
+     */
+    public <ComponentT extends WebComponent> ComponentT as(Class<ComponentT> componentClass) {
+        var component = InstanceFactory.create(componentClass);
+        component.setFindStrategy(this.findStrategy);
+        component.setWrappedElement(this.wrappedElement);
+        component.setParentWrappedComponent(this.parentWrappedComponent);
+        component.setElementIndex(this.elementIndex);
+
+        return component;
+    }
+
+    public WebElement getWrappedElement() {
+        return wrappedElement;
+    }
+
+    public void setWrappedElement(WebElement element) {
+        wrappedElement = element;
+    }
+
     public RelativeCreateService create() {
         return createService;
     }
@@ -100,23 +122,15 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
         return PlaywrightService.wrappedBrowser();
     }
 
-    public WebElement wrappedElement() {
-        return wrappedElement;
-    }
-
-    public void wrappedElement(WebElement element) {
-        this.wrappedElement = element;
-    }
-
     public void scrollToVisible() {
         SCROLLING_TO_VISIBLE.broadcast(new ComponentActionEventArgs(this));
-        wrappedElement().scrollIntoViewIfNeeded();
+        getWrappedElement().scrollIntoViewIfNeeded();
         SCROLLED_TO_VISIBLE.broadcast(new ComponentActionEventArgs(this));
     }
 
     public void focus() {
         FOCUSING.broadcast(new ComponentActionEventArgs(this));
-        wrappedElement().focus();
+        getWrappedElement().focus();
         FOCUSED.broadcast(new ComponentActionEventArgs(this));
     }
 
@@ -134,9 +148,9 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
 
     private void internalHover(HoverOptions options) {
         if (options == null) {
-            wrappedElement().hover();
+            getWrappedElement().hover();
         } else {
-            wrappedElement().hover(options.convert());
+            getWrappedElement().hover(options.convert());
         }
     }
 
@@ -191,7 +205,7 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
     // Update: We should use js, native playwright highlight() method's function is unknown.
     // Update: the js script seems to work, but not for TextField elements
     public void highlight() {
-        if (PlaywrightService.browserConfiguration().browserTypes() == BrowserTypes.CHROME_HEADLESS) {
+        if (PlaywrightService.browserConfiguration().getBrowserTypes() == BrowserTypes.CHROME_HEADLESS) {
             return;
         }
 
@@ -217,7 +231,7 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
     }
 
     protected boolean defaultIsSelected(String selectSelector, String optionValue) {
-        return (boolean)wrappedBrowser().currentPage().evaluate(
+        return (boolean)wrappedBrowser().getCurrentPage().evaluate(
                 String.format("%s option[value='%s']", selectSelector, optionValue),
                 "option -> option.selected"
         );
@@ -476,6 +490,18 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
         checked.broadcast(new ComponentActionEventArgs(this));
     }
 
+    public Object evaluate(String script) {
+        return this.wrappedElement.evaluate(script);
+    }
+
+    public Object evaluate(String script, Object arg) {
+        return this.wrappedElement.evaluate(script, arg);
+    }
+
+    public Object evaluate(String script, Object arg, int timeoutInSeconds) {
+        return this.wrappedElement.evaluate(script, arg, new Locator.EvaluateOptions().setTimeout(timeoutInSeconds * 1000));
+    }
+
     public <TElementType extends WebComponent> TElementType toExist() {
         wrappedElement.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.ATTACHED).setTimeout(webSettings.getTimeoutSettings().inMilliseconds().getElementToExistTimeout()));
         return (TElementType)this;
@@ -492,12 +518,12 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
     }
 
     public <TElementType extends WebComponent> TElementType toBeVisible() {
-        PlaywrightAssertions.assertThat(wrappedElement.wrappedLocator()).isVisible(new LocatorAssertions.IsVisibleOptions().setTimeout(webSettings.getTimeoutSettings().inMilliseconds().getElementToBeVisibleTimeout()));
+        PlaywrightAssertions.assertThat(wrappedElement.getWrappedLocator()).isVisible(new LocatorAssertions.IsVisibleOptions().setTimeout(webSettings.getTimeoutSettings().inMilliseconds().getElementToBeVisibleTimeout()));
         return (TElementType)this;
     }
 
     public <TElementType extends WebComponent> TElementType toNotBeVisible() {
-        PlaywrightAssertions.assertThat(wrappedElement.wrappedLocator()).not().isVisible(new LocatorAssertions.IsVisibleOptions().setTimeout(webSettings.getTimeoutSettings().inMilliseconds().getElementNotToBeVisibleTimeout()));
+        PlaywrightAssertions.assertThat(wrappedElement.getWrappedLocator()).not().isVisible(new LocatorAssertions.IsVisibleOptions().setTimeout(webSettings.getTimeoutSettings().inMilliseconds().getElementNotToBeVisibleTimeout()));
         return (TElementType)this;
     }
 
@@ -508,18 +534,17 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
      */
     @Deprecated
     public <TElementType extends WebComponent> TElementType toBeClickable() {
-        // var waitStrategy = new ToBeClickableWaitStrategy();
-        // ensureState(waitStrategy);
+        PlaywrightAssertions.assertThat(wrappedElement.getWrappedLocator()).isEnabled(new LocatorAssertions.IsEnabledOptions().setTimeout(webSettings.getTimeoutSettings().inMilliseconds().getValidationsTimeout()));
         return (TElementType)this;
     }
 
     public <TElementType extends WebComponent> TElementType toBeDisabled() {
-        PlaywrightAssertions.assertThat(wrappedElement.wrappedLocator()).isDisabled(new LocatorAssertions.IsDisabledOptions().setTimeout(webSettings.getTimeoutSettings().inMilliseconds().getValidationsTimeout()));
+        PlaywrightAssertions.assertThat(wrappedElement.getWrappedLocator()).isDisabled(new LocatorAssertions.IsDisabledOptions().setTimeout(webSettings.getTimeoutSettings().inMilliseconds().getValidationsTimeout()));
         return (TElementType)this;
     }
 
     public <TElementType extends WebComponent> TElementType toHaveContent() {
-        PlaywrightAssertions.assertThat(wrappedElement.wrappedLocator()).not().isEmpty(new LocatorAssertions.IsEmptyOptions().setTimeout(webSettings.getTimeoutSettings().inMilliseconds().getElementToHaveContentTimeout()));
+        PlaywrightAssertions.assertThat(wrappedElement.getWrappedLocator()).not().isEmpty(new LocatorAssertions.IsEmptyOptions().setTimeout(webSettings.getTimeoutSettings().inMilliseconds().getElementToHaveContentTimeout()));
         return (TElementType)this;
     }
 
@@ -534,12 +559,12 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
     }
 
     public <TElementType extends WebComponent> TElementType toBeVisible(long timeoutIntervalInSeconds, long sleepIntervalInSeconds) {
-        PlaywrightAssertions.assertThat(wrappedElement.wrappedLocator()).isVisible(new LocatorAssertions.IsVisibleOptions().setTimeout(timeoutIntervalInSeconds * 1000));
+        PlaywrightAssertions.assertThat(wrappedElement.getWrappedLocator()).isVisible(new LocatorAssertions.IsVisibleOptions().setTimeout(timeoutIntervalInSeconds * 1000));
         return (TElementType)this;
     }
 
     public <TElementType extends WebComponent> TElementType toNotBeVisible(long timeoutIntervalInSeconds, long sleepIntervalInSeconds) {
-        PlaywrightAssertions.assertThat(wrappedElement.wrappedLocator()).not().isVisible(new LocatorAssertions.IsVisibleOptions().setTimeout(timeoutIntervalInSeconds * 1000));
+        PlaywrightAssertions.assertThat(wrappedElement.getWrappedLocator()).not().isVisible(new LocatorAssertions.IsVisibleOptions().setTimeout(timeoutIntervalInSeconds * 1000));
         return (TElementType)this;
     }
 
@@ -550,18 +575,17 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
      */
     @Deprecated
     public <TElementType extends WebComponent> TElementType toBeClickable(long timeoutIntervalInSeconds, long sleepIntervalInSeconds) {
-        // var waitStrategy = new ToBeClickableWaitStrategy(timeoutInterval, sleepInterval);
-        // ensureState(waitStrategy);
+        PlaywrightAssertions.assertThat(wrappedElement.getWrappedLocator()).isEnabled(new LocatorAssertions.IsEnabledOptions().setTimeout(timeoutIntervalInSeconds * 1000));
         return (TElementType)this;
     }
 
     public <TElementType extends WebComponent> TElementType toBeDisabled(long timeoutIntervalInSeconds, long sleepIntervalInSeconds) {
-        PlaywrightAssertions.assertThat(wrappedElement.wrappedLocator()).isDisabled(new LocatorAssertions.IsDisabledOptions().setTimeout(timeoutIntervalInSeconds * 1000));
+        PlaywrightAssertions.assertThat(wrappedElement.getWrappedLocator()).isDisabled(new LocatorAssertions.IsDisabledOptions().setTimeout(timeoutIntervalInSeconds * 1000));
         return (TElementType)this;
     }
 
     public <TElementType extends WebComponent> TElementType toHaveContent(long timeoutIntervalInSeconds, long sleepIntervalInSeconds) {
-        PlaywrightAssertions.assertThat(wrappedElement.wrappedLocator()).not().isEmpty(new LocatorAssertions.IsEmptyOptions().setTimeout(timeoutIntervalInSeconds * 1000));
+        PlaywrightAssertions.assertThat(wrappedElement.getWrappedLocator()).not().isEmpty(new LocatorAssertions.IsEmptyOptions().setTimeout(timeoutIntervalInSeconds * 1000));
         return (TElementType)this;
     }
     

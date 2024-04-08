@@ -23,7 +23,7 @@ public class WebComponentsTests extends WebTest {
         sortDropDown.selectByText("Sort by price: low to high");
 
         Anchor protonMReadMoreButton =
-                app().create().byTextContaining(Anchor.class, "Read more");
+                app().create().byInnerTextContaining(Anchor.class, "Read more");
         // Here BELLATRIX finds the first anchor component which has inner text containing the ‘Read more’ text.
         protonMReadMoreButton.hover();
         // You can Hover and Focus on most web components. Also, can invoke Click on anchors.
@@ -69,11 +69,11 @@ public class WebComponentsTests extends WebTest {
                 app().create().byClassContaining(Anchor.class, "checkout-button button alt wc-forward");
         proceedToCheckout.click();
 
-        Heading billingDetailsHeading = app().create().byTextContaining(Heading.class, "Billing details");
+        Heading billingDetailsHeading = app().create().byInnerTextContaining(Heading.class, "Billing details");
 
         billingDetailsHeading.toBeVisible().waitToBe();
 
-        Anchor showLogin = app().create().byTextContaining(Anchor.class, "Click here to login");
+        Anchor showLogin = app().create().byInnerTextContaining(Anchor.class, "Click here to login");
         // All web components have multiple properties for their most important attributes and ensure methods for their
         // verification.
         showLogin.validateHrefIs("http://demos.bellatrix.solutions/checkout/#");

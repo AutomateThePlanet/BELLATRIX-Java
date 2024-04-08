@@ -1,6 +1,5 @@
 package solutions.bellatrix.playwright.services;
 
-@Deprecated
 public enum DialogButton {
     OK,
     CANCEL,

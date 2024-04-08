@@ -93,11 +93,11 @@ public class PlaywrightService {
 
             PLAYWRIGHT_THREAD_LOCAL.remove();
 
-            if (wrappedBrowser().gridSessionId() != null) {
+            if (wrappedBrowser().getGridSessionId() != null) {
                 RestAssured.baseURI = ConfigurationService.get(WebSettings.class).getGridSettings().stream().filter(g -> g.getProviderName().equals(Settings.web().getExecutionType().toLowerCase())).findFirst().orElse(null).getUrl();
 
                 var response = RestAssured.given()
-                        .delete(String.format("/session/%s", wrappedBrowser().gridSessionId()));
+                        .delete(String.format("/session/%s", wrappedBrowser().getGridSessionId()));
             }
         }
 
@@ -112,9 +112,9 @@ public class PlaywrightService {
     private static WrappedBrowser initializeBrowserWrapperRegularMode() {
         wrappedBrowser(new WrappedBrowser(playwright()));
 
-        wrappedBrowser().browser(initializeBrowserRegularMode());
-        wrappedBrowser().currentContext(intializeBrowserContext());
-        wrappedBrowser().currentPage(wrappedBrowser().currentContext().newPage());
+        wrappedBrowser().setBrowser(initializeBrowserRegularMode());
+        wrappedBrowser().setCurrentContext(intializeBrowserContext());
+        wrappedBrowser().setCurrentPage(wrappedBrowser().getCurrentContext().newPage());
 
         return wrappedBrowser();
     }
@@ -122,15 +122,15 @@ public class PlaywrightService {
     private static WrappedBrowser initializeBrowserWrapperGridMode(GridSettings gridSettings) {
         wrappedBrowser(new WrappedBrowser(playwright()));
 
-        wrappedBrowser().browser(initializeBrowserGridMode(gridSettings));
-        wrappedBrowser().currentContext(intializeBrowserContext());
-        wrappedBrowser().currentPage(wrappedBrowser().currentContext().newPage());
+        wrappedBrowser().setBrowser(initializeBrowserGridMode(gridSettings));
+        wrappedBrowser().setCurrentContext(intializeBrowserContext());
+        wrappedBrowser().setCurrentPage(wrappedBrowser().getCurrentContext().newPage());
 
         return wrappedBrowser();
     }
 
     private static Browser initializeBrowserRegularMode() {
-        BrowserTypes browserTypes = browserConfiguration().browserTypes();
+        BrowserTypes browserTypes = browserConfiguration().getBrowserTypes();
 
         switch (browserTypes) {
             case CHROMIUM -> {
@@ -242,18 +242,18 @@ public class PlaywrightService {
     private static Browser.NewContextOptions getContextOptions() {
         Browser.NewContextOptions options = new Browser.NewContextOptions();
 
-        if (Settings.context().isShouldSetContextSettings()) {
-            options.setIgnoreHTTPSErrors(Settings.context().isIgnoreHTTPSErrors());
-            options.setAcceptDownloads(Settings.context().isAcceptDownloads());
-            options.setBypassCSP(Settings.context().isBypassCSP());
-            options.setBaseURL(Settings.web().getBaseUrl());
-            options.setGeolocation(Settings.context().getGeolocation());
-            options.setHttpCredentials(Settings.context().getHTTPCredentials());
-            options.setJavaScriptEnabled(Settings.context().isJsEnabled());
-            options.setLocale(Settings.context().getLocale());
-            options.setTimezoneId(Settings.context().getTimezoneId());
-            options.setUserAgent(Settings.context().getUserAgent());
-        }
+//        if (Settings.context().isShouldSetContextSettings()) {
+//            options.setIgnoreHTTPSErrors(Settings.context().isIgnoreHTTPSErrors());
+//            options.setAcceptDownloads(Settings.context().isAcceptDownloads());
+//            options.setBypassCSP(Settings.context().isBypassCSP());
+//            options.setBaseURL(Settings.web().getBaseUrl());
+//            options.setGeolocation(Settings.context().getGeolocation());
+//            options.setHttpCredentials(Settings.context().getHTTPCredentials());
+//            options.setJavaScriptEnabled(Settings.context().isJsEnabled());
+//            options.setLocale(Settings.context().getLocale());
+//            options.setTimezoneId(Settings.context().getTimezoneId());
+//            options.setUserAgent(Settings.context().getUserAgent());
+//        }
 
         options.setIgnoreHTTPSErrors(true);
 
@@ -263,11 +263,11 @@ public class PlaywrightService {
     }
 
     private static void startRecordingHttpTraffic(BrowserContext context) {
-        Traffic.requestContainers().add(new Requests(context));
-        context.onRequest(x -> Traffic.contextSpecificRequests(context).add(x));
+        Traffic.getRequestContainers().add(new Requests(context));
+        context.onRequest(x -> Traffic.getContextSpecificRequests(context).add(x));
 
-        Traffic.responseContainers().add(new Responses(context));
-        context.onResponse(x -> Traffic.contextSpecificResponses(context).add(x));
+        Traffic.getResponseContainers().add(new Responses(context));
+        context.onResponse(x -> Traffic.getContextSpecificResponses(context).add(x));
     }
 
     private static Browser initializeBrowserGridMode(GridSettings gridSettings) {
@@ -281,7 +281,7 @@ public class PlaywrightService {
             String serializedSettings = URLEncoder.encode(gson.toJson(gridSettings.getArguments().get(0)), "UTF-8");
 
             if (gridSettings.getProviderName().equals("grid") || gridSettings.getProviderName().equals("selenoid")) {
-                var browserType = BROWSER_CONFIGURATION_THREAD_LOCAL.get().browserTypes();
+                var browserType = BROWSER_CONFIGURATION_THREAD_LOCAL.get().getBrowserTypes();
                 if (browserType == BrowserTypes.FIREFOX || browserType == BrowserTypes.FIREFOX_HEADLESS || browserType == BrowserTypes.WEBKIT || browserType == BrowserTypes.WEBKIT_HEADLESS) {
                     throw new NotImplementedException("Playwright supports running in Selenium Grid only Chromium browsers.");
                 }
@@ -300,7 +300,7 @@ public class PlaywrightService {
                         .body(serializedBody)
                         .post("/session");
 
-                wrappedBrowser().gridSessionId(response.body().jsonPath().get("value.sessionId"));
+                wrappedBrowser().setGridSessionId(response.body().jsonPath().get("value.sessionId"));
 
                 var responseBody = response.body();
                 var responseJson = response.jsonPath();
@@ -324,8 +324,8 @@ public class PlaywrightService {
 
     private static void changeWindowSize() {
         try {
-            if (browserConfiguration().height() != 0 && browserConfiguration().width() != 0) {
-                wrappedBrowser().currentPage().setViewportSize(browserConfiguration().width(), browserConfiguration().height());
+            if (browserConfiguration().getHeight() != 0 && browserConfiguration().getWidth() != 0) {
+                wrappedBrowser().getCurrentPage().setViewportSize(browserConfiguration().getWidth(), browserConfiguration().getHeight());
             }
         } catch (Exception ignored) {}
     }
@@ -385,20 +385,20 @@ public class PlaywrightService {
     }
 
     private static Browser browser() {
-        return wrappedBrowser().browser();
+        return wrappedBrowser().getBrowser();
     }
 
     private static Browser browser(Browser browser) {
-        wrappedBrowser().browser(browser);
+        wrappedBrowser().setBrowser(browser);
         return browser();
     }
 
     private static BrowserContext context() {
-        return wrappedBrowser().currentContext();
+        return wrappedBrowser().getCurrentContext();
     }
 
     private static BrowserContext context(BrowserContext browserContext) {
-        wrappedBrowser().currentContext(browserContext);
+        wrappedBrowser().setCurrentContext(browserContext);
         return context();
     }
 }

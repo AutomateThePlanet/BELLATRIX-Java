@@ -1,7 +1,9 @@
 package O4_locate_components;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import solutions.bellatrix.playwright.components.Anchor;
+import solutions.bellatrix.playwright.components.Div;
 import solutions.bellatrix.playwright.infrastructure.junit.WebTest;
 
 public class LocateElementsTests extends WebTest {
@@ -18,7 +20,7 @@ public class LocateElementsTests extends WebTest {
 
         promotionsLink.click();
 
-        System.out.println(promotionsLink.findStrategy().getValue());
+        System.out.println(promotionsLink.getFindStrategy().getValue());
 
         System.out.println(promotionsLink.getTagName());
 

@@ -33,14 +33,14 @@ public class CustomTestCaseExtensionTests extends WebTest {
         var viewCart = app().create().byXpath(Anchor.class,"//*[contains(@class,'woocommerce-mini-cart__buttons')]//a");
         viewCart.click();
 
-        var proceedToCheckout = app().create().byTextContaining( Anchor.class  ,"Proceed to checkout");
+        var proceedToCheckout = app().create().byInnerTextContaining( Anchor.class  ,"Proceed to checkout");
         proceedToCheckout.click();
 
         var placeOrder = app().create().byId( Button.class,"place_order");
         placeOrder.click();
         var woocommerceError = app().create().allByXpath(Span.class ,"//*[@class='woocommerce-error']/li");
 
-        Assert.assertEquals(app().browser().url(), "https://demos.bellatrix.solutions/checkout/");
+        Assert.assertEquals(app().browser().getUrl(), "https://demos.bellatrix.solutions/checkout/");
 
         for (var item : woocommerceError) {
             item.validateIsVisible();

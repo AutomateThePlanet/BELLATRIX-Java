@@ -24,7 +24,7 @@ import solutions.bellatrix.playwright.utilities.functionalinterfaces.EvaluationM
 @SuppressWarnings("resource")
 public class JavaScriptService extends WebService {
     public Object execute(String script) {
-        return performEvaluation(() -> wrappedBrowser().currentPage().evaluate(script));
+        return performEvaluation(() -> wrappedBrowser().getCurrentPage().evaluate(script));
 
     }
 
@@ -37,11 +37,11 @@ public class JavaScriptService extends WebService {
     }
 
     public String execute(String script, Object... args) {
-        return (String) performEvaluation(() -> wrappedBrowser().currentPage().evaluate(script, args));
+        return (String) performEvaluation(() -> wrappedBrowser().getCurrentPage().evaluate(script, args));
     }
 
     public <TComponent extends WebComponent> String execute(String script, TComponent component) {
-        return execute(script, component.wrappedElement());
+        return execute(script, component.getWrappedElement());
     }
 
     public String execute(String script, Locator nativeLocator) {

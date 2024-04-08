@@ -131,11 +131,11 @@ public class ComponentCreateService extends WebService {
         return allByText(componentClass, text, null);
     }
 
-    public <TComponent extends WebComponent> TComponent byTextContaining(Class<TComponent> componentClass, String text) {
+    public <TComponent extends WebComponent> TComponent byInnerTextContaining(Class<TComponent> componentClass, String text) {
         return byText(componentClass, Pattern.compile(String.format(".*%s.*", text)), null);
     }
 
-    public <TComponent extends WebComponent> List<TComponent> allByTextContaining(Class<TComponent> componentClass, String text) {
+    public <TComponent extends WebComponent> List<TComponent> allByInnerTextContaining(Class<TComponent> componentClass, String text) {
         return allByText(componentClass, Pattern.compile(String.format(".*%s.*", text)), null);
     }
 
@@ -318,22 +318,22 @@ public class ComponentCreateService extends WebService {
     }
 
     public <TComponent extends WebComponent, TFindStrategy extends FindStrategy> TComponent by(Class<TComponent> componentClass, TFindStrategy findStrategy) {
-        wrappedBrowser().currentPage().waitForLoadState();
+        wrappedBrowser().getCurrentPage().waitForLoadState();
         var component = InstanceFactory.create(componentClass);
-        component.wrappedElement(findStrategy.convert(wrappedBrowser().currentPage()).first());
-        component.findStrategy(findStrategy);
+        component.setWrappedElement(findStrategy.convert(wrappedBrowser().getCurrentPage()).first());
+        component.setFindStrategy(findStrategy);
 
         return component;
     }
 
     public <TComponent extends WebComponent, TFindStrategy extends FindStrategy> List<TComponent> allBy(Class<TComponent> componentClass, TFindStrategy findStrategy) {
-        wrappedBrowser().currentPage().waitForLoadState();
-        var locators = findStrategy.convert(wrappedBrowser().currentPage()).all();
+        wrappedBrowser().getCurrentPage().waitForLoadState();
+        var elements = findStrategy.convert(wrappedBrowser().getCurrentPage()).all();
         List<TComponent> componentList = new ArrayList<>();
-        for (var locator : locators) {
+        for (var element : elements) {
             var component = InstanceFactory.create(componentClass);
-            component.wrappedElement(locator);
-            component.findStrategy(findStrategy);
+            component.setWrappedElement(element);
+            component.setFindStrategy(findStrategy);
 
             componentList.add(component);
         }

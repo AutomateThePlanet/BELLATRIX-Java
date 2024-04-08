@@ -10,7 +10,7 @@ public class BDDLoggingTests extends WebTest {
         app().navigate().to("http://demos.bellatrix.solutions/");
 
         Select sortDropDown = app().create().byNameEndingWith(Select.class, "orderby");
-        Anchor protonMReadMoreButton = app().create().byTextContaining(Anchor.class, "Read more");
+        Anchor protonMReadMoreButton = app().create().byInnerTextContaining(Anchor.class, "Read more");
         Anchor addToCartFalcon9 =
                 app().create().byAttributeContaining(Anchor.class, "data-product_id", "28").toBeClickable();
         Anchor viewCartButton =
@@ -40,8 +40,8 @@ public class BDDLoggingTests extends WebTest {
         totalSpan.validateTextIs("54.00€");
         proceedToCheckout.click();
 
-        Heading billingDetailsHeading = app().create().byTextContaining(Heading.class, "Billing details");
-        Anchor showLogin = app().create().byTextContaining(Anchor.class, "Click here to login");
+        Heading billingDetailsHeading = app().create().byInnerTextContaining(Heading.class, "Billing details");
+        Anchor showLogin = app().create().byInnerTextContaining(Anchor.class, "Click here to login");
         TextArea orderCommentsTextArea = app().create().byId(TextArea.class, "order_comments");
         TextInput billingFirstName = app().create().byId(TextInput.class, "billing_first_name");
         TextInput billingLastName = app().create().byId(TextInput.class, "billing_last_name");

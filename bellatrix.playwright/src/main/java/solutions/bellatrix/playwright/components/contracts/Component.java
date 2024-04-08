@@ -18,7 +18,7 @@ import solutions.bellatrix.playwright.components.common.webelement.WebElement;
 import solutions.bellatrix.playwright.findstrategies.FindStrategy;
 
 public interface Component extends LayoutComponent {
-    WebElement wrappedElement();
-    void wrappedElement(WebElement element);
-    FindStrategy findStrategy();
+    WebElement getWrappedElement();
+    void setWrappedElement(WebElement element);
+    FindStrategy getFindStrategy();
 }

@@ -45,13 +45,13 @@ public class BrowserConfiguration {
     public boolean equals(Object obj) {
         if (!(obj instanceof BrowserConfiguration that))
             return false;
-        if (!(this.browserTypes() == null ? that.browserTypes() == null : this.browserTypes().equals(that.browserTypes())))
+        if (!(this.getBrowserTypes() == null ? that.getBrowserTypes() == null : this.getBrowserTypes().equals(that.getBrowserTypes())))
             return false;
-        if (!(this.lifecycle() == null ? that.lifecycle() == null : this.lifecycle().equals(that.lifecycle())))
+        if (!(this.getLifecycle() == null ? that.getLifecycle() == null : this.getLifecycle().equals(that.getLifecycle())))
             return false;
-        if (this.version() != that.version())
+        if (this.getVersion() != that.getVersion())
             return false;
-        if (!(this.playwrightOptions() == null ? that.playwrightOptions() == null : this.playwrightOptions().equals(that.playwrightOptions())))
+        if (!(this.getPlaywrightOptions() == null ? that.getPlaywrightOptions() == null : this.getPlaywrightOptions().equals(that.getPlaywrightOptions())))
             return false;
         return true;
     }

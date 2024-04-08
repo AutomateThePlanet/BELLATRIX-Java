@@ -22,7 +22,7 @@ import java.util.List;
 @SuppressWarnings("ALL")
 public class CookiesService extends WebService {
     private BrowserContext context() {
-        return wrappedBrowser().currentContext();
+        return wrappedBrowser().getCurrentContext();
     }
 
     public void addCookie(String name, String value) {

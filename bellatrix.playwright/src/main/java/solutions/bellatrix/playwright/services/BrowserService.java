@@ -40,11 +40,11 @@ import java.util.regex.Pattern;
 
 @SuppressWarnings("ALL")
 public class BrowserService extends WebService {
-    public String url() {
+    public String getUrl() {
         return page().url();
     }
 
-    public String title() {
+    public String getTitle() {
         return page().title();
     }
 
@@ -60,7 +60,7 @@ public class BrowserService extends WebService {
         page().reload();
     }
 
-    public String pageSource() {
+    public String getPageSource() {
         return page().content();
     }
 
@@ -97,7 +97,7 @@ public class BrowserService extends WebService {
      * @param action Callback that performs the action triggering the event.
      */
     public Page runAndWaitForPage(Runnable action) {
-        return wrappedBrowser().currentContext().waitForPage(action);
+        return wrappedBrowser().getCurrentContext().waitForPage(action);
     }
 
     /**
@@ -107,23 +107,23 @@ public class BrowserService extends WebService {
      * @param action Callback that performs the action triggering the event.
      */
     public Page runAndWaitForPage(Runnable action, BrowserContext.WaitForPageOptions options) {
-        return wrappedBrowser().currentContext().waitForPage(options, action);
+        return wrappedBrowser().getCurrentContext().waitForPage(options, action);
     }
 
     public void waitForCondition(BooleanSupplier condition) {
-        wrappedBrowser().currentContext().waitForCondition(condition);
+        wrappedBrowser().getCurrentContext().waitForCondition(condition);
     }
 
     public void waitForCondition(BooleanSupplier condition, BrowserContext.WaitForConditionOptions options) {
-        wrappedBrowser().currentContext().waitForCondition(condition, options);
+        wrappedBrowser().getCurrentContext().waitForCondition(condition, options);
     }
 
     public ConsoleMessage runAndWaitForConsoleMessage(Runnable action) {
-        return wrappedBrowser().currentContext().waitForConsoleMessage(action);
+        return wrappedBrowser().getCurrentContext().waitForConsoleMessage(action);
     }
 
     public ConsoleMessage runAndWaitForConsoleMessage(Runnable action, BrowserContext.WaitForConsoleMessageOptions options) {
-        return wrappedBrowser().currentContext().waitForConsoleMessage(options, action);
+        return wrappedBrowser().getCurrentContext().waitForConsoleMessage(options, action);
     }
 
     /**
@@ -132,7 +132,7 @@ public class BrowserService extends WebService {
      */
     public void switchToTab(Page page) {
         page.bringToFront();
-        wrappedBrowser().currentPage(page);
+        wrappedBrowser().setCurrentPage(page);
     }
 
     /**
@@ -140,10 +140,10 @@ public class BrowserService extends WebService {
      * one should pass the action to {@link #runAndWaitForPage(Runnable, BrowserContext.WaitForPageOptions)}.
      */
     public void switchToFirstTab() {
-        var pages = wrappedBrowser().currentContext().pages();
+        var pages = wrappedBrowser().getCurrentContext().pages();
         var firstTab = pages.get(0);
         firstTab.bringToFront();
-        wrappedBrowser().currentPage(firstTab);
+        wrappedBrowser().setCurrentPage(firstTab);
     }
 
     /**
@@ -151,10 +151,10 @@ public class BrowserService extends WebService {
      * one should pass the action to {@link #runAndWaitForPage(Runnable, BrowserContext.WaitForPageOptions)}.
      */
     public void switchToLastTab() {
-        var pages = wrappedBrowser().currentContext().pages();
+        var pages = wrappedBrowser().getCurrentContext().pages();
         var lastTab = pages.get(pages.size() - 1);
         lastTab.bringToFront();
-        wrappedBrowser().currentPage(lastTab);
+        wrappedBrowser().setCurrentPage(lastTab);
     }
 
     /**
@@ -432,7 +432,7 @@ public class BrowserService extends WebService {
 
 
         AssertionMethod assertion = () -> PlaywrightAssertions.assertThat(page()).hasURL(pattern, new PageAssertions.HasURLOptions().setTimeout(timeout));
-        String log = String.format("The expected partialUrl: %s was not found in the page's url: %s", partialUrl, url());
+        String log = String.format("The expected partialUrl: %s was not found in the page's url: %s", partialUrl, getUrl());
 
         DebugLogger.assertAndLogOnFail(assertion, log);
     }
@@ -450,7 +450,7 @@ public class BrowserService extends WebService {
         var timeout = Settings.timeout().getWaitForPartialUrl();
 
         AssertionMethod assertion = () -> PlaywrightAssertions.assertThat(page()).not().hasURL(pattern, new PageAssertions.HasURLOptions().setTimeout(timeout));
-        String log = String.format("The expected partialUrl: %s was found in the page's url: %s", partialUrl, url());
+        String log = String.format("The expected partialUrl: %s was found in the page's url: %s", partialUrl, getUrl());
 
         DebugLogger.assertAndLogOnFail(assertion, log);
     }
@@ -458,13 +458,13 @@ public class BrowserService extends WebService {
     public void validateUrl(String fullUrl) {
         var timeout = Settings.timeout().getValidationsTimeout();
         AssertionMethod assertion = () -> PlaywrightAssertions.assertThat(page()).hasURL(fullUrl, new PageAssertions.HasURLOptions().setTimeout(timeout));
-        String log = String.format("Expected URL:\n%s\nIs different than the actual one:\n%s", fullUrl, url());
+        String log = String.format("Expected URL:\n%s\nIs different than the actual one:\n%s", fullUrl, getUrl());
 
         DebugLogger.assertAndLogOnFail(assertion, log);
     }
 
     public void assertUrlPath(String urlPath) {
-        String currentBrowserUrl = url();
+        String currentBrowserUrl = getUrl();
         URI actualUri = null;
         try {
             actualUri = new URI(currentBrowserUrl);
@@ -477,7 +477,7 @@ public class BrowserService extends WebService {
     }
 
     public void assertUrlPathAndQuery(String pathAndQuery) {
-        String currentBrowserUrl = url();
+        String currentBrowserUrl = getUrl();
         URI actualUri = null;
         try {
             actualUri = new URI(currentBrowserUrl);
@@ -490,6 +490,6 @@ public class BrowserService extends WebService {
     }
 
     private Page page() {
-        return wrappedBrowser().currentPage();
+        return wrappedBrowser().getCurrentPage();
     }
 }

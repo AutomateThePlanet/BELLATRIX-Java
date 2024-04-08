@@ -23,7 +23,7 @@ public class TimeInput extends WebComponent implements ComponentDisabled, Compon
 
     @Override
     public String getTime() {
-        return null;
+        return getValue();
     }
 
     @Override

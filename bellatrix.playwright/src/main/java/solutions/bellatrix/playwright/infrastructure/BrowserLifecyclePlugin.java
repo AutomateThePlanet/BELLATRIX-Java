@@ -81,12 +81,12 @@ public class BrowserLifecyclePlugin extends Plugin {
     @Override
     public void postAfterTest(TestResult testResult, Method memberInfo, Throwable failedTestException) {
 
-        if (currentConfiguration().lifecycle() == Lifecycle.REUSE_IF_STARTED) {
+        if (currentConfiguration().getLifecycle() == Lifecycle.REUSE_IF_STARTED) {
             PlaywrightService.restartBrowserContext();
             return;
         }
 
-        if (currentConfiguration().lifecycle() ==
+        if (currentConfiguration().getLifecycle() ==
                 Lifecycle.RESTART_ON_FAIL && testResult != TestResult.FAILURE) {
             return;
         }
@@ -122,9 +122,9 @@ public class BrowserLifecyclePlugin extends Plugin {
             return true;
         } else if (!previousConfiguration.equals(currentConfiguration)) {
             return true;
-        } else if (currentConfiguration.lifecycle() == Lifecycle.REUSE_IF_STARTED) {
+        } else if (currentConfiguration.getLifecycle() == Lifecycle.REUSE_IF_STARTED) {
             return false;
-        } else if (currentConfiguration.lifecycle() == Lifecycle.RESTART_EVERY_TIME) {
+        } else if (currentConfiguration.getLifecycle() == Lifecycle.RESTART_EVERY_TIME) {
             return true;
         } else {
             return false;
@@ -137,7 +137,7 @@ public class BrowserLifecyclePlugin extends Plugin {
         var methodBrowserType = getExecutionBrowserMethodLevel(memberInfo);
         result = Objects.requireNonNullElse(methodBrowserType, classBrowserType);
         String testFullName = String.format("%s.%s", memberInfo.getDeclaringClass().getName(), memberInfo.getName());
-        result.testName(testFullName);
+        result.setTestName(testFullName);
 
         return result;
     }

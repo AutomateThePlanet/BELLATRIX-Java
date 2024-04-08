@@ -18,7 +18,6 @@ public class NavigateToPagesTests extends WebTest{
         // app().navigate().to("http://demos.bellatrix.solutions/");
 
         var promotionsLink = app().create().byLinkText(Anchor.class, "Promotions");
-
         promotionsLink.click();
 
         app().browser().waitUntilPageLoadsCompletely();

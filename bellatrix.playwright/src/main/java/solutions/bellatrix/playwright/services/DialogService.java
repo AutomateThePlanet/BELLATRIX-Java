@@ -24,10 +24,10 @@ public class DialogService extends WebService {
      * To remove a handler, use {@link #removeDialogHandler(Consumer)}
      */
     public void addDialogHandler(Consumer<Dialog> handler) {
-        wrappedBrowser().currentPage().onDialog(handler);
+        wrappedBrowser().getCurrentPage().onDialog(handler);
     }
 
     public void removeDialogHandler(Consumer<Dialog> handler) {
-        wrappedBrowser().currentPage().offDialog(handler);
+        wrappedBrowser().getCurrentPage().offDialog(handler);
     }
 }
