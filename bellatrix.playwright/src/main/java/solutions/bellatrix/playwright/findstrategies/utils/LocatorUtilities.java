@@ -13,7 +13,7 @@
 
 package solutions.bellatrix.playwright.findstrategies.utils;
 
-import lombok.SneakyThrows;
+import solutions.bellatrix.playwright.components.common.webelement.WebElement;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -58,8 +58,9 @@ public class LocatorUtilities {
                 case TITLE -> {
                     return type.getDeclaredMethod("getByTitle", parameterTypes);
                 }
-                case LOCATOR -> {
-                    return type.getDeclaredMethod("locator", parameterTypes);
+                case FRAME_LOCATOR, LOCATOR -> {
+                    if (type == WebElement.class)  return type.getDeclaredMethod("locate", parameterTypes);
+                    else return type.getDeclaredMethod("locator", parameterTypes);
                 }
                 default -> throw new IllegalStateException("Unexpected value: " + by);
             }

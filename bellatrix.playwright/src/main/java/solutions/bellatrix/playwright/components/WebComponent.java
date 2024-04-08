@@ -32,6 +32,7 @@ import solutions.bellatrix.core.utilities.InstanceFactory;
 import solutions.bellatrix.playwright.components.common.ComponentActionEventArgs;
 import solutions.bellatrix.playwright.components.common.create.RelativeCreateService;
 import solutions.bellatrix.playwright.components.common.validate.Validator;
+import solutions.bellatrix.playwright.components.common.webelement.FrameElement;
 import solutions.bellatrix.playwright.components.common.webelement.WebElement;
 import solutions.bellatrix.playwright.components.contracts.Component;
 import solutions.bellatrix.playwright.components.contracts.ComponentVisible;
@@ -97,9 +98,23 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
      * @param componentClass type of component
      */
     public <ComponentT extends WebComponent> ComponentT as(Class<ComponentT> componentClass) {
+        if (this.getClass() == componentClass) return (ComponentT)this;
+
         var component = InstanceFactory.create(componentClass);
-        component.setFindStrategy(this.findStrategy);
-        component.setWrappedElement(this.wrappedElement);
+
+        if (componentClass == Frame.class) {
+            component.setWrappedElement(new FrameElement(this.wrappedElement));
+
+            var findStrategy = (FindStrategy)this.findStrategy.clone();
+            findStrategy.setWebElement(component.getWrappedElement());
+
+            component.setFindStrategy(findStrategy);
+        }
+        else {
+            component.setWrappedElement(this.wrappedElement);
+            component.setFindStrategy(this.findStrategy);
+        }
+
         component.setParentWrappedComponent(this.parentWrappedComponent);
         component.setElementIndex(this.elementIndex);
 

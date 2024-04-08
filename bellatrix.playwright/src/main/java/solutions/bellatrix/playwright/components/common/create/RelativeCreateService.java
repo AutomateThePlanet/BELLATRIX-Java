@@ -14,7 +14,6 @@
 package solutions.bellatrix.playwright.components.common.create;
 
 import solutions.bellatrix.core.plugins.EventListener;
-import solutions.bellatrix.core.utilities.InstanceFactory;
 import solutions.bellatrix.playwright.components.WebComponent;
 import solutions.bellatrix.playwright.components.common.ComponentActionEventArgs;
 import solutions.bellatrix.playwright.components.contracts.Component;
@@ -41,9 +40,8 @@ public class RelativeCreateService extends ComponentCreateService {
         CREATING.broadcast(new ComponentActionEventArgs((WebComponent)baseComponent));
 
         wrappedBrowser().getCurrentPage().waitForLoadState();
-        var newComponent = InstanceFactory.create(componentClass);
-        newComponent.setWrappedElement(findStrategy.convert(baseComponent.getWrappedElement()).first());
-        newComponent.setFindStrategy(findStrategy);
+        var element = findStrategy.convert(baseComponent.getWrappedElement()).first();
+        var newComponent = createInstance(componentClass, findStrategy, element);
         newComponent.setParentWrappedComponent((WebComponent)baseComponent);
 
         CREATED.broadcast(new ComponentActionEventArgs((WebComponent)baseComponent));
@@ -60,15 +58,10 @@ public class RelativeCreateService extends ComponentCreateService {
         List<TComponent> componentList = new ArrayList<>();
 
         for (var element : elements) {
-            var component = InstanceFactory.create(componentClass);
-            component.setWrappedElement(element);
-            component.setFindStrategy(findStrategy);
+            var component = createInstance(componentClass, findStrategy, element);
+            component.setParentWrappedComponent((WebComponent)baseComponent);
 
             componentList.add(component);
-        }
-
-        for (var component : componentList) {
-            component.setParentWrappedComponent((WebComponent)baseComponent);
         }
 
         CREATED.broadcast(new ComponentActionEventArgs((WebComponent)baseComponent));

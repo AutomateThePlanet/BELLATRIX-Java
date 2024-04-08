@@ -16,9 +16,12 @@ package solutions.bellatrix.playwright.services;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
 import solutions.bellatrix.core.utilities.InstanceFactory;
+import solutions.bellatrix.playwright.components.Frame;
 import solutions.bellatrix.playwright.components.WebComponent;
 import solutions.bellatrix.playwright.findstrategies.*;
 import solutions.bellatrix.playwright.findstrategies.options.*;
+import solutions.bellatrix.playwright.components.common.webelement.FrameElement;
+import solutions.bellatrix.playwright.components.common.webelement.WebElement;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -319,11 +322,8 @@ public class ComponentCreateService extends WebService {
 
     public <TComponent extends WebComponent, TFindStrategy extends FindStrategy> TComponent by(Class<TComponent> componentClass, TFindStrategy findStrategy) {
         wrappedBrowser().getCurrentPage().waitForLoadState();
-        var component = InstanceFactory.create(componentClass);
-        component.setWrappedElement(findStrategy.convert(wrappedBrowser().getCurrentPage()).first());
-        component.setFindStrategy(findStrategy);
-
-        return component;
+        var element = findStrategy.convert(wrappedBrowser().getCurrentPage()).first();
+        return createInstance(componentClass, findStrategy, element);
     }
 
     public <TComponent extends WebComponent, TFindStrategy extends FindStrategy> List<TComponent> allBy(Class<TComponent> componentClass, TFindStrategy findStrategy) {
@@ -331,13 +331,20 @@ public class ComponentCreateService extends WebService {
         var elements = findStrategy.convert(wrappedBrowser().getCurrentPage()).all();
         List<TComponent> componentList = new ArrayList<>();
         for (var element : elements) {
-            var component = InstanceFactory.create(componentClass);
-            component.setWrappedElement(element);
-            component.setFindStrategy(findStrategy);
+            var component = createInstance(componentClass, findStrategy, element);
 
             componentList.add(component);
         }
 
         return componentList;
+    }
+
+    protected <TComponent extends WebComponent, TFindStrategy extends FindStrategy> TComponent createInstance(Class<TComponent> componentClass, TFindStrategy findStrategy, WebElement element) {
+        var component = InstanceFactory.create(componentClass);
+        if (componentClass == Frame.class && element.getClass() != FrameElement.class) element = new FrameElement(element);
+        component.setWrappedElement(element);
+        component.setFindStrategy(findStrategy);
+
+        return component;
     }
 }

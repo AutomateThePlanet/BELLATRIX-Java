@@ -19,7 +19,6 @@ import com.microsoft.playwright.options.BoundingBox;
 import com.microsoft.playwright.options.FilePayload;
 import com.microsoft.playwright.options.SelectOption;
 import lombok.Getter;
-import lombok.Setter;
 import solutions.bellatrix.playwright.components.common.webelement.options.*;
 
 import java.nio.file.Path;
@@ -28,215 +27,114 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 /**
- * Wrapper for Playwright Locator and FrameLocator with internal logic for conversion between the two.
+ * Wrapper for Playwright Locator with internal logic for conversion between the two.
  */
 @Getter
 public class WebElement {
     public WebElement(Locator locator) {
         wrappedLocator = locator;
-        wrappedFrameLocator = locator.frameLocator(":scope");
     }
 
     private final Locator wrappedLocator;
-    private final FrameLocator wrappedFrameLocator;
-    @Setter private boolean isFrame;
 
     public WebElement getByAltText(String text, GetByAltTextOptions options) {
-        if (isFrame) {
-            return new WebElement(wrappedFrameLocator.getByAltText(text, options.convertTo(FrameLocator.GetByAltTextOptions.class)));
-        }
-
         return new WebElement(wrappedLocator.getByAltText(text, options.convertTo(Locator.GetByAltTextOptions.class)));
     }
 
     public WebElement getByAltText(String text) {
-        if (isFrame) {
-            return new WebElement(wrappedFrameLocator.getByAltText(text));
-        }
-
         return new WebElement(wrappedLocator.getByAltText(text));
     }
 
     public WebElement getByAltText(Pattern text, GetByAltTextOptions options) {
-        if (isFrame) {
-            return new WebElement(wrappedFrameLocator.getByAltText(text, options.convertTo(FrameLocator.GetByAltTextOptions.class)));
-        }
-
         return new WebElement(wrappedLocator.getByAltText(text, options.convertTo(Locator.GetByAltTextOptions.class)));
     }
 
     public WebElement getByAltText(Pattern text) {
-        if (isFrame) {
-            return new WebElement(wrappedFrameLocator.getByAltText(text));
-        }
-
         return new WebElement(wrappedLocator.getByAltText(text));
     }
 
     public WebElement getByLabel(String text, GetByLabelOptions options) {
-        if (isFrame) {
-            return new WebElement(wrappedFrameLocator.getByLabel(text, options.convertTo(FrameLocator.GetByLabelOptions.class)));
-        }
-
         return new WebElement(wrappedLocator.getByLabel(text, options.convertTo(Locator.GetByLabelOptions.class)));
     }
 
     public WebElement getByLabel(String text) {
-        if (isFrame) {
-            return new WebElement(wrappedFrameLocator.getByLabel(text));
-        }
-
         return new WebElement(wrappedLocator.getByLabel(text));
     }
 
     public WebElement getByLabel(Pattern text, GetByLabelOptions options) {
-        if (isFrame) {
-            return new WebElement(wrappedFrameLocator.getByLabel(text, options.convertTo(FrameLocator.GetByLabelOptions.class)));
-        }
-
         return new WebElement(wrappedLocator.getByLabel(text, options.convertTo(Locator.GetByLabelOptions.class)));
     }
 
     public WebElement getByLabel(Pattern text) {
-        if (isFrame) {
-            return new WebElement(wrappedFrameLocator.getByLabel(text));
-        }
-
         return new WebElement(wrappedLocator.getByLabel(text));
     }
 
     public WebElement getByPlaceholder(String text, GetByPlaceholderOptions options) {
-        if (isFrame) {
-            return new WebElement(wrappedFrameLocator.getByPlaceholder(text, options.convertTo(FrameLocator.GetByPlaceholderOptions.class)));
-        }
-
         return new WebElement(wrappedLocator.getByPlaceholder(text, options.convertTo(Locator.GetByPlaceholderOptions.class)));
     }
 
     public WebElement getByPlaceholder(String text) {
-        if (isFrame) {
-            return new WebElement(wrappedFrameLocator.getByPlaceholder(text));
-        }
-
         return new WebElement(wrappedLocator.getByPlaceholder(text));
     }
 
     public WebElement getByPlaceholder(Pattern text, GetByPlaceholderOptions options) {
-        if (isFrame) {
-            return new WebElement(wrappedFrameLocator.getByPlaceholder(text, options.convertTo(FrameLocator.GetByPlaceholderOptions.class)));
-        }
-
         return new WebElement(wrappedLocator.getByPlaceholder(text, options.convertTo(Locator.GetByPlaceholderOptions.class)));
     }
 
     public WebElement getByPlaceholder(Pattern text) {
-        if (isFrame) {
-            return new WebElement(wrappedFrameLocator.getByPlaceholder(text));
-        }
-
         return new WebElement(wrappedLocator.getByPlaceholder(text));
     }
 
     public WebElement getByRole(AriaRole role, GetByRoleOptions options) {
-        if (isFrame) {
-            return new WebElement(wrappedFrameLocator.getByRole(role, options.convertTo(FrameLocator.GetByRoleOptions.class)));
-        }
-
         return new WebElement(wrappedLocator.getByRole(role, options.convertTo(Locator.GetByRoleOptions.class)));
     }
 
     public WebElement getByRole(AriaRole role) {
-        if (isFrame) {
-            return new WebElement(wrappedFrameLocator.getByRole(role));
-        }
-
         return new WebElement(wrappedLocator.getByRole(role));
     }
 
     public WebElement getByText(String text, GetByTextOptions options) {
-        if (isFrame) {
-            return new WebElement(wrappedFrameLocator.getByText(text, options.convertTo(FrameLocator.GetByTextOptions.class)));
-        }
-
         return new WebElement(wrappedLocator.getByText(text, options.convertTo(Locator.GetByTextOptions.class)));
     }
 
     public WebElement getByText(String text) {
-        if (isFrame) {
-            return new WebElement(wrappedFrameLocator.getByText(text));
-        }
-
         return new WebElement(wrappedLocator.getByText(text));
     }
 
     public WebElement getByText(Pattern text, GetByTextOptions options) {
-        if (isFrame) {
-            return new WebElement(wrappedFrameLocator.getByText(text, options.convertTo(FrameLocator.GetByTextOptions.class)));
-        }
-
         return new WebElement(wrappedLocator.getByText(text, options.convertTo(Locator.GetByTextOptions.class)));
     }
 
     public WebElement getByText(Pattern text) {
-        if (isFrame) {
-            return new WebElement(wrappedFrameLocator.getByText(text));
-        }
-
         return new WebElement(wrappedLocator.getByText(text));
     }
 
     public WebElement getByTitle(String text, GetByTitleOptions options) {
-        if (isFrame) {
-            return new WebElement(wrappedFrameLocator.getByTitle(text, options.convertTo(FrameLocator.GetByTitleOptions.class)));
-        }
-
         return new WebElement(wrappedLocator.getByTitle(text, options.convertTo(Locator.GetByTitleOptions.class)));
     }
 
     public WebElement getByTitle(String text) {
-        if (isFrame) {
-            return new WebElement(wrappedFrameLocator.getByTitle(text));
-        }
-
         return new WebElement(wrappedLocator.getByTitle(text));
     }
 
     public WebElement getByTitle(Pattern text, GetByTitleOptions options) {
-        if (isFrame) {
-            return new WebElement(wrappedFrameLocator.getByTitle(text, options.convertTo(FrameLocator.GetByTitleOptions.class)));
-        }
-
         return new WebElement(wrappedLocator.getByTitle(text, options.convertTo(Locator.GetByTitleOptions.class)));
     }
 
     public WebElement getByTitle(Pattern text) {
-        if (isFrame) {
-            return new WebElement(wrappedFrameLocator.getByTitle(text));
-        }
-
         return new WebElement(wrappedLocator.getByTitle(text));
     }
 
-    /**
-     * Identical with the Locator.locator() method.
-     */
     public WebElement locate(String selector) {
-        if (isFrame) {
-            return new WebElement(wrappedFrameLocator.locator(selector));
-        }
-
         return new WebElement(wrappedLocator.locator(selector));
     }
 
-    /**
-     * Identical with the Locator.locator() method.
-     */
     public WebElement locate(WebElement webElement) {
-        if (isFrame) {
-            return new WebElement(wrappedFrameLocator.locator(webElement.wrappedLocator));
-        }
-
         return new WebElement(wrappedLocator.locator(webElement.wrappedLocator));
+    }
+
+    public FrameElement locateFrame(String selector) {
+        return new FrameElement(locate(selector));
     }
 
     public List<WebElement> all() {
@@ -691,12 +589,7 @@ public class WebElement {
         wrappedLocator.waitFor();
     }
 
-    @Override
     public String toString() {
-        if (isFrame) {
-            return wrappedFrameLocator.toString();
-        }
-
         return wrappedLocator.toString();
     }
 }

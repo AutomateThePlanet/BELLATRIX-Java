@@ -24,5 +24,6 @@ public enum By {
     TEST_ID,
     TEXT,
     TITLE,
-    LOCATOR;
+    LOCATOR,
+    FRAME_LOCATOR;
 }

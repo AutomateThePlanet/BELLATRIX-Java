@@ -13,6 +13,8 @@
 
 package solutions.bellatrix.playwright.components;
 
+import solutions.bellatrix.core.utilities.InstanceFactory;
+import solutions.bellatrix.playwright.findstrategies.FindStrategy;
 import solutions.bellatrix.playwright.components.common.webelement.WebElement;
 
 public class Frame extends WebComponent {
@@ -20,11 +22,29 @@ public class Frame extends WebComponent {
         super();
     }
 
-    public Frame(WebElement element) {
-        super(element);
-    }
-
     public String getName() {
         return defaultGetName();
+    }
+
+    @Override
+    /**
+     * Convert this component to another type of component.
+     * @param componentClass type of component
+     */
+    public <ComponentT extends WebComponent> ComponentT as(Class<ComponentT> componentClass) {
+        if (componentClass == Frame.class) return (ComponentT)this;
+
+        var component = InstanceFactory.create(componentClass);
+        var element = new WebElement(this.wrappedElement.getWrappedLocator());
+        component.setWrappedElement(element);
+
+        var findStrategy = (FindStrategy)this.findStrategy.clone();
+        findStrategy.setWebElement(element);
+        component.setFindStrategy(findStrategy);
+
+        component.setParentWrappedComponent(getParentWrappedComponent());
+        component.setElementIndex(getElementIndex());
+
+        return component;
     }
 }
