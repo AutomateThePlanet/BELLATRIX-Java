@@ -271,6 +271,8 @@ public class PlaywrightService {
     }
 
     private static Browser initializeBrowserGridMode(GridSettings gridSettings) {
+        var timeout = Settings.timeout().inMilliseconds().getConnectToRemoteGridTimeout();
+
         var gridUrl = gridSettings.getUrl();
         if (gridUrl.startsWith("env_")) {
             gridUrl = System.getProperty(gridSettings.getUrl()).replace("env_", "");
@@ -308,11 +310,11 @@ public class PlaywrightService {
                 var cdpUrl = new URI(response.jsonPath().get("value.capabilities['se:cdp']"));
                 cdpUrl = new URI(cdpUrl.getScheme(), cdpUrl.getUserInfo(), new URI(gridUrl).getHost(), new URI(gridUrl).getPort(), cdpUrl.getPath(), cdpUrl.getQuery(), cdpUrl.getFragment());
 
-                return playwright().chromium().connectOverCDP(cdpUrl.toString(), new BrowserType.ConnectOverCDPOptions().setTimeout(30000));
+                return playwright().chromium().connectOverCDP(cdpUrl.toString(), new BrowserType.ConnectOverCDPOptions().setTimeout(timeout));
             } else if (gridSettings.getProviderName().equals("lambdatest")) {
-                return playwright().chromium().connect(String.format("%s?capabilities=%s", gridUrl, serializedSettings), new BrowserType.ConnectOptions().setTimeout(30000));
+                return playwright().chromium().connect(String.format("%s?capabilities=%s", gridUrl, serializedSettings), new BrowserType.ConnectOptions().setTimeout(timeout));
             } else if (gridSettings.getProviderName().equals("browserstack")) {
-                return playwright().chromium().connect(String.format("%s?caps=%s", gridUrl, serializedSettings), new BrowserType.ConnectOptions().setTimeout(30000));
+                return playwright().chromium().connect(String.format("%s?caps=%s", gridUrl, serializedSettings), new BrowserType.ConnectOptions().setTimeout(timeout));
             } else {
                 throw new NotImplementedException("Unsupported grid provider. Supported are: selenium grid, selenoid, lambdatest, and browserstack.");
             }

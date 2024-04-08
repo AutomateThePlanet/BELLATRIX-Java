@@ -23,6 +23,7 @@
       "scriptTimeout": "1",
       "waitForAjaxTimeout": "30",
       "sleepInterval": "1",
+      "connectToRemoteGridTimeout": "30",
       "waitUntilReadyTimeout": "30",
       "waitForJavaScriptAnimationsTimeout": "30",
       "waitForAngularTimeout": "30",

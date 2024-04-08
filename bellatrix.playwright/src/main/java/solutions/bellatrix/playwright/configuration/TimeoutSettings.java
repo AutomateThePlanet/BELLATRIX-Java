@@ -21,6 +21,7 @@ import java.lang.reflect.Field;
 
 @Getter @Setter
 public class TimeoutSettings {
+    private long connectToRemoteGridTimeout;
     private long pageLoadTimeout;
     private long scriptTimeout;
     private long elementWaitTimeout;
