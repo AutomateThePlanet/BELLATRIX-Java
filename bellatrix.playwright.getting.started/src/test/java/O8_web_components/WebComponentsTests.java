@@ -51,7 +51,7 @@ public class WebComponentsTests extends WebTest {
 
         messageAlert.toBeVisible().waitToBe();
 
-        messageAlert.validateTextIs("Coupon code applied successfully.");
+        messageAlert.validateInnerTextIs("Coupon code applied successfully.");
 
         NumberInput quantityBox = app().create().byClassContaining(NumberInput.class, "input-text qty text");
 
@@ -63,7 +63,7 @@ public class WebComponentsTests extends WebTest {
 
         Span totalSpan = app().create().byXpath(Span.class, "//*[@class='order-total']//span");
 
-        totalSpan.validateTextIs("95.00€");
+        totalSpan.validateInnerTextIs("95.00€");
 
         Anchor proceedToCheckout =
                 app().create().byClassContaining(Anchor.class, "checkout-button button alt wc-forward");

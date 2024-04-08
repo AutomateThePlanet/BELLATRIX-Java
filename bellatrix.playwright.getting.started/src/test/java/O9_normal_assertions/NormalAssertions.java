@@ -36,11 +36,11 @@ public class NormalAssertions extends WebTest {
 
         Span totalSpan = app().create().byXpath(Span.class, "//*[@class='order-total']//span");
 
-        Assert.assertEquals(totalSpan.getText(), "120.00€");
+        Assert.assertEquals(totalSpan.getInnerText(), "120.00€");
         // We check the total price contained in the order-total span HTML element.
 
         SoftAssert multipleAssert = new SoftAssert();
-        multipleAssert.assertEquals(totalSpan.getText(), "120.00€");
+        multipleAssert.assertEquals(totalSpan.getInnerText(), "120.00€");
         multipleAssert.assertTrue(updateCart.isDisabled());
         multipleAssert.assertAll();
         // You can execute multiple assertions failing only once viewing all results.

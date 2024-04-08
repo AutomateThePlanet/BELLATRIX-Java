@@ -14,8 +14,10 @@
 package solutions.bellatrix.playwright.components.common.create;
 
 import solutions.bellatrix.core.plugins.EventListener;
+import solutions.bellatrix.core.utilities.DebugInformation;
 import solutions.bellatrix.playwright.components.WebComponent;
 import solutions.bellatrix.playwright.components.common.ComponentActionEventArgs;
+import solutions.bellatrix.playwright.components.common.webelement.FrameElement;
 import solutions.bellatrix.playwright.components.contracts.Component;
 import solutions.bellatrix.playwright.findstrategies.FindStrategy;
 import solutions.bellatrix.playwright.services.ComponentCreateService;
@@ -40,7 +42,9 @@ public class RelativeCreateService extends ComponentCreateService {
         CREATING.broadcast(new ComponentActionEventArgs((WebComponent)baseComponent));
 
         wrappedBrowser().getCurrentPage().waitForLoadState();
+
         var element = findStrategy.convert(baseComponent.getWrappedElement()).first();
+
         var newComponent = createInstance(componentClass, findStrategy, element);
         newComponent.setParentWrappedComponent((WebComponent)baseComponent);
 
@@ -54,6 +58,7 @@ public class RelativeCreateService extends ComponentCreateService {
         CREATING.broadcast(new ComponentActionEventArgs((WebComponent)baseComponent));
 
         wrappedBrowser().getCurrentPage().waitForLoadState();
+
         var elements = findStrategy.convert(baseComponent.getWrappedElement()).all();
         List<TComponent> componentList = new ArrayList<>();
 

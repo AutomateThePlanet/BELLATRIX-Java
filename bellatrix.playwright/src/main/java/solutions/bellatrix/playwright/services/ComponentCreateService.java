@@ -322,12 +322,15 @@ public class ComponentCreateService extends WebService {
 
     public <TComponent extends WebComponent, TFindStrategy extends FindStrategy> TComponent by(Class<TComponent> componentClass, TFindStrategy findStrategy) {
         wrappedBrowser().getCurrentPage().waitForLoadState();
+
         var element = findStrategy.convert(wrappedBrowser().getCurrentPage()).first();
+
         return createInstance(componentClass, findStrategy, element);
     }
 
     public <TComponent extends WebComponent, TFindStrategy extends FindStrategy> List<TComponent> allBy(Class<TComponent> componentClass, TFindStrategy findStrategy) {
         wrappedBrowser().getCurrentPage().waitForLoadState();
+
         var elements = findStrategy.convert(wrappedBrowser().getCurrentPage()).all();
         List<TComponent> componentList = new ArrayList<>();
         for (var element : elements) {
@@ -341,8 +344,15 @@ public class ComponentCreateService extends WebService {
 
     protected <TComponent extends WebComponent, TFindStrategy extends FindStrategy> TComponent createInstance(Class<TComponent> componentClass, TFindStrategy findStrategy, WebElement element) {
         var component = InstanceFactory.create(componentClass);
-        if (componentClass == Frame.class && element.getClass() != FrameElement.class) element = new FrameElement(element);
-        component.setWrappedElement(element);
+
+        if (componentClass == Frame.class && element.getClass() != FrameElement.class) {
+            component.setWrappedElement(new FrameElement(element));
+        } else if (componentClass != Frame.class && element.getClass() == FrameElement.class) {
+            component.setWrappedElement(new WebElement(element.getWrappedLocator()));
+        } else {
+            component.setWrappedElement(element);
+        }
+
         component.setFindStrategy(findStrategy);
 
         return component;

@@ -56,7 +56,6 @@ public abstract class FindStrategy implements Cloneable {
         }
 
         Method method = LocatorUtilities.getGetMethod(WebElement.class, by, args);
-        webElement = (WebElement)method.invoke(baseLocator, args);
 
         if (by == By.FRAME_LOCATOR) {
             webElement = new FrameElement((WebElement)method.invoke(baseLocator, args));

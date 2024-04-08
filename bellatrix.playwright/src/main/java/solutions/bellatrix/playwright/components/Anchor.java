@@ -40,7 +40,7 @@ public class Anchor extends WebComponent implements ComponentHtml, ComponentText
     }
 
     @Override
-    public String getText() {
+    public String getInnerText() {
         return defaultGetText();
     }
 

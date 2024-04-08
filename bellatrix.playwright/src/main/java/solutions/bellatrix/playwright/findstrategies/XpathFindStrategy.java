@@ -22,7 +22,7 @@ import solutions.bellatrix.playwright.findstrategies.utils.By;
 public class XpathFindStrategy extends FindStrategy {
     private final String value;
     public XpathFindStrategy(String value) {
-       this.value = "xpath=" + value;
+       this.value = value;
     }
 
     @Override

@@ -17,6 +17,6 @@ import solutions.bellatrix.playwright.pages.PageAsserts;
 
 public class Asserts extends PageAsserts<Map> {
     public void orderReceived() {
-        map().receivedMessage().validateTextIs("Order received");
+        map().receivedMessage().validateInnerTextIs("Order received");
     }
 }

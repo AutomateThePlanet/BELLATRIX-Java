@@ -22,7 +22,7 @@ public class TextInput extends WebComponent implements ComponentDisabled, Compon
     public final static EventListener<ComponentActionEventArgs> TEXT_SET = new EventListener<>();
 
     @Override
-    public String getText() {
+    public String getInnerText() {
         String text = defaultGetText();
 
         if (text.isEmpty()) {

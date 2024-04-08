@@ -22,7 +22,7 @@ public class TextArea extends WebComponent implements ComponentText, ComponentVa
     public final static EventListener<ComponentActionEventArgs> TEXT_SET = new EventListener<>();
 
     @Override
-    public String getText() {
+    public String getInnerText() {
         String text = defaultGetText();
 
         if (text.isEmpty()) {

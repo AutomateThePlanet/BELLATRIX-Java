@@ -24,7 +24,7 @@ public class Div extends WebComponent implements ComponentText, ComponentHtml {
     }
 
     @Override
-    public String getText() {
+    public String getInnerText() {
         return defaultGetText();
     }
 }

@@ -37,7 +37,7 @@ public class Button extends WebComponent implements ComponentValue, ComponentDis
     }
 
     @Override
-    public String getText() {
+    public String getInnerText() {
         return defaultGetText();
     }
 

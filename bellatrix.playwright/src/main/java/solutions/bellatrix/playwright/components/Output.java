@@ -29,7 +29,7 @@ public class Output extends WebComponent implements ComponentHtml, ComponentText
     }
 
     @Override
-    public String getText() {
+    public String getInnerText() {
         return defaultGetText();
     }
 }

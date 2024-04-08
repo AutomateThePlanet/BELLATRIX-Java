@@ -22,7 +22,7 @@ import solutions.bellatrix.playwright.findstrategies.utils.By;
 public class CssFindStrategy extends FindStrategy {
     private final String value;
     public CssFindStrategy(String value) {
-        this.value = "css=" + value;
+        this.value = value;
     }
 
     @Override
