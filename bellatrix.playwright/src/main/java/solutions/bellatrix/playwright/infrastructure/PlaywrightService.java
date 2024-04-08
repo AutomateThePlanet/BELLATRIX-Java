@@ -62,8 +62,6 @@ public class PlaywrightService {
         if (DISPOSED.get()) {
             browserConfiguration(configuration);
             playwright(Playwright.create());
-            // ToDo the setting of the testId should be somewhere else
-            playwright().selectors().setTestIdAttribute(Settings.web().getTestId());
             DISPOSED.set(false);
             var executionType = Settings.web().getExecutionType();
 

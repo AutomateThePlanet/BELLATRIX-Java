@@ -216,7 +216,6 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
         return findLocator().isVisible();
     }
 
-    // ToDo highlight() method requires testing;
     // Update: We should use js, native playwright highlight() method's function is unknown.
     // Update: the js script seems to work, but not for TextField elements
     public void highlight() {

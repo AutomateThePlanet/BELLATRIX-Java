@@ -22,7 +22,6 @@ public class Viewport implements LayoutComponent {
     private final Point location;
     private final Dimension size;
 
-    // ToDo needs testing
     Viewport() {
         var javaScriptService = new JavaScriptService();
         location = new Point(0, 0);
