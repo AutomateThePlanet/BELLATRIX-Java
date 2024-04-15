@@ -13,10 +13,7 @@
 
 package solutions.bellatrix.core.plugins.junit;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.TestInfo;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import solutions.bellatrix.core.plugins.PluginExecutionEngine;
 import solutions.bellatrix.core.plugins.TestResult;
@@ -28,6 +25,7 @@ import java.util.Collections;
 import java.util.List;
 
 @ExtendWith(TestResultWatcher.class)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class BaseTest extends UsesPlugins {
     static final ThreadLocal<TestResult> CURRENT_TEST_RESULT = new ThreadLocal<>();
     private static final ThreadLocal<Boolean> CONFIGURATION_EXECUTED = new ThreadLocal<>();
@@ -103,11 +101,12 @@ public class BaseTest extends UsesPlugins {
     }
 
     @AfterAll
-    public static void afterClassCore(TestInfo testInfo) {
+    public void afterClassCore(TestInfo testInfo) {
         try {
             var testClass = testInfo.getTestClass();
             if (testClass.isPresent()) {
                 PluginExecutionEngine.preAfterClass(testClass.get());
+                afterClass();
                 PluginExecutionEngine.postAfterClass(testClass.get());
             }
         } catch (Exception e) {
@@ -133,5 +132,8 @@ public class BaseTest extends UsesPlugins {
     }
 
     protected void afterEach() {
+    }
+
+    protected void afterClass() {
     }
 }
