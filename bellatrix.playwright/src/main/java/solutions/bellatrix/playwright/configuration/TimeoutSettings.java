@@ -38,6 +38,8 @@ public class TimeoutSettings {
     private long elementToBeClickableTimeout;
     private long elementNotToBeVisibleTimeout;
     private long elementToHaveContentTimeout;
+    private long waitForDialogTimeout;
+    private long actionTimeoutWhenHandlingDialogs;
 
     public TimeoutSettings inMilliseconds() {
         return copyAndMultiplyBy1000();
