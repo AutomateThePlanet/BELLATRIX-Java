@@ -78,10 +78,10 @@ public class Validator extends WebService {
     }
 
     public static <T, V> void validate(AssertionMethod assertion, WebComponent component, String attributeName, V value, Supplier<T> supplier, String prefix) {
-        var error = String.format("\u001B[0mThe %s of \u001B[1m%s \u001B[2m(%s)\u001B[0m%n" +
-                        "  Should %s: \"\u001B[1m%s\u001B[0m\"%n" +
-                        "  %" + prefix.length() + "sBut was: \"\u001B[1m%s\u001B[0m\"%n" +
-                        "Test failed on URL: \u001B[1m%s\u001B[0m",
+        var error = String.format("The %s of %s (%s)%n" +
+                        "  Should %s: \"%s\"%n" +
+                        "  %" + prefix.length() + "sBut was: \"%s\"%n" +
+                        "Test failed on URL: %s",
                 attributeName, component.getComponentClass().getSimpleName(), component.getFindStrategy(),
                 prefix, value, "", supplier.get().toString().replaceAll("%n", "%n" + String.format("%" + (prefix.length() + 12) + "s", " ")),
                 wrappedBrowser().getCurrentPage().url());

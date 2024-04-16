@@ -92,6 +92,14 @@ public class BrowserService extends WebService {
     public void switchToActive() {
     }
 
+    public void scrollToBottom() {
+        wrappedBrowser().getCurrentPage().evaluate("window.scrollTo(0, document.body.scrollHeight)");
+    }
+
+    public void scrollToTop() {
+        wrappedBrowser().getCurrentPage().evaluate("window.scrollTo(0, 0)");
+    }
+
     /**
      * Performs action and waits for a new Page to be created and registered in the context. <br>
      * @param action Callback that performs the action triggering the event.

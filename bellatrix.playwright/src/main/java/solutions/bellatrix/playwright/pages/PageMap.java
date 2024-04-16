@@ -14,10 +14,15 @@
 package solutions.bellatrix.playwright.pages;
 
 import solutions.bellatrix.core.utilities.SingletonFactory;
+import solutions.bellatrix.playwright.services.App;
 import solutions.bellatrix.playwright.services.ComponentCreateService;
 
 public class PageMap {
     public ComponentCreateService create() {
         return SingletonFactory.getInstance(ComponentCreateService.class);
+    }
+
+    public App app() {
+        return SingletonFactory.getInstance(App.class);
     }
 }

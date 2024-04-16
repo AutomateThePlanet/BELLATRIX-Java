@@ -35,6 +35,7 @@ import solutions.bellatrix.playwright.components.common.validate.Validator;
 import solutions.bellatrix.playwright.components.common.webelement.FrameElement;
 import solutions.bellatrix.playwright.components.common.webelement.WebElement;
 import solutions.bellatrix.playwright.components.contracts.Component;
+import solutions.bellatrix.playwright.components.contracts.ComponentStyle;
 import solutions.bellatrix.playwright.components.contracts.ComponentVisible;
 import solutions.bellatrix.playwright.components.options.actions.CheckOptions;
 import solutions.bellatrix.playwright.components.options.actions.ClickOptions;
@@ -61,7 +62,7 @@ import static org.apache.commons.lang3.StringEscapeUtils.unescapeHtml4;
 
 
 @SuppressWarnings({"unchecked", "SameParameterValue", "unused"})
-public class WebComponent extends LayoutComponentValidationsBuilder implements Component, ComponentVisible {
+public class WebComponent extends LayoutComponentValidationsBuilder implements Component, ComponentVisible, ComponentStyle {
     public final static EventListener<ComponentActionEventArgs> HOVERING = new EventListener<>();
     public final static EventListener<ComponentActionEventArgs> HOVERED = new EventListener<>();
     public final static EventListener<ComponentActionEventArgs> FOCUSING = new EventListener<>();
@@ -75,7 +76,7 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
     public final static EventListener<ComponentActionEventArgs> CREATED = new EventListener<>();
 
     private final WebSettings webSettings;
-    @Getter @Setter private WebComponent parentWrappedComponent;
+    @Getter @Setter private WebComponent parentComponent;
     @Getter @Setter private int elementIndex;
     @Getter @Setter protected FindStrategy findStrategy;
     protected WebElement wrappedElement;
@@ -115,7 +116,7 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
             component.setFindStrategy(this.findStrategy);
         }
 
-        component.setParentWrappedComponent(this.parentWrappedComponent);
+        component.setParentComponent(this.parentComponent);
         component.setElementIndex(this.elementIndex);
 
         return component;
@@ -171,6 +172,10 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
 
     public Class<?> getComponentClass() {
         return this.getClass();
+    }
+
+    public String getStyle() {
+        return getAttribute("style");
     }
 
     public String getComponentName() {

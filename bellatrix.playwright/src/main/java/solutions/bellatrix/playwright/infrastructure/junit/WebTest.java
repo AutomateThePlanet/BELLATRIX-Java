@@ -17,6 +17,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import solutions.bellatrix.core.plugins.junit.BaseTest;
 import solutions.bellatrix.core.plugins.junit.TestResultWatcher;
 import solutions.bellatrix.playwright.components.listeners.BddConsoleLogging;
+import solutions.bellatrix.playwright.components.listeners.BddToastNotificationsLogging;
 import solutions.bellatrix.playwright.components.listeners.HighlightElements;
 import solutions.bellatrix.playwright.infrastructure.BrowserLifecyclePlugin;
 import solutions.bellatrix.playwright.infrastructure.LogLifecyclePlugin;
@@ -37,6 +38,7 @@ public class WebTest extends BaseTest {
         addPlugin(WebVideoPlugin.class);
         addPlugin(LogLifecyclePlugin.class);
         addListener(BddConsoleLogging.class);
+        addListener(BddToastNotificationsLogging.class);
         addListener(HighlightElements.class);
     }
 }

@@ -42,7 +42,7 @@ public class Frame extends WebComponent {
         findStrategy.setWebElement(element);
         component.setFindStrategy(findStrategy);
 
-        component.setParentWrappedComponent(getParentWrappedComponent());
+        component.setParentComponent(getParentComponent());
         component.setElementIndex(getElementIndex());
 
         return component;

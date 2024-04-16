@@ -14,10 +14,8 @@
 package solutions.bellatrix.playwright.components.common.create;
 
 import solutions.bellatrix.core.plugins.EventListener;
-import solutions.bellatrix.core.utilities.DebugInformation;
 import solutions.bellatrix.playwright.components.WebComponent;
 import solutions.bellatrix.playwright.components.common.ComponentActionEventArgs;
-import solutions.bellatrix.playwright.components.common.webelement.FrameElement;
 import solutions.bellatrix.playwright.components.contracts.Component;
 import solutions.bellatrix.playwright.findstrategies.FindStrategy;
 import solutions.bellatrix.playwright.services.ComponentCreateService;
@@ -46,7 +44,7 @@ public class RelativeCreateService extends ComponentCreateService {
         var element = findStrategy.convert(baseComponent.getWrappedElement()).first();
 
         var newComponent = createInstance(componentClass, findStrategy, element);
-        newComponent.setParentWrappedComponent((WebComponent)baseComponent);
+        newComponent.setParentComponent((WebComponent)baseComponent);
 
         CREATED.broadcast(new ComponentActionEventArgs((WebComponent)baseComponent));
 
@@ -64,7 +62,7 @@ public class RelativeCreateService extends ComponentCreateService {
 
         for (var element : elements) {
             var component = createInstance(componentClass, findStrategy, element);
-            component.setParentWrappedComponent((WebComponent)baseComponent);
+            component.setParentComponent((WebComponent)baseComponent);
 
             componentList.add(component);
         }

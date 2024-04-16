@@ -20,15 +20,15 @@ import java.util.Arrays;
 @Getter
 public enum BrowserTypes {
     CHROMIUM("chromium"),
-    CHROMIUM_HEADLESS("chromium"),
+    CHROMIUM_HEADLESS("chromium_headless"),
     CHROME("chrome"),
-    CHROME_HEADLESS("chrome"),
+    CHROME_HEADLESS("chrome_headless"),
     FIREFOX("firefox"),
-    FIREFOX_HEADLESS("firefox"),
+    FIREFOX_HEADLESS("firefox_headless"),
     EDGE("edge"),
-    EDGE_HEADLESS("edge"),
+    EDGE_HEADLESS("edge_headless"),
     WEBKIT("webkit"),
-    WEBKIT_HEADLESS("webkit");
+    WEBKIT_HEADLESS("webkit_headless");
 
     private final String value;
     BrowserTypes(String value) {
