@@ -418,7 +418,7 @@ public class BrowserService extends WebService {
 
     public void tryWaitForRequest(String partialUrl) {
         var javascriptExecutor = (JavascriptExecutor)getWrappedDriver();
-        String script = "return performance.getEntriesByType('resource').filter(item => item.name.toLowerCase().includes('" + partialUrl + "'))[0] !== undefined;";
+        String script = "return performance.getEntriesByType('resource').filter(item => item.name.toLowerCase().includes('" + partialUrl.toLowerCase() + "'))[0] !== undefined;";
 
         try {
             waitUntil(e -> (boolean)javascriptExecutor.executeScript(script));
