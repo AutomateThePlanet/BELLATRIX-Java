@@ -36,17 +36,57 @@ public class IFramesAndShadowDOMTests extends WebTest {
     @Test
     public void testFindingElementsInShadowDOM() {
         app().navigate().to("https://web.dev/articles/shadowdom-v1");
-        // First, we create a Frame component, because the elements for this test are inside of it
         var iframe = app().create().byXpath(Frame.class, "//iframe[contains(@src, 'raw/fancy-tabs-demo.html')]");
         iframe.scrollToVisible();
 
-        var tabList = iframe.create().byAttributeContaining(Div.class, "role", "tablist");
+        // As you might know, when working with shadowRoot, we can use only CSS locators, which might prove difficult
+        // When we want to find an element relative to another or an element by its inner text.
+        // BELLATRIX offers a solution to this problem.
 
-        // Be mindful that when in the Shadow DOM, Xpath doesn't work, you'll have to use CSS only
-        var tabs = tabList.create().byId(Div.class, "tabsSlot");
-        // This Xpath won't find the element, even though it searches by id as well:
-        //// var tabs = tabList.create().byXpath(Div.class, "//*[@id='tabsSlot']");
+        // Not going into detail, this works in the following way:
+        // 1. Find the shadow root
+        // 2. Get its inner HTML
+        // 3. Get the element using jsoup to navigate inside it with xpath
+        // 4. Get its absolute position in the form of an absolute xpath
+        // 5. Convert the absolute xpath into CSS
+        // 6. Use this CSS locator to find the actual element on the page
 
-        Assertions.assertEquals(tabs.getAttribute("name"), "title");
+        // Let's test a simply shadow DOM:
+        // <div id="tabs">
+        //   <slot id="tabsSlot" name="title"></slot>
+        // </div>
+        // <div id="panels">
+        //   <slot id="panelsSlot"></slot>
+        // </div>
+
+        // To get inside the shadowRoot, we first have to locate its host
+        // And then we use the method getShadowRoot(), which will return a ShadowRoot component
+        var shadowRoot = iframe.create().byXpath(Div.class, "//fancy-tabs").getShadowRoot();
+
+
+        // Absolute xpath: /div[1]/slot
+        // CSS locator: div:nth-child(1)/slot
+        var elementInShadow = shadowRoot.create().byXpath(Div.class, "//div[@id='tabs']//slot[@id='tabsSlot']");
+
+        // What if we wanted to go back in the DOM?
+        // Absolute xpath: /div[1]
+        // CSS locator: div:nth-child(1)
+        var parentInShadow = elementInShadow.create().byXpath(Div.class, "//parent::div");
+
+        System.out.println(elementInShadow.getFindStrategy().toString());
+
+        // The same as elementInShadow...
+        // Absolute xpath: /div[1]/slot
+        // CSS locator: div:nth-child(1)/slot
+        var slot = parentInShadow.create().byXpath(Div.class, "//slot");
+
+        Assertions.assertEquals(slot.getAttribute("name"), "title");
+
+        // More complex xpath will also work the same way.
+        // Of course, the test here doesn't make much sense, but it is a showcase of
+        // what you can do with BELLATRIX regarding shadow DOM:
+        // - Use xpath to locate elements inside the shadow DOM
+        // - Go 'back' in the DOM tree (something you cannot achieve with CSS)
+        // - Locate elements by their inner text (something you cannot achieve with CSS)
     }
 }
