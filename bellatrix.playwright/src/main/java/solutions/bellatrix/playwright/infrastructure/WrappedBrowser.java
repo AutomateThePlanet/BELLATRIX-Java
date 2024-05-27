@@ -42,18 +42,18 @@ public class WrappedBrowser {
     private String gridSessionId;
 
     public void close() {
-        // ToDo maybe only the playwright object needs to be explicitly closed
-        currentPage.close();
-        currentContext.close();
+        // Close everything manually
+        for (var page : currentContext.pages()) page.close();
+        for (var context : browser.contexts()) context.close();
         browser.close();
         playwright.close();
     }
 
     public void changeContext(BrowserContext context) {
-        currentPage.close();
+        for (var page : currentContext.pages()) page.close();
         currentContext.close();
 
         setCurrentContext(context);
-        setCurrentPage(currentContext.newPage());
+        setCurrentPage(context.newPage());
     }
 }
