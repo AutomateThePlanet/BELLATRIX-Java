@@ -26,6 +26,7 @@ import org.openqa.selenium.support.ui.Select;
 import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.core.plugins.EventListener;
 import solutions.bellatrix.core.utilities.DebugInformation;
+import solutions.bellatrix.core.utilities.HtmlService;
 import solutions.bellatrix.core.utilities.InstanceFactory;
 import solutions.bellatrix.core.utilities.Log;
 import solutions.bellatrix.web.components.contracts.Component;
@@ -67,6 +68,7 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
     public final static EventListener<ComponentActionEventArgs> CREATED_ELEMENTS = new EventListener<>();
 
     @Setter(AccessLevel.PROTECTED) private WebElement wrappedElement;
+    @Getter @Setter protected WebComponent parentComponent;
     @Getter @Setter private SearchContext parentWrappedElement;
     @Getter @Setter private int elementIndex;
     @Getter @Setter private FindStrategy findStrategy;
@@ -86,6 +88,24 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
         componentCreateService = new ComponentCreateService();
         componentWaitService = new ComponentWaitService();
         wrappedDriver = DriverService.getWrappedDriver();
+    }
+
+    /**
+     * Convert this component to another type of component.
+     * @param componentClass type of component
+     */
+    public <ComponentT extends WebComponent> ComponentT as(Class<ComponentT> componentClass) {
+        if (this.getClass() == componentClass) return (ComponentT)this;
+
+        var component = InstanceFactory.create(componentClass);
+
+        component.setWrappedElement(this.wrappedElement);
+        component.setParentComponent(this.parentComponent);
+        component.setParentWrappedElement(this.parentWrappedElement);
+        component.setFindStrategy(this.findStrategy);
+        component.setElementIndex(this.elementIndex);
+
+        return component;
     }
 
     public WebElement getWrappedElement() {
@@ -117,6 +137,15 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
 
     public SearchContext shadowRoot() {
         return getWrappedElement().getShadowRoot();
+    }
+
+    /**
+     * Returns {@link ShadowRoot} from which you can safely create elements inside the shadow DOM
+     * even with XPath.
+     * @return {@link ShadowRoot}
+     */
+    public ShadowRoot getShadowRoot() {
+        return this.as(ShadowRoot.class);
     }
 
     public void focus() {
@@ -413,132 +442,260 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
         return createAll(componentClass, new InnerTextContainingFindStrategy(innerText));
     }
 
+    /**
+     * Use {@link WebComponent#getShadowRoot() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent, TFindStrategy extends FindStrategy> TComponent shadowRootCreate(Class<TFindStrategy> findStrategyClass, Class<TComponent> componentClass, Object... args) {
         var findStrategy = InstanceFactory.create(findStrategyClass, args);
         return shadowRootCreate(componentClass, findStrategy);
     }
 
+    /**
+     * Use {@link WebComponent#getShadowRoot() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent, TFindStrategy extends FindStrategy> List<TComponent> shadowRootCreateAll(Class<TFindStrategy> findStrategyClass, Class<TComponent> componentClass, Object... args) {
         var findStrategy = InstanceFactory.create(findStrategyClass, args);
         return shadowRootCreateAll(componentClass, findStrategy);
     }
 
+    /**
+     * Use {@link WebComponent#getShadowRoot() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> TComponent shadowRootCreateById(Class<TComponent> componentClass, String id) {
         return shadowRootCreate(componentClass, new IdFindStrategy(id));
     }
 
+    /**
+     * Use {@link WebComponent#getShadowRoot() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> TComponent shadowRootCreateByAttributeContaining(Class<TComponent> componentClass, String attributeName, String value) {
         return shadowRootCreate(componentClass, new AttributeContainingWithFindStrategy(attributeName, value));
     }
 
+    /**
+     * Use {@link WebComponent#getShadowRoot() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> TComponent shadowRootCreateByIdEndingWith(Class<TComponent> componentClass, String idEnding) {
         return shadowRootCreate(componentClass, new IdEndingWithFindStrategy(idEnding));
     }
 
+    /**
+     * Use {@link WebComponent#getShadowRoot() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> TComponent shadowRootCreateByCss(Class<TComponent> componentClass, String css) {
         return shadowRootCreate(componentClass, new CssFindStrategy(css));
     }
 
+    /**
+     * Use {@link WebComponent#getShadowRoot() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> TComponent shadowRootCreateByClass(Class<TComponent> componentClass, String className) {
         return shadowRootCreate(componentClass, new ClassFindStrategy(className));
     }
 
+    /**
+     * Use {@link WebComponent#getShadowRoot() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> TComponent shadowRootCreateByName(Class<TComponent> componentClass, String name) {
         return shadowRootCreate(componentClass, new NameFindStrategy(name));
     }
 
+    /**
+     * Use {@link WebComponent#getShadowRoot() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> TComponent shadowRootCreateByNameEnding(Class<TComponent> componentClass, String nameEnding) {
         return shadowRootCreate(componentClass, new NameEndingWithFindStrategy(nameEnding));
     }
 
+    /**
+     * Use {@link WebComponent#getShadowRoot() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> TComponent shadowRootCreateByValueContaining(Class<TComponent> componentClass, String valueContaining) {
         return shadowRootCreate(componentClass, new ValueContainingWithFindStrategy(valueContaining));
     }
 
+    /**
+     * Use {@link WebComponent#getShadowRoot() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> TComponent shadowRootCreateByClassContaining(Class<TComponent> componentClass, String classNameContaining) {
         return shadowRootCreate(componentClass, new ClassContainingFindStrategy(classNameContaining));
     }
 
+    /**
+     * Use {@link WebComponent#getShadowRoot() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> TComponent shadowRootCreateByXPath(Class<TComponent> componentClass, String xpath) {
         return shadowRootCreate(componentClass, new XPathFindStrategy(xpath));
     }
 
+    /**
+     * Use {@link WebComponent#getShadowRoot() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> TComponent shadowRootCreateByLinkText(Class<TComponent> componentClass, String linkText) {
         return shadowRootCreate(componentClass, new LinkTextFindStrategy(linkText));
     }
 
+    /**
+     * Use {@link WebComponent#getShadowRoot() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> TComponent shadowRootCreateByLinkTextContaining(Class<TComponent> componentClass, String linkTextContaining) {
         return shadowRootCreate(componentClass, new LinkTextContainingFindStrategy(linkTextContaining));
     }
 
+    /**
+     * Use {@link WebComponent#getShadowRoot() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> TComponent shadowRootCreateByTag(Class<TComponent> componentClass, String tag) {
         return shadowRootCreate(componentClass, new TagFindStrategy(tag));
     }
 
+    /**
+     * Use {@link WebComponent#getShadowRoot() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> TComponent shadowRootCreateByIdContaining(Class<TComponent> componentClass, String idContaining) {
         return shadowRootCreate(componentClass, new IdContainingFindStrategy(idContaining));
     }
 
+    /**
+     * Use {@link WebComponent#getShadowRoot() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> TComponent shadowRootCreateByInnerTextContaining(Class<TComponent> componentClass, String innerText) {
         return shadowRootCreate(componentClass, new InnerTextContainingFindStrategy(innerText));
     }
 
+    /**
+     * Use {@link WebComponent#getShadowRoot() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> List<TComponent> shadowRootCreateAllById(Class<TComponent> componentClass, String id) {
         return shadowRootCreateAll(componentClass, new IdFindStrategy(id));
     }
 
+    /**
+     * Use {@link WebComponent#getShadowRoot() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> List<TComponent> shadowRootCreateAllByAttributeContaining(Class<TComponent> componentClass, String attributeName, String value) {
         return shadowRootCreateAll(componentClass, new AttributeContainingWithFindStrategy(attributeName, value));
     }
 
+    /**
+     * Use {@link WebComponent#getShadowRoot() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> List<TComponent> shadowRootCreateAllByIdEndingWith(Class<TComponent> componentClass, String idEnding) {
         return shadowRootCreateAll(componentClass, new IdEndingWithFindStrategy(idEnding));
     }
 
+    /**
+     * Use {@link WebComponent#getShadowRoot() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> List<TComponent> shadowRootCreateAllByCss(Class<TComponent> componentClass, String css) {
         return shadowRootCreateAll(componentClass, new CssFindStrategy(css));
     }
 
+    /**
+     * Use {@link WebComponent#getShadowRoot() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> List<TComponent> shadowRootCreateAllByClass(Class<TComponent> componentClass, String className) {
         return shadowRootCreateAll(componentClass, new ClassFindStrategy(className));
     }
 
+    /**
+     * Use {@link WebComponent#getShadowRoot() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> List<TComponent> shadowRootCreateAllByName(Class<TComponent> componentClass, String name) {
         return shadowRootCreateAll(componentClass, new NameFindStrategy(name));
     }
 
+    /**
+     * Use {@link WebComponent#getShadowRoot() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> List<TComponent> shadowRootCreateAllByNameEnding(Class<TComponent> componentClass, String nameEnding) {
         return shadowRootCreateAll(componentClass, new NameEndingWithFindStrategy(nameEnding));
     }
 
+    /**
+     * Use {@link WebComponent#getShadowRoot() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> List<TComponent> shadowRootCreateAllByValueContaining(Class<TComponent> componentClass, String valueContaining) {
         return shadowRootCreateAll(componentClass, new ValueContainingWithFindStrategy(valueContaining));
     }
 
+    /**
+     * Use {@link WebComponent#getShadowRoot() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> List<TComponent> shadowRootCreateAllByClassContaining(Class<TComponent> componentClass, String classNameContaining) {
         return shadowRootCreateAll(componentClass, new ClassContainingFindStrategy(classNameContaining));
     }
 
+    /**
+     * Use {@link WebComponent#getShadowRoot() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> List<TComponent> shadowRootCreateAllByXPath(Class<TComponent> componentClass, String xpath) {
         return shadowRootCreateAll(componentClass, new XPathFindStrategy(xpath));
     }
 
+    /**
+     * Use {@link WebComponent#getShadowRoot() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> List<TComponent> shadowRootCreateAllByLinkText(Class<TComponent> componentClass, String linkText) {
         return shadowRootCreateAll(componentClass, new LinkTextFindStrategy(linkText));
     }
 
+    /**
+     * Use {@link WebComponent#getShadowRoot() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> List<TComponent> shadowRootCreateAllByLinkTextContaining(Class<TComponent> componentClass, String linkTextContaining) {
         return shadowRootCreateAll(componentClass, new LinkTextContainingFindStrategy(linkTextContaining));
     }
 
+    /**
+     * Use {@link WebComponent#getShadowRoot() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> List<TComponent> shadowRootCreateAllByTag(Class<TComponent> componentClass, String tag) {
         return shadowRootCreateAll(componentClass, new TagFindStrategy(tag));
     }
 
+    /**
+     * Use {@link WebComponent#getShadowRoot() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> List<TComponent> shadowRootCreateAllByIdContaining(Class<TComponent> componentClass, String idContaining) {
         return shadowRootCreateAll(componentClass, new IdContainingFindStrategy(idContaining));
     }
 
+    /**
+     * Use {@link WebComponent#getShadowRoot() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> List<TComponent> shadowRootCreateAllByInnerTextContaining(Class<TComponent> componentClass, String innerText) {
         return shadowRootCreateAll(componentClass, new InnerTextContainingFindStrategy(innerText));
     }
@@ -564,6 +721,10 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
         }
     }
 
+    /**
+     * Use {@link WebComponent#getShadowRoot() } instead
+     */
+    @Deprecated
     protected <TComponent extends WebComponent, TFindStrategy extends FindStrategy> TComponent shadowRootCreate(Class<TComponent> componentClass, TFindStrategy findStrategy) {
         CREATING_ELEMENT.broadcast(new ComponentActionEventArgs(this));
         findElement();
@@ -574,6 +735,10 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
         return component;
     }
 
+    /**
+     * Use {@link WebComponent#getShadowRoot() } instead
+     */
+    @Deprecated
     protected <TComponent extends WebComponent, TFindStrategy extends FindStrategy> List<TComponent> shadowRootCreateAll(Class<TComponent> componentClass, TFindStrategy findStrategy) {
         CREATING_ELEMENTS.broadcast(new ComponentActionEventArgs(this));
         findElement();
@@ -596,8 +761,18 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
         CREATING_ELEMENT.broadcast(new ComponentActionEventArgs(this));
         findElement();
         var component = InstanceFactory.create(componentClass);
-        component.setFindStrategy(findStrategy);
-        component.setParentWrappedElement(wrappedElement);
+
+        var ancestor = getAncestor();
+
+        if (ancestor.getComponentClass() == ShadowRoot.class && findStrategy.convert() instanceof By.ByXPath) {
+            component.setFindStrategy(getShadowXpath((ShadowRoot)ancestor, findStrategy));
+        } else {
+            component.setFindStrategy(findStrategy);
+        }
+
+        component.setParentComponent(this);
+        component.setParentWrappedElement(ancestor.shadowRoot());
+
         CREATED_ELEMENT.broadcast(new ComponentActionEventArgs(this));
         return component;
     }
@@ -605,18 +780,69 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
     protected <TComponent extends WebComponent, TFindStrategy extends FindStrategy> List<TComponent> createAll(Class<TComponent> componentClass, TFindStrategy findStrategy) {
         CREATING_ELEMENTS.broadcast(new ComponentActionEventArgs(this));
         findElement();
-        var nativeElements = wrappedElement.findElements(findStrategy.convert());
+
+        var ancestor = getAncestor();
+
         List<TComponent> componentList = new ArrayList<>();
-        for (int i = 0; i < nativeElements.size(); i++) {
-            var component = InstanceFactory.create(componentClass);
-            component.setFindStrategy(findStrategy);
-            component.setElementIndex(i);
-            component.setParentWrappedElement(wrappedElement);
-            componentList.add(component);
+
+        if (ancestor.getComponentClass() == ShadowRoot.class && findStrategy.convert() instanceof By.ByXPath) {
+            var strategies = getShadowXpaths((ShadowRoot)ancestor, findStrategy);
+
+            for (var strategy : strategies) {
+                var component = InstanceFactory.create(componentClass);
+                component.setFindStrategy(strategy);
+                component.setParentComponent(this);
+                component.setParentWrappedElement(ancestor.shadowRoot());
+                componentList.add(component);
+            }
+        }
+        else {
+            var nativeElements = wrappedElement.findElements(findStrategy.convert());
+
+            for (int i = 0; i < nativeElements.size(); i++) {
+                var component = InstanceFactory.create(componentClass);
+                component.setFindStrategy(findStrategy);
+                component.setElementIndex(i);
+                component.setParentWrappedElement(wrappedElement);
+                componentList.add(component);
+            }
         }
 
         CREATED_ELEMENTS.broadcast(new ComponentActionEventArgs(this));
         return componentList;
+    }
+
+    private WebComponent getAncestor() {
+        var component = this;
+
+        while (component != null) {
+            if (component instanceof ShadowRoot) {
+                return component;
+            }
+            component = component.getParentComponent();
+        }
+
+        return component;
+    }
+
+    private ShadowXPathFindStrategy getShadowXpath(ShadowRoot ancestor, FindStrategy findStrategy) {
+        var searchContext = HtmlService.findElement(ancestor.getHtml(), this.getFindStrategy().getValue());
+        var cssLocator = HtmlService.findRelativeCssLocator(searchContext, findStrategy.getValue());
+
+        return new ShadowXPathFindStrategy(findStrategy.getValue(), cssLocator);
+    }
+
+    private List<ShadowXPathFindStrategy> getShadowXpaths(ShadowRoot ancestor, FindStrategy findStrategy) {
+        var searchContext = HtmlService.findElement(ancestor.getHtml(), this.getFindStrategy().getValue());
+        var cssLocators = HtmlService.findRelativeCssLocators(searchContext, findStrategy.getValue());
+
+        List<ShadowXPathFindStrategy> strategies = new ArrayList<>();
+
+        for (var locator : cssLocators) {
+            strategies.add(new ShadowXPathFindStrategy(findStrategy.getValue(), locator));
+        }
+
+        return strategies;
     }
 
     public WebElement findElement() {
