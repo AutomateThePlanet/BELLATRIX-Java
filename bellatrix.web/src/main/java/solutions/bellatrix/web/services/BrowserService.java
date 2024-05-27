@@ -103,7 +103,7 @@ public class BrowserService extends WebService {
     public void switchToTab(Runnable condition) {
         Wait.retry(() -> {
                     var handles = getWrappedDriver().getWindowHandles();
-                    Boolean shouldThrowException = true;
+                    boolean shouldThrowException = true;
                     for (var currentHandle : handles) {
                         getWrappedDriver().switchTo().window(currentHandle);
                         try {
