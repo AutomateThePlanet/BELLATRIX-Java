@@ -10,6 +10,7 @@
     "artificialDelayBeforeAction": "0",
     "automaticallyScrollToVisible": "false",
     "waitUntilReadyOnElementFound": "false",
+    "toastNotificationBddLogging": "false",
     "waitForAngular": "false",
     "shouldHighlightElements": "true",
     "shouldCaptureHttpTraffic": "false",
