@@ -268,6 +268,23 @@ public class DriverService {
 
                 driver = new ChromeDriver(chromeHeadlessOptions);
             }
+            case CHROME_MOBILE -> {
+                var chromeHeadlessOptions = new ChromeOptions();
+                addDriverOptions(chromeHeadlessOptions);
+                chromeHeadlessOptions.setAcceptInsecureCerts(true);
+                chromeHeadlessOptions.addArguments("--log-level=3","--remote-allow-origins=*");
+                chromeHeadlessOptions.setCapability(CapabilityType.UNHANDLED_PROMPT_BEHAVIOUR, UnexpectedAlertBehaviour.ACCEPT);
+
+                var deviceNameOption = new HashMap<String, String>();
+                deviceNameOption.put("deviceName", BROWSER_CONFIGURATION.get().getDeviceName().getName());
+
+                chromeHeadlessOptions.setExperimentalOption("mobileEmulation", deviceNameOption);
+                System.setProperty("webdriver.chrome.silentOutput", "true");
+                if (shouldCaptureHttpTraffic) chromeHeadlessOptions.setProxy(proxyConfig);
+
+                driver = new TouchableWebDriver(chromeHeadlessOptions);
+            }
+
             case FIREFOX -> {
                 var firefoxOptions = new FirefoxOptions();
                 addDriverOptions(firefoxOptions);

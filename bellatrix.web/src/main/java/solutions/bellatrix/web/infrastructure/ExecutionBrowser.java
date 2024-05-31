@@ -29,4 +29,5 @@ public @interface ExecutionBrowser {
     Platform platform() default Platform.ANY;
     int width() default 0;
     int height() default 0;
+    DeviceName deviceName() default DeviceName.NOT_SET;
 }
