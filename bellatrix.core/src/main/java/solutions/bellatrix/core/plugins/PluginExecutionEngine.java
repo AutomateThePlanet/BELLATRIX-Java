@@ -13,6 +13,8 @@
 
 package solutions.bellatrix.core.plugins;
 
+import org.apache.http.annotation.Obsolete;
+
 import java.lang.reflect.Method;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -68,6 +70,7 @@ public final class PluginExecutionEngine {
         }
     }
 
+
     public static void beforeTestFailed(Exception e) throws Exception {
         for (var currentObserver : PLUGINS) {
             if (currentObserver != null)
@@ -75,6 +78,11 @@ public final class PluginExecutionEngine {
         }
     }
 
+    /**
+     * Deprecated. <br>
+     * Use {@link #preAfterTest(TestResult, TimeRecord, Method)} as it offers more information about the test.
+     */
+    @Deprecated
     public static void preAfterTest(TestResult result, Method memberInfo) throws Exception {
         for (var currentObserver : PLUGINS) {
             if (currentObserver != null)
@@ -82,10 +90,29 @@ public final class PluginExecutionEngine {
         }
     }
 
+    public static void preAfterTest(TestResult result, TimeRecord timeRecord, Method memberInfo) throws Exception {
+        for (var currentObserver : PLUGINS) {
+            if (currentObserver != null)
+                currentObserver.preAfterTest(result, timeRecord, memberInfo);
+        }
+    }
+    
+    /**
+     * Deprecated. <br>
+     * Use {@link #postAfterTest(TestResult, TimeRecord, Method, Throwable)} as it offers more information about the test.
+     */
+    @Deprecated
     public static void postAfterTest(TestResult result, Method memberInfo, Throwable failedTestException) {
         for (var currentObserver : PLUGINS) {
             if (currentObserver != null)
                 currentObserver.postAfterTest(result, memberInfo, failedTestException);
+        }
+    }
+
+    public static void postAfterTest(TestResult result, TimeRecord timeRecord, Method memberInfo, Throwable failedTestException) {
+        for (var currentObserver : PLUGINS) {
+            if (currentObserver != null)
+                currentObserver.postAfterTest(result, timeRecord, memberInfo, failedTestException);
         }
     }
 

@@ -25,7 +25,9 @@ public class TestResultWatcher implements TestWatcher {
         BaseTest.CURRENT_TEST_RESULT.set(TestResult.FAILURE);
 
         try {
-            PluginExecutionEngine.postAfterTest(BaseTest.CURRENT_TEST_RESULT.get(), extensionContext.getTestMethod().get(), throwable);
+            PluginExecutionEngine.postAfterTest(BaseTest.CURRENT_TEST_RESULT.get(), extensionContext.getTestMethod().get(), throwable); // DEPRECATED, LEFT FOR COMPATIBILITY
+
+            PluginExecutionEngine.postAfterTest(BaseTest.CURRENT_TEST_RESULT.get(), BaseTest.CURRENT_TEST_TIME_RECORD.get(), extensionContext.getTestMethod().get(), throwable);
         } catch (Exception e) {
             PluginExecutionEngine.afterTestFailed(e);
         }
@@ -36,7 +38,9 @@ public class TestResultWatcher implements TestWatcher {
         BaseTest.CURRENT_TEST_RESULT.set(TestResult.SUCCESS);
 
         try {
-            PluginExecutionEngine.postAfterTest(BaseTest.CURRENT_TEST_RESULT.get(), extensionContext.getTestMethod().get(), null);
+            PluginExecutionEngine.postAfterTest(BaseTest.CURRENT_TEST_RESULT.get(), extensionContext.getTestMethod().get(), null); // DEPRECATED, LEFT FOR COMPATIBILITY
+
+            PluginExecutionEngine.postAfterTest(BaseTest.CURRENT_TEST_RESULT.get(), BaseTest.CURRENT_TEST_TIME_RECORD.get(), extensionContext.getTestMethod().get(), null);
         } catch (Exception e) {
             PluginExecutionEngine.afterTestFailed(e);
         }
@@ -47,7 +51,9 @@ public class TestResultWatcher implements TestWatcher {
         BaseTest.CURRENT_TEST_RESULT.set(TestResult.FAILURE);
 
         try {
-            PluginExecutionEngine.postAfterTest(BaseTest.CURRENT_TEST_RESULT.get(), extensionContext.getTestMethod().get(), throwable);
+            PluginExecutionEngine.postAfterTest(BaseTest.CURRENT_TEST_RESULT.get(), extensionContext.getTestMethod().get(), throwable); // DEPRECATED, LEFT FOR COMPATIBILITY
+
+            PluginExecutionEngine.postAfterTest(BaseTest.CURRENT_TEST_RESULT.get(), BaseTest.CURRENT_TEST_TIME_RECORD.get(), extensionContext.getTestMethod().get(), throwable);
         } catch (Exception e) {
             PluginExecutionEngine.afterTestFailed(e);
         }
@@ -58,7 +64,9 @@ public class TestResultWatcher implements TestWatcher {
         BaseTest.CURRENT_TEST_RESULT.set(TestResult.SUCCESS);
 
         try {
-            PluginExecutionEngine.postAfterTest(BaseTest.CURRENT_TEST_RESULT.get(), extensionContext.getTestMethod().get(), null);
+            PluginExecutionEngine.postAfterTest(BaseTest.CURRENT_TEST_RESULT.get(), extensionContext.getTestMethod().get(), null); // DEPRECATED, LEFT FOR COMPATIBILITY
+
+            PluginExecutionEngine.postAfterTest(BaseTest.CURRENT_TEST_RESULT.get(), BaseTest.CURRENT_TEST_TIME_RECORD.get(), extensionContext.getTestMethod().get(), null);
         } catch (Exception e) {
             PluginExecutionEngine.afterTestFailed(e);
         }
