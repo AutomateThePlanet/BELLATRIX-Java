@@ -65,14 +65,10 @@ public class BrowserLifecyclePlugin extends Plugin {
     @Override
     public void preBeforeTest(TestResult testResult, Method memberInfo) {
         CURRENT_BROWSER_CONFIGURATION.set(getBrowserConfiguration(memberInfo));
-
-        if (!IS_BROWSER_STARTED_DURING_PRE_BEFORE_CLASS.get()) {
-            if (shouldRestartBrowser()) {
-                startBrowser();
-            }
+        if (shouldRestartBrowser()) {
+            shutdownBrowser();
+            startBrowser();
         }
-
-        IS_BROWSER_STARTED_DURING_PRE_BEFORE_CLASS.set(false);
     }
 
     @Override
@@ -148,7 +144,7 @@ public class BrowserLifecyclePlugin extends Plugin {
             return null;
         }
 
-        return new BrowserConfiguration(executionBrowserAnnotation.browser(), executionBrowserAnnotation.lifecycle());
+        return new BrowserConfiguration(executionBrowserAnnotation.browser(), executionBrowserAnnotation.deviceName(), executionBrowserAnnotation.lifecycle());
     }
 
     private BrowserConfiguration getExecutionBrowserClassLevel(Class<?> type) {

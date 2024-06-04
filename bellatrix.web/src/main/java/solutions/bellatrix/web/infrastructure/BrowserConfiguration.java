@@ -40,6 +40,13 @@ public class BrowserConfiguration {
         driverOptions = new HashMap<>();
     }
 
+    public BrowserConfiguration(Browser browser, DeviceName deviceName, Lifecycle browserBehavior) {
+        this.deviceName = deviceName;
+        this.browser = browser;
+        this.lifecycle = browserBehavior;
+        driverOptions = new HashMap<>();
+    }
+
     public BrowserConfiguration(Browser browser, Lifecycle browserBehavior, Integer browserWidth, Integer browserHeight) {
         this.browser = browser;
         this.lifecycle = browserBehavior;
