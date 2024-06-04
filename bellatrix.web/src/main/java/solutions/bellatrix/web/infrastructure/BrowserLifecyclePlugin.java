@@ -97,7 +97,7 @@ public class BrowserLifecyclePlugin extends Plugin {
 
     private void shutdownBrowser() {
         DriverService.close();
-        PREVIOUS_BROWSER_CONFIGURATION.set(null);
+        PREVIOUS_BROWSER_CONFIGURATION.remove();
     }
 
     private void startBrowser() {
@@ -164,9 +164,6 @@ public class BrowserLifecyclePlugin extends Plugin {
         var finalWidth = executionBrowserAnnotation.width() != 0 ? executionBrowserAnnotation.width() : defaultWidth;
         var finalHeight = executionBrowserAnnotation.height() != 0 ? executionBrowserAnnotation.height() : defaultHeight;
 
-        if (executionBrowserAnnotation.browser() == Browser.NOT_SET) {
-            return new BrowserConfiguration(defaultBrowser, defaultLifecycle, defaultWidth, defaultHeight);
-        }
         if (executionBrowserAnnotation.browser() == Browser.CHROME_MOBILE) {
             return new BrowserConfiguration(executionBrowserAnnotation.deviceName(), finalLifecycle, type.getName());
         }
