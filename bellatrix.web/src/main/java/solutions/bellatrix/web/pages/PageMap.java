@@ -13,10 +13,15 @@
 
 package solutions.bellatrix.web.pages;
 
+import solutions.bellatrix.web.services.App;
 import solutions.bellatrix.web.services.ComponentCreateService;
 
 public abstract class PageMap {
     public ComponentCreateService create() {
-        return new ComponentCreateService();
+        return app().create();
+    }
+
+    public App app() {
+        return new App();
     }
 }

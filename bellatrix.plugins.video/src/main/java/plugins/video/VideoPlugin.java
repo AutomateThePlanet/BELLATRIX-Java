@@ -20,9 +20,6 @@ import solutions.bellatrix.core.plugins.TestResult;
 
 import java.io.File;
 import java.lang.reflect.Method;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 public abstract class VideoPlugin extends Plugin {
     public static final EventListener<VideoPluginEventArgs> VIDEO_GENERATED = new EventListener<>();
@@ -58,7 +55,6 @@ public abstract class VideoPlugin extends Plugin {
             } else {
                 try {
                     FileUtils.forceDeleteOnExit(new File(VIDEO_FULL_PATH.get()));
-                    Files.delete(Path.of(VIDEO_FULL_PATH.get()));
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }

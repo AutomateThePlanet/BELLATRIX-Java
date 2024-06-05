@@ -36,7 +36,7 @@ public class SingletonFactory {
 
             return (T)SINGLETON_FACTORY.mapHolder.get(classOf.getName());
         } catch (Exception e) {
-            // not the best practice to return null. But probably we will never end here so it is OK.
+            Log.error("Failed to create instance of the object. Exception was: " + e);
             return null;
         }
     }

@@ -15,10 +15,13 @@ package plugins.screenshots;
 
 import lombok.Getter;
 
+@Getter
 public class ScreenshotPluginEventArgs {
-    @Getter private final String screenshotPath;
+    private final String screenshotPath;
+    private final String fileName;
 
-    public ScreenshotPluginEventArgs(String screenshotPath) {
+    public ScreenshotPluginEventArgs(String screenshotPath, String fileName) {
         this.screenshotPath = screenshotPath;
+        this.fileName = fileName;
     }
 }
