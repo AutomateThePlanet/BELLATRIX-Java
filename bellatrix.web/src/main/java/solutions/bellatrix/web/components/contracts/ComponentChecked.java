@@ -13,24 +13,16 @@
 
 package solutions.bellatrix.web.components.contracts;
 
-import lombok.SneakyThrows;
-import solutions.bellatrix.core.utilities.SingletonFactory;
 import solutions.bellatrix.web.components.WebComponent;
 import solutions.bellatrix.web.validations.ComponentValidator;
-
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.function.BooleanSupplier;
 
 public interface ComponentChecked extends Component {
     boolean isChecked();
 
-    @SneakyThrows
     default void validateIsChecked() {
         ComponentValidator.defaultValidateAttributeTrue((WebComponent)this, this::isChecked, "checked");
     }
 
-    @SneakyThrows
     default void validateIsChecked(boolean value) {
         if (value){
             validateIsChecked();
@@ -40,7 +32,6 @@ public interface ComponentChecked extends Component {
         }
     }
 
-    @SneakyThrows
     default void validateIsUnchecked() {
         ComponentValidator.defaultValidateAttributeTrue((WebComponent)this, () -> !isChecked(), "unchecked");
     }

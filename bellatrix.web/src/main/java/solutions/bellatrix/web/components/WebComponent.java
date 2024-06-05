@@ -31,6 +31,7 @@ import solutions.bellatrix.core.utilities.Log;
 import solutions.bellatrix.web.components.contracts.Component;
 import solutions.bellatrix.web.components.contracts.ComponentStyle;
 import solutions.bellatrix.web.components.contracts.ComponentVisible;
+import solutions.bellatrix.web.components.enums.ScrollPosition;
 import solutions.bellatrix.web.configuration.WebSettings;
 import solutions.bellatrix.web.findstrategies.*;
 import solutions.bellatrix.web.infrastructure.Browser;
@@ -106,15 +107,15 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
     }
 
     public void scrollToVisible() {
-        scrollToVisible(getWrappedElement(), false, "center");
+        scrollToVisible(getWrappedElement(), false, ScrollPosition.CENTER);
     }
 
     public void scrollToTop() {
-        scrollToVisible(getWrappedElement(), false, "start");
+        scrollToVisible(getWrappedElement(), false, ScrollPosition.START);
     }
 
     public void scrollToBottom() {
-        scrollToVisible(getWrappedElement(), false, "end");
+        scrollToVisible(getWrappedElement(), false, ScrollPosition.END);
     }
 
     public void setAttribute(String name, String value) {
@@ -155,10 +156,6 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
 
     public String getTitle() {
         return getAttribute("title");
-    }
-
-    public WebComponent getParent() {
-        return createByXPath(WebComponent.class, "./..");
     }
 
     public String getTabIndex() {
@@ -1046,15 +1043,15 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
     private void scrollToMakeElementVisible(WebElement wrappedElement) {
         // createBy default scroll down to make the element visible.
         if (webSettings.getAutomaticallyScrollToVisible()) {
-            scrollToVisible(wrappedElement, false, "center");
+            scrollToVisible(wrappedElement, false, ScrollPosition.CENTER);
         }
     }
 
 
-    private void scrollToVisible(WebElement wrappedElement, boolean shouldWait, String scrollPosition) {
+    private void scrollToVisible(WebElement wrappedElement, boolean shouldWait, ScrollPosition scrollPosition) {
         SCROLLING_TO_VISIBLE.broadcast(new ComponentActionEventArgs(this));
         try {
-            javaScriptService.execute("arguments[0].scrollIntoView({ block: \"" + scrollPosition + "\", behavior: \"instant\", inline: \"nearest\" });", wrappedElement);
+            javaScriptService.execute("arguments[0].scrollIntoView({ block: \"" + scrollPosition.getValue() + "\", behavior: \"instant\", inline: \"nearest\" });", wrappedElement);
             if (shouldWait) {
                 Thread.sleep(500);
                 toExist().waitToBe();

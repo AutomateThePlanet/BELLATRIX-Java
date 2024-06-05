@@ -13,14 +13,12 @@
 
 package solutions.bellatrix.web.components.contracts;
 
-import lombok.SneakyThrows;
 import org.openqa.selenium.support.Colors;
 import solutions.bellatrix.core.utilities.SingletonFactory;
 import solutions.bellatrix.web.components.WebComponent;
 import solutions.bellatrix.web.services.JavaScriptService;
 import solutions.bellatrix.web.validations.ComponentValidator;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.function.Supplier;
 
@@ -28,18 +26,16 @@ public interface ComponentBackgroundColor extends Component {
 
     default String getBackgroundColor(){
         var script = "return arguments[0].style.background";
-        var result = new JavaScriptService().execute(script, (WebComponent) this);
 
-        return result;
+        return new JavaScriptService().execute(script, (WebComponent)this);
     }
 
-    @SneakyThrows
     default void validateBackgroundColor(Colors expectedColor) {
         try {
             Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIs", WebComponent.class, Supplier.class, String.class, String.class);
-            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, (Supplier<String>) () -> this.getBackgroundColor(), expectedColor.getColorValue().getColor().getRGB(), String.format("expected color should be %s", expectedColor));
-        } catch (InvocationTargetException e) {
-            throw e.getCause();
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, (Supplier<String>)this::getBackgroundColor, expectedColor.getColorValue().getColor().getRGB(), String.format("expected color should be %s", expectedColor));
+        } catch (Exception e) {
+            throw new RuntimeException(e.getCause());
         }
     }
 }
