@@ -9,7 +9,6 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <groupId>bellatrix</groupId>
     <artifactId>bellatrix.playwright.getting.started</artifactId>
 
     <properties>
