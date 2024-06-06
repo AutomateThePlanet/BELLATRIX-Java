@@ -13,10 +13,7 @@
 
 package solutions.bellatrix.core.plugins;
 
-import org.apache.http.annotation.Obsolete;
-
 import java.lang.reflect.Method;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -69,7 +66,6 @@ public final class PluginExecutionEngine {
                 currentObserver.postBeforeTest(result, memberInfo);
         }
     }
-
 
     public static void beforeTestFailed(Exception e) throws Exception {
         for (var currentObserver : PLUGINS) {
