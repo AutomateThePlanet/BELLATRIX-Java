@@ -18,7 +18,6 @@ import solutions.bellatrix.core.utilities.HtmlService;
 import solutions.bellatrix.playwright.components.ShadowRoot;
 import solutions.bellatrix.playwright.components.WebComponent;
 import solutions.bellatrix.playwright.components.common.ComponentActionEventArgs;
-import solutions.bellatrix.playwright.components.common.webelement.WebElement;
 import solutions.bellatrix.playwright.findstrategies.FindStrategy;
 import solutions.bellatrix.playwright.findstrategies.ShadowXpathFindStrategy;
 import solutions.bellatrix.playwright.findstrategies.XpathFindStrategy;
@@ -87,14 +86,14 @@ public class ShadowRootCreateService extends RelativeCreateService {
 
     private ShadowXpathFindStrategy getShadowXpath(FindStrategy findStrategy) {
         // We get the absolute xpath of the new component, and we convert it to css locator
-        var cssLocator = HtmlService.findCssLocator(((ShadowRoot)baseComponent).getHtml(), findStrategy.getValue());
+        var cssLocator = HtmlService.convertXpathToCssLocator(((ShadowRoot)baseComponent).getHtml(), findStrategy.getValue());
 
         return new ShadowXpathFindStrategy(findStrategy.getValue(), cssLocator);
     }
 
     private List<ShadowXpathFindStrategy> getShadowXpathList(FindStrategy findStrategy) {
         // We get the absolute xpath of the new components, and we convert them to css locators
-        var cssLocators = HtmlService.findCssLocators(((ShadowRoot)baseComponent).getHtml(), findStrategy.getValue());
+        var cssLocators = HtmlService.convertXpathToCssLocators(((ShadowRoot)baseComponent).getHtml(), findStrategy.getValue());
 
         List<ShadowXpathFindStrategy> strategies = new ArrayList<>();
 

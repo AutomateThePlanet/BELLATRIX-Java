@@ -117,7 +117,7 @@ public class RelativeCreateService extends ComponentCreateService {
 
         // Then we use its absolute location as a start point to navigate inside the shadow DOM (XPath Axes is allowed)
         // We get the absolute xpath of the new component, and finally we convert it to css locator
-        var cssLocator = HtmlService.findRelativeCssLocator(searchContext, findStrategy.getValue());
+        var cssLocator = HtmlService.convertXpathToCssLocator(searchContext, findStrategy.getValue());
 
         return new ShadowXpathFindStrategy(findStrategy.getValue(), cssLocator);
     }
@@ -128,7 +128,7 @@ public class RelativeCreateService extends ComponentCreateService {
 
         // Then we use its absolute location as a start point to navigate inside the shadow DOM (XPath Axes is allowed)
         // We get the absolute xpath of the new components, and finally we convert them to css locators
-        var cssLocators = HtmlService.findRelativeCssLocators(searchContext, findStrategy.getValue());
+        var cssLocators = HtmlService.convertXpathToCssLocators(searchContext, findStrategy.getValue());
 
         List<ShadowXpathFindStrategy> strategies = new ArrayList<>();
 

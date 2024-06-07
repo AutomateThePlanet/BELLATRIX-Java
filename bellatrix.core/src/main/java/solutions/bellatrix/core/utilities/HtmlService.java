@@ -26,28 +26,28 @@ import java.util.regex.Pattern;
  */
 @UtilityClass
 public class HtmlService {
-    public static String findCssLocator(String html, String xpath) {
+    public static String convertXpathToCssLocator(String html, String xpath) {
         var absoluteXpath = HtmlService.findElementAbsoluteXpath(html, xpath);
 
-        return HtmlService.convertXpathToCss(absoluteXpath);
+        return HtmlService.convertAbsoluteXpathToCss(absoluteXpath);
     }
 
-    public static String findRelativeCssLocator(Element element, String xpath) {
+    public static String convertXpathToCssLocator(Element element, String xpath) {
         var absoluteXpath = HtmlService.findRelativeElementAbsoluteXpath(element, xpath);
 
-        return HtmlService.convertXpathToCss(absoluteXpath);
+        return HtmlService.convertAbsoluteXpathToCss(absoluteXpath);
     }
 
-    public static ArrayList<String> findCssLocators(String html, String xpath) {
+    public static ArrayList<String> convertXpathToCssLocators(String html, String xpath) {
         var absoluteXpaths = HtmlService.findElementsAbsoluteXpath(html, xpath);
 
-        return HtmlService.convertXpathToCss(absoluteXpaths);
+        return HtmlService.convertAbsoluteXpathToCss(absoluteXpaths);
     }
 
-    public static ArrayList<String> findRelativeCssLocators(Element element, String xpath) {
+    public static ArrayList<String> convertXpathToCssLocators(Element element, String xpath) {
         var absoluteXpaths = HtmlService.findRelativeElementsAbsoluteXpath(element, xpath);
 
-        return HtmlService.convertXpathToCss(absoluteXpaths);
+        return HtmlService.convertAbsoluteXpathToCss(absoluteXpaths);
     }
 
     public static Element findElement(String html, String cssQuery) {
@@ -111,7 +111,7 @@ public class HtmlService {
         return queries;
     }
 
-    private static String convertXpathToCss(String xpath) {
+    private static String convertAbsoluteXpathToCss(String xpath) {
         String cssSelector = xpath.replace("/", " > ");
 
         // Use regular expression to replace [number] with :nth-child(number)
@@ -133,9 +133,9 @@ public class HtmlService {
         return semiFinalLocator;
     }
 
-    private static ArrayList<String> convertXpathToCss(ArrayList<String> queries) {
+    private static ArrayList<String> convertAbsoluteXpathToCss(ArrayList<String> queries) {
         for (String query : queries) {
-            query = convertXpathToCss(query);
+            query = convertAbsoluteXpathToCss(query);
         }
 
         return queries;

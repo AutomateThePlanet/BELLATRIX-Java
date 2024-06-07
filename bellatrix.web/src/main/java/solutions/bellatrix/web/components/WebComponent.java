@@ -826,13 +826,13 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
     }
 
     private ShadowXPathFindStrategy getShadowXpath(ShadowRoot ancestor, FindStrategy findStrategy) {
-        var cssLocator = HtmlService.findRelativeCssLocator(HtmlService.findElement(ancestor.getHtml(), this.getFindStrategy().getValue()), findStrategy.getValue());
+        var cssLocator = HtmlService.convertXpathToCssLocator(HtmlService.findElement(ancestor.getHtml(), this.getFindStrategy().getValue()), findStrategy.getValue());
 
         return new ShadowXPathFindStrategy(findStrategy.getValue(), cssLocator);
     }
 
     private List<ShadowXPathFindStrategy> getShadowXpaths(ShadowRoot ancestor, FindStrategy findStrategy) {
-        var cssLocators = HtmlService.findRelativeCssLocators(HtmlService.findElement(ancestor.getHtml(), this.getFindStrategy().getValue()), findStrategy.getValue());
+        var cssLocators = HtmlService.convertXpathToCssLocators(HtmlService.findElement(ancestor.getHtml(), this.getFindStrategy().getValue()), findStrategy.getValue());
 
         List<ShadowXPathFindStrategy> strategies = new ArrayList<>();
 

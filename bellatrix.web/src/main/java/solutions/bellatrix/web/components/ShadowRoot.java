@@ -84,13 +84,13 @@ public class ShadowRoot extends WebComponent implements ComponentHtml {
     }
 
     private ShadowXPathFindStrategy getShadowXpath(FindStrategy findStrategy) {
-        var cssLocator = HtmlService.findCssLocator(this.getHtml(), findStrategy.getValue());
+        var cssLocator = HtmlService.convertXpathToCssLocator(this.getHtml(), findStrategy.getValue());
 
         return new ShadowXPathFindStrategy(findStrategy.getValue(), cssLocator);
     }
 
     private List<ShadowXPathFindStrategy> getShadowXpaths(FindStrategy findStrategy) {
-        var cssLocators = HtmlService.findCssLocators(this.getHtml(), findStrategy.getValue());
+        var cssLocators = HtmlService.convertXpathToCssLocators(this.getHtml(), findStrategy.getValue());
 
         List<ShadowXPathFindStrategy> strategies = new ArrayList<>();
 
