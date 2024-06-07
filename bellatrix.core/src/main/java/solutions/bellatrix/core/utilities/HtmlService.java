@@ -26,25 +26,25 @@ import java.util.regex.Pattern;
  */
 @UtilityClass
 public class HtmlService {
-    public static String convertXpathToCssLocator(String html, String xpath) {
+    public static String convertXpathToAbsoluteCssLocator(String html, String xpath) {
         var absoluteXpath = HtmlService.findElementAbsoluteXpath(html, xpath);
 
         return HtmlService.convertAbsoluteXpathToCss(absoluteXpath);
     }
 
-    public static String convertXpathToCssLocator(Element element, String xpath) {
+    public static String convertXpathToAbsoluteCssLocator(Element element, String xpath) {
         var absoluteXpath = HtmlService.findRelativeElementAbsoluteXpath(element, xpath);
 
         return HtmlService.convertAbsoluteXpathToCss(absoluteXpath);
     }
 
-    public static ArrayList<String> convertXpathToCssLocators(String html, String xpath) {
+    public static ArrayList<String> convertXpathToAbsoluteCssLocators(String html, String xpath) {
         var absoluteXpaths = HtmlService.findElementsAbsoluteXpath(html, xpath);
 
         return HtmlService.convertAbsoluteXpathToCss(absoluteXpaths);
     }
 
-    public static ArrayList<String> convertXpathToCssLocators(Element element, String xpath) {
+    public static ArrayList<String> convertXpathToAbsoluteCssLocators(Element element, String xpath) {
         var absoluteXpaths = HtmlService.findRelativeElementsAbsoluteXpath(element, xpath);
 
         return HtmlService.convertAbsoluteXpathToCss(absoluteXpaths);

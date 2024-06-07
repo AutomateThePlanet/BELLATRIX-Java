@@ -86,14 +86,14 @@ public class ShadowRootCreateService extends RelativeCreateService {
 
     private ShadowXpathFindStrategy getShadowXpath(FindStrategy findStrategy) {
         // We get the absolute xpath of the new component, and we convert it to css locator
-        var cssLocator = HtmlService.convertXpathToCssLocator(((ShadowRoot)baseComponent).getHtml(), findStrategy.getValue());
+        var cssLocator = HtmlService.convertXpathToAbsoluteCssLocator(((ShadowRoot)baseComponent).getHtml(), findStrategy.getValue());
 
         return new ShadowXpathFindStrategy(findStrategy.getValue(), cssLocator);
     }
 
     private List<ShadowXpathFindStrategy> getShadowXpathList(FindStrategy findStrategy) {
         // We get the absolute xpath of the new components, and we convert them to css locators
-        var cssLocators = HtmlService.convertXpathToCssLocators(((ShadowRoot)baseComponent).getHtml(), findStrategy.getValue());
+        var cssLocators = HtmlService.convertXpathToAbsoluteCssLocators(((ShadowRoot)baseComponent).getHtml(), findStrategy.getValue());
 
         List<ShadowXpathFindStrategy> strategies = new ArrayList<>();
 
