@@ -18,7 +18,6 @@ import plugins.jira.zephyr.annotations.ZephyrCycleId;
 import plugins.jira.zephyr.annotations.ZephyrProjectId;
 import plugins.jira.zephyr.annotations.ZephyrTestCase;
 import plugins.jira.zephyr.data.ZephyrTestCycle;
-import plugins.jira.zephyr.data.ZephyrTestCycleResponse;
 import plugins.jira.zephyr.config.ZephyrSettings;
 import plugins.jira.zephyr.data.ZephyrTestCycleStatus;
 import plugins.jira.zephyr.data.ZephyrTestExecutionStatus;
@@ -33,6 +32,7 @@ import solutions.bellatrix.core.plugins.TestResult;
 import solutions.bellatrix.core.plugins.TimeRecord;
 
 import java.lang.reflect.Method;
+import java.util.Map;
 
 public class ZephyrPlugin extends Plugin {
     public static final EventListener<ZephyrCyclePluginEventArgs> ZEPHYR_CYCLE_CREATED = new EventListener<>();
@@ -40,7 +40,6 @@ public class ZephyrPlugin extends Plugin {
     public static final EventListener<ZephyrExecutionPluginEventArgs> ZEPHYR_TEST_CASE_EXECUTED = new EventListener<>();
     public static final EventListener<ZephyrCyclePluginEventArgs> ZEPHYR_CYCLE_STATUS_UPDATE_FAILED = new EventListener<>();
 
-    private ZephyrTestCycleResponse testCycleResponse;
     private ZephyrTestCycle testCycle;
     
     public ZephyrPlugin() {
@@ -62,7 +61,7 @@ public class ZephyrPlugin extends Plugin {
     }
 
     private String getCycleId(Method memberInfo) {
-        if (!settings().isExistingCycle()) return testCycleResponse.getKey();
+        if (!settings().isExistingCycle()) return testCycle.getKey();
 
         if (memberInfo.isAnnotationPresent(ZephyrTestCase.class) && !memberInfo.getAnnotation(ZephyrTestCase.class).cycleId().isBlank()) {
             return memberInfo.getAnnotation(ZephyrTestCase.class).cycleId();
@@ -115,9 +114,9 @@ public class ZephyrPlugin extends Plugin {
         testCycle = new ZephyrTestCycle(settings().getDefaultProjectKey(), testCycleName, ZephyrTestCycleStatus.IN_PROGRESS.getValue());
         testCycle.setPlannedStartDate(DateTimeUtilities.getUtcNow());
 
-        testCycleResponse = ZephyrApiService.createTestCycle(testCycle);
+        ZephyrApiService.createTestCycle(testCycle);
 
-        ZEPHYR_CYCLE_CREATED.broadcast(new ZephyrCyclePluginEventArgs(testCycleResponse));
+        ZEPHYR_CYCLE_CREATED.broadcast(new ZephyrCyclePluginEventArgs(testCycle));
     }
 
     @Override
@@ -133,6 +132,8 @@ public class ZephyrPlugin extends Plugin {
 
         var response = ZephyrApiService.executeTestCase(testCase);
 
+       var responseBody = response.body().prettyPrint();
+
         if (response.statusCode() >= 400) {
             ZEPHYR_TEST_CASE_EXECUTION_FAILED.broadcast(new ZephyrExecutionPluginEventArgs(testCase));
         }
@@ -146,7 +147,7 @@ public class ZephyrPlugin extends Plugin {
 
         testCycle.setPlannedEndDate(DateTimeUtilities.getUtcNow());
 
-        var response = ZephyrApiService.changeTestCycleStatus(testCycle, testCycleResponse);
+        var response = ZephyrApiService.changeTestCycleStatus(testCycle);
 
         if (response.statusCode() >= 400) {
             ZEPHYR_CYCLE_STATUS_UPDATE_FAILED.broadcast(new ZephyrCyclePluginEventArgs());

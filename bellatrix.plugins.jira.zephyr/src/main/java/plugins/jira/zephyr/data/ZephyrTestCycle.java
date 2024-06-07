@@ -23,6 +23,8 @@ public class ZephyrTestCycle {
         this.statusName = statusName;
     }
 
+    private String id;
+    private String key;
     private String projectKey;
     private String name;
     private String statusName;

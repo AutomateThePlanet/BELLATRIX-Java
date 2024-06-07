@@ -13,12 +13,12 @@
 package plugins.jira.zephyr.events;
 
 import lombok.Getter;
-import plugins.jira.zephyr.data.ZephyrTestCycleResponse;
+import plugins.jira.zephyr.data.ZephyrTestCycle;
 
 public class ZephyrCyclePluginEventArgs {
-    @Getter private ZephyrTestCycleResponse testCycle;
+    @Getter private ZephyrTestCycle testCycle;
 
-    public ZephyrCyclePluginEventArgs(ZephyrTestCycleResponse testCycle) {
+    public ZephyrCyclePluginEventArgs(ZephyrTestCycle testCycle) {
         this.testCycle = testCycle;
     }
 

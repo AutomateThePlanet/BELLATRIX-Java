@@ -16,18 +16,12 @@ import io.restassured.mapper.ObjectMapperType;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import lombok.experimental.UtilityClass;
-import net.minidev.json.JSONObject;
 import org.apache.commons.text.StringEscapeUtils;
 import plugins.jira.zephyr.config.ZephyrSettings;
 import plugins.jira.zephyr.data.ZephyrTestCycle;
-import plugins.jira.zephyr.data.ZephyrTestCycleResponse;
 import plugins.jira.zephyr.data.ZephyrTestCycleStatus;
 import solutions.bellatrix.core.configuration.ConfigurationService;
-import solutions.bellatrix.core.utilities.DebugInformation;
 
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -40,19 +34,24 @@ public class ZephyrApiService {
         return ConfigurationService.get(ZephyrSettings.class);
     }
 
-    public ZephyrTestCycleResponse createTestCycle(ZephyrTestCycle testCycle) {
+    public Response createTestCycle(ZephyrTestCycle testCycle) {
         var body = Map.of(
                 "projectKey", testCycle.getProjectKey(),
                 "name", testCycle.getName(),
                 "statusName", testCycle.getStatusName()
         );
 
-        return given()
+        var extractableResponse = given()
                 .body(body, ObjectMapperType.GSON)
                 .when()
                 .post("/testcycles")
                 .then()
-                .extract().response().body().as(ZephyrTestCycleResponse.class, ObjectMapperType.GSON);
+                .extract();
+
+        testCycle.setId(extractableResponse.jsonPath().getString("id"));
+        testCycle.setKey(extractableResponse.jsonPath().getString("key"));
+
+        return extractableResponse.response();
     }
 
     public Response executeTestCase(plugins.jira.zephyr.data.ZephyrTestCase testCase) {
@@ -76,14 +75,14 @@ public class ZephyrApiService {
                 .extract().response();
     }
 
-    public Response changeTestCycleStatus(ZephyrTestCycle cycleData, ZephyrTestCycleResponse cycleCreationResponse) {
+    public Response changeTestCycleStatus(ZephyrTestCycle cycleData) {
         var isDefaultValueAvailableInConfig = settings().getCycleFinalStatus() != null && !settings().getCycleFinalStatus().isBlank();
 
         var body = Map.of(
-                "id", cycleCreationResponse.getId(),
-                "key", cycleCreationResponse.getKey(),
+                "id", cycleData.getId(),
+                "key", cycleData.getKey(),
                 "name", cycleData.getName(),
-                "project", Map.of("id", ZephyrApiService.getProjectId(cycleCreationResponse.getKey())),
+                "project", Map.of("id", ZephyrApiService.getProjectId(cycleData.getKey())),
                 "status", Map.of("id", ZephyrApiService.getStatusId(isDefaultValueAvailableInConfig ?
                         settings().getCycleFinalStatus() : ZephyrTestCycleStatus.DONE.getValue(), cycleData.getProjectKey())),
                 "plannedEndDate", cycleData.getPlannedEndDate()
@@ -136,5 +135,4 @@ public class ZephyrApiService {
 
         return errorInfo.replace("\n", "<br>");
     }
-
 }
