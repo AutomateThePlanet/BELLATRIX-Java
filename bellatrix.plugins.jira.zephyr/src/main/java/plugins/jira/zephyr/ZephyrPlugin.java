@@ -14,13 +14,14 @@ package plugins.jira.zephyr;
 
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
-import lombok.Getter;
-import lombok.Setter;
-import plugins.jira.zephyr.annotations.ZephyrProject;
+import plugins.jira.zephyr.annotations.ZephyrCycleId;
+import plugins.jira.zephyr.annotations.ZephyrProjectId;
 import plugins.jira.zephyr.annotations.ZephyrTestCase;
 import plugins.jira.zephyr.data.ZephyrTestCycle;
 import plugins.jira.zephyr.data.ZephyrTestCycleResponse;
 import plugins.jira.zephyr.config.ZephyrSettings;
+import plugins.jira.zephyr.data.ZephyrTestCycleStatus;
+import plugins.jira.zephyr.data.ZephyrTestExecutionStatus;
 import plugins.jira.zephyr.events.ZephyrCyclePluginEventArgs;
 import plugins.jira.zephyr.events.ZephyrExecutionPluginEventArgs;
 import plugins.jira.zephyr.services.ZephyrApiService;
@@ -33,16 +34,15 @@ import solutions.bellatrix.core.plugins.TimeRecord;
 
 import java.lang.reflect.Method;
 
-import static io.restassured.RestAssured.given;
-
 public class ZephyrPlugin extends Plugin {
     public static final EventListener<ZephyrCyclePluginEventArgs> ZEPHYR_CYCLE_CREATED = new EventListener<>();
     public static final EventListener<ZephyrExecutionPluginEventArgs> ZEPHYR_TEST_CASE_EXECUTION_FAILED = new EventListener<>();
     public static final EventListener<ZephyrExecutionPluginEventArgs> ZEPHYR_TEST_CASE_EXECUTED = new EventListener<>();
     public static final EventListener<ZephyrCyclePluginEventArgs> ZEPHYR_CYCLE_STATUS_UPDATE_FAILED = new EventListener<>();
 
-    private ZephyrLocalData data;
-
+    private ZephyrTestCycleResponse testCycleResponse;
+    private ZephyrTestCycle testCycle;
+    
     public ZephyrPlugin() {
         String authToken = settings().getToken();
 
@@ -51,8 +51,6 @@ public class ZephyrPlugin extends Plugin {
                 .addHeader("Authorization", "Bearer " + authToken)
                 .addHeader("Content-Type", "application/json")
                 .build();
-
-        data = new ZephyrLocalData();
     }
 
     private ZephyrSettings settings() {
@@ -61,6 +59,18 @@ public class ZephyrPlugin extends Plugin {
 
     private boolean isEnabled() {
         return settings().isEnabled();
+    }
+
+    private String getCycleId(Method memberInfo) {
+        if (!settings().isExistingCycle()) return testCycleResponse.getKey();
+
+        if (memberInfo.isAnnotationPresent(ZephyrTestCase.class) && !memberInfo.getAnnotation(ZephyrTestCase.class).cycleId().isBlank()) {
+            return memberInfo.getAnnotation(ZephyrTestCase.class).cycleId();
+        } else if (memberInfo.getDeclaringClass().isAnnotationPresent(ZephyrTestCase.class)) {
+            return memberInfo.getDeclaringClass().getAnnotation(ZephyrCycleId.class).value();
+        } else {
+            return "";
+        }
     }
 
     private String getExecutionId(Method memberInfo) {
@@ -72,8 +82,10 @@ public class ZephyrPlugin extends Plugin {
     }
 
     private String getProjectId(Method memberInfo) {
-        if (memberInfo.getDeclaringClass().isAnnotationPresent(ZephyrProject.class)) {
-            return memberInfo.getDeclaringClass().getAnnotation(ZephyrProject.class).id();
+        if (memberInfo.isAnnotationPresent(ZephyrTestCase.class) && !memberInfo.getAnnotation(ZephyrTestCase.class).projectId().isBlank()) {
+            return memberInfo.getAnnotation(ZephyrTestCase.class).projectId();
+        } else if (memberInfo.getDeclaringClass().isAnnotationPresent(ZephyrProjectId.class)) {
+            return memberInfo.getDeclaringClass().getAnnotation(ZephyrProjectId.class).value();
         } else {
             try {
                 return settings().getDefaultProjectKey();
@@ -85,26 +97,25 @@ public class ZephyrPlugin extends Plugin {
 
     private String getStatus(TestResult testResult) {
         if (testResult.equals(TestResult.SUCCESS)) {
-            return "Pass";
+            return ZephyrTestExecutionStatus.PASS.getValue();
         } else {
-            return "Fail";
+            return ZephyrTestExecutionStatus.FAIL.getValue();
         }
     }
 
     @Override
     public void postBeforeClass(Class type) {
-        if (!isEnabled()) return;
+        if (!isEnabled() || settings().isExistingCycle()) return;
+
+        var isDefaultValueAvailableInConfig = settings().getTestCycleName() != null && !settings().getTestCycleName().isBlank();
 
         var testCycleName = String.format("%s %s",
-                DateTimeUtilities.getUtcNow(),
-                settings().getTestCycleName().isBlank() ? settings().getTestCycleName() : "BELLATRIX RUN");
+                DateTimeUtilities.getUtcNow(), isDefaultValueAvailableInConfig ? settings().getTestCycleName() : "BELLATRIX RUN");
 
-        var testCycle = new ZephyrTestCycle(settings().getDefaultProjectKey(), testCycleName, "In Progress");
+        testCycle = new ZephyrTestCycle(settings().getDefaultProjectKey(), testCycleName, ZephyrTestCycleStatus.IN_PROGRESS.getValue());
         testCycle.setPlannedStartDate(DateTimeUtilities.getUtcNow());
-        data.setTestCycle(testCycle);
 
-        var testCycleResponse = ZephyrApiService.createTestCycle(data);
-        data.setTestCycleResponse(testCycleResponse);
+        testCycleResponse = ZephyrApiService.createTestCycle(testCycle);
 
         ZEPHYR_CYCLE_CREATED.broadcast(new ZephyrCyclePluginEventArgs(testCycleResponse));
     }
@@ -113,7 +124,7 @@ public class ZephyrPlugin extends Plugin {
     public void postAfterTest(TestResult testResult, TimeRecord timeRecord, Method memberInfo, Throwable failedTestException) {
         if (!isEnabled()) return;
 
-        var testCase = new plugins.jira.zephyr.data.ZephyrTestCase(getProjectId(memberInfo), data.getTestCycleResponse().getKey(), getExecutionId(memberInfo), getStatus(testResult), timeRecord.getDuration());
+        var testCase = new plugins.jira.zephyr.data.ZephyrTestCase(getProjectId(memberInfo), getCycleId(memberInfo), getExecutionId(memberInfo), getStatus(testResult), timeRecord.getDuration(), failedTestException);
 
         if (testCase.testCaseId().isEmpty() || testCase.status().isEmpty() || getProjectId(memberInfo).isEmpty()) {
             ZEPHYR_TEST_CASE_EXECUTION_FAILED.broadcast(new ZephyrExecutionPluginEventArgs(testCase));
@@ -131,20 +142,14 @@ public class ZephyrPlugin extends Plugin {
 
     @Override
     public void preAfterClass(Class type) {
-        if (!isEnabled()) return;
+        if (!isEnabled() || settings().isExistingCycle()) return;
 
-        data.getTestCycle().setPlannedEndDate(DateTimeUtilities.getUtcNow());
+        testCycle.setPlannedEndDate(DateTimeUtilities.getUtcNow());
 
-        var response = ZephyrApiService.markTestCycleDone(data);
+        var response = ZephyrApiService.changeTestCycleStatus(testCycle, testCycleResponse);
 
         if (response.statusCode() >= 400) {
             ZEPHYR_CYCLE_STATUS_UPDATE_FAILED.broadcast(new ZephyrCyclePluginEventArgs());
         }
-    }
-
-    @Getter @Setter
-    public static class ZephyrLocalData {
-        private ZephyrTestCycleResponse testCycleResponse;
-        private ZephyrTestCycle testCycle;
     }
 }

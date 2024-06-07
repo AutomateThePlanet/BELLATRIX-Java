@@ -18,4 +18,14 @@ import java.lang.annotation.RetentionPolicy;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ZephyrTestCase {
     String id();
+
+    /**
+     * If empty, will take the value of {@link ZephyrCycleId} from the declaring class.
+     */
+    String cycleId() default "";
+
+    /**
+     * If empty, will take the value of {@link ZephyrProjectId} from the declaring class.
+     */
+    String projectId() default "";
 }

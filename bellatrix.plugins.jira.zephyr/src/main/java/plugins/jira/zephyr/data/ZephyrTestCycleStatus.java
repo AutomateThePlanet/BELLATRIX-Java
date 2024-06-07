@@ -12,5 +12,17 @@
  */
 package plugins.jira.zephyr.data;
 
-public record ZephyrTestCase(String projectId, String testCycleId, String testCaseId, String status, long duration, Throwable error) {
+import lombok.Getter;
+
+@Getter
+public enum ZephyrTestCycleStatus {
+    NOT_EXECUTED("Not Executed"),
+    IN_PROGRESS("In Progress"),
+    DONE("Done");
+
+    ZephyrTestCycleStatus(String value) {
+        this.value = value;
+    }
+
+    private final String value;
 }

@@ -10,7 +10,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package plugins.jira.zephyr.data;
+package plugins.jira.zephyr.annotations;
 
-public record ZephyrTestCase(String projectId, String testCycleId, String testCaseId, String status, long duration, Throwable error) {
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
+@Retention(RetentionPolicy.RUNTIME)
+public @interface ZephyrProjectId {
+    String value();
 }

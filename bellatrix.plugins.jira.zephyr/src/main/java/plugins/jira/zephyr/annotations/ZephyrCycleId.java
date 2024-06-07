@@ -16,6 +16,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 @Retention(RetentionPolicy.RUNTIME)
-public @interface ZephyrProject {
-    String id();
+public @interface ZephyrCycleId {
+    String value();
 }

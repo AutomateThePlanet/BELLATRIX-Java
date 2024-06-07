@@ -23,4 +23,5 @@ public final class ZephyrSettings {
     private String defaultProjectKey;
     private String testCycleName;
     private String cycleFinalStatus;
+    private boolean isExistingCycle;
 }
