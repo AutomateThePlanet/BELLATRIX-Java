@@ -19,7 +19,6 @@ public enum Browser {
     CHROME("chrome"),
     CHROME_HEADLESS("chrome_headless"),
     CHROME_MOBILE("chrome_mobile"),
-    CHROME_RESPONSIVE("chrome_responsive"),
     FIREFOX("firefox"),
     FIREFOX_HEADLESS("firefox_headless"),
     EDGE("edge"),
