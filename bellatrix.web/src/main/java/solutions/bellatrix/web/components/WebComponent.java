@@ -764,7 +764,7 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
 
         var ancestor = getAncestor();
 
-        if (ancestor.getComponentClass() == ShadowRoot.class && findStrategy.convert() instanceof By.ByXPath) {
+        if (ancestor != null && ancestor.getComponentClass() == ShadowRoot.class && findStrategy.convert() instanceof By.ByXPath) {
             component.setFindStrategy(getShadowXpath((ShadowRoot)ancestor, findStrategy));
         } else {
             component.setFindStrategy(findStrategy);
@@ -785,7 +785,7 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
 
         List<TComponent> componentList = new ArrayList<>();
 
-        if (ancestor.getComponentClass() == ShadowRoot.class && findStrategy.convert() instanceof By.ByXPath) {
+        if (ancestor != null && ancestor.getComponentClass() == ShadowRoot.class && findStrategy.convert() instanceof By.ByXPath) {
             var strategies = getShadowXpaths((ShadowRoot)ancestor, findStrategy);
 
             for (var strategy : strategies) {
