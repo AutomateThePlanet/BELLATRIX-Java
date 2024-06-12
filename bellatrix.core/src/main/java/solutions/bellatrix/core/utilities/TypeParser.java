@@ -50,6 +50,10 @@ public class TypeParser {
             Map.entry(String.class, STRING_ALLOWED_OPERATIONS)
     ));
 
+    /**
+     * Checks for enum fields containing the specified value and prioritizes which enum value to return by the field,
+     * instead of the name of the enum value.
+     */
     @SuppressWarnings("unchecked")
     @SneakyThrows
     public static <T> T parseEnumValue(String value, Class<T> enumClass) {
@@ -68,19 +72,19 @@ public class TypeParser {
     }
 
     // TODO: RENAME ME
-    public class SpecificInstructions<VFrom, TTo> extends HashMap<Class<TTo>, Function<VFrom, TTo>> {
-        public SpecificInstructions(Map<Class<TTo>, Function<VFrom, TTo>> map) {
+    public class SpecificInstructions<TFrom, TTo> extends HashMap<Class<TTo>, Function<TFrom, TTo>> {
+        public SpecificInstructions(Map<Class<TTo>, Function<TFrom, TTo>> map) {
             super(map);
         }
 
-        public Function<VFrom, TTo> to(Class<?> clazz) {
+        public Function<TFrom, TTo> to(Class<?> clazz) {
             return this.get(clazz);
         }
     }
 
     // TODO: RENAME ME
-    public class InstructionsCollection<VFrom, T extends SpecificInstructions> extends HashMap<Class<VFrom>, T> {
-        public InstructionsCollection(Map<Class<VFrom>, T> map) {
+    public class InstructionsCollection<TFrom, T extends SpecificInstructions> extends HashMap<Class<TFrom>, T> {
+        public InstructionsCollection(Map<Class<TFrom>, T> map) {
             super(map);
         }
 
