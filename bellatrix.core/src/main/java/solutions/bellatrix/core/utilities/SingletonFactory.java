@@ -13,11 +13,14 @@
 
 package solutions.bellatrix.core.utilities;
 
+import lombok.SneakyThrows;
+
 import java.util.HashMap;
 import java.util.Map;
 
 // Based on http://neutrofoton.github.io/blog/2013/08/29/generic-singleton-pattern-in-java/
 // Can be used inside App design pattern.
+@SuppressWarnings("unchecked")
 public class SingletonFactory {
     private static final SingletonFactory SINGLETON_FACTORY = new SingletonFactory();
 
@@ -26,18 +29,14 @@ public class SingletonFactory {
     private SingletonFactory() {
     }
 
+    @SneakyThrows
     public static <T> T getInstance(Class<T> classOf, Object... initargs) {
-        try {
-            if (!SINGLETON_FACTORY.mapHolder.containsKey(classOf.getName())) {
+        if (!SINGLETON_FACTORY.mapHolder.containsKey(classOf.getName())) {
 
-                T obj = (T)classOf.getConstructors()[0].newInstance(initargs);
-                SINGLETON_FACTORY.mapHolder.put(classOf.getName(), obj);
-            }
-
-            return (T)SINGLETON_FACTORY.mapHolder.get(classOf.getName());
-        } catch (Exception e) {
-            // not the best practice to return null. But probably we will never end here so it is OK.
-            return null;
+            T obj = (T)classOf.getConstructors()[0].newInstance(initargs);
+            SINGLETON_FACTORY.mapHolder.put(classOf.getName(), obj);
         }
+
+        return (T)SINGLETON_FACTORY.mapHolder.get(classOf.getName());
     }
 }
