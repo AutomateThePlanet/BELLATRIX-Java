@@ -14,7 +14,7 @@ public class CartPage extends WebPage<Map, Asserts> {
     // Overriding the getUrl method that comes from the base page object you can later you the open method to go to the page.
     @Override
     protected void waitForPageLoad() {
-        map().couponCodeTextField().toExist().waitToBe();
+        map().couponCodeTextInput().toExist().waitToBe();
     }
 
     public void applyCoupon(String coupon) {
@@ -22,7 +22,7 @@ public class CartPage extends WebPage<Map, Asserts> {
         // There are many test cases where you need to apply different coupons and so on. This way you reuse the code
         // instead of copy-paste it. If there is a change in the way how the coupon is applied, change the workflow only
         // here. Even single line of code is changed in your tests.
-        map().couponCodeTextField().setText(coupon);
+        map().couponCodeTextInput().setText(coupon);
         map().applyCouponButton().click();
         browser().waitForAjax();
     }

@@ -13,7 +13,7 @@ public class LoggingTests extends WebTest {
     public void addCustomMessagesToLog() {
         app().navigate().to("http://demos.bellatrix.solutions/");
 
-        Select sortDropDown = app().create().byNameEndingWith(Select.class, "orderby");
+        Select sortDropDown = app().create().byNameEnding(Select.class, "orderby");
         Anchor protonMReadMoreButton = app().create().byInnerTextContaining(Anchor.class, "Read more");
         Anchor addToCartFalcon9 = app().create().byAttributeContaining(Anchor.class, "data-product_id", "28").toBeClickable();
 
