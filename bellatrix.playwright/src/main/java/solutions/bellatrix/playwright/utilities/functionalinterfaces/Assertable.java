@@ -14,6 +14,6 @@
 package solutions.bellatrix.playwright.utilities.functionalinterfaces;
 
 @FunctionalInterface
-public interface EvaluationMethod {
-    Object evaluate();
+public interface Assertable {
+    void perform();
 }

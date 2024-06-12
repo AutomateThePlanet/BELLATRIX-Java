@@ -14,6 +14,6 @@
 package solutions.bellatrix.playwright.utilities.functionalinterfaces;
 
 @FunctionalInterface
-public interface Action {
-    void perform();
+public interface Evaluable {
+    Object evaluate();
 }
