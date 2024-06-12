@@ -57,6 +57,32 @@ public class HtmlService {
                 .orElseThrow(() -> new IllegalArgumentException(String.format("No element was found with the css: %s", cssQuery)));
     }
 
+    public static String getAbsoluteXPath(Element element) {
+        StringBuilder xpath = new StringBuilder("/");
+
+        for (Element el : element.parents()) {
+
+            if (el.tagName().equals("html") || el.tagName().equals("body")) {
+                // ignore the <html> and <body>, because jsoup added them to the html fragment
+                continue;
+            }
+
+            int index = 1;
+            for (Element sibling : el.siblingElements()) {
+                if (sibling.tagName().equals(el.tagName())) {
+                    index++;
+                }
+            }
+
+            if (index == 1) xpath.insert(0, "/" + el.tagName());
+            else xpath.insert(0, "/" + el.tagName() + "[" + index + "]");
+        }
+
+        xpath.append(element.tagName());
+
+        return xpath.toString();
+    }
+
     private static String findElementAbsoluteXpath(String html, String xpath) {
         var doc = Jsoup.parse(html);
         var el = doc.selectXpath(xpath);
@@ -141,27 +167,4 @@ public class HtmlService {
         return queries;
     }
 
-    private static String getAbsoluteXPath(Element element) {
-        StringBuilder xpath = new StringBuilder("/");
-
-        for (Element el : element.parents()) {
-
-            if (el.tagName().equals("html") || el.tagName().equals("body")) {
-                // ignore the <html> and <body>, because jsoup added them to the html fragment
-                continue;
-            }
-
-            int index = 1;
-            for (Element sibling : el.siblingElements()) {
-                if (sibling.tagName().equals(el.tagName())) {
-                    index++;
-                }
-            }
-            xpath.insert(0, "/" + el.tagName() + "[" + index + "]");
-        }
-
-        xpath.append(element.tagName());
-
-        return xpath.toString();
-    }
 }
