@@ -24,8 +24,8 @@ public enum DeviceName {
     TABLET("TABLET", 768, 873, false, 1),
     IPHONE_13_PRO_MOBILE("iPhone 13 Pro", 375, 667, true, 2, "Mozilla/5.0 (iPhone; CPU iPhone OS 8_0_2 like Mac OS X) AppleWebKit/600.1.4 (KHTML, like Gecko) Version/8.0 Mobile/12A366 Safari/600.1.4"),
     IPHONE_12_PRO_MOBILE("iPhone 12 Pro", 390, 844, true, 2, "Mozilla/5.0 (iPhone; CPU iPhone OS 8_0_2 like Mac OS X) AppleWebKit/600.1.4 (KHTML, like Gecko) Version/8.0 Mobile/12A366 Safari/600.1.4"),
-    IPHONE_SE_MOBILE("iPhone SE", 750, 1334, true, 2, "Mozilla/5.0 (iPhone; CPU iPhone OS 8_0_2 like Mac OS X) AppleWebKit/600.1.4 (KHTML, like Gecko) Version/8.0 Mobile/12A366 Safari/600.1.4"),
-    IPHONE_X_MOBILE("iPhone X", 375, 667, true, 3, "Mozilla/5.0 (iPhone; CPU iPhone OS 10_2_1 like Mac OS X) AppleWebKit/602.4.6 (KHTML, like Gecko) Version/10.0 Mobile/14D27 Safari/602.1"),
+    IPHONE_SE_MOBILE("iPhone SE", 375, 667, true, 2, "Mozilla/5.0 (iPhone; CPU iPhone OS 8_0_2 like Mac OS X) AppleWebKit/600.1.4 (KHTML, like Gecko) Version/8.0 Mobile/12A366 Safari/600.1.4"),
+    IPHONE_X_MOBILE("iPhone X", 375, 667, true, 2, "Mozilla/5.0 (iPhone; CPU iPhone OS 10_2_1 like Mac OS X) AppleWebKit/602.4.6 (KHTML, like Gecko) Version/10.0 Mobile/14D27 Safari/602.1"),
     NEXUS_7_TABLET("Nexus 7", 600, 960, true, 2, "Mozilla/5.0 (Linux; Android 4.4.2; Nexus 7 Build/KOT49H) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/33.0.1750.136 Safari/537.36"),
     IPAD("Apple iPad", 768, 1024, true, 2, "Mozilla/5.0 (iPad; CPU OS 5_1 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Version/5.1 Mobile/9B176 Safari/7534.48.3");
 
