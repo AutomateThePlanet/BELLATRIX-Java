@@ -17,6 +17,7 @@ import lombok.Getter;
 import lombok.Setter;
 import solutions.bellatrix.core.assertions.EntitiesAsserter;
 import solutions.bellatrix.web.components.WebComponent;
+import solutions.bellatrix.web.components.advanced.HeaderInfo;
 import solutions.bellatrix.web.components.advanced.HeaderNamesService;
 import solutions.bellatrix.web.components.contracts.ComponentHtml;
 
@@ -61,7 +62,7 @@ public class TableRow extends WebComponent implements ComponentHtml {
         return getCell(position);
     }
 
-    public <TDto> TableCell getCell(Class<TDto> dtoClass, Predicate<Field> expression) {
+    public <TDto> TableCell getCell(Class<TDto> dtoClass, Predicate<TDto> expression) {
         var headerName = headerNamesService.getHeaderNameByExpression(dtoClass, expression);
         return getCell(headerName);
     }

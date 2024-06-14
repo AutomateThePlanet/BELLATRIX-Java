@@ -16,22 +16,19 @@ package solutions.bellatrix.web.components.advanced.table;
 import lombok.Getter;
 import lombok.Setter;
 import solutions.bellatrix.core.assertions.EntitiesAsserter;
-import solutions.bellatrix.core.utilities.TypeParser;
 import solutions.bellatrix.core.utilities.HtmlService;
+import solutions.bellatrix.core.utilities.parsing.TypeParser;
 import solutions.bellatrix.core.utilities.InstanceFactory;
 import solutions.bellatrix.web.components.Label;
 import solutions.bellatrix.web.components.WebComponent;
 import solutions.bellatrix.web.components.advanced.*;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
-import java.util.function.Function;
 import java.util.function.Predicate;
 
 public class Table extends WebComponent {
@@ -74,10 +71,12 @@ public class Table extends WebComponent {
 
     @Getter @Setter private List<HeaderInfo> columnHeaderNames;
 
+    // TODO: reuse TableService
     public List<Label> getColumnHeaders() {
         return this.createAllByTag(Label.class, "th");
     }
 
+    // TODO: reuse TableService
     public List<TableHeaderRow> getTableHeaderRows() {
         return this.createAllByXPath(TableHeaderRow.class, ".//tr[descendant::th]");
     }
@@ -134,7 +133,7 @@ public class Table extends WebComponent {
         return getCell(position, row);
     }
 
-    public <TDto> TableCell getCell(Class<TDto> dtoClass, Predicate<Field> expression, int row) {
+    public <TDto> TableCell getCell(Class<TDto> dtoClass, Predicate<TDto> expression, int row) {
         String headerName = getHeaderNamesService().getHeaderNameByExpression(dtoClass, expression);
         var position = getHeaderNamesService().getHeaderPosition(headerName, columnHeaderNames);
         if (position == null) return null;
@@ -223,7 +222,7 @@ public class Table extends WebComponent {
 
                     try {
                         field.setAccessible(true);
-                        setter.invoke(castRow, tryCast(elementValue, parameterType));
+                        setter.invoke(castRow, TypeParser.parse(elementValue, parameterType));
                     } catch (IllegalAccessException | InvocationTargetException e) {
                         throw new RuntimeException(e);
                     }
@@ -238,30 +237,7 @@ public class Table extends WebComponent {
         return castRow;
     }
 
-    @SuppressWarnings("unchecked")
-    private <T> T tryCast(String value, Class<T> clazz) {
-        if (value == null || value.isBlank()) {
-            return InstanceFactory.create(clazz);
-        }
-
-        if (clazz == null) {
-            throw new IllegalArgumentException("Class cannot be null.");
-        }
-
-        Function<String, T> operation = TypeParser.ALLOWED_OPERATIONS.from(String.class).to(clazz);
-
-        if (operation != null) {
-            return operation.apply(value);
-        } else if (clazz.isEnum()) {
-            Function<String, T> enumOperation = x -> TypeParser.parseEnumValue(x, clazz);
-            TypeParser.ALLOWED_OPERATIONS.from(String.class).put(clazz, enumOperation);
-            return enumOperation.apply(value);
-        } else {
-            throw new IllegalArgumentException("Unsupported class type: " + clazz.getName()
-                    + "\nYou can add a custom type parser in " + TypeParser.class.getName());
-        }
-    }
-
+    // TODO: reuse TableService
     private void initializeRows() {
         if (rows == null || rows.isEmpty()) {
             rows = this.createAllByXPath(TableRow.class, "./tr[descendant::td]|./tbody/tr[descendant::td]");

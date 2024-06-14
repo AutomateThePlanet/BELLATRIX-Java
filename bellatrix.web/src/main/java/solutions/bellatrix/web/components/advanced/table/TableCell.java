@@ -16,14 +16,11 @@ package solutions.bellatrix.web.components.advanced.table;
 import lombok.Getter;
 import lombok.Setter;
 import solutions.bellatrix.web.components.WebComponent;
+import solutions.bellatrix.web.components.advanced.common.Cell;
 import solutions.bellatrix.web.components.contracts.ComponentHtml;
 import solutions.bellatrix.web.components.contracts.ComponentText;
 
-@Getter @Setter
-public class TableCell extends WebComponent implements ComponentHtml, ComponentText {
-    private int column;
-    private int row;
-
+public class TableCell extends Cell<Table> implements ComponentHtml, ComponentText {
     @Override
     public String getText() {
         return defaultGetText();
