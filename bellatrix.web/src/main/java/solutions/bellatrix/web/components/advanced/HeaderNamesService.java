@@ -15,9 +15,11 @@ package solutions.bellatrix.web.components.advanced;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.SneakyThrows;
 import org.apache.commons.text.StringEscapeUtils;
 import org.jsoup.nodes.Element;
 import solutions.bellatrix.core.utilities.DebugInformation;
+import solutions.bellatrix.core.utilities.InstanceFactory;
 import solutions.bellatrix.core.utilities.Ref;
 
 import java.lang.reflect.Field;
@@ -53,15 +55,16 @@ public class HeaderNamesService {
         return headerNamesIndexes.get(position);
     }
 
-    public Integer getHeaderPosition(String header, List<HeaderInfo> headerInfos) {
+    public Integer getHeaderPosition(String header, List<? extends HeaderInfo> headerInfos) {
         return  getHeaderPosition(header, headerInfos, null, null);
     }
 
-    public Integer getHeaderPosition(String header, List<HeaderInfo> headerInfos, Integer order) {
+    public Integer getHeaderPosition(String header, List<? extends HeaderInfo> headerInfos, Integer order) {
         return getHeaderPosition(header, headerInfos, order, null);
     }
 
-    public Integer getHeaderPosition(String header, List<HeaderInfo> headerInfos, Integer order, Boolean throwException) {
+    // TODO: make it return -1 if failure
+    public Integer getHeaderPosition(String header, List<? extends HeaderInfo> headerInfos, Integer order, Boolean throwException) {
         setEmptyHeadersName(headerInfos);
 
         if (headerNamesIndexes.values().stream().noneMatch(x -> x.endsWith(header))) {
@@ -100,14 +103,19 @@ public class HeaderNamesService {
         return null;
     }
 
-    public <T> String getHeaderNameByExpression(Class<T> dtoClass, Predicate<Field> expression) {
-        Field field = Arrays.stream(dtoClass.getDeclaredFields())
-                .filter(expression)
-                .findFirst()
-                .orElse(null);
+    @SneakyThrows
+    @SuppressWarnings("unchecked")
+    public <T> String getHeaderNameByExpression(Class<T> dtoClass, Predicate<T> expression) {
+        T dtoInstance = InstanceFactory.create(dtoClass);
 
-        if (field != null) {
-            return getHeaderNameByField(field);
+        for (Field field : dtoClass.getFields()) {
+            field.setAccessible(true);
+
+            Object fieldValue = field.get(dtoInstance);
+
+            if (expression.test((T)fieldValue)) {
+                return getHeaderNameByField(field);
+            }
         }
 
         return null;
@@ -136,7 +144,7 @@ public class HeaderNamesService {
         else return new HeaderInfo(headerName, headerOrder);
     }
 
-    private void setEmptyHeadersName(List<HeaderInfo> headerInfos) {
+    private void setEmptyHeadersName(List<? extends HeaderInfo> headerInfos) {
         var headerNameCollection = getHeaderNames();
         var count = Math.min(headerInfos.size(), headerNameCollection.size());
 
