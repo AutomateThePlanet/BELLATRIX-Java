@@ -58,29 +58,39 @@ public class HtmlService {
     }
 
     public static String getAbsoluteXPath(Element element) {
-        StringBuilder xpath = new StringBuilder("/");
+        StringBuilder xpath = new StringBuilder();
 
-        for (Element el : element.parents()) {
-
-            if (el.tagName().equals("html") || el.tagName().equals("body")) {
+        Element currentElement = element;
+        while (currentElement != null) {
+            if (currentElement.tagName().equals("html") || currentElement.tagName().equals("body") || currentElement.tagName().startsWith("#")) {
                 // ignore the <html> and <body>, because jsoup added them to the html fragment
-                continue;
+                break;
             }
 
-            int index = 1;
-            for (Element sibling : el.siblingElements()) {
-                if (sibling.tagName().equals(el.tagName())) {
-                    index++;
-                }
-            }
+            xpath.insert(0, indexElement(currentElement));
 
-            if (index == 1) xpath.insert(0, "/" + el.tagName());
-            else xpath.insert(0, "/" + el.tagName() + "[" + index + "]");
+            currentElement = currentElement.parent();
         }
 
-        xpath.append(element.tagName());
-
         return xpath.toString();
+    }
+
+    private String indexElement(Element element) {
+        int index = 1;
+
+        Element previousSibling = element.previousElementSibling();
+        while (previousSibling != null) {
+            if (previousSibling.tagName().equals(element.tagName())) {
+                index++;
+            }
+            previousSibling = previousSibling.previousElementSibling();
+        }
+
+        if (index == 1) {
+            return "/" + element.tagName();
+        } else {
+            return "/" + element.tagName() + "[" + index + "]";
+        }
     }
 
     private static String findElementAbsoluteXpath(String html, String xpath) {
