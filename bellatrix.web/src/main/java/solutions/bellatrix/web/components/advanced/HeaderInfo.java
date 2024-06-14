@@ -19,13 +19,13 @@ import lombok.Setter;
 @Getter @Setter
 public class HeaderInfo {
     private String headerName;
-    private int order;
+    private Integer order;
 
     public HeaderInfo(String headerName) {
         this.headerName = headerName;
     }
 
-    public HeaderInfo(String headerName, int order) {
+    public HeaderInfo(String headerName, Integer order) {
         this(headerName);
         this.order = order;
     }
