@@ -11,21 +11,21 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.web.components.advanced;
+package solutions.bellatrix.web.components.advanced.services;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.parser.Parser;
 import org.jsoup.select.Elements;
+import solutions.bellatrix.core.utilities.InstanceFactory;
+
 import java.util.List;
 import java.util.Objects;
 
-public class TableService {
-    private static final String ROWS_XPATH_LOCATOR = "//tr[descendant::td]";
-    private static final String HEADERS_XPATH_LOCATOR = "//tr[descendant::th]";
-    private String tableXPath;
-    private Document htmlDoc;
+public class TableService<T extends TableLocators> {
+    protected String tableXpath;
+    private final Document htmlDoc;
 
     public TableService(String html) {
         htmlDoc = Jsoup.parse(html, Parser.xmlParser());
@@ -33,42 +33,42 @@ public class TableService {
 
     public TableService(String html, String tableXpath) {
         this(html);
-        this.tableXPath = tableXpath;
+        this.tableXpath = tableXpath;
+    }
+
+    public T locators() {
+        return InstanceFactory.createByTypeParameter(this.getClass(), 0);
     }
 
     public Element getTable() {
-        if (tableXPath == null || tableXPath.isBlank()) {
+        if (tableXpath == null || tableXpath.isBlank()) {
             // By default, we use root element for table
-            tableXPath = "//*";
+            tableXpath = "//*";
         }
 
-        return htmlDoc.selectXpath(tableXPath).first();
+        return htmlDoc.selectXpath(tableXpath).first();
     }
 
     public List<Element> getHeaders() {
-        return getTable().selectXpath("//th");
+        return getTable().selectXpath(locators().getHeadersXpath());
     }
 
     public List<Element> getHeaderRows() {
-        return getTable().selectXpath(HEADERS_XPATH_LOCATOR).stream().filter((a) -> {
-            if (a.attribute("style") != null) {
-                return !Objects.equals(a.attribute("style").getValue(), "display:none");
-            } else {
-                return true;
-            }
-        }).toList();
-    }
-
-    public List<Element> getRows() {
-        return getTable().selectXpath(ROWS_XPATH_LOCATOR);
-    }
-
-    public Element getFooter() {
-        return getTable().selectXpath("//tfoot").first();
+        return getTable().selectXpath(locators().getHeadersXpath()).stream()
+                .filter((a) -> a.attribute("style") == null || !Objects.equals(a.attribute("style").getValue(), "display:none"))
+                .toList();
     }
 
     public Element getRow(int index) {
         return getRows().get(index);
+    }
+
+    public List<Element> getRows() {
+        return getTable().selectXpath(locators().getRowsXpath());
+    }
+
+    public Element getFooter() {
+        return getTable().selectXpath(locators().getFooterXpath()).first();
     }
 
     public Element getCell(int row, int column) {
@@ -78,13 +78,13 @@ public class TableService {
     public List<Element> getCells() {
         var listOfNodes = new Elements();
         for (int i = 0; i < getRows().size(); i++) {
-            listOfNodes.addAll(getRow(i).selectXpath("//td"));
+            listOfNodes.addAll(getRow(i).selectXpath(locators().getCellXpath()));
         }
 
         return listOfNodes;
     }
 
     public List<Element> getRowCells(int rowIndex) {
-        return getRow(rowIndex).selectXpath("//td");
+        return getRow(rowIndex).selectXpath(locators().getCellXpath());
     }
 }
