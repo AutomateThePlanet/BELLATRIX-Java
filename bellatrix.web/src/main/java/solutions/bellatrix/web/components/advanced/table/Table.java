@@ -75,14 +75,12 @@ public class Table extends WebComponent {
 
     @Getter @Setter private List<HeaderInfo> columnHeaderNames;
 
-    // TODO: reuse TableService
     public List<Label> getColumnHeaders() {
-        return this.createAllByTag(Label.class, "th");
+        return this.createAllByTag(Label.class, getTableService().locators().getHeaderTag());
     }
 
-    // TODO: reuse TableService
     public List<TableHeaderRow> getTableHeaderRows() {
-        return this.createAllByXPath(TableHeaderRow.class, ".//tr[descendant::th]");
+        return this.createAllByXPath(TableHeaderRow.class, getTableService().locators().getHeadersXpath());
     }
 
     public List<TableRow> getRows() {
@@ -244,10 +242,10 @@ public class Table extends WebComponent {
     // TODO: reuse TableService
     private void initializeRows() {
         if (rows == null || rows.isEmpty()) {
-            rows = this.createAllByXPath(TableRow.class, "./tr[descendant::td]|./tbody/tr[descendant::td]");
+            rows = this.createAllByXPath(TableRow.class, getTableService().locators().getRowsXpath());
             int rowNumber = 0;
             for (var row : rows) {
-                if (!this.createAllByXPath(TableRow.class, "./tr[descendant::th]").isEmpty()) {
+                if (!this.createAllByXPath(TableRow.class, getTableService().locators().getHeadersXpath()).isEmpty()) {
                     row.setParentTable(this);
                 }
                 row.setIndex(rowNumber++);
