@@ -11,17 +11,19 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.web.components.advanced;
+package solutions.bellatrix.web.components.advanced.services;
 
 import org.apache.commons.text.StringEscapeUtils;
 import org.jsoup.nodes.Element;
+import solutions.bellatrix.core.utilities.HtmlService;
+import solutions.bellatrix.core.utilities.InstanceFactory;
 import solutions.bellatrix.core.utilities.Ref;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class FooterService {
+public class FooterService<T extends TableLocators> {
     private String xpathToNameElement;
     private Element tableFooter;
     private List<List<String>> tableFooterRowsValuesWithIndex;
@@ -35,20 +37,25 @@ public class FooterService {
         this.xpathToNameElement = xpathToNameElement;
     }
 
+    public T locators() {
+        return InstanceFactory.createByTypeParameter(this.getClass(), 0);
+    }
+
     public List<Element> getRows() {
-        return tableFooter.selectXpath("//tr[ancestor::tfoot]")
-                .stream().filter(a -> !Objects.equals(a.attribute("style").getValue(), "display:none"))
+        return tableFooter.selectXpath(locators().getFooterRowsXpath()).stream()
+                .filter((a) -> a.attribute("style") == null || !Objects.equals(a.attribute("style").getValue(), "display:none"))
                 .toList();
     }
 
     public List<List<String>> getFooterRowsData() {
         initializeFooterRows();
+
         return tableFooterRowsValuesWithIndex;
     }
 
     public Element getFooterRowByName(String footerName) {
         return getRows()
-                .stream().filter(row -> row.selectXpath(String.format(".//td[.='%s']", footerName)) != null)
+                .stream().filter(row -> !row.selectXpath(String.format("//%s[.='%s']", locators().getRowTag(), footerName)).isEmpty())
                 .findFirst().orElse(null);
     }
 
@@ -57,12 +64,17 @@ public class FooterService {
     }
 
     public Element getFooterRowCellByName(String footerName, int cellIndex) {
-        var row = getRows().stream().filter(a -> Objects.equals(a.text(), footerName)).findFirst().orElse(null);
-        return row.selectXpath(".//td").get(cellIndex);
+        var row = getRows().stream()
+                .filter(a -> Objects.equals(a.text(), footerName))
+                .findFirst().orElse(null);
+
+        if (row == null) return null;
+
+        return row.selectXpath(locators().getCellXpath()).get(cellIndex);
     }
 
     public Element getFooterRowCellByPosition(int position, int cellIndex) {
-        return getFooterRowByPosition(position).selectXpath(".//td").get(cellIndex);
+        return getFooterRowByPosition(position).selectXpath(locators().getCellXpath()).get(cellIndex);
     }
 
     public List<String> getFooterRowDataByName(String footerName) {
@@ -93,8 +105,8 @@ public class FooterService {
         int rowIndex = 0;
         for (var tableFooterRow : getRows()) {
             var columnIndex = new Ref<Integer>(0);
-            var footerCellsCount = tableFooterRow.selectXpath(".//td").size();
-            for (var currentCell : tableFooterRow.selectXpath(".//td")) {
+            var footerCellsCount = tableFooterRow.selectXpath(locators().getCellXpath()).size();
+            for (var currentCell : tableFooterRow.selectXpath(locators().getCellXpath())) {
                 String cellValue;
                 if (xpathToNameElement == null || xpathToNameElement.isBlank()) {
                     cellValue = StringEscapeUtils.unescapeHtml4(currentCell.text());
@@ -135,7 +147,6 @@ public class FooterService {
     }
 
     private int getColSpan(Element headerCell) {
-        String colSpanText = headerCell.attribute("colspan").getValue();
-        return (colSpanText == null || colSpanText.isBlank()) ? 0 : Integer.parseInt(colSpanText);
+        return HtmlService.getAttribute(headerCell, "colspan", Integer.class);
     }
 }
