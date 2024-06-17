@@ -12,9 +12,14 @@ import java.util.List;
 @UtilityClass
 public class GenericDateTimeParser {
     public static List<DateTimeFormatter> FORMATTERS = new ArrayList<>();
+    public static List<DateTimeFormatter> PRIORITIZED_FORMATTERS = new ArrayList<>();
 
     public static void addPattern(String pattern) {
         FORMATTERS.add(DateTimeFormatter.ofPattern(pattern));
+    }
+
+    public static void prioritizePattern(String pattern) {
+        PRIORITIZED_FORMATTERS.add(DateTimeFormatter.ofPattern(pattern));
     }
 
     static {
@@ -80,6 +85,14 @@ public class GenericDateTimeParser {
     }
 
     public static LocalDateTime parse(String data) {
+        if (!PRIORITIZED_FORMATTERS.isEmpty()) {
+            for (var formatter : PRIORITIZED_FORMATTERS) {
+                try {
+                    return LocalDateTime.parse(data, formatter);
+                } catch (DateTimeParseException ignored){
+                }
+            }
+        }
         for (var formatter : FORMATTERS) {
             try {
                 return LocalDateTime.parse(data, formatter);
@@ -92,6 +105,15 @@ public class GenericDateTimeParser {
     }
 
     public static boolean tryParse(String data, Ref<LocalDateTime> returnObject) {
+        if (!PRIORITIZED_FORMATTERS.isEmpty()) {
+            for (var formatter : PRIORITIZED_FORMATTERS) {
+                try {
+                    returnObject.value = LocalDateTime.parse(data, formatter);
+                    return true;
+                } catch (DateTimeParseException ignored){
+                }
+            }
+        }
         for (var formatter : FORMATTERS) {
             try {
                 returnObject.value = LocalDateTime.parse(data, formatter);
