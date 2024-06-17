@@ -4,6 +4,9 @@ import lombok.experimental.UtilityClass;
 import solutions.bellatrix.core.utilities.parsing.TypeParser;
 import solutions.bellatrix.web.components.*;
 
+import java.time.LocalDateTime;
+import java.time.temporal.WeekFields;
+import java.util.Locale;
 import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
@@ -11,10 +14,15 @@ import java.util.function.Function;
 @UtilityClass
 @SuppressWarnings({"rawtypes", "unchecked"})
 public class ControlDataHandler {
-    // TODO: addReadOnlyControlDataHandler(parameters)
-    // TODO: addEditableControlDataHandler(parameters)
+    public static <T extends WebComponent> void addReadOnlyControlDataHandler(Class<T> clazz, Function<T, ?> handler) {
+        READONLY_CONTROL_DATA_HANDLERS.put(clazz, handler);
+    }
 
-    public <T> Object getData(T component) {
+    public static <T extends WebComponent> void addEditableControlDataHandler(Class<T> clazz, BiConsumer<T, ?> handler) {
+        EDITABLE_CONTROL_DATA_HANDLERS.put(clazz, handler);
+    }
+
+    public static <T extends WebComponent> Object getData(T component) {
         var dataHandler = READONLY_CONTROL_DATA_HANDLERS.get(component.getClass());
         if (dataHandler == null) {
             throw new IllegalArgumentException(String.format("Cannot find proper readonly control data handler for type: %s. Make sure it is registered!", component.getClass()));
@@ -23,7 +31,7 @@ public class ControlDataHandler {
         return dataHandler.apply(component);
     }
 
-    public <T> void setData(T component, Object data) {
+    public static <T extends WebComponent> void setData(T component, Object data) {
         var dataHandler = EDITABLE_CONTROL_DATA_HANDLERS.get(component.getClass());
         if (dataHandler == null) {
             throw new IllegalArgumentException(String.format("Cannot find proper edit control data handler for type: %s. Make sure it is registered!", component.getClass()));
@@ -32,7 +40,7 @@ public class ControlDataHandler {
         dataHandler.accept(component, data);
     }
 
-    private static final Map<Class<? extends WebComponent>, Function> READONLY_CONTROL_DATA_HANDLERS = Map.ofEntries(
+    private static Map<Class<? extends WebComponent>, Function> READONLY_CONTROL_DATA_HANDLERS = Map.ofEntries(
             Map.entry(Anchor.class, (Function<Anchor, String>)(anchor) -> anchor.getText().trim()),
             Map.entry(Button.class, (Function<Button, String>)(button) -> (!button.getText().trim().isBlank()) ? button.getText().trim() : button.getValue()),
             Map.entry(CheckBox.class, (Function<CheckBox, Boolean>)CheckBox::isChecked),
@@ -62,8 +70,8 @@ public class ControlDataHandler {
             Map.entry(WeekInput.class, (Function<WeekInput, String>)WeekInput::getWeek)
     );
 
-    private static final Map<Class<? extends WebComponent>, BiConsumer> EDITABLE_CONTROL_DATA_HANDLERS = Map.ofEntries(
-            Map.entry(CheckBox.class, (BiConsumer<CheckBox, String>)(checkBox, data) -> {
+    private static Map<Class<? extends WebComponent>, BiConsumer> EDITABLE_CONTROL_DATA_HANDLERS = Map.ofEntries(
+            Map.entry(CheckBox.class, (BiConsumer<CheckBox, Object>)(checkBox, data) -> {
                 try {
                     boolean valueToSet = TypeParser.parse(data, Boolean.class);
                     if (valueToSet) {
@@ -78,7 +86,49 @@ public class ControlDataHandler {
                 } catch (IllegalArgumentException exception) {
                     throw new IllegalArgumentException(String.format("The input string '%s' was not recognized as valid boolean.", data));
                 }
+            }),
+            Map.entry(DateInput.class, (BiConsumer<DateInput, String>)(dateInput, data) -> {
+                var valueToSet = TypeParser.parse(data, LocalDateTime.class);
+                dateInput.setDate(valueToSet.getYear(), valueToSet.getMonthValue(), valueToSet.getDayOfMonth());
+            }),
+            Map.entry(DateTimeInput.class, (BiConsumer<DateTimeInput, String>)(dateTimeInput, data) -> {
+                var valueToSet = TypeParser.parse(data, LocalDateTime.class);
+                dateTimeInput.setTime(valueToSet);
+            }),
+            Map.entry(EmailInput.class, (BiConsumer<EmailInput, String>)EmailInput::setEmail),
+            Map.entry(MonthInput.class, (BiConsumer<MonthInput, String>)(monthInput, data) -> {
+                var valueToSet = TypeParser.parse(data, LocalDateTime.class);
+                monthInput.setMonth(valueToSet.getYear(), valueToSet.getMonthValue());
+            }),
+            Map.entry(PasswordInput.class, (BiConsumer<PasswordInput, String>)PasswordInput::setPassword),
+            Map.entry(PhoneInput.class, (BiConsumer<PhoneInput, String>)PhoneInput::setPhone),
+            Map.entry(RadioButton.class, (BiConsumer<RadioButton, Object>)(radioButton, data) -> {
+                var valueToSet = TypeParser.parse(data, Boolean.class);
+                if (valueToSet) {
+                    if (!radioButton.isChecked()) radioButton.click();
+                } else {
+                    if (radioButton.isChecked()) radioButton.click();
+                }
+            }),
+            Map.entry(Range.class, (BiConsumer<Range, Object>)(range, data) -> {
+                var valueToSet = TypeParser.parse(data, Integer.class);
+                range.setRange(valueToSet);
+            }),
+            Map.entry(SearchField.class, (BiConsumer<SearchField, String>)SearchField::setSearch),
+            Map.entry(Select.class, (BiConsumer<Select, Object>)(select, data) -> {
+                if (data.getClass().equals(String.class)) select.selectByText((String)data);
+                else if (data.getClass().equals(Integer.class)) select.selectByIndex((Integer)data);
+            }),
+            Map.entry(TextArea.class, (BiConsumer<TextArea, String>)TextArea::setText),
+            Map.entry(TextInput.class, (BiConsumer<TextInput, String>)TextInput::setText),
+            Map.entry(TimeInput.class, (BiConsumer<TimeInput, String>)(timeInput, data) -> {
+                var valueToSet = TypeParser.parse(data, LocalDateTime.class);
+                timeInput.setTime(valueToSet.getHour(), valueToSet.getMinute());
+            }),
+            Map.entry(UrlField.class, (BiConsumer<UrlField, String>)UrlField::setUrl),
+            Map.entry(WeekInput.class, (BiConsumer<WeekInput, String>)(weekInput, data) -> {
+                var valueToSet = TypeParser.parse(data, LocalDateTime.class);
+                weekInput.setWeek(valueToSet.getYear(), valueToSet.get(WeekFields.of(Locale.getDefault()).weekOfWeekBasedYear()));
             })
-            // TODO
     );
 }

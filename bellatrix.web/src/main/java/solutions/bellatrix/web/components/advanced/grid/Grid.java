@@ -428,7 +428,7 @@ public class Grid extends WebComponent {
         createMethod.setAccessible(true);
         var element = createMethod.invoke(tableCell, controlData.getComponentClass(), controlData.getFindStrategy());
 
-        return ControlDataHandler.getData(element);
+        return ControlDataHandler.getData((WebComponent)element);
     }
 
     protected String getCurrentElementXPath() {
