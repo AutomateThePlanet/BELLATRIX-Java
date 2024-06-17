@@ -16,6 +16,7 @@ package solutions.bellatrix.core.utilities;
 import lombok.experimental.UtilityClass;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
+import solutions.bellatrix.core.utilities.parsing.TypeParser;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -73,6 +74,14 @@ public class HtmlService {
         }
 
         return xpath.toString();
+    }
+
+    public  <T> T getAttribute(Element element, String attributeName, Class<T> clazz) {
+        if (element.attribute(attributeName) == null || element.attribute(attributeName).getValue() == null || element.attribute(attributeName).getValue().isBlank()) {
+            return null;
+        } else {
+            return TypeParser.parse(element.attribute(attributeName).getValue(), clazz);
+        }
     }
 
     private String indexElement(Element element) {
