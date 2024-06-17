@@ -23,6 +23,7 @@ import solutions.bellatrix.web.components.Label;
 import solutions.bellatrix.web.components.WebComponent;
 import solutions.bellatrix.web.components.advanced.*;
 import solutions.bellatrix.web.components.advanced.services.FooterService;
+import solutions.bellatrix.web.components.advanced.services.HeaderNamesService;
 import solutions.bellatrix.web.components.advanced.services.TableService;
 
 import java.lang.reflect.InvocationTargetException;

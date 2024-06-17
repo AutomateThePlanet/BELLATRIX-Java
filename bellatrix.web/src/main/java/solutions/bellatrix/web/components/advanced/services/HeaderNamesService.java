@@ -11,7 +11,7 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.web.components.advanced;
+package solutions.bellatrix.web.components.advanced.services;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -22,6 +22,9 @@ import solutions.bellatrix.core.utilities.DebugInformation;
 import solutions.bellatrix.core.utilities.HtmlService;
 import solutions.bellatrix.core.utilities.InstanceFactory;
 import solutions.bellatrix.core.utilities.Ref;
+import solutions.bellatrix.web.components.advanced.HeaderInfo;
+import solutions.bellatrix.web.components.advanced.HeaderRowIndex;
+import solutions.bellatrix.web.components.advanced.TableHeader;
 
 import java.lang.reflect.Field;
 import java.util.*;

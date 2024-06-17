@@ -18,7 +18,7 @@ import lombok.Setter;
 import solutions.bellatrix.core.utilities.HtmlService;
 import solutions.bellatrix.web.components.WebComponent;
 import solutions.bellatrix.web.components.advanced.services.FooterService;
-import solutions.bellatrix.web.components.advanced.HeaderNamesService;
+import solutions.bellatrix.web.components.advanced.services.HeaderNamesService;
 import solutions.bellatrix.web.components.contracts.ComponentHtml;
 
 public class TableFooter extends WebComponent implements ComponentHtml {

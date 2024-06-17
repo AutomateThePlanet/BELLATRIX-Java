@@ -17,11 +17,9 @@ import lombok.Getter;
 import lombok.Setter;
 import solutions.bellatrix.core.assertions.EntitiesAsserter;
 import solutions.bellatrix.web.components.WebComponent;
-import solutions.bellatrix.web.components.advanced.HeaderInfo;
-import solutions.bellatrix.web.components.advanced.HeaderNamesService;
+import solutions.bellatrix.web.components.advanced.services.HeaderNamesService;
 import solutions.bellatrix.web.components.contracts.ComponentHtml;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
