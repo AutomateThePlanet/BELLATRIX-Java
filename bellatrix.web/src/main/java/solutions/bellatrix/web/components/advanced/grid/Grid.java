@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
 import org.apache.commons.text.StringEscapeUtils;
+import org.jsoup.nodes.Element;
 import org.junit.jupiter.api.Assertions;
 import solutions.bellatrix.core.assertions.EntitiesAsserter;
 import solutions.bellatrix.core.utilities.HtmlService;
@@ -14,6 +15,9 @@ import solutions.bellatrix.web.components.Button;
 import solutions.bellatrix.web.components.Label;
 import solutions.bellatrix.web.components.WebComponent;
 import solutions.bellatrix.web.components.advanced.*;
+import solutions.bellatrix.web.components.advanced.services.FooterService;
+import solutions.bellatrix.web.components.advanced.services.TableLocators;
+import solutions.bellatrix.web.components.advanced.services.TableService;
 import solutions.bellatrix.web.components.advanced.table.TableCell;
 import solutions.bellatrix.web.components.advanced.table.TableHeaderRow;
 import solutions.bellatrix.web.components.datahandlers.ControlDataHandler;
@@ -27,16 +31,14 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 public class Grid extends WebComponent {
-    // TODO: reuse form tableService
-    private static final String ROWS_XPATH_LOCATOR = "//tr[descendant::td]";
-    private TableService tableService;
+    private TableService<TableLocators> tableService;
     @Getter @Setter private List<ControlColumnData> controlColumnDataCollection;
 
-    public TableService getTableService() {
+    public TableService<TableLocators> getTableService() {
         if (tableService == null) {
             waitUntilPopulated();
             var innerHtml = defaultGetInnerHtmlAttribute();
-            tableService = new TableService(innerHtml);
+            tableService = new TableService<>(innerHtml);
         }
 
         return tableService;
@@ -46,8 +48,8 @@ public class Grid extends WebComponent {
         return new HeaderNamesService(getTableService().getHeaderRows());
     }
 
-    public FooterService getFooterService() {
-        return new FooterService(getTableService().getFooter());
+    public FooterService<TableLocators> getFooterService() {
+        return new FooterService<>(getTableService().getFooter());
     }
 
     public List<Button> getColumnHeaders() {
@@ -72,7 +74,7 @@ public class Grid extends WebComponent {
 
     public void waitUntilPopulated() {
         Wait.forConditionUntilTimeout(() -> {
-            var rows = this.createAllByXPath(Label.class, ROWS_XPATH_LOCATOR);
+            var rows = this.createAllByXPath(Label.class, getTableService().locators().getRowsXpath());
             return rows != null && !rows.isEmpty();
         }, 3000, 500);
     }
@@ -181,7 +183,7 @@ public class Grid extends WebComponent {
     public GridRow getFooterByName(String footerName) {
         int currentRowIndex = 0;
         for (var footerRow : getFooterService().getRows()) {
-            if (Objects.equals(footerRow.selectXpath(".//").text(), footerName)) {
+            if (Objects.equals((footerRow).selectXpath(".//").text(), footerName)) {
                 return getFooterByPosition(currentRowIndex);
             }
 
@@ -374,7 +376,7 @@ public class Grid extends WebComponent {
 
                 field.set(dto, TypeParser.parse(elementValue, fieldType));
             } else {
-                String htmlNodeValue = StringEscapeUtils.unescapeHtml4(getTableService().getRowCells(rowIndex).get(headerPosition).text().trim());
+                String htmlNodeValue = StringEscapeUtils.unescapeHtml4((getTableService().getRowCells(rowIndex).get(headerPosition)).text().trim());
                 field.set(dto, TypeParser.parse(htmlNodeValue, fieldType));
             }
         }

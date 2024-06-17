@@ -19,6 +19,7 @@ import lombok.SneakyThrows;
 import org.apache.commons.text.StringEscapeUtils;
 import org.jsoup.nodes.Element;
 import solutions.bellatrix.core.utilities.DebugInformation;
+import solutions.bellatrix.core.utilities.HtmlService;
 import solutions.bellatrix.core.utilities.InstanceFactory;
 import solutions.bellatrix.core.utilities.Ref;
 
@@ -63,7 +64,6 @@ public class HeaderNamesService {
         return getHeaderPosition(header, headerInfos, order, null);
     }
 
-    // TODO: make it return -1 if failure
     public Integer getHeaderPosition(String header, List<? extends HeaderInfo> headerInfos, Integer order, Boolean throwException) {
         setEmptyHeadersName(headerInfos);
 
@@ -230,19 +230,10 @@ public class HeaderNamesService {
     }
 
     private int getColSpan(Element headerCell) {
-        if (headerCell.attribute("colspan") == null) {
-            return 0;
-        }
-
-        String colSpanText = headerCell.attribute("colspan").getValue();
-        return (colSpanText == null || colSpanText.isBlank()) ? 0 : Integer.parseInt(colSpanText);
+        return HtmlService.getAttribute(headerCell, "colspan", Integer.class);
     }
 
     private int getRowSpan(Element headerCell) {
-        if (headerCell.attribute("rowspan") == null) {
-            return 0;
-        }
-        String rowSpanText = headerCell.attribute("rowspan").getValue();
-        return (rowSpanText == null || rowSpanText.isBlank()) ? 0 : Integer.parseInt(rowSpanText);
+        return HtmlService.getAttribute(headerCell, "rowspan", Integer.class);
     }
 }

@@ -17,7 +17,7 @@ import lombok.Getter;
 import lombok.Setter;
 import solutions.bellatrix.core.utilities.HtmlService;
 import solutions.bellatrix.web.components.WebComponent;
-import solutions.bellatrix.web.components.advanced.FooterService;
+import solutions.bellatrix.web.components.advanced.services.FooterService;
 import solutions.bellatrix.web.components.advanced.HeaderNamesService;
 import solutions.bellatrix.web.components.contracts.ComponentHtml;
 
