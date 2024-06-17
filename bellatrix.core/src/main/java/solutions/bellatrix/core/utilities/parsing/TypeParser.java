@@ -18,6 +18,7 @@ import lombok.experimental.UtilityClass;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
@@ -109,7 +110,8 @@ public class TypeParser {
             Map.entry(Boolean.class, (Function<String, Boolean>) Boolean::parseBoolean),
             Map.entry(Character.class, (Function<String, Character>) (x) -> x.charAt(0)),
             Map.entry(BigDecimal.class, (Function<String, BigDecimal>) BigDecimal::new),
-            Map.entry(BigInteger.class, (Function<String, BigInteger>) BigInteger::new)
+            Map.entry(BigInteger.class, (Function<String, BigInteger>) BigInteger::new),
+            Map.entry(LocalDateTime.class, (Function<String, LocalDateTime>)GenericDateTimeParser::parse)
             // TODO: to DateTime
             // TODO: to Date
     );
