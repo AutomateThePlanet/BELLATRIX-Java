@@ -18,6 +18,7 @@ import lombok.Setter;
 import solutions.bellatrix.core.assertions.EntitiesAsserter;
 import solutions.bellatrix.web.components.WebComponent;
 import solutions.bellatrix.web.components.advanced.services.HeaderNamesService;
+import solutions.bellatrix.web.components.advanced.services.TableLocators;
 import solutions.bellatrix.web.components.contracts.ComponentHtml;
 
 import java.util.ArrayList;
@@ -26,7 +27,7 @@ import java.util.function.Predicate;
 
 public class TableRow extends WebComponent implements ComponentHtml {
     private Table parentTable;
-    private HeaderNamesService headerNamesService;
+    private HeaderNamesService<TableLocators> headerNamesService;
 
     @Getter @Setter private int index;
 
@@ -41,7 +42,7 @@ public class TableRow extends WebComponent implements ComponentHtml {
 
     public void setParentTable(Table table) {
         parentTable = table;
-        headerNamesService = new HeaderNamesService(parentTable.getTableService().getHeaderRows());
+        headerNamesService = new HeaderNamesService<>(parentTable.getTableService().getHeaderRows());
     }
 
     public TableCell getCell(int column) {

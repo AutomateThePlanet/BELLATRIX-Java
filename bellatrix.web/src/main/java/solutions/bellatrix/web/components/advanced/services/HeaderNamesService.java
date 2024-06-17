@@ -30,7 +30,7 @@ import java.lang.reflect.Field;
 import java.util.*;
 import java.util.function.Predicate;
 
-public class HeaderNamesService {
+public class HeaderNamesService<T extends TableLocators> {
     private String xpathToNameElement;
     private Map<Integer, String> headerNamesIndexes;
     private List<Element> tableRowHeaders;
@@ -42,6 +42,10 @@ public class HeaderNamesService {
     public HeaderNamesService(List<Element> tableRowHeaders, String xpathToNameElement) {
         this(tableRowHeaders);
         this.xpathToNameElement = xpathToNameElement;
+    }
+
+    public T locators() {
+        return InstanceFactory.createByTypeParameter(this.getClass(), 0);
     }
 
     @Getter @Setter private List<String> columnHeaderNames;
@@ -171,9 +175,9 @@ public class HeaderNamesService {
         int rowIndex = 0;
         for (var tableRowHeader : tableRowHeaders) {
             Ref<Integer> columnIndex = new Ref<>(0);
-            var headerCellsCount = tableRowHeader.selectXpath(".//th").size();
+            var headerCellsCount = tableRowHeader.selectXpath(locators().getHeaderXpath()).size();
 
-            for (var currentHeader : tableRowHeader.selectXpath(".//th")) {
+            for (var currentHeader : tableRowHeader.selectXpath(locators().getHeaderXpath())) {
                 String headerName;
                 while (rowSpanPairs.containsKey(columnIndex.value) && rowIndex > rowSpanPairs.get(columnIndex.value).getRowIndex()) {
                     headerName = rowSpanPairs.get(columnIndex.value).getHeaderName();

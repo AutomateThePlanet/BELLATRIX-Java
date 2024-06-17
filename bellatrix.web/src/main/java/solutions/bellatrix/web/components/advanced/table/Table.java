@@ -24,6 +24,7 @@ import solutions.bellatrix.web.components.WebComponent;
 import solutions.bellatrix.web.components.advanced.*;
 import solutions.bellatrix.web.components.advanced.services.FooterService;
 import solutions.bellatrix.web.components.advanced.services.HeaderNamesService;
+import solutions.bellatrix.web.components.advanced.services.TableLocators;
 import solutions.bellatrix.web.components.advanced.services.TableService;
 
 import java.lang.reflect.InvocationTargetException;
@@ -35,31 +36,31 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 public class Table extends WebComponent {
-    private HeaderNamesService headerNamesService;
-    private FooterService footerService;
+    private HeaderNamesService<TableLocators> headerNamesService;
+    private FooterService<TableLocators> footerService;
     private List<TableRow> rows;
-    private TableService tableService;
+    private TableService<TableLocators> tableService;
 
     public Table() {
     }
 
-    public TableService getTableService() {
+    public TableService<TableLocators> getTableService() {
         if (this.tableService == null) {
-            this.tableService = new TableService(defaultGetInnerHtmlAttribute());
+            this.tableService = new TableService<>(defaultGetInnerHtmlAttribute());
         }
         return this.tableService;
     }
 
-    protected HeaderNamesService getHeaderNamesService() {
+    protected HeaderNamesService<TableLocators> getHeaderNamesService() {
         if (this.headerNamesService == null) {
-            this.headerNamesService = new HeaderNamesService(getTableService().getHeaderRows());
+            this.headerNamesService = new HeaderNamesService<>(getTableService().getHeaderRows());
         }
         return this.headerNamesService;
     }
 
-    protected FooterService getFooterService() {
+    protected FooterService<TableLocators> getFooterService() {
         if (this.footerService == null) {
-            this.footerService = new FooterService(getTableService().getFooter());
+            this.footerService = new FooterService<>(getTableService().getFooter());
         }
         return this.footerService;
     }

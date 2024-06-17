@@ -44,8 +44,8 @@ public class Grid extends WebComponent {
         return tableService;
     }
 
-    public HeaderNamesService getHeaderNamesService() {
-        return new HeaderNamesService(getTableService().getHeaderRows());
+    public HeaderNamesService<TableLocators> getHeaderNamesService() {
+        return new HeaderNamesService<>(getTableService().getHeaderRows());
     }
 
     public FooterService<TableLocators> getFooterService() {
