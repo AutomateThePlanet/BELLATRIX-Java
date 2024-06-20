@@ -30,7 +30,7 @@ public class IFramesAndShadowDOMTests extends WebTest {
         var iframeAsNormalComponent = parentIFrame.create().byXpath(Div.class, "//iframe[@src='https://www.w3schools.com']");
         var iframeAsFrame = iframeAsNormalComponent.as(Frame.class);
 
-        Assertions.assertEquals(iframeAsFrame.create().byXpath(Div.class, "//div[@id='subtopnav']//a[@title='HTML Tutorial']").getInnerText(), "HTML");
+        Assertions.assertEquals(iframeAsFrame.create().byXpath(Div.class, "//div[@id='subtopnav']//a[@title='HTML Tutorial']").getText(), "HTML");
     }
 
     @Test

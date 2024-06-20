@@ -17,21 +17,21 @@ import solutions.bellatrix.playwright.components.WebComponent;
 import solutions.bellatrix.playwright.components.common.validate.ComponentValidator;
 
 public interface ComponentText extends Component {
-    String getInnerText();
+    String getText();
 
     default void validateInnerTextIs(String value) {
-        ComponentValidator.defaultValidateAttributeIs((WebComponent)this, this::getInnerText, value, "inner text");
+        ComponentValidator.defaultValidateAttributeIs((WebComponent)this, this::getText, value, "inner text");
     }
 
     default void validateTextContains(String value) {
-        ComponentValidator.defaultValidateAttributeContains((WebComponent)this, this::getInnerText, value, "inner text");
+        ComponentValidator.defaultValidateAttributeContains((WebComponent)this, this::getText, value, "inner text");
     }
 
     default void validateTextNotContains(String value) {
-        ComponentValidator.defaultValidateAttributeNotContains((WebComponent)this, this::getInnerText, value, "inner text");
+        ComponentValidator.defaultValidateAttributeNotContains((WebComponent)this, this::getText, value, "inner text");
     }
 
     default void validateTextIsSet() {
-        ComponentValidator.defaultValidateAttributeIsSet((WebComponent)this, this::getInnerText, "inner text");
+        ComponentValidator.defaultValidateAttributeIsSet((WebComponent)this, this::getText, "inner text");
     }
 }

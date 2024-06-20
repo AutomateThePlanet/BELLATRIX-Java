@@ -29,7 +29,7 @@ public class Label extends WebComponent implements ComponentText, ComponentHtml,
     }
 
     @Override
-    public String getInnerText() {
+    public String getText() {
         return defaultGetText();
     }
 }
