@@ -31,25 +31,25 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 public class Grid extends WebComponent {
-    private TableService<TableLocators> tableService;
+    private TableService tableService;
     @Getter @Setter private List<ControlColumnData> controlColumnDataCollection;
 
-    public TableService<TableLocators> getTableService() {
+    public TableService getTableService() {
         if (tableService == null) {
             waitUntilPopulated();
             var innerHtml = defaultGetInnerHtmlAttribute();
-            tableService = new TableService<>(innerHtml);
+            tableService = new TableService(innerHtml);
         }
 
         return tableService;
     }
 
-    public HeaderNamesService<TableLocators> getHeaderNamesService() {
-        return new HeaderNamesService<>(getTableService().getHeaderRows());
+    public HeaderNamesService getHeaderNamesService() {
+        return new HeaderNamesService(getTableService().getHeaderRows());
     }
 
-    public FooterService<TableLocators> getFooterService() {
-        return new FooterService<>(getTableService().getFooter());
+    public FooterService getFooterService() {
+        return new FooterService(getTableService().getFooter());
     }
 
     public List<Button> getColumnHeaders() {

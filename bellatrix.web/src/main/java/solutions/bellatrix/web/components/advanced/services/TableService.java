@@ -19,11 +19,12 @@ import org.jsoup.nodes.Element;
 import org.jsoup.parser.Parser;
 import org.jsoup.select.Elements;
 import solutions.bellatrix.core.utilities.InstanceFactory;
+import solutions.bellatrix.core.utilities.SingletonFactory;
 
 import java.util.List;
 import java.util.Objects;
 
-public class TableService<T extends TableLocators> {
+public class TableService {
     protected String tableXpath;
     private final Document htmlDoc;
 
@@ -36,8 +37,8 @@ public class TableService<T extends TableLocators> {
         this.tableXpath = tableXpath;
     }
 
-    public T locators() {
-        return InstanceFactory.createByTypeParameter(this.getClass(), 0);
+    public TableLocators locators() {
+        return SingletonFactory.getInstance(TableLocators.class);
     }
 
     public Element getTable() {

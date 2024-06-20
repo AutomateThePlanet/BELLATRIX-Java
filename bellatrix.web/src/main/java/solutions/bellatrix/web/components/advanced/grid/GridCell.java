@@ -32,14 +32,4 @@ public class GridCell extends TableCell implements ComponentHtml, ComponentText 
             return this.create(clazz, cellControlFindStrategy);
         }
     }
-
-    @Override
-    public String getText() {
-        return defaultGetText();
-    }
-
-    @Override
-    public String getHtml() {
-        return defaultGetInnerHtmlAttribute();
-    }
 }

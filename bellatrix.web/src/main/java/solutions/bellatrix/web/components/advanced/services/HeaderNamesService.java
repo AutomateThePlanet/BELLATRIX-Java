@@ -18,10 +18,7 @@ import lombok.Setter;
 import lombok.SneakyThrows;
 import org.apache.commons.text.StringEscapeUtils;
 import org.jsoup.nodes.Element;
-import solutions.bellatrix.core.utilities.DebugInformation;
-import solutions.bellatrix.core.utilities.HtmlService;
-import solutions.bellatrix.core.utilities.InstanceFactory;
-import solutions.bellatrix.core.utilities.Ref;
+import solutions.bellatrix.core.utilities.*;
 import solutions.bellatrix.web.components.advanced.HeaderInfo;
 import solutions.bellatrix.web.components.advanced.HeaderRowIndex;
 import solutions.bellatrix.web.components.advanced.TableHeader;
@@ -30,7 +27,7 @@ import java.lang.reflect.Field;
 import java.util.*;
 import java.util.function.Predicate;
 
-public class HeaderNamesService<T extends TableLocators> {
+public class HeaderNamesService {
     private String xpathToNameElement;
     private Map<Integer, String> headerNamesIndexes;
     private List<Element> tableRowHeaders;
@@ -44,8 +41,8 @@ public class HeaderNamesService<T extends TableLocators> {
         this.xpathToNameElement = xpathToNameElement;
     }
 
-    public T locators() {
-        return InstanceFactory.createByTypeParameter(this.getClass(), 0);
+    public TableLocators locators() {
+        return SingletonFactory.getInstance(TableLocators.class);
     }
 
     @Getter @Setter private List<String> columnHeaderNames;

@@ -27,7 +27,7 @@ import java.util.function.Predicate;
 
 public class TableRow extends WebComponent implements ComponentHtml {
     private Table parentTable;
-    private HeaderNamesService<TableLocators> headerNamesService;
+    private HeaderNamesService headerNamesService;
 
     @Getter @Setter private int index;
 
@@ -36,13 +36,9 @@ public class TableRow extends WebComponent implements ComponentHtml {
         return defaultGetInnerHtmlAttribute();
     }
 
-    protected List<TableCell> getTableCells() {
-        return this.createAllByXPath(TableCell.class, "./td");
-    }
-
     public void setParentTable(Table table) {
         parentTable = table;
-        headerNamesService = new HeaderNamesService<>(parentTable.getTableService().getHeaderRows());
+        headerNamesService = new HeaderNamesService(parentTable.getTableService().getHeaderRows());
     }
 
     public TableCell getCell(int column) {
@@ -82,7 +78,7 @@ public class TableRow extends WebComponent implements ComponentHtml {
         return getCells().stream().filter(selector).toList();
     }
 
-    public TableCell getFirst(Predicate<TableCell> selector) {
+    public TableCell getFirstOrDefault(Predicate<TableCell> selector) {
         return getCells(selector).stream().findFirst().orElse(null);
     }
 
@@ -95,5 +91,9 @@ public class TableRow extends WebComponent implements ComponentHtml {
         T actualItem = getItem((Class<T>)expectedItem.getClass());
 
         EntitiesAsserter.assertAreEqual(expectedItem, actualItem);
+    }
+
+    protected List<TableCell> getTableCells() {
+        return this.createAllByXPath(TableCell.class, "./" + parentTable.getTableService().locators().getCellTag());
     }
 }

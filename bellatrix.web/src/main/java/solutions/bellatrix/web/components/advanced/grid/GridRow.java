@@ -32,10 +32,6 @@ public class GridRow extends WebComponent implements ComponentHtml {
         return defaultGetInnerHtmlAttribute();
     }
 
-    public GridCell get(int index) {
-        return getCells().get(index);
-    }
-
     public GridCell getCell(int column) {
         return parentGrid.getCell(index, column);
     }

@@ -36,31 +36,31 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 public class Table extends WebComponent {
-    private HeaderNamesService<TableLocators> headerNamesService;
-    private FooterService<TableLocators> footerService;
+    private HeaderNamesService headerNamesService;
+    private FooterService footerService;
     private List<TableRow> rows;
-    private TableService<TableLocators> tableService;
+    private TableService tableService;
 
     public Table() {
     }
 
-    public TableService<TableLocators> getTableService() {
+    public TableService getTableService() {
         if (this.tableService == null) {
-            this.tableService = new TableService<>(defaultGetInnerHtmlAttribute());
+            this.tableService = new TableService(defaultGetInnerHtmlAttribute());
         }
         return this.tableService;
     }
 
-    protected HeaderNamesService<TableLocators> getHeaderNamesService() {
+    protected HeaderNamesService getHeaderNamesService() {
         if (this.headerNamesService == null) {
-            this.headerNamesService = new HeaderNamesService<>(getTableService().getHeaderRows());
+            this.headerNamesService = new HeaderNamesService(getTableService().getHeaderRows());
         }
         return this.headerNamesService;
     }
 
-    protected FooterService<TableLocators> getFooterService() {
+    protected FooterService getFooterService() {
         if (this.footerService == null) {
-            this.footerService = new FooterService<>(getTableService().getFooter());
+            this.footerService = new FooterService(getTableService().getFooter());
         }
         return this.footerService;
     }

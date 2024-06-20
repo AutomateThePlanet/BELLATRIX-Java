@@ -24,8 +24,8 @@ import solutions.bellatrix.web.components.contracts.ComponentHtml;
 
 public class TableFooter extends WebComponent implements ComponentHtml {
     private Table parentTable;
-    private HeaderNamesService<TableLocators> headerNamesService;
-    private FooterService<TableLocators> footerService;
+    private HeaderNamesService headerNamesService;
+    private FooterService footerService;
 
     @Getter @Setter private int index;
 
@@ -36,8 +36,8 @@ public class TableFooter extends WebComponent implements ComponentHtml {
 
     public void setParentTable(Table table) {
         parentTable = table;
-        headerNamesService = new HeaderNamesService<>(parentTable.getTableService().getHeaderRows());
-        footerService = new FooterService<>(parentTable.getTableService().getFooter());
+        headerNamesService = new HeaderNamesService(parentTable.getTableService().getHeaderRows());
+        footerService = new FooterService(parentTable.getTableService().getFooter());
     }
 
     public TableRow getRowByPosition(int position) {

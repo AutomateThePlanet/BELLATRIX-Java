@@ -18,12 +18,13 @@ import org.jsoup.nodes.Element;
 import solutions.bellatrix.core.utilities.HtmlService;
 import solutions.bellatrix.core.utilities.InstanceFactory;
 import solutions.bellatrix.core.utilities.Ref;
+import solutions.bellatrix.core.utilities.SingletonFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class FooterService<T extends TableLocators> {
+public class FooterService {
     private String xpathToNameElement;
     private Element tableFooter;
     private List<List<String>> tableFooterRowsValuesWithIndex;
@@ -37,8 +38,8 @@ public class FooterService<T extends TableLocators> {
         this.xpathToNameElement = xpathToNameElement;
     }
 
-    public T locators() {
-        return InstanceFactory.createByTypeParameter(this.getClass(), 0);
+    public TableLocators locators() {
+        return SingletonFactory.getInstance(TableLocators.class);
     }
 
     public List<Element> getRows() {
