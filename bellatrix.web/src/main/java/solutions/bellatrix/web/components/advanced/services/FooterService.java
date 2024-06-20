@@ -148,6 +148,7 @@ public class FooterService {
     }
 
     private int getColSpan(Element headerCell) {
-        return HtmlService.getAttribute(headerCell, "colspan", Integer.class);
+        var attribute = HtmlService.getAttribute(headerCell, "colspan", Integer.class);
+        return attribute != null ? attribute : 0;
     }
 }

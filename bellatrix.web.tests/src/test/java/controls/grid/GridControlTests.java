@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @ExecutionBrowser(browser = Browser.CHROME, lifecycle = Lifecycle.REUSE_IF_STARTED)
-public class GridControlTestsChrome extends WebTest {
+public class GridControlTests extends WebTest {
     private Grid testGrid;
     private List<Employee> expectedItems;
 

@@ -11,8 +11,8 @@ import solutions.bellatrix.web.infrastructure.ExecutionBrowser;
 import solutions.bellatrix.web.infrastructure.Lifecycle;
 import solutions.bellatrix.web.infrastructure.junit.WebTest;
 
-@ExecutionBrowser(browser = Browser.CHROME, lifecycle = Lifecycle.REUSE_IF_STARTED)
-public class TableControlTestsChrome extends WebTest {
+@ExecutionBrowser(browser = Browser.FIREFOX, lifecycle = Lifecycle.REUSE_IF_STARTED)
+public class TableControlTests extends WebTest {
     @BeforeEach
     public void testInit() {
         var url = ConfigurationService.get(TestPagesSettings.class).getTableLocalPage();
