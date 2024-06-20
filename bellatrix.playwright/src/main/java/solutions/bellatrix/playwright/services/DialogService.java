@@ -25,7 +25,7 @@ import java.util.function.Consumer;
 public class DialogService extends WebService {
     private Dialog dialog;
 
-    public Dialog runAndWaitForDialog(Action action) {
+    public Dialog runAndWaitForDialog(Runnable action) {
         listenForDialog();
 
         tryPerformAction(action, Settings.timeout().inMilliseconds().getActionTimeoutWhenHandlingDialogs());
@@ -35,7 +35,7 @@ public class DialogService extends WebService {
         return dialog;
     }
 
-    public Dialog runAndWaitForDialog(Action action, long timeout) {
+    public Dialog runAndWaitForDialog(Runnable action, long timeout) {
         listenForDialog();
 
         tryPerformAction(action, timeout);
