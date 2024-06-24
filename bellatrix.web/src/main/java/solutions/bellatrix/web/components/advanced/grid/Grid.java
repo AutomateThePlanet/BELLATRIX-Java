@@ -6,11 +6,8 @@ import lombok.SneakyThrows;
 import org.apache.commons.text.StringEscapeUtils;
 import org.junit.jupiter.api.Assertions;
 import solutions.bellatrix.core.assertions.EntitiesAsserter;
-import solutions.bellatrix.core.utilities.HtmlService;
-import solutions.bellatrix.core.utilities.InstanceFactory;
-import solutions.bellatrix.core.utilities.SingletonFactory;
+import solutions.bellatrix.core.utilities.*;
 import solutions.bellatrix.core.utilities.parsing.TypeParser;
-import solutions.bellatrix.core.utilities.Wait;
 import solutions.bellatrix.web.components.Button;
 import solutions.bellatrix.web.components.Label;
 import solutions.bellatrix.web.components.WebComponent;
@@ -152,7 +149,7 @@ public class Grid extends WebComponent {
         return getCell(row, position);
     }
 
-    public <TDto> GridCell getCell(Class<TDto> clazz, Predicate<TDto> expression, int row) {
+    public <TDto> GridCell getCell(Class<TDto> clazz, PropertyReference<TDto> expression, int row) {
         String headerName = getHeaderNamesService().getHeaderNameByExpression(clazz, expression);
         Integer position = getHeaderNamesService().getHeaderPosition(headerName, controlColumnDataCollection);
         if (position == null) return null;

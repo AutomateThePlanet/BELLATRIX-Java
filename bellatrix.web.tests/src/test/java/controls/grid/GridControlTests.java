@@ -6,6 +6,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import solutions.bellatrix.core.configuration.ConfigurationService;
+import solutions.bellatrix.core.utilities.DebugInformation;
+import solutions.bellatrix.core.utilities.PropertyReference;
+import solutions.bellatrix.core.utilities.PropertyReferenceNameResolver;
 import solutions.bellatrix.web.components.Button;
 import solutions.bellatrix.web.components.TextInput;
 import solutions.bellatrix.web.components.advanced.grid.Grid;
@@ -62,7 +65,7 @@ public class GridControlTests extends WebTest {
 
     @Test
     public void returnProperCell_When_GetCell_WithExpressionGorColumn() {
-        var cell = testGrid.getCell(Employee.class, employee -> !employee.getPersonalEmail().isBlank(), 1);
+        var cell = testGrid.getCell(Employee.class, Employee::getPersonalEmail, 1);
 
         Assertions.assertEquals(1, cell.getRow());
         Assertions.assertEquals(3, cell.getColumn());
@@ -102,7 +105,7 @@ public class GridControlTests extends WebTest {
 
     @Test
     public void returnProperCell_When_GetRow_Then_GetCell_WithExpressionForColumn() {
-        var cell = testGrid.getRow(1).getCell(Employee.class, employee -> !employee.getPersonalEmail().isBlank());
+        var cell = testGrid.getRow(1).getCell(Employee.class, Employee::getPersonalEmail);
 
         Assertions.assertEquals(1, cell.getRow());
         Assertions.assertEquals(3, cell.getColumn());

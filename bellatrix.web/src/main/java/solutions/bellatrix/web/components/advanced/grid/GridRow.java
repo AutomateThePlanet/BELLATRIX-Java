@@ -6,6 +6,7 @@ import lombok.SneakyThrows;
 import solutions.bellatrix.core.assertions.EntitiesAsserter;
 import solutions.bellatrix.core.plugins.EventListener;
 import solutions.bellatrix.core.utilities.HtmlService;
+import solutions.bellatrix.core.utilities.PropertyReference;
 import solutions.bellatrix.web.components.ComponentActionEventArgs;
 import solutions.bellatrix.web.components.WebComponent;
 import solutions.bellatrix.web.components.contracts.ComponentHtml;
@@ -40,7 +41,7 @@ public class GridRow extends WebComponent implements ComponentHtml {
         return parentGrid.getCell(headerName, index);
     }
 
-    public <TDto> GridCell getCell(Class<TDto> dtoClass, Predicate<TDto> expression) {
+    public <TDto> GridCell getCell(Class<TDto> dtoClass, PropertyReference<TDto> expression) {
         return parentGrid.getCell(dtoClass, expression, index);
     }
 

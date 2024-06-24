@@ -25,7 +25,6 @@ import solutions.bellatrix.web.components.advanced.TableHeader;
 
 import java.lang.reflect.Field;
 import java.util.*;
-import java.util.function.Predicate;
 
 public class HeaderNamesService {
     private String xpathToNameElement;
@@ -108,21 +107,8 @@ public class HeaderNamesService {
     }
 
     @SneakyThrows
-    @SuppressWarnings("unchecked")
-    public <T> String getHeaderNameByExpression(Class<T> dtoClass, Predicate<T> expression) {
-        T dtoInstance = InstanceFactory.create(dtoClass);
-
-        for (Field field : dtoClass.getFields()) {
-            field.setAccessible(true);
-
-            Object fieldValue = field.get(dtoInstance);
-
-            if (expression.test((T)fieldValue)) {
-                return getHeaderNameByField(field);
-            }
-        }
-
-        return null;
+    public <T> String getHeaderNameByExpression(Class<T> dtoClass, PropertyReference<T> expression) {
+       return getHeaderNameByField(Objects.requireNonNull(PropertyReferenceNameResolver.getMember(dtoClass, expression)));
     }
 
     public String getHeaderNameByField(Field field) {
@@ -162,7 +148,6 @@ public class HeaderNamesService {
         }
     }
 
-    // TODO: FIXME
     private void initializeHeaderNames() {
         if (headerNamesIndexes != null && !headerNamesIndexes.isEmpty()) {
             return;
@@ -173,9 +158,9 @@ public class HeaderNamesService {
         int rowIndex = 0;
         for (var tableRowHeader : tableRowHeaders) {
             Ref<Integer> columnIndex = new Ref<>(0);
-            var headerCellsCount = tableRowHeader.selectXpath(locators().getHeaderXpath()).size();
+            // UNUSED, REMOVE ME: var headerCellsCount = tableRowHeader.selectXpath(locators().getHeaderXpath()).size();
 
-            for (var currentHeader : tableRowHeader.selectXpath(locators().getHeaderXpath())) {
+            for (var currentHeader : tableRowHeader.selectXpath("." + locators().getHeaderXpath())) {
                 String headerName;
                 while (rowSpanPairs.containsKey(columnIndex.value) && rowIndex > rowSpanPairs.get(columnIndex.value).getRowIndex()) {
                     headerName = rowSpanPairs.get(columnIndex.value).getHeaderName();
@@ -202,7 +187,7 @@ public class HeaderNamesService {
                     rowSpanPairs.put(columnIndex.value, new HeaderRowIndex(headerName, rowSpan, colSpan, rowIndex));
                 }
 
-                addColumnIndex(colSpan, columnIndex, headerName);
+                addColumnIndex(colSpan, (Ref<Integer>)columnIndex, headerName);
             }
 
             rowIndex++;
@@ -223,7 +208,7 @@ public class HeaderNamesService {
     }
 
     private void addHeaderNameIndex(int operationalIndex, String headerName) {
-        if (headerNamesIndexes.containsKey(operationalIndex) && headerNamesIndexes.get(operationalIndex) == headerName) {
+        if (headerNamesIndexes.containsKey(operationalIndex) && Objects.equals(headerNamesIndexes.get(operationalIndex), headerName)) {
             return;
         }
 

@@ -16,6 +16,7 @@ package solutions.bellatrix.web.components.advanced.table;
 import lombok.Getter;
 import lombok.Setter;
 import solutions.bellatrix.core.assertions.EntitiesAsserter;
+import solutions.bellatrix.core.utilities.PropertyReference;
 import solutions.bellatrix.web.components.WebComponent;
 import solutions.bellatrix.web.components.advanced.services.HeaderNamesService;
 import solutions.bellatrix.web.components.advanced.services.TableLocators;
@@ -57,7 +58,7 @@ public class TableRow extends WebComponent implements ComponentHtml {
         return getCell(position);
     }
 
-    public <TDto> TableCell getCell(Class<TDto> dtoClass, Predicate<TDto> expression) {
+    public <TDto> TableCell getCell(Class<TDto> dtoClass, PropertyReference<TDto> expression) {
         var headerName = headerNamesService.getHeaderNameByExpression(dtoClass, expression);
         return getCell(headerName);
     }
