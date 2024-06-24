@@ -17,7 +17,7 @@ import solutions.bellatrix.playwright.components.contracts.ComponentText;
 
 public class Heading extends WebComponent implements ComponentText {
     @Override
-    public String getInnerText() {
+    public String getText() {
         return defaultGetText();
     }
 }

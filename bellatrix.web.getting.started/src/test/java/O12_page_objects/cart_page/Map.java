@@ -6,8 +6,8 @@ import solutions.bellatrix.web.pages.PageMap;
 import java.util.List;
 
 public class Map extends PageMap {
-    public TextField couponCodeTextField() {
-        return create().byId(TextField.class, "coupon_code");
+    public TextInput couponCodeTextInput() {
+        return create().byId(TextInput.class, "coupon_code");
     }
 
     public Button applyCouponButton() {

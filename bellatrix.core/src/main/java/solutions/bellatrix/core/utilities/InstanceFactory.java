@@ -16,6 +16,7 @@ package solutions.bellatrix.core.utilities;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
 
+@SuppressWarnings("unchecked")
 public final class InstanceFactory {
     public static <T> T create(Class<T> classOf) {
         T obj = null;

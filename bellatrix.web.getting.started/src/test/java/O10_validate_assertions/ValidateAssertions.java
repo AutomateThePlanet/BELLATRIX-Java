@@ -11,9 +11,9 @@ public class ValidateAssertions extends WebTest {
 
         app().navigate().to("http://demos.bellatrix.solutions/cart/");
 
-        TextField couponCodeTextField = app().create().byId(TextField.class, "coupon_code");
+        TextInput couponCodeTextInput = app().create().byId(TextInput.class, "coupon_code");
 
-        couponCodeTextField.validatePlaceholderIs("Coupon code");
+        couponCodeTextInput.validatePlaceholderIs("Coupon code");
         // If we use the validate methods, BELLATRIX waits some time for the condition to pass. After this period if it
         // is not successful, a beautified meaningful exception message is displayed:
         // The component's placeholder should be 'Discount code' but was 'Coupon code'. The test failed on URL:

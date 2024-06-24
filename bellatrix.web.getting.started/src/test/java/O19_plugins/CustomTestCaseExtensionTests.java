@@ -5,7 +5,7 @@ import org.testng.Assert;
 import solutions.bellatrix.web.components.Anchor;
 import solutions.bellatrix.web.components.Button;
 import solutions.bellatrix.web.components.Span;
-import solutions.bellatrix.web.components.TextField;
+import solutions.bellatrix.web.components.TextInput;
 import solutions.bellatrix.web.infrastructure.junit.WebTest;
 
 public class CustomTestCaseExtensionTests extends WebTest {
@@ -20,7 +20,7 @@ public class CustomTestCaseExtensionTests extends WebTest {
     @Test
     @ManualTestCase(id = 1532)
     public void addProductToCart() {
-        var searchInput = app().create().byId(TextField.class, "woocommerce-product-search-field-0");
+        var searchInput = app().create().byId(TextInput.class, "woocommerce-product-search-field-0");
         searchInput.setText("Saturn V");
 
         var addToCartSaturn = app().create().byAttributeContaining(Button.class, "aria-label", "Saturn V");
@@ -46,7 +46,7 @@ public class CustomTestCaseExtensionTests extends WebTest {
             item.validateIsVisible();
         }
 
-        var firstName = app().create().byId(TextField.class,"billing_first_name");
+        var firstName = app().create().byId(TextInput.class,"billing_first_name");
         firstName.validateTextIs("");
 
         var productTotal = app().create().byClass(Span.class,"cart_item").createByClass(Span.class,"product-total");

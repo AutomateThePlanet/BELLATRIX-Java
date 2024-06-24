@@ -16,6 +16,7 @@ package solutions.bellatrix.core.utilities;
 import lombok.experimental.UtilityClass;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
+import solutions.bellatrix.core.utilities.parsing.TypeParser;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -55,6 +56,50 @@ public class HtmlService {
 
         return doc.select(cssQuery).stream().findFirst()
                 .orElseThrow(() -> new IllegalArgumentException(String.format("No element was found with the css: %s", cssQuery)));
+    }
+
+    public static String getAbsoluteXPath(Element element) {
+        StringBuilder xpath = new StringBuilder();
+
+        Element currentElement = element;
+        while (currentElement != null) {
+            if (currentElement.tagName().equals("html") || currentElement.tagName().equals("body") || currentElement.tagName().startsWith("#")) {
+                // ignore the <html> and <body>, because jsoup added them to the html fragment
+                break;
+            }
+
+            xpath.insert(0, indexElement(currentElement));
+
+            currentElement = currentElement.parent();
+        }
+
+        return xpath.toString();
+    }
+
+    public  <T> T getAttribute(Element element, String attributeName, Class<T> clazz) {
+        if (element.attribute(attributeName) == null || element.attribute(attributeName).getValue() == null || element.attribute(attributeName).getValue().isBlank()) {
+            return null;
+        } else {
+            return TypeParser.parse(element.attribute(attributeName).getValue(), clazz);
+        }
+    }
+
+    private String indexElement(Element element) {
+        int index = 1;
+
+        Element previousSibling = element.previousElementSibling();
+        while (previousSibling != null) {
+            if (previousSibling.tagName().equals(element.tagName())) {
+                index++;
+            }
+            previousSibling = previousSibling.previousElementSibling();
+        }
+
+        if (index == 1) {
+            return "/" + element.tagName();
+        } else {
+            return "/" + element.tagName() + "[" + index + "]";
+        }
     }
 
     private static String findElementAbsoluteXpath(String html, String xpath) {
@@ -141,27 +186,4 @@ public class HtmlService {
         return queries;
     }
 
-    private static String getAbsoluteXPath(Element element) {
-        StringBuilder xpath = new StringBuilder("/");
-
-        for (Element el : element.parents()) {
-
-            if (el.tagName().equals("html") || el.tagName().equals("body")) {
-                // ignore the <html> and <body>, because jsoup added them to the html fragment
-                continue;
-            }
-
-            int index = 1;
-            for (Element sibling : el.siblingElements()) {
-                if (sibling.tagName().equals(el.tagName())) {
-                    index++;
-                }
-            }
-            xpath.insert(0, "/" + el.tagName() + "[" + index + "]");
-        }
-
-        xpath.append(element.tagName());
-
-        return xpath.toString();
-    }
 }

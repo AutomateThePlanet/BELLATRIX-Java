@@ -58,4 +58,28 @@ public class Wait {
             }
         }
     }
+
+    public static boolean forConditionUntilTimeout(Comparator condition, long timeoutInMilliseconds, long pollingIntervalInMilliseconds) {
+        boolean isConditionMet = false;
+
+        long startTime = System.currentTimeMillis();
+
+        while (!isConditionMet && (System.currentTimeMillis() - startTime) <= (timeoutInMilliseconds)) {
+            try {
+                if (condition.evaluate()) {
+                    isConditionMet = true;
+                } else {
+                    Thread.sleep(pollingIntervalInMilliseconds);
+                }
+            } catch (Exception ignored) {
+            }
+        }
+
+        return isConditionMet;
+    }
+
+    @FunctionalInterface
+    public interface Comparator {
+        boolean evaluate();
+    }
 }
