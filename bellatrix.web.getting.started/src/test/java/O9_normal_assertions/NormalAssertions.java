@@ -13,9 +13,9 @@ public class NormalAssertions extends WebTest {
 
         app().navigate().to("http://demos.bellatrix.solutions/cart/");
 
-        TextField couponCodeTextField = app().create().byId(TextField.class, "coupon_code");
+        TextInput couponCodeTextInput = app().create().byId(TextInput.class, "coupon_code");
 
-        Assert.assertEquals(couponCodeTextField.getPlaceholder(), "Coupon code");
+        Assert.assertEquals(couponCodeTextInput.getPlaceholder(), "Coupon code");
 
         Button applyCouponButton = app().create().byValueContaining(Button.class, "Apply coupon");
 

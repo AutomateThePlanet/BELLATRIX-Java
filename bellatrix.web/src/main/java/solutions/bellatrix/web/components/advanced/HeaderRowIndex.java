@@ -11,9 +11,22 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.playwright.utilities.functionalinterfaces;
+package solutions.bellatrix.web.components.advanced;
 
-@FunctionalInterface
-public interface ComparatorMethod {
-    boolean evaluate();
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter @Setter
+public class HeaderRowIndex {
+    public HeaderRowIndex(String headerName, int rowspan, int colspan, int rowIndex) {
+        this.headerName = headerName;
+        this.rowspan = rowspan;
+        this.colspan = colspan;
+        this.rowIndex = rowIndex;
+    }
+
+    private String headerName;
+    private int rowspan;
+    private int colspan;
+    private int rowIndex;
 }

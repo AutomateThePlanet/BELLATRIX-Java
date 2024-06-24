@@ -11,9 +11,13 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.playwright.utilities.functionalinterfaces;
+package solutions.bellatrix.playwright.components.advanced;
 
-@FunctionalInterface
-public interface EvaluationMethod {
-    Object evaluate();
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
+@Retention(RetentionPolicy.RUNTIME)
+public @interface TableHeader {
+    String name();
+    int order() default 0;
 }

@@ -23,12 +23,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.StringEscapeUtils;
 import org.testng.Assert;
 import solutions.bellatrix.core.utilities.SingletonFactory;
+import solutions.bellatrix.core.utilities.Wait;
 import solutions.bellatrix.playwright.components.Frame;
 import solutions.bellatrix.playwright.components.common.validate.Validator;
 import solutions.bellatrix.playwright.utilities.DebugLogger;
 import solutions.bellatrix.playwright.utilities.Settings;
-import solutions.bellatrix.playwright.utilities.functionalinterfaces.AssertionMethod;
-import solutions.bellatrix.playwright.utilities.functionalinterfaces.ComparatorMethod;
+import solutions.bellatrix.playwright.utilities.functionalinterfaces.Assertable;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -298,11 +298,11 @@ public class BrowserService extends WebService {
         long waitUntilReadyTimeout = Settings.timeout().inMilliseconds().getWaitUntilReadyTimeout();
         long sleepInterval = Settings.timeout().inMilliseconds().getSleepInterval();
 
-        ComparatorMethod dataReactRootNotNull = () -> {
+        Wait.Comparator dataReactRootNotNull = () -> {
             return (boolean)page().evaluate("document.querySelector('data-reactroot') !== null");
         };
 
-        ComparatorMethod loadEventEndBiggerThanZero = () -> {
+        Wait.Comparator loadEventEndBiggerThanZero = () -> {
             return (boolean)page().evaluate("window.performance.timing.loadEventEnd > 0");
         };
 
@@ -314,7 +314,7 @@ public class BrowserService extends WebService {
         long waitForJavaScriptAnimationsTimeout = Settings.timeout().inMilliseconds().getWaitForJavaScriptAnimationsTimeout();
         long sleepInterval = Settings.timeout().inMilliseconds().getSleepInterval();
 
-        ComparatorMethod javaScriptAnimationsWait = () -> {
+        Wait.Comparator javaScriptAnimationsWait = () -> {
             return (boolean)page().evaluate("jQuery && jQuery(':animated').length === 0");
         };
 
@@ -362,7 +362,7 @@ public class BrowserService extends WebService {
         long ajaxTimeout = Settings.timeout().inMilliseconds().getWaitForAjaxTimeout();
         long sleepInterval = Settings.timeout().inMilliseconds().getSleepInterval();
 
-        ComparatorMethod ajaxComplete = () -> {
+        Wait.Comparator ajaxComplete = () -> {
             var numberOfAjaxConnection = page().evaluate("!isNaN(window.openHTTPs) ? window.openHTTPs : null");
             if (Objects.nonNull(numberOfAjaxConnection)) {
                 int ajaxConnections = Integer.parseInt(numberOfAjaxConnection.toString());
@@ -405,7 +405,7 @@ public class BrowserService extends WebService {
         long ajaxTimeout = Settings.timeout().inMilliseconds().getWaitForAjaxTimeout();
         long sleepInterval = Settings.timeout().inMilliseconds().getSleepInterval() + (additionalTimeoutInSeconds * 1000);
         String script = String.format("performance.getEntriesByType('resource').filter(item => item.initiatorType == 'xmlhttprequest' && item.name.toLowerCase().includes('%s'))[0] !== undefined;", requestPartialUrl);
-        ComparatorMethod ajaxReadyState = () -> {
+        Wait.Comparator ajaxReadyState = () -> {
             return (boolean)page().evaluate(script);
         };
 
@@ -419,7 +419,7 @@ public class BrowserService extends WebService {
     public void waitUntilPageLoadsCompletely() {
         long waitUntilReadyTimeout = Settings.timeout().inMilliseconds().getWaitUntilReadyTimeout();
         long sleepInterval = Settings.timeout().inMilliseconds().getSleepInterval();
-        ComparatorMethod readyStateEqualsComplete = () -> {
+        Wait.Comparator readyStateEqualsComplete = () -> {
             return page().evaluate("document.readyState").equals("complete");
         };
 
@@ -439,7 +439,7 @@ public class BrowserService extends WebService {
         var timeout = Settings.timeout().getWaitForPartialUrl();
 
 
-        AssertionMethod assertion = () -> PlaywrightAssertions.assertThat(page()).hasURL(pattern, new PageAssertions.HasURLOptions().setTimeout(timeout));
+        Assertable assertion = () -> PlaywrightAssertions.assertThat(page()).hasURL(pattern, new PageAssertions.HasURLOptions().setTimeout(timeout));
         String log = String.format("The expected partialUrl: %s was not found in the page's url: %s", partialUrl, getUrl());
 
         DebugLogger.assertAndLogOnFail(assertion, log);
@@ -457,7 +457,7 @@ public class BrowserService extends WebService {
         Pattern pattern = Pattern.compile(String.format(".*%s.*", partialUrl));
         var timeout = Settings.timeout().getWaitForPartialUrl();
 
-        AssertionMethod assertion = () -> PlaywrightAssertions.assertThat(page()).not().hasURL(pattern, new PageAssertions.HasURLOptions().setTimeout(timeout));
+        Assertable assertion = () -> PlaywrightAssertions.assertThat(page()).not().hasURL(pattern, new PageAssertions.HasURLOptions().setTimeout(timeout));
         String log = String.format("The expected partialUrl: %s was found in the page's url: %s", partialUrl, getUrl());
 
         DebugLogger.assertAndLogOnFail(assertion, log);
@@ -465,7 +465,7 @@ public class BrowserService extends WebService {
 
     public void validateUrl(String fullUrl) {
         var timeout = Settings.timeout().getValidationsTimeout();
-        AssertionMethod assertion = () -> PlaywrightAssertions.assertThat(page()).hasURL(fullUrl, new PageAssertions.HasURLOptions().setTimeout(timeout));
+        Assertable assertion = () -> PlaywrightAssertions.assertThat(page()).hasURL(fullUrl, new PageAssertions.HasURLOptions().setTimeout(timeout));
         String log = String.format("Expected URL:\n%s\nIs different than the actual one:\n%s", fullUrl, getUrl());
 
         DebugLogger.assertAndLogOnFail(assertion, log);

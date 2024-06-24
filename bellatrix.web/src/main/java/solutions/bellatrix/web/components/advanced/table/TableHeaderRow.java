@@ -11,9 +11,20 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.playwright.utilities.functionalinterfaces;
+package solutions.bellatrix.web.components.advanced.table;
 
-@FunctionalInterface
-public interface Action {
-    void perform();
+import solutions.bellatrix.web.components.WebComponent;
+import solutions.bellatrix.web.components.contracts.ComponentHtml;
+
+import java.util.List;
+
+public class TableHeaderRow extends WebComponent implements ComponentHtml {
+    public List<TableCell> getHeaderCells() {
+        return this.createAllByTag(TableCell.class, "th");
+    }
+
+    @Override
+    public String getHtml() {
+        return defaultGetInnerHtmlAttribute();
+    }
 }

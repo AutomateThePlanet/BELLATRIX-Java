@@ -63,7 +63,7 @@ public class LocateElementsTests extends WebTest {
         //  CreateByInnerTextContaining   -->  app().create().byInnerTextContaining(Div.class, "Showing all");
         //  Searches the component by its inner text content, including all child HTML elements.
 
-        //  CreateByNameEndingWith   -->  app().create().byNameEndingWith(SearchField.class, "a");
+        //  CreateByNameEnding   -->  app().create().byNameEnding(SearchField.class, "a");
         //  Searches the component by its name containing the specified text.
 
         //  CreateByAttributesContaining   -->  app().create().byAttributeContaining(Anchor.class, "data-product_id", "31");
@@ -114,7 +114,7 @@ public class LocateElementsTests extends WebTest {
         // CreateAllByInnerTextContaining   -->  app().create().allByInnerTextContaining(Div.class, "Showing all");
         // Searches the components by its inner text content, including all child HTML elements.
 
-        // CreateAllByNameEndingWith   -->  app().create().allByNameEndingWith(SearchField.class, "a");
+        // CreateAllByNameEnding   -->  app().create().allByNameEnding(SearchField.class, "a");
         // Searches the components by its name containing the specified text.
 
         // CreateAllByAttributesContaining   -->  app().create().allByAttributeContaining(Anchor.class, "data-product_id", "31");
