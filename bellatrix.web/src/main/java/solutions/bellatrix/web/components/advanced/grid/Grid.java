@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Assertions;
 import solutions.bellatrix.core.assertions.EntitiesAsserter;
 import solutions.bellatrix.core.utilities.HtmlService;
 import solutions.bellatrix.core.utilities.InstanceFactory;
+import solutions.bellatrix.core.utilities.SingletonFactory;
 import solutions.bellatrix.core.utilities.parsing.TypeParser;
 import solutions.bellatrix.core.utilities.Wait;
 import solutions.bellatrix.web.components.Button;
@@ -44,6 +45,10 @@ public class Grid extends WebComponent {
         return tableService;
     }
 
+    private TableLocators locators() {
+        return SingletonFactory.getInstance(TableLocators.class);
+    }
+
     public HeaderNamesService getHeaderNamesService() {
         return new HeaderNamesService(getTableService().getHeaderRows());
     }
@@ -74,7 +79,7 @@ public class Grid extends WebComponent {
 
     public void waitUntilPopulated() {
         Wait.forConditionUntilTimeout(() -> {
-            var rows = this.createAllByXPath(Label.class, getTableService().locators().getRowsXpath());
+            var rows = this.createAllByXPath(Label.class, locators().getRowsXpath());
             return rows != null && !rows.isEmpty();
         }, 3000, 500);
     }
