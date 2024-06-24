@@ -56,7 +56,7 @@ public class FooterService {
 
     public Element getFooterRowByName(String footerName) {
         return getRows()
-                .stream().filter(row -> !row.selectXpath(String.format("//%s[.='%s']", locators().getRowTag(), footerName)).isEmpty())
+                .stream().filter(row -> !row.selectXpath(String.format(".//%s[.='%s']", locators().getRowTag(), footerName)).isEmpty())
                 .findFirst().orElse(null);
     }
 
@@ -75,7 +75,7 @@ public class FooterService {
     }
 
     public Element getFooterRowCellByPosition(int position, int cellIndex) {
-        return getFooterRowByPosition(position).selectXpath(locators().getCellXpath()).get(cellIndex);
+        return getFooterRowByPosition(position).selectXpath("." + locators().getCellXpath()).get(cellIndex);
     }
 
     public List<String> getFooterRowDataByName(String footerName) {
@@ -106,8 +106,8 @@ public class FooterService {
         int rowIndex = 0;
         for (var tableFooterRow : getRows()) {
             var columnIndex = new Ref<Integer>(0);
-            var footerCellsCount = tableFooterRow.selectXpath(locators().getCellXpath()).size();
-            for (var currentCell : tableFooterRow.selectXpath(locators().getCellXpath())) {
+            var footerCellsCount = tableFooterRow.selectXpath("." + locators().getCellXpath()).size();
+            for (var currentCell : tableFooterRow.selectXpath("." + locators().getCellXpath())) {
                 String cellValue;
                 if (xpathToNameElement == null || xpathToNameElement.isBlank()) {
                     cellValue = StringEscapeUtils.unescapeHtml4(currentCell.text());

@@ -49,8 +49,8 @@ public class GridRow extends WebComponent implements ComponentHtml {
         var rowCells = parentGrid.getTableService().getRowCells(index);
 
         for (int rowCellsIndex = 0; rowCellsIndex < rowCells.size(); rowCellsIndex++) {
-            var rowCellXPath = HtmlService.getAbsoluteXPath(rowCells.get(index));
-            var cell = this.createByXPath(GridCell.class, rowCellXPath);
+            var rowCellXPath = HtmlService.getAbsoluteXPath(rowCells.get(rowCellsIndex));
+            var cell = parentGrid.createByXPath(GridCell.class, "." + rowCellXPath);
             parentGrid.setCellMetaData(cell, index, rowCellsIndex);
             listOfCells.add(cell);
         }

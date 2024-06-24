@@ -79,7 +79,7 @@ public class Grid extends WebComponent {
 
     public void waitUntilPopulated() {
         Wait.forConditionUntilTimeout(() -> {
-            var rows = this.createAllByXPath(Label.class, locators().getRowsXpath());
+            var rows = this.createAllByXPath(Label.class, "." + locators().getRowsXpath());
             return rows != null && !rows.isEmpty();
         }, 3000, 500);
     }
