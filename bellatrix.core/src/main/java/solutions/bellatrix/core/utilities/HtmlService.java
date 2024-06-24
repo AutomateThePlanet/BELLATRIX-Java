@@ -69,7 +69,7 @@ public class HtmlService {
     public static String convertAbsoluteXpathToCss(String xpath) {
         String cssSelector = xpath.replace("/", " > ");
 
-        // Use regular expression to replace [number] with :nth-child(number)
+        // Use regular expression to replace [number] with :nth-of-type(number)
         Pattern pattern = Pattern.compile("\\[(\\d+)\\]");
         Matcher matcher = pattern.matcher(cssSelector);
         StringBuilder builder = new StringBuilder();

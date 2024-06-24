@@ -37,4 +37,5 @@ public class TestPagesSettings {
     private String weekLocalPage;
     private String tableLocalPage;
     private String layoutPricingPage;
+    private String shadowDomPage;
 }
