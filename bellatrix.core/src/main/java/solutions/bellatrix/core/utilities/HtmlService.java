@@ -14,10 +14,10 @@
 package solutions.bellatrix.core.utilities;
 
 import lombok.experimental.UtilityClass;
-import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Node;
+import solutions.bellatrix.core.utilities.parsing.TypeParser;
 
-import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -26,92 +26,47 @@ import java.util.regex.Pattern;
  */
 @UtilityClass
 public class HtmlService {
-    public static String convertXpathToAbsoluteCssLocator(String html, String xpath) {
-        var absoluteXpath = HtmlService.findElementAbsoluteXpath(html, xpath);
+    public static String getAbsoluteXPath(Element element) {
+        StringBuilder xpath = new StringBuilder();
 
-        return HtmlService.convertAbsoluteXpathToCss(absoluteXpath);
-    }
+        Element currentElement = element;
+        while (currentElement != null) {
+            if (currentElement.tagName().equals("html") || currentElement.tagName().equals("body") || currentElement.tagName().startsWith("#")) {
+                // ignore the <html> and <body>, because jsoup added them to the html fragment
+                break;
+            }
 
-    public static String convertXpathToAbsoluteCssLocator(Element element, String xpath) {
-        var absoluteXpath = HtmlService.findRelativeElementAbsoluteXpath(element, xpath);
+            xpath.insert(0, indexElement(currentElement));
 
-        return HtmlService.convertAbsoluteXpathToCss(absoluteXpath);
-    }
-
-    public static ArrayList<String> convertXpathToAbsoluteCssLocators(String html, String xpath) {
-        var absoluteXpaths = HtmlService.findElementsAbsoluteXpath(html, xpath);
-
-        return HtmlService.convertAbsoluteXpathToCss(absoluteXpaths);
-    }
-
-    public static ArrayList<String> convertXpathToAbsoluteCssLocators(Element element, String xpath) {
-        var absoluteXpaths = HtmlService.findRelativeElementsAbsoluteXpath(element, xpath);
-
-        return HtmlService.convertAbsoluteXpathToCss(absoluteXpaths);
-    }
-
-    public static Element findElement(String html, String cssQuery) {
-        var doc = Jsoup.parse(html);
-
-        return doc.select(cssQuery).stream().findFirst()
-                .orElseThrow(() -> new IllegalArgumentException(String.format("No element was found with the css: %s", cssQuery)));
-    }
-
-    private static String findElementAbsoluteXpath(String html, String xpath) {
-        var doc = Jsoup.parse(html);
-        var el = doc.selectXpath(xpath);
-
-        if (el.isEmpty()) {
-            throw new IllegalArgumentException(String.format("No element was found with the xpath: %s", xpath));
+            currentElement = currentElement.parent();
         }
 
-        return getAbsoluteXPath(el.first());
+        return xpath.toString();
     }
 
-    private static ArrayList<String> findElementsAbsoluteXpath(String html, String xpath) {
-        var doc = Jsoup.parse(html);
-        var elements = doc.selectXpath(xpath).stream().toList();
+    private String indexElement(Element element) {
+        int index = 1;
 
-        if (elements.isEmpty()) {
-            throw new IllegalArgumentException(String.format("No elements were found with the xpath: %s", xpath));
+        Node previousSibling = element.previousSibling();
+        while (previousSibling != null) {
+            if (previousSibling.nodeName().equals(element.nodeName())) {
+                index++;
+            }
+            previousSibling = previousSibling.previousSibling();
         }
 
-        ArrayList<String> individualQueries = new ArrayList<>();
-
-        for (Element el : elements) {
-            individualQueries.add(getAbsoluteXPath(el));
-        }
-
-        return individualQueries;
+        return "/" + element.tagName() + "[" + index + "]";
     }
 
-    private static String findRelativeElementAbsoluteXpath(Element baseElement, String xpath) {
-        var el = baseElement.selectXpath(xpath);
-
-        if (el.isEmpty()) {
-            throw new IllegalArgumentException(String.format("No element was found with the xpath: %s", xpath));
+    public <T> T getAttribute(Element element, String attributeName, Class<T> clazz) {
+        if (element.attribute(attributeName) == null || element.attribute(attributeName).getValue() == null || element.attribute(attributeName).getValue().isBlank()) {
+            return null;
+        } else {
+            return TypeParser.parse(element.attribute(attributeName).getValue(), clazz);
         }
-
-        return getAbsoluteXPath(el.first());
     }
 
-    private static ArrayList<String> findRelativeElementsAbsoluteXpath(Element baseElement, String xpath) {
-        var elements = baseElement.selectXpath(xpath).stream().toList();
-
-        if (elements.isEmpty()) {
-            throw new IllegalArgumentException(String.format("No elements were found with the xpath: %s", xpath));
-        }
-
-        ArrayList<String> queries = new ArrayList<String>();
-
-        for (Element el : elements) {
-            queries.add(getAbsoluteXPath(el));
-        }
-
-        return queries;
-    }
-
-    private static String convertAbsoluteXpathToCss(String xpath) {
+    public static String convertAbsoluteXpathToCss(String xpath) {
         String cssSelector = xpath.replace("/", " > ");
 
         // Use regular expression to replace [number] with :nth-child(number)
@@ -120,7 +75,7 @@ public class HtmlService {
         StringBuilder builder = new StringBuilder();
 
         while (matcher.find()) {
-            matcher.appendReplacement(builder, ":nth-child(" + matcher.group(1) + ")");
+            matcher.appendReplacement(builder, ":nth-of-type(" + matcher.group(1) + ")");
         }
         matcher.appendTail(builder);
 
@@ -133,35 +88,15 @@ public class HtmlService {
         return semiFinalLocator;
     }
 
-    private static ArrayList<String> convertAbsoluteXpathToCss(ArrayList<String> queries) {
-        for (String query : queries) {
-            query = convertAbsoluteXpathToCss(query);
+    public static String removeDanglingChildCombinatorsFromCss(String css) {
+        if (css.startsWith(" > ")) {
+            css = css.substring(2);
         }
 
-        return queries;
-    }
-
-    private static String getAbsoluteXPath(Element element) {
-        StringBuilder xpath = new StringBuilder("/");
-
-        for (Element el : element.parents()) {
-
-            if (el.tagName().equals("html") || el.tagName().equals("body")) {
-                // ignore the <html> and <body>, because jsoup added them to the html fragment
-                continue;
-            }
-
-            int index = 1;
-            for (Element sibling : el.siblingElements()) {
-                if (sibling.tagName().equals(el.tagName())) {
-                    index++;
-                }
-            }
-            xpath.insert(0, "/" + el.tagName() + "[" + index + "]");
+        if (css.endsWith(" > ")) {
+            css = css.substring(0, css.length() - 3);
         }
 
-        xpath.append(element.tagName());
-
-        return xpath.toString();
+        return css;
     }
 }

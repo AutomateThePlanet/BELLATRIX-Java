@@ -42,6 +42,7 @@ import solutions.bellatrix.playwright.components.options.actions.ClickOptions;
 import solutions.bellatrix.playwright.components.options.actions.HoverOptions;
 import solutions.bellatrix.playwright.components.options.actions.UncheckOptions;
 import solutions.bellatrix.playwright.components.options.states.BoundingBoxOptions;
+import solutions.bellatrix.playwright.components.shadowdom.ShadowRoot;
 import solutions.bellatrix.playwright.configuration.WebSettings;
 import solutions.bellatrix.playwright.findstrategies.*;
 import solutions.bellatrix.playwright.findstrategies.options.*;

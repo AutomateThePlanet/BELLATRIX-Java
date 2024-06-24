@@ -26,11 +26,13 @@ import org.openqa.selenium.support.ui.Select;
 import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.core.plugins.EventListener;
 import solutions.bellatrix.core.utilities.DebugInformation;
-import solutions.bellatrix.core.utilities.HtmlService;
 import solutions.bellatrix.core.utilities.InstanceFactory;
 import solutions.bellatrix.core.utilities.Log;
 import solutions.bellatrix.web.components.contracts.Component;
 import solutions.bellatrix.web.components.contracts.ComponentVisible;
+import solutions.bellatrix.web.components.shadowdom.ShadowHost;
+import solutions.bellatrix.web.components.shadowdom.ShadowRoot;
+import solutions.bellatrix.web.components.shadowdom.ShadowDomService;
 import solutions.bellatrix.web.configuration.WebSettings;
 import solutions.bellatrix.web.findstrategies.*;
 import solutions.bellatrix.web.infrastructure.Browser;
@@ -92,6 +94,7 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
 
     /**
      * Convert this component to another type of component.
+     *
      * @param componentClass type of component
      */
     public <ComponentT extends WebComponent> ComponentT as(Class<ComponentT> componentClass) {
@@ -99,7 +102,9 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
 
         var component = InstanceFactory.create(componentClass);
 
-        component.setWrappedElement(this.wrappedElement);
+        if (componentClass != ShadowRoot.class) {
+            component.setWrappedElement(this.wrappedElement);
+        }
         component.setParentComponent(this.parentComponent);
         component.setParentWrappedElement(this.parentWrappedElement);
         component.setFindStrategy(this.findStrategy);
@@ -142,6 +147,7 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
     /**
      * Returns {@link ShadowRoot} from which you can safely create elements inside the shadow DOM
      * even with XPath.
+     *
      * @return {@link ShadowRoot}
      */
     public ShadowRoot getShadowRoot() {
@@ -701,6 +707,8 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
     }
 
     public void highlight() {
+        if (this.getWrappedElement() instanceof ShadowHost) return;
+
         var currentBrowser = DriverService.getBrowserConfiguration().getBrowser();
         if (currentBrowser == Browser.CHROME_HEADLESS) return;
 
@@ -760,18 +768,17 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
     protected <TComponent extends WebComponent, TFindStrategy extends FindStrategy> TComponent create(Class<TComponent> componentClass, TFindStrategy findStrategy) {
         CREATING_ELEMENT.broadcast(new ComponentActionEventArgs(this));
         findElement();
-        var component = InstanceFactory.create(componentClass);
 
-        var ancestor = getAncestor();
+        TComponent component;
 
-        if (ancestor.getComponentClass() == ShadowRoot.class && findStrategy.convert() instanceof By.ByXPath) {
-            component.setFindStrategy(getShadowXpath((ShadowRoot)ancestor, findStrategy));
+        if (inShadowContext()) {
+            component = ShadowDomService.createInShadowContext(this, componentClass, findStrategy);
         } else {
+            component = InstanceFactory.create(componentClass);
             component.setFindStrategy(findStrategy);
+            component.setParentComponent(this);
+            component.setParentWrappedElement(this.getWrappedElement());
         }
-
-        component.setParentComponent(this);
-        component.setParentWrappedElement(ancestor.shadowRoot());
 
         CREATED_ELEMENT.broadcast(new ComponentActionEventArgs(this));
         return component;
@@ -781,22 +788,11 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
         CREATING_ELEMENTS.broadcast(new ComponentActionEventArgs(this));
         findElement();
 
-        var ancestor = getAncestor();
-
         List<TComponent> componentList = new ArrayList<>();
 
-        if (ancestor.getComponentClass() == ShadowRoot.class && findStrategy.convert() instanceof By.ByXPath) {
-            var strategies = getShadowXpaths((ShadowRoot)ancestor, findStrategy);
-
-            for (var strategy : strategies) {
-                var component = InstanceFactory.create(componentClass);
-                component.setFindStrategy(strategy);
-                component.setParentComponent(this);
-                component.setParentWrappedElement(ancestor.shadowRoot());
-                componentList.add(component);
-            }
-        }
-        else {
+        if (inShadowContext()) {
+            componentList = ShadowDomService.createAllInShadowContext(this, componentClass, findStrategy);
+        } else {
             var nativeElements = wrappedElement.findElements(findStrategy.convert());
 
             for (int i = 0; i < nativeElements.size(); i++) {
@@ -812,35 +808,15 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
         return componentList;
     }
 
-    private WebComponent getAncestor() {
+    private boolean inShadowContext() {
         var component = this;
 
         while (component != null) {
-            if (component instanceof ShadowRoot) {
-                return component;
-            }
+            if (component instanceof ShadowRoot) return true;
             component = component.getParentComponent();
         }
 
-        return component;
-    }
-
-    private ShadowXPathFindStrategy getShadowXpath(ShadowRoot ancestor, FindStrategy findStrategy) {
-        var cssLocator = HtmlService.convertXpathToAbsoluteCssLocator(HtmlService.findElement(ancestor.getHtml(), this.getFindStrategy().getValue()), findStrategy.getValue());
-
-        return new ShadowXPathFindStrategy(findStrategy.getValue(), cssLocator);
-    }
-
-    private List<ShadowXPathFindStrategy> getShadowXpaths(ShadowRoot ancestor, FindStrategy findStrategy) {
-        var cssLocators = HtmlService.convertXpathToAbsoluteCssLocators(HtmlService.findElement(ancestor.getHtml(), this.getFindStrategy().getValue()), findStrategy.getValue());
-
-        List<ShadowXPathFindStrategy> strategies = new ArrayList<>();
-
-        for (var locator : cssLocators) {
-            strategies.add(new ShadowXPathFindStrategy(findStrategy.getValue(), locator));
-        }
-
-        return strategies;
+        return false;
     }
 
     public WebElement findElement() {

@@ -11,9 +11,9 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.playwright.components;
+package solutions.bellatrix.playwright.components.shadowdom;
 
-import solutions.bellatrix.playwright.components.common.create.ShadowRootCreateService;
+import solutions.bellatrix.playwright.components.WebComponent;
 import solutions.bellatrix.playwright.components.common.webelement.WebElement;
 import solutions.bellatrix.playwright.components.contracts.ComponentHtml;
 import solutions.bellatrix.playwright.utilities.Settings;
@@ -34,6 +34,6 @@ public class ShadowRoot extends WebComponent implements ComponentHtml {
      * Returns the innerHTML of the shadowRoot of the shadow host.
      */
     public String getHtml() {
-        return (String)wrappedElement.evaluate("el => el.shadowRoot.innerHTML");
+        return ShadowDomService.getShadowHtml(this);
     }
 }

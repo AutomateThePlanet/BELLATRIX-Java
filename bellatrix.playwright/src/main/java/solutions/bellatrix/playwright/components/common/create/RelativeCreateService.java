@@ -15,7 +15,8 @@ package solutions.bellatrix.playwright.components.common.create;
 
 import solutions.bellatrix.core.plugins.EventListener;
 import solutions.bellatrix.core.utilities.HtmlService;
-import solutions.bellatrix.playwright.components.ShadowRoot;
+import solutions.bellatrix.playwright.components.shadowdom.ShadowDomService;
+import solutions.bellatrix.playwright.components.shadowdom.ShadowRoot;
 import solutions.bellatrix.playwright.components.WebComponent;
 import solutions.bellatrix.playwright.components.common.ComponentActionEventArgs;
 import solutions.bellatrix.playwright.components.common.webelement.WebElement;
@@ -48,10 +49,8 @@ public class RelativeCreateService extends ComponentCreateService {
 
         TComponent newComponent;
 
-        var ancestor = getAncestor();
-
-        if (ancestor instanceof ShadowRoot && findStrategy instanceof XpathFindStrategy) {
-            newComponent = createFromAncestorShadowRoot(componentClass, getShadowXpath((ShadowRoot)ancestor, findStrategy), (ShadowRoot)ancestor);
+        if (inShadowContext()) {
+            newComponent = ShadowDomService.createInShadowContext((WebComponent)baseComponent, componentClass, findStrategy);
         } else {
             newComponent = createFromParentComponent(componentClass, findStrategy);
         }
@@ -67,20 +66,11 @@ public class RelativeCreateService extends ComponentCreateService {
 
         wrappedBrowser().getCurrentPage().waitForLoadState();
 
-        var ancestor = getAncestor();
-
         List<TComponent> componentList = new ArrayList<>();
 
-        if (ancestor instanceof ShadowRoot && findStrategy instanceof XpathFindStrategy) {
-            var shadowXpathStrategies = getShadowXpathList((ShadowRoot)ancestor, findStrategy);
-
-            for (var strategy : shadowXpathStrategies) {
-                var component = createFromAncestorShadowRoot(componentClass, strategy, (ShadowRoot)ancestor);
-
-                componentList.add(component);
-            }
-        }
-        else {
+        if (inShadowContext()) {
+            componentList = ShadowDomService.createAllInShadowContext((WebComponent)baseComponent, componentClass, findStrategy);
+        } else {
             var elements = findStrategy.convert(baseComponent.getWrappedElement()).all();
 
             for (var element : elements) {
@@ -95,59 +85,15 @@ public class RelativeCreateService extends ComponentCreateService {
         return componentList;
     }
 
-    /**
-     * @return Last ancestor or first ShadowRoot ancestor.
-     */
-    private WebComponent getAncestor() {
+    private boolean inShadowContext() {
         var component = (WebComponent)baseComponent;
 
         while (component != null) {
-            if (component instanceof ShadowRoot) {
-                return component;
-            }
+            if (component instanceof ShadowRoot) return true;
             component = component.getParentComponent();
         }
 
-        return component;
-    }
-
-    private ShadowXpathFindStrategy getShadowXpath(ShadowRoot ancestor, FindStrategy findStrategy) {
-        // First, we find the absolute location of baseComponent inside the shadow DOM
-        var searchContext = HtmlService.findElement(ancestor.getHtml(), baseComponent.getFindStrategy().getValue());
-
-        // Then we use its absolute location as a start point to navigate inside the shadow DOM (XPath Axes is allowed)
-        // We get the absolute xpath of the new component, and finally we convert it to css locator
-        var cssLocator = HtmlService.convertXpathToAbsoluteCssLocator(searchContext, findStrategy.getValue());
-
-        return new ShadowXpathFindStrategy(findStrategy.getValue(), cssLocator);
-    }
-
-    private List<ShadowXpathFindStrategy> getShadowXpathList(ShadowRoot ancestor, FindStrategy findStrategy) {
-        // First, we find the absolute location of baseComponent inside the shadow DOM
-        var searchContext = HtmlService.findElement(ancestor.getHtml(), baseComponent.getFindStrategy().getValue());
-
-        // Then we use its absolute location as a start point to navigate inside the shadow DOM (XPath Axes is allowed)
-        // We get the absolute xpath of the new components, and finally we convert them to css locators
-        var cssLocators = HtmlService.convertXpathToAbsoluteCssLocators(searchContext, findStrategy.getValue());
-
-        List<ShadowXpathFindStrategy> strategies = new ArrayList<>();
-
-        for (var locator : cssLocators) {
-            strategies.add(new ShadowXpathFindStrategy(findStrategy.getValue(), locator));
-        }
-
-        return strategies;
-    }
-
-    /**
-     * Creates from the shadowRoot itself as to allow for XPath Axes queries.
-     */
-    private <TComponent extends WebComponent> TComponent createFromAncestorShadowRoot(Class<TComponent> componentClass, ShadowXpathFindStrategy shadowXpathStrategy, ShadowRoot ancestor) {
-        var element = shadowXpathStrategy.convert(ancestor.getWrappedElement()).first();
-        var newComponent = createInstance(componentClass, shadowXpathStrategy, element);
-        newComponent.setParentComponent(ancestor);
-
-        return newComponent;
+        return false;
     }
 
     protected <TComponent extends WebComponent, TFindStrategy extends FindStrategy> TComponent createFromParentComponent(Class<TComponent> componentClass, TFindStrategy findStrategy) {

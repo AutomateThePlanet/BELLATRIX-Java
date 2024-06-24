@@ -11,11 +11,12 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.playwright.components.common.create;
+package solutions.bellatrix.playwright.components.shadowdom;
 
 import solutions.bellatrix.core.plugins.EventListener;
 import solutions.bellatrix.core.utilities.HtmlService;
-import solutions.bellatrix.playwright.components.ShadowRoot;
+import solutions.bellatrix.playwright.components.common.create.RelativeCreateService;
+import solutions.bellatrix.playwright.components.shadowdom.ShadowRoot;
 import solutions.bellatrix.playwright.components.WebComponent;
 import solutions.bellatrix.playwright.components.common.ComponentActionEventArgs;
 import solutions.bellatrix.playwright.findstrategies.FindStrategy;
@@ -36,16 +37,7 @@ public class ShadowRootCreateService extends RelativeCreateService {
 
         wrappedBrowser().getCurrentPage().waitForLoadState();
 
-        TComponent newComponent;
-
-        if (findStrategy instanceof XpathFindStrategy) {
-            var shadowXpathStrategy = getShadowXpath(findStrategy);
-
-            newComponent = createFromParentComponent(componentClass, shadowXpathStrategy);
-
-        } else {
-            newComponent = createFromParentComponent(componentClass, findStrategy);
-        }
+        TComponent newComponent = ShadowDomService.createFromShadowRoot((ShadowRoot)baseComponent, componentClass, findStrategy);
 
         CREATED.broadcast(new ComponentActionEventArgs((WebComponent)baseComponent));
 
@@ -58,49 +50,10 @@ public class ShadowRootCreateService extends RelativeCreateService {
 
         wrappedBrowser().getCurrentPage().waitForLoadState();
 
-        List<TComponent> componentList = new ArrayList<>();
-
-        if (findStrategy instanceof XpathFindStrategy) {
-            var shadowXpathStrategies = getShadowXpathList(findStrategy);
-
-            for (var strategy : shadowXpathStrategies) {
-                var component = createFromParentComponent(componentClass, strategy);
-
-                componentList.add(component);
-            }
-        }
-        else {
-            var elements = findStrategy.convert(baseComponent.getWrappedElement()).all();
-
-            for (var element : elements) {
-                var component = createFromParentComponent(componentClass, findStrategy, element);
-
-                componentList.add(component);
-            }
-        }
+        List<TComponent> componentList = ShadowDomService.createAllFromShadowRoot((ShadowRoot)baseComponent, componentClass, findStrategy);
 
         CREATED.broadcast(new ComponentActionEventArgs((WebComponent)baseComponent));
 
         return componentList;
-    }
-
-    private ShadowXpathFindStrategy getShadowXpath(FindStrategy findStrategy) {
-        // We get the absolute xpath of the new component, and we convert it to css locator
-        var cssLocator = HtmlService.convertXpathToAbsoluteCssLocator(((ShadowRoot)baseComponent).getHtml(), findStrategy.getValue());
-
-        return new ShadowXpathFindStrategy(findStrategy.getValue(), cssLocator);
-    }
-
-    private List<ShadowXpathFindStrategy> getShadowXpathList(FindStrategy findStrategy) {
-        // We get the absolute xpath of the new components, and we convert them to css locators
-        var cssLocators = HtmlService.convertXpathToAbsoluteCssLocators(((ShadowRoot)baseComponent).getHtml(), findStrategy.getValue());
-
-        List<ShadowXpathFindStrategy> strategies = new ArrayList<>();
-
-        for (var locator : cssLocators) {
-            strategies.add(new ShadowXpathFindStrategy(findStrategy.getValue(), locator));
-        }
-
-        return strategies;
     }
 }
