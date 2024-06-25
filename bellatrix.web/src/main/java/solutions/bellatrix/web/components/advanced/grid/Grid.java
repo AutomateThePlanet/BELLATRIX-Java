@@ -136,6 +136,7 @@ public class Grid extends WebComponent {
         if (innerXpath.startsWith(".")) innerXpath = innerXpath.substring(1);
         String outerXpath = getCurrentElementXPath();
         String fullXpath = outerXpath + innerXpath;
+        if (fullXpath.startsWith("///")) fullXpath = fullXpath.substring(1);
         GridCell cell = this.createByXPath(GridCell.class, fullXpath);
         setCellMetaData(cell, row, column);
 
