@@ -80,7 +80,7 @@ public class Table extends WebComponent {
     }
 
     public List<TableHeaderRow> getTableHeaderRows() {
-        return this.createAllByXPath(TableHeaderRow.class, getTableService().locators().getHeadersXpath());
+        return this.createAllByXPath(TableHeaderRow.class, "." + getTableService().locators().getHeadersXpath());
     }
 
     public List<TableRow> getRows() {
@@ -239,13 +239,12 @@ public class Table extends WebComponent {
         return castRow;
     }
 
-    // TODO: reuse TableService
     private void initializeRows() {
         if (rows == null || rows.isEmpty()) {
-            rows = this.createAllByXPath(TableRow.class, getTableService().locators().getRowsXpath());
+            rows = this.createAllByXPath(TableRow.class, "." + getTableService().locators().getRowsXpath());
             int rowNumber = 0;
             for (var row : rows) {
-                if (!this.createAllByXPath(TableRow.class, getTableService().locators().getHeadersXpath()).isEmpty()) {
+                if (!this.createAllByXPath(TableRow.class, "." + getTableService().locators().getHeadersXpath()).isEmpty()) {
                     row.setParentTable(this);
                 }
                 row.setIndex(rowNumber++);
