@@ -30,6 +30,11 @@ public class ShadowRoot extends WebComponent implements ComponentHtml {
         webSettings = Settings.web();
     }
 
+    @Override
+    public ShadowRootCreateService create() {
+        return (ShadowRootCreateService)createService;
+    }
+
     /**
      * Returns the innerHTML of the shadowRoot of the shadow host.
      */

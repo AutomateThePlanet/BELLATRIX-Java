@@ -35,7 +35,7 @@ public class ShadowDomService {
 
     public static String getShadowHtml(ShadowRoot shadowRoot) {
         var function = String.format("""
-                (function(element) {
+                el => {
                            function clone(element, tag) {
                                let cloneElement;
                              	if (element instanceof ShadowRoot && !tag) {
@@ -44,9 +44,9 @@ public class ShadowDomService {
                                  cloneElement = document.createElement(tag);
                                }
                                else {
-                                 cloneElement = element.cloneNode();
+                                 cloneElement = element.cloneNode(false);
                                  if (element.firstChild && element.firstChild.nodeType === 3) {
-                                   cloneElement.appendChild(element.firstChild.cloneNode());
+                                   cloneElement.appendChild(element.firstChild.cloneNode(false));
                                  }
                                }
 
@@ -56,17 +56,17 @@ public class ShadowDomService {
 
                                if (element.children) {
                                    for (const child of element.children) {
-                                       cloneElement.appendChild(clone(child));
+                                       cloneElement.appendChild(clone(child, undefined));
                                    }
                                }
 
                                return cloneElement;
                            }
                        
-                           var temporaryDiv = document.createElement("div");
-                           temporaryDiv.appendChild(clone(element.shadowRoot, undefined));
+                        	var temporaryDiv = document.createElement("div");
+                         	temporaryDiv.appendChild(clone(el.shadowRoot, undefined));
                            return temporaryDiv.innerHTML;
-                       })(element);
+                };
                 """, SHADOW_ROOT_TAG);
 
         return (String)shadowRoot.evaluate(function);
@@ -132,12 +132,12 @@ public class ShadowDomService {
         var shadowRoot = initialShadowRoot;
         var nestedShadowRootStack = new Stack<Element>();
 
-        var jsoupNodeCss = HtmlService.convertAbsoluteXpathToCss(HtmlService.getAbsoluteXPath(jsoupNode));
+        var jsoupNodeCss = HtmlService.convertAbsoluteXpathToCss(HtmlService.getAbsoluteXpath(jsoupNode));
 
         if (tryFindNestedShadowRoots(jsoupNode, nestedShadowRootStack)) {
             while (!nestedShadowRootStack.isEmpty()) {
                 var parent = nestedShadowRootStack.pop();
-                var css = HtmlService.convertAbsoluteXpathToCss(HtmlService.getAbsoluteXPath(parent));
+                var css = HtmlService.convertAbsoluteXpathToCss(HtmlService.getAbsoluteXpath(parent));
 
                 shadowRoot = createNestedShadowRoot(shadowRoot, HtmlService.removeDanglingChildCombinatorsFromCss(cleanFromShadowRootTags(css)));
 
@@ -155,6 +155,7 @@ public class ShadowDomService {
         }
 
         component.setParentComponent(shadowRoot);
+        component.setWrappedElement(component.getFindStrategy().convert(shadowRoot.getWrappedElement()).first());
 
         return component;
     }
