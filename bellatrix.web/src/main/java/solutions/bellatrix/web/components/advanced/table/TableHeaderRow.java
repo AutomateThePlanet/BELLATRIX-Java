@@ -13,18 +13,24 @@
 
 package solutions.bellatrix.web.components.advanced.table;
 
+import solutions.bellatrix.core.utilities.SingletonFactory;
 import solutions.bellatrix.web.components.WebComponent;
+import solutions.bellatrix.web.components.advanced.services.TableLocators;
 import solutions.bellatrix.web.components.contracts.ComponentHtml;
 
 import java.util.List;
 
 public class TableHeaderRow extends WebComponent implements ComponentHtml {
     public List<TableCell> getHeaderCells() {
-        return this.createAllByTag(TableCell.class, "th");
+        return this.createAllByTag(TableCell.class, locators().getHeaderTag());
     }
 
     @Override
     public String getHtml() {
         return defaultGetInnerHtmlAttribute();
+    }
+
+    private TableLocators locators() {
+        return SingletonFactory.getInstance(TableLocators.class);
     }
 }
