@@ -14,6 +14,7 @@
 package solutions.bellatrix.playwright.infrastructure.testng;
 
 import solutions.bellatrix.core.plugins.testng.BaseTest;
+import solutions.bellatrix.core.utilities.SingletonFactory;
 import solutions.bellatrix.playwright.components.listeners.BddConsoleLogging;
 import solutions.bellatrix.playwright.components.listeners.HighlightElements;
 import solutions.bellatrix.playwright.infrastructure.BrowserLifecyclePlugin;
@@ -24,7 +25,7 @@ import solutions.bellatrix.playwright.services.App;
 
 public class WebTest extends BaseTest {
     public App app() {
-        return new App();
+        return SingletonFactory.getInstance(App.class);
     }
 
     @Override
