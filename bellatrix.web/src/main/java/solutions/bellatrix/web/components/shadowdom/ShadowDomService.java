@@ -16,6 +16,7 @@ package solutions.bellatrix.web.components.shadowdom;
 import lombok.experimental.UtilityClass;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.openqa.selenium.By;
 import solutions.bellatrix.core.utilities.HtmlService;
 import solutions.bellatrix.core.utilities.InstanceFactory;
@@ -192,21 +193,42 @@ public class ShadowDomService {
     private static Element getElement(ShadowRoot component, FindStrategy findStrategy) {
         var doc = Jsoup.parse(component.getHtml());
 
-        var value = findStrategy.getValue();
-
-        if (findStrategy.convert() instanceof By.ByXPath) {
-            return doc.selectXpath(findStrategy.getValue()).get(0);
-        } else {
-            return doc.select(findStrategy.getValue()).get(0);
-        }
+        return getElement(doc, findStrategy);
     }
 
     private static Element getElement(Element element, FindStrategy findStrategy) {
-        if (findStrategy.convert() instanceof By.ByXPath) {
-            return element.selectXpath(findStrategy.getValue()).get(0);
-        } else {
-            return element.select(findStrategy.getValue()).get(0);
+        Elements foundElements = null;
+        var strategyType = findStrategy.convert();
+        var strategyValue = findStrategy.getValue();
+
+        if (strategyType instanceof By.ByCssSelector) {
+            foundElements = element.select(strategyValue);
         }
+        if (findStrategy.convert() instanceof By.ByXPath) {
+            foundElements = element.selectXpath(strategyValue);
+        }
+        if (findStrategy.convert() instanceof By.ById) {
+            foundElements = element.select(String.format("[id='%s']", strategyValue));
+        }
+        if (strategyType instanceof By.ByName) {
+            foundElements = element.select(String.format("[name='%s']", strategyValue));
+        }
+        if (strategyType instanceof By.ByClassName) {
+            foundElements = element.select(String.format("[class='%s']", strategyValue));
+        }
+        if (strategyType instanceof By.ByLinkText) {
+            foundElements = element.selectXpath(String.format("//a[text()='%s']", strategyValue));
+        }
+        if (strategyType instanceof By.ByTagName) {
+            foundElements = element.select(strategyValue);
+        }
+        if (strategyType instanceof By.ByPartialLinkText) {
+            foundElements = element.selectXpath(String.format("//a[contains(text(), '%s')]", strategyValue));
+        }
+
+        assert foundElements != null;
+
+        return foundElements.get(0);
     }
 
     private static List<Element> getElements(ShadowRoot component, FindStrategy findStrategy) {
