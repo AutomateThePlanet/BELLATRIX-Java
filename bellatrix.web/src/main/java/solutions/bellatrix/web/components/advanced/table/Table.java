@@ -66,7 +66,7 @@ public class Table extends WebComponent {
     }
 
     public TableFooter getFooter() {
-        return this.createByXPath(TableFooter.class, HtmlService.getAbsoluteXPath(getTableService().getFooter()));
+        return this.createByXPath(TableFooter.class, HtmlService.getAbsoluteXpath(getTableService().getFooter()));
     }
 
     public int getRowsCount() {

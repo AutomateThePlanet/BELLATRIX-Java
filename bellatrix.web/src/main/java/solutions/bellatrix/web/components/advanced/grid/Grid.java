@@ -57,7 +57,7 @@ public class Grid extends WebComponent {
     public List<Button> getColumnHeaders() {
         var list = new ArrayList<Button>();
         for (var header : getTableService().getHeaders()) {
-            var element = this.createByXPath(Button.class, HtmlService.getAbsoluteXPath(header));
+            var element = this.createByXPath(Button.class, HtmlService.getAbsoluteXpath(header));
             list.add(element);
         }
 
@@ -67,7 +67,7 @@ public class Grid extends WebComponent {
     public List<TableHeaderRow> getTableHeaderRows() {
         var list = new ArrayList<TableHeaderRow>();
         for (var headerRow : getTableService().getHeaderRows()) {
-            var element = this.createByXPath(TableHeaderRow.class, HtmlService.getAbsoluteXPath(headerRow));
+            var element = this.createByXPath(TableHeaderRow.class, HtmlService.getAbsoluteXpath(headerRow));
             list.add(element);
         }
 
@@ -96,7 +96,7 @@ public class Grid extends WebComponent {
     }
 
     public GridRow getRow(int rowIndex) {
-        String xpath = HtmlService.getAbsoluteXPath(getTableService().getRow(rowIndex));
+        String xpath = HtmlService.getAbsoluteXpath(getTableService().getRow(rowIndex));
         GridRow row = this.createByXPath(GridRow.class, "." + xpath);
         row.setParentGrid(this);
         row.setIndex(rowIndex);
@@ -126,13 +126,13 @@ public class Grid extends WebComponent {
 
     public void forEachRow(Consumer<GridRow> action) {
         for (var gridRow : getTableService().getRows()) {
-            String xpath = HtmlService.getAbsoluteXPath(gridRow);
+            String xpath = HtmlService.getAbsoluteXpath(gridRow);
             action.accept(this.createByXPath(GridRow.class, "." + xpath));
         }
     }
 
     public GridCell getCell(int row, int column) {
-        String innerXpath = HtmlService.getAbsoluteXPath(getTableService().getCell(row, column));
+        String innerXpath = HtmlService.getAbsoluteXpath(getTableService().getCell(row, column));
         if (innerXpath.startsWith(".")) innerXpath = innerXpath.substring(1);
         String outerXpath = getCurrentElementXPath();
         String fullXpath = outerXpath + innerXpath;
@@ -160,7 +160,7 @@ public class Grid extends WebComponent {
     public void forEachCell(Consumer<GridCell> action) {
         var outerXpath = getCurrentElementXPath();
         for (var gridCell : getTableService().getCells()) {
-            var fullXpath = outerXpath + HtmlService.getAbsoluteXPath(gridCell);
+            var fullXpath = outerXpath + HtmlService.getAbsoluteXpath(gridCell);
             action.accept(this.createByXPath(GridCell.class, "." + fullXpath));
         }
     }
@@ -196,7 +196,7 @@ public class Grid extends WebComponent {
     }
 
     public GridRow getFooterByPosition(int position) {
-        String xpath = HtmlService.getAbsoluteXPath(getFooterService().getRows().get(position));
+        String xpath = HtmlService.getAbsoluteXpath(getFooterService().getRows().get(position));
         GridRow row = this.createByXPath(GridRow.class, "." + xpath);
         row.setParentGrid(this);
         row.setIndex(position);
@@ -225,7 +225,7 @@ public class Grid extends WebComponent {
 
     public void forEachFooterRow(Consumer<GridRow> action) {
         for (var gridRow : getFooterService().getRows()) {
-            String xpath = HtmlService.getAbsoluteXPath(gridRow);
+            String xpath = HtmlService.getAbsoluteXpath(gridRow);
             action.accept(this.createByXPath(GridRow.class, "." + xpath));
         }
     }
@@ -364,7 +364,7 @@ public class Grid extends WebComponent {
 
             var controlData = getControlDataByField(field);
             if (controlData != null && controlData.getComponentClass() != null && WebComponent.class.isAssignableFrom(controlData.getComponentClass())) {
-                var xpath = HtmlService.getAbsoluteXPath(cells.get(headerPosition));
+                var xpath = HtmlService.getAbsoluteXpath(cells.get(headerPosition));
                 var tableCell = this.createByXPath(TableCell.class, "." + xpath);
                 Object elementValue;
                 if (controlData.getFindStrategy() == null) {

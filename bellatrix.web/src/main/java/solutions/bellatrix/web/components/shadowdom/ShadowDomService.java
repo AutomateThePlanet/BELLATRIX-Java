@@ -132,12 +132,12 @@ public class ShadowDomService {
         var shadowRoot = initialShadowRoot;
         var nestedShadowRootStack = new Stack<Element>();
 
-        var jsoupNodeCss = HtmlService.convertAbsoluteXpathToCss(HtmlService.getAbsoluteXPath(jsoupNode));
+        var jsoupNodeCss = HtmlService.convertAbsoluteXpathToCss(HtmlService.getAbsoluteXpath(jsoupNode));
 
         if (tryFindNestedShadowRoots(jsoupNode, nestedShadowRootStack)) {
             while (!nestedShadowRootStack.isEmpty()) {
                 var parent = nestedShadowRootStack.pop();
-                var css = HtmlService.convertAbsoluteXpathToCss(HtmlService.getAbsoluteXPath(parent));
+                var css = HtmlService.convertAbsoluteXpathToCss(HtmlService.getAbsoluteXpath(parent));
 
                 shadowRoot = createNestedShadowRoot(shadowRoot, HtmlService.removeDanglingChildCombinatorsFromCss(cleanFromShadowRootTags(css)));
 

@@ -26,7 +26,7 @@ import java.util.regex.Pattern;
  */
 @UtilityClass
 public class HtmlService {
-    public static String getAbsoluteXPath(Element element) {
+    public static String getAbsoluteXpath(Element element) {
         StringBuilder xpath = new StringBuilder();
 
         Element currentElement = element;
