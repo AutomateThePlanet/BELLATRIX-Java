@@ -18,6 +18,7 @@ import lombok.Setter;
 import solutions.bellatrix.core.assertions.EntitiesAsserter;
 import solutions.bellatrix.core.utilities.HtmlService;
 import solutions.bellatrix.core.utilities.InstanceFactory;
+import solutions.bellatrix.core.utilities.PropertyReference;
 import solutions.bellatrix.core.utilities.parsing.TypeParser;
 import solutions.bellatrix.playwright.components.Label;
 import solutions.bellatrix.playwright.components.WebComponent;
@@ -134,7 +135,7 @@ public class Table extends WebComponent {
         return getCell(position, row);
     }
 
-    public <TDto> TableCell getCell(Class<TDto> dtoClass, Predicate<TDto> expression, int row) {
+    public <TDto> TableCell getCell(Class<TDto> dtoClass, PropertyReference<TDto> expression, int row) {
         String headerName = getHeaderNamesService().getHeaderNameByExpression(dtoClass, expression);
         var position = getHeaderNamesService().getHeaderPosition(headerName, columnHeaderNames);
         if (position == null) return null;

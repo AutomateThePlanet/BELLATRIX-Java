@@ -110,22 +110,8 @@ public class HeaderNamesService {
         return null;
     }
 
-    @SneakyThrows
-    @SuppressWarnings("unchecked")
-    public <T> String getHeaderNameByExpression(Class<T> dtoClass, Predicate<T> expression) {
-        T dtoInstance = InstanceFactory.create(dtoClass);
-
-        for (Field field : dtoClass.getFields()) {
-            field.setAccessible(true);
-
-            Object fieldValue = field.get(dtoInstance);
-
-            if (expression.test((T)fieldValue)) {
-                return getHeaderNameByField(field);
-            }
-        }
-
-        return null;
+    public <T> String getHeaderNameByExpression(Class<T> dtoClass, PropertyReference<T> expression) {
+        return getHeaderNameByField(Objects.requireNonNull(PropertyReferenceNameResolver.getMember(dtoClass, expression)));
     }
 
     public String getHeaderNameByField(Field field) {
