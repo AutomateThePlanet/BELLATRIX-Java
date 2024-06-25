@@ -25,6 +25,7 @@
         <module>bellatrix.ios.tests</module>
         <module>bellatrix.playwright.getting.started</module>
         <module>bellatrix.web.getting.started</module>
+        <module>bellatrix.playwright.tests</module>
     </modules>
 
     <properties>
