@@ -18,6 +18,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.parser.Parser;
 import org.jsoup.select.Elements;
+import solutions.bellatrix.core.utilities.HtmlService;
 import solutions.bellatrix.core.utilities.SingletonFactory;
 
 import java.util.List;
@@ -42,8 +43,7 @@ public class TableService {
 
     public Element getTable() {
         if (tableXpath == null || tableXpath.isBlank()) {
-            // By default, we use root element for table
-            tableXpath = "//*";
+            return HtmlService.addRootElementIfNeeded(htmlDoc);
         }
 
         return htmlDoc.selectXpath(tableXpath).first();

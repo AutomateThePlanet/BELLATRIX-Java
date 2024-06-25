@@ -16,8 +16,10 @@ package solutions.bellatrix.web.components.advanced.services;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Node;
 import org.jsoup.parser.Parser;
 import org.jsoup.select.Elements;
+import solutions.bellatrix.core.utilities.HtmlService;
 import solutions.bellatrix.core.utilities.InstanceFactory;
 import solutions.bellatrix.core.utilities.SingletonFactory;
 
@@ -43,8 +45,7 @@ public class TableService {
 
     public Element getTable() {
         if (tableXpath == null || tableXpath.isBlank()) {
-            // By default, we use root element for table
-            tableXpath = "//*";
+            return HtmlService.addRootElementIfNeeded(htmlDoc);
         }
 
         return htmlDoc.selectXpath(tableXpath).first();
@@ -65,6 +66,8 @@ public class TableService {
     }
 
     public List<Element> getRows() {
+        var table = getTable();
+
         return getTable().selectXpath("." + locators().getRowsXpath());
     }
 
