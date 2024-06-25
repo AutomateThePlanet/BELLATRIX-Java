@@ -14,6 +14,7 @@
 package solutions.bellatrix.core.utilities;
 
 import lombok.experimental.UtilityClass;
+import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import solutions.bellatrix.core.utilities.parsing.TypeParser;
@@ -26,12 +27,30 @@ import java.util.regex.Pattern;
  */
 @UtilityClass
 public class HtmlService {
+    public static Document addRootElementIfNeeded(Document doc) {
+        boolean hasMultipleTopLevelElements = doc.childNodes().stream()
+                .filter(node -> node instanceof Element).count() > 1;
+
+        if (hasMultipleTopLevelElements) {
+            var root = new Element("bellatrix-root");
+
+            for (Node node : doc.childNodes()) {
+                root.appendChild(node.clone());
+            }
+
+            doc.empty();
+            doc.appendChild(root);
+        }
+
+        return doc;
+    }
+
     public static String getAbsoluteXpath(Element element) {
         StringBuilder xpath = new StringBuilder();
 
         Element currentElement = element;
         while (currentElement != null) {
-            if (currentElement.tagName().equals("html") || currentElement.tagName().equals("body") || currentElement.tagName().startsWith("#")) {
+            if (currentElement.tagName().equals("html") || currentElement.tagName().equals("body") || currentElement.tagName().startsWith("#") || currentElement.tagName().equals("bellatrix-root")) {
                 // ignore the <html> and <body>, because jsoup added them to the html fragment
                 break;
             }
