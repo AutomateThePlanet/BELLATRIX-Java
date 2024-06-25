@@ -241,13 +241,14 @@ public class Table extends WebComponent {
 
     private void initializeRows() {
         if (rows == null || rows.isEmpty()) {
-            rows = this.createAllByXPath(TableRow.class, "." + getTableService().locators().getRowsXpath());
+            var rowTag = getTableService().locators().getRowTag();
+            var cellTag = getTableService().locators().getCellTag();
+            var bodyTag = getTableService().locators().getBodyTag();
+            rows = this.createAllByXPath(TableRow.class, String.format("./%s[descendant::%s]|./%s/%s[descendant::%s]", rowTag, cellTag, bodyTag, rowTag, cellTag));
             int rowNumber = 0;
             for (var row : rows) {
-                if (!this.createAllByXPath(TableRow.class, "." + getTableService().locators().getHeadersXpath()).isEmpty()) {
-                    row.setParentTable(this);
-                }
-                row.setIndex(rowNumber++);
+                row.setParentTable(this);
+                row.setIndex(++rowNumber);
             }
         }
     }

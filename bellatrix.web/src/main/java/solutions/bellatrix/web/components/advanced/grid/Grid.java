@@ -97,7 +97,7 @@ public class Grid extends WebComponent {
 
     public GridRow getRow(int rowIndex) {
         String xpath = HtmlService.getAbsoluteXPath(getTableService().getRow(rowIndex));
-        GridRow row = this.createByXPath(GridRow.class, xpath);
+        GridRow row = this.createByXPath(GridRow.class, "." + xpath);
         row.setParentGrid(this);
         row.setIndex(rowIndex);
 
@@ -127,7 +127,7 @@ public class Grid extends WebComponent {
     public void forEachRow(Consumer<GridRow> action) {
         for (var gridRow : getTableService().getRows()) {
             String xpath = HtmlService.getAbsoluteXPath(gridRow);
-            action.accept(this.createByXPath(GridRow.class, xpath));
+            action.accept(this.createByXPath(GridRow.class, "." + xpath));
         }
     }
 
@@ -161,7 +161,7 @@ public class Grid extends WebComponent {
         var outerXpath = getCurrentElementXPath();
         for (var gridCell : getTableService().getCells()) {
             var fullXpath = outerXpath + HtmlService.getAbsoluteXPath(gridCell);
-            action.accept(this.createByXPath(GridCell.class, fullXpath));
+            action.accept(this.createByXPath(GridCell.class, "." + fullXpath));
         }
     }
 
@@ -197,7 +197,7 @@ public class Grid extends WebComponent {
 
     public GridRow getFooterByPosition(int position) {
         String xpath = HtmlService.getAbsoluteXPath(getFooterService().getRows().get(position));
-        GridRow row = this.createByXPath(GridRow.class, xpath);
+        GridRow row = this.createByXPath(GridRow.class, "." + xpath);
         row.setParentGrid(this);
         row.setIndex(position);
 
@@ -226,7 +226,7 @@ public class Grid extends WebComponent {
     public void forEachFooterRow(Consumer<GridRow> action) {
         for (var gridRow : getFooterService().getRows()) {
             String xpath = HtmlService.getAbsoluteXPath(gridRow);
-            action.accept(this.createByXPath(GridRow.class, xpath));
+            action.accept(this.createByXPath(GridRow.class, "." + xpath));
         }
     }
 
@@ -365,7 +365,7 @@ public class Grid extends WebComponent {
             var controlData = getControlDataByField(field);
             if (controlData != null && controlData.getComponentClass() != null && WebComponent.class.isAssignableFrom(controlData.getComponentClass())) {
                 var xpath = HtmlService.getAbsoluteXPath(cells.get(headerPosition));
-                var tableCell = this.createByXPath(TableCell.class, xpath);
+                var tableCell = this.createByXPath(TableCell.class, "." + xpath);
                 Object elementValue;
                 if (controlData.getFindStrategy() == null) {
                     controlData.setFindStrategy(new XPathFindStrategy(xpath));
