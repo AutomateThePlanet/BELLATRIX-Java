@@ -34,10 +34,10 @@ public class BDDLoggingTests extends WebTest {
         couponCodeTextInput.setText("happybirthday");
         applyCouponButton.click();
         messageAlert.toBeVisible().waitToBe();
-        messageAlert.validateInnerTextIs("Coupon code applied successfully.");
+        messageAlert.validateTextIs("Coupon code applied successfully.");
         quantityBox.setNumber(0);
         quantityBox.setNumber(2);
-        totalSpan.validateInnerTextIs("54.00€");
+        totalSpan.validateTextIs("54.00€");
         proceedToCheckout.click();
 
         Heading billingDetailsHeading = app().create().byInnerTextContaining(Heading.class, "Billing details");

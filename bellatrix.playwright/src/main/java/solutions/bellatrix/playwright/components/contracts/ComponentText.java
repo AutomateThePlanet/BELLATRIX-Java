@@ -19,7 +19,7 @@ import solutions.bellatrix.playwright.components.common.validate.ComponentValida
 public interface ComponentText extends Component {
     String getText();
 
-    default void validateInnerTextIs(String value) {
+    default void validateTextIs(String value) {
         ComponentValidator.defaultValidateAttributeIs((WebComponent)this, this::getText, value, "inner text");
     }
 

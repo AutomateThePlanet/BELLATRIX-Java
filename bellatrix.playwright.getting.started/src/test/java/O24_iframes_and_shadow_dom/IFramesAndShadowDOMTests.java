@@ -24,7 +24,7 @@ public class IFramesAndShadowDOMTests extends WebTest {
         // In case you want to reuse the component locating logic, but stop looking inside the <iframe>, you can use the as() method;
         // It will automatically switch to using normal locating strategies and you will stop being able to pierce the <iframe>
         var iframeAsDiv = iframe.as(Div.class);
-        iframeAsDiv.create().byXpath(Heading.class, "//preceding-sibling::h1").validateInnerTextIs("The iframe element");
+        iframeAsDiv.create().byXpath(Heading.class, "//preceding-sibling::h1").validateTextIs("The iframe element");
 
         // Again, if you create a 'normal' component and want to reuse it, this time to search inside it, as if it is <iframe>, you use as() method again
         var iframeAsNormalComponent = parentIFrame.create().byXpath(Div.class, "//iframe[@src='https://www.w3schools.com']");

@@ -47,9 +47,9 @@ public class CustomTestCaseExtensionTests extends WebTest {
         }
 
         var firstName = app().create().byId(TextInput.class,"billing_first_name");
-        firstName.validateInnerTextIs("");
+        firstName.validateTextIs("");
 
         var productTotal = app().create().byClass(Span.class,"cart_item").createByClass(Span.class,"product-total");
-        productTotal.validateInnerTextIs("120.00€");
+        productTotal.validateTextIs("120.00€");
     }
 }

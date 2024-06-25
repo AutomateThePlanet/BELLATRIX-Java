@@ -32,13 +32,13 @@ public class ExtendExistingComponent extends WebTest {
         applyCouponButton.click();
 
         messageAlert.toBeVisible().waitToBe();
-        messageAlert.validateInnerTextIs("Coupon code applied successfully.");
+        messageAlert.validateTextIs("Coupon code applied successfully.");
         quantityBox.setNumber(0);
         quantityBox.setNumber(2);
 
         updateCart.click();
 
-        totalSpan.validateInnerTextIs("95.00€");
+        totalSpan.validateTextIs("95.00€");
 
         proceedToCheckout.submitButtonWithEnter();
         billingDetailsHeading.toBeVisible().waitToBe();

@@ -35,7 +35,7 @@ public class ValidateAssertions extends WebTest {
 
         Span totalSpan = app().create().byXpath(Span.class, "//*[@class='order-total']//span");
 
-        totalSpan.validateInnerTextIs("120.00€");
+        totalSpan.validateTextIs("120.00€");
         // Check the total price contained in the order-total span HTML element. By default, all Validate methods have 5
         // seconds timeout. However, you can specify a custom timeout and sleep interval (period for checking again)
     }
