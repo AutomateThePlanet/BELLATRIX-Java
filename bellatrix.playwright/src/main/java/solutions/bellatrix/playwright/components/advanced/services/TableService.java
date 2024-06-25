@@ -50,11 +50,11 @@ public class TableService {
     }
 
     public List<Element> getHeaders() {
-        return getTable().selectXpath(locators().getHeadersXpath());
+        return getTable().selectXpath("." + locators().getHeadersXpath());
     }
 
     public List<Element> getHeaderRows() {
-        return getTable().selectXpath(locators().getHeadersXpath()).stream()
+        return getTable().selectXpath("." + locators().getHeadersXpath()).stream()
                 .filter((a) -> a.attribute("style") == null || !Objects.equals(a.attribute("style").getValue(), "display:none"))
                 .toList();
     }
@@ -64,11 +64,11 @@ public class TableService {
     }
 
     public List<Element> getRows() {
-        return getTable().selectXpath(locators().getRowsXpath());
+        return getTable().selectXpath("." + locators().getRowsXpath());
     }
 
     public Element getFooter() {
-        return getTable().selectXpath(locators().getFooterXpath()).first();
+        return getTable().selectXpath("." + locators().getFooterXpath()).first();
     }
 
     public Element getCell(int row, int column) {
@@ -78,13 +78,13 @@ public class TableService {
     public List<Element> getCells() {
         var listOfNodes = new Elements();
         for (int i = 0; i < getRows().size(); i++) {
-            listOfNodes.addAll(getRow(i).selectXpath(locators().getCellXpath()));
+            listOfNodes.addAll(getRow(i).selectXpath("." + locators().getCellXpath()));
         }
 
         return listOfNodes;
     }
 
     public List<Element> getRowCells(int rowIndex) {
-        return getRow(rowIndex).selectXpath(locators().getCellXpath());
+        return getRow(rowIndex).selectXpath("." + locators().getCellXpath());
     }
 }

@@ -66,7 +66,7 @@ public class Table extends WebComponent {
     }
 
     public TableFooter getFooter() {
-        return this.create().byXpath(TableFooter.class, HtmlService.getAbsoluteXPath(getTableService().getFooter()));
+        return this.create().byXpath(TableFooter.class, HtmlService.getAbsoluteXpath(getTableService().getFooter()));
     }
 
     public int getRowsCount() {
@@ -80,7 +80,7 @@ public class Table extends WebComponent {
     }
 
     public List<TableHeaderRow> getTableHeaderRows() {
-        return this.create().allByXpath(TableHeaderRow.class, getTableService().locators().getHeadersXpath());
+        return this.create().allByXpath(TableHeaderRow.class, "." + getTableService().locators().getHeadersXpath());
     }
 
     public List<TableRow> getRows() {
@@ -239,16 +239,16 @@ public class Table extends WebComponent {
         return castRow;
     }
 
-    // TODO: reuse TableService
     private void initializeRows() {
         if (rows == null || rows.isEmpty()) {
-            rows = this.create().allByXpath(TableRow.class, getTableService().locators().getRowsXpath());
+            var rowTag = getTableService().locators().getRowTag();
+            var cellTag = getTableService().locators().getCellTag();
+            var bodyTag = getTableService().locators().getBodyTag();
+            rows = this.create().allByXpath(TableRow.class, String.format("./%s[descendant::%s]|./%s/%s[descendant::%s]", rowTag, cellTag, bodyTag, rowTag, cellTag));
             int rowNumber = 0;
             for (var row : rows) {
-                if (!this.create().allByXpath(TableRow.class, getTableService().locators().getHeadersXpath()).isEmpty()) {
-                    row.setParentTable(this);
-                }
-                row.setIndex(rowNumber++);
+                row.setParentTable(this);
+                row.setIndex(++rowNumber);
             }
         }
     }

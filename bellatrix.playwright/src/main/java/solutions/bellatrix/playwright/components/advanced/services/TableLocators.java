@@ -20,6 +20,10 @@ public class TableLocators {
         return "tfoot";
     }
 
+    public String getBodyTag() {
+        return "tbody";
+    }
+
     public String getHeaderXpath() {
         return "//" + getHeaderTag();
     }

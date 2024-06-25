@@ -31,7 +31,7 @@ import java.util.Objects;
 import java.util.function.Predicate;
 
 public class HeaderNamesService {
-    private String XpathToNameElement;
+    private String xpathToNameElement;
     private Map<Integer, String> headerNamesIndexes;
     private List<Element> tableRowHeaders;
 
@@ -39,9 +39,9 @@ public class HeaderNamesService {
         this.tableRowHeaders = tableRowHeaders;
     }
 
-    public HeaderNamesService(List<Element> tableRowHeaders, String XpathToNameElement) {
+    public HeaderNamesService(List<Element> tableRowHeaders, String xpathToNameElement) {
         this(tableRowHeaders);
-        this.XpathToNameElement = XpathToNameElement;
+        this.xpathToNameElement = xpathToNameElement;
     }
 
     public TableLocators locators() {
@@ -161,9 +161,9 @@ public class HeaderNamesService {
         int rowIndex = 0;
         for (var tableRowHeader : tableRowHeaders) {
             Ref<Integer> columnIndex = new Ref<>(0);
-            var headerCellsCount = tableRowHeader.selectXpath(locators().getHeaderXpath()).size();
+            // UNUSED, REMOVE ME: var headerCellsCount = tableRowHeader.selectXpath(locators().getHeaderXpath()).size();
 
-            for (var currentHeader : tableRowHeader.selectXpath(locators().getHeaderXpath())) {
+            for (var currentHeader : tableRowHeader.selectXpath("." + locators().getHeaderXpath())) {
                 String headerName;
                 while (rowSpanPairs.containsKey(columnIndex.value) && rowIndex > rowSpanPairs.get(columnIndex.value).getRowIndex()) {
                     headerName = rowSpanPairs.get(columnIndex.value).getHeaderName();
@@ -177,10 +177,10 @@ public class HeaderNamesService {
                     columnIndex.value++;
                 }
 
-                if (XpathToNameElement == null || XpathToNameElement.isBlank()) {
+                if (xpathToNameElement == null || xpathToNameElement.isBlank()) {
                     headerName = currentHeader.text();
                 } else {
-                    headerName = StringEscapeUtils.unescapeHtml4(currentHeader.selectXpath(XpathToNameElement).text());
+                    headerName = StringEscapeUtils.unescapeHtml4(currentHeader.selectXpath(xpathToNameElement).text());
                 }
 
                 int colSpan = getColSpan(currentHeader);
@@ -190,7 +190,7 @@ public class HeaderNamesService {
                     rowSpanPairs.put(columnIndex.value, new HeaderRowIndex(headerName, rowSpan, colSpan, rowIndex));
                 }
 
-                addColumnIndex(colSpan, columnIndex, headerName);
+                addColumnIndex(colSpan, (Ref<Integer>)columnIndex, headerName);
             }
 
             rowIndex++;
@@ -211,7 +211,7 @@ public class HeaderNamesService {
     }
 
     private void addHeaderNameIndex(int operationalIndex, String headerName) {
-        if (headerNamesIndexes.containsKey(operationalIndex) && headerNamesIndexes.get(operationalIndex) == headerName) {
+        if (headerNamesIndexes.containsKey(operationalIndex) && Objects.equals(headerNamesIndexes.get(operationalIndex), headerName)) {
             return;
         }
 

@@ -40,7 +40,7 @@ public class TableFooter extends WebComponent implements ComponentHtml {
     }
 
     public TableRow getRowByPosition(int position) {
-        var footerRow = this.create().byXpath(TableRow.class, HtmlService.getAbsoluteXPath(footerService.getFooterRowByPosition(position)));
+        var footerRow = this.create().byXpath(TableRow.class, "." + HtmlService.getAbsoluteXpath(footerService.getFooterRowByPosition(position)));
         footerRow.setParentTable(parentTable);
         footerRow.setIndex(position);
 
@@ -50,7 +50,7 @@ public class TableFooter extends WebComponent implements ComponentHtml {
     public TableRow getRowByName(String footerName) {
         var node = footerService.getFooterRowByName(footerName);
         int position = footerService.getRows().indexOf(node);
-        var footerRow = this.create().byXpath(TableRow.class, HtmlService.getAbsoluteXPath(node));
+        var footerRow = this.create().byXpath(TableRow.class, "." + HtmlService.getAbsoluteXpath(node));
         footerRow.setParentTable(parentTable);
         footerRow.setIndex(position);
 
@@ -62,7 +62,7 @@ public class TableFooter extends WebComponent implements ComponentHtml {
         if (headerPosition == null) return null;
 
         var node = footerService.getFooterRowCellByName(footerName, headerPosition);
-        var footerCell = this.create().byXpath(TableCell.class, HtmlService.getAbsoluteXPath(node));
+        var footerCell = this.create().byXpath(TableCell.class, "." + HtmlService.getAbsoluteXpath(node));
         footerCell.setRow(footerService.getRows().indexOf(node));
         footerCell.setColumn(headerPosition);
 
@@ -74,7 +74,7 @@ public class TableFooter extends WebComponent implements ComponentHtml {
         if (headerPosition == null) return null;
 
         var node = footerService.getFooterRowCellByPosition(position, headerPosition);
-        var footerCell = this.create().byXpath(TableCell.class, HtmlService.getAbsoluteXPath(node));
+        var footerCell = this.create().byXpath(TableCell.class, "." + HtmlService.getAbsoluteXpath(node));
         footerCell.setRow(position);
         footerCell.setColumn(headerPosition);
 

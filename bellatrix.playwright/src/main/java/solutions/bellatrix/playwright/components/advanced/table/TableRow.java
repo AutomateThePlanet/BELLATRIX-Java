@@ -94,6 +94,6 @@ public class TableRow extends WebComponent implements ComponentHtml {
     }
 
     protected List<TableCell> getTableCells() {
-        return this.create().allByXpath(TableCell.class, "/" + parentTable.getTableService().locators().getCellTag());
+        return this.create().allByXpath(TableCell.class, "./" + parentTable.getTableService().locators().getCellTag());
     }
 }

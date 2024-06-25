@@ -51,8 +51,8 @@ public class GridRow extends WebComponent implements ComponentHtml {
         var rowCells = parentGrid.getTableService().getRowCells(index);
 
         for (int rowCellsIndex = 0; rowCellsIndex < rowCells.size(); rowCellsIndex++) {
-            var rowCellXpath = HtmlService.getAbsoluteXPath(rowCells.get(index));
-            var cell = this.create().byXpath(GridCell.class, rowCellXpath);
+            var rowCellXPath = HtmlService.getAbsoluteXpath(rowCells.get(rowCellsIndex));
+            var cell = parentGrid.create().byXpath(GridCell.class, "." + rowCellXPath);
             parentGrid.setCellMetaData(cell, index, rowCellsIndex);
             listOfCells.add(cell);
         }
@@ -70,9 +70,7 @@ public class GridRow extends WebComponent implements ComponentHtml {
             if (cell.getCellControlComponentType() == null) {
                 listOfElements.add(cell.as(clazz));
             } else {
-                var createMethod = WebComponent.class.getDeclaredMethod("create", Class.class, FindStrategy.class);
-                createMethod.setAccessible(true);
-                var element = (TComponent)createMethod.invoke(cell, cell.getCellControlComponentType(), cell.getCellControlFindStrategy());
+                TComponent element = (TComponent)this.create().by(cell.getCellControlComponentType(), cell.getCellControlFindStrategy());
                 listOfElements.add(element);
             }
         }

@@ -9,7 +9,7 @@ import solutions.bellatrix.playwright.findstrategies.FindStrategy;
 @Getter @Setter
 public class ControlColumnData extends HeaderInfo {
     private FindStrategy findStrategy;
-    private Class<?> componentClass;
+    private Class<? extends WebComponent> componentClass;
 
     ControlColumnData(String headerName) {
         super(headerName);
