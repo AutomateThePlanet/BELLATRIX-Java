@@ -106,7 +106,6 @@ public class HeaderNamesService {
         return null;
     }
 
-    @SneakyThrows
     public <T> String getHeaderNameByExpression(Class<T> dtoClass, PropertyReference<T> expression) {
        return getHeaderNameByField(Objects.requireNonNull(PropertyReferenceNameResolver.getMember(dtoClass, expression)));
     }
