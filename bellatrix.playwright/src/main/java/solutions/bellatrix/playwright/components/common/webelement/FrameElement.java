@@ -8,18 +8,14 @@ import solutions.bellatrix.playwright.components.common.webelement.options.*;
 
 import java.util.regex.Pattern;
 
+/**
+ * Wrapper for Playwright FrameLocator.
+ */
 @Getter
 public class FrameElement extends WebElement {
     public FrameElement(Locator locator) {
         super(locator);
-        // Every FrameElement must contain a locator instance if the same html element, because
-        // as of Playwright v1.40, we cannot convert FrameLocator to Locator.
-        // Playwright v.1.43 has new methods:
-        // locator.contentFrame() (Converts Locator to FrameLocator)
-        // and
-        // frameLocator.owner() (Converts FrameLocator to Locator)
-        // Once we upgrade to v1.43, this logic will be removed altogether
-        this.wrappedFrameLocator = locator.frameLocator(":scope");
+        this.wrappedFrameLocator = locator.contentFrame();
     }
 
     public FrameElement(WebElement element) {
@@ -27,6 +23,10 @@ public class FrameElement extends WebElement {
     }
 
     private final FrameLocator wrappedFrameLocator;
+
+    public WebElement owner() {
+        return new WebElement(wrappedFrameLocator.owner());
+    }
 
     @Override
     public WebElement getByAltText(String text, GetByAltTextOptions options) {

@@ -105,7 +105,7 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
         var component = InstanceFactory.create(componentClass);
 
         if (componentClass == Frame.class) {
-            component.setWrappedElement(new FrameElement(this.wrappedElement));
+            component.setWrappedElement(this.wrappedElement.locateFrame());
 
             var findStrategy = (FindStrategy)this.findStrategy.clone();
             findStrategy.setWebElement(component.getWrappedElement());
