@@ -18,10 +18,14 @@ import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import plugins.screenshots.ScreenshotPlugin;
+import plugins.screenshots.ScreenshotPluginEventArgs;
 import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.desktop.configuration.DesktopSettings;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.UUID;
 
@@ -32,10 +36,41 @@ public class DesktopScreenshotPlugin extends ScreenshotPlugin {
 
     @Override
     @SneakyThrows
-    protected void takeScreenshot(String screenshotSaveDir, String filename) {
-        File screenshot = ((TakesScreenshot)DriverService.getWrappedDriver()).getScreenshotAs(OutputType.FILE);
-        var destFile = new File(Paths.get(screenshotSaveDir, filename) + ".png");
-        FileUtils.copyFile(screenshot, destFile);
+    public String takeScreenshot(String name) {
+        var screenshotSaveDir = getOutputFolder();
+        var filename = getUniqueFileName(name);
+
+        var screenshot = ((TakesScreenshot)DriverService.getWrappedDriver()).getScreenshotAs(OutputType.BASE64);
+        Path path = Paths.get(screenshotSaveDir, filename);
+
+        var file = new File(path + ".png");
+
+        try (FileWriter writer = new FileWriter(file)) {
+            writer.write(screenshot);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        SCREENSHOT_GENERATED.broadcast(new ScreenshotPluginEventArgs(path.toString(), filename, screenshot));
+        return screenshot;
+    }
+
+    @Override
+    @SneakyThrows
+    public String takeScreenshot(String screenshotSaveDir, String filename) {
+        var screenshot = ((TakesScreenshot)DriverService.getWrappedDriver()).getScreenshotAs(OutputType.BASE64);
+        Path path = Paths.get(screenshotSaveDir, filename);
+
+        var file = new File(path + ".png");
+
+        try (FileWriter writer = new FileWriter(file)) {
+            writer.write(screenshot);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        SCREENSHOT_GENERATED.broadcast(new ScreenshotPluginEventArgs(path.toString(), filename, screenshot));
+        return screenshot;
     }
 
     @Override

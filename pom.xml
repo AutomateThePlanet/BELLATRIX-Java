@@ -24,6 +24,7 @@
         <module>bellatrix.android.tests</module>
         <module>bellatrix.ios.tests</module>
         <module>bellatrix.playwright.getting.started</module>
+        <module>bellatrix.addons.visual-regression-tracker</module>
     </modules>
 
     <properties>
