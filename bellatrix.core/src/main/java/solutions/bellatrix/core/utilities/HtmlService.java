@@ -27,12 +27,17 @@ import java.util.regex.Pattern;
  */
 @UtilityClass
 public class HtmlService {
+    private static final String CHILD_COMBINATOR = " > ";
+    private static final String NODE = "/";
+    private static final String NODE_OR_SELF = "//";
+    private static final String ROOT_ELEMENT_TAG = "bellatrix-core";
+
     public static Document addRootElementIfNeeded(Document doc) {
         boolean hasMultipleTopLevelElements = doc.childNodes().stream()
                 .filter(node -> node instanceof Element).count() > 1;
 
         if (hasMultipleTopLevelElements) {
-            var root = new Element("bellatrix-root");
+            var root = new Element(ROOT_ELEMENT_TAG);
 
             for (Node node : doc.childNodes()) {
                 root.appendChild(node.clone());
@@ -50,8 +55,10 @@ public class HtmlService {
 
         Element currentElement = element;
         while (currentElement != null) {
-            if (currentElement.tagName().equals("html") || currentElement.tagName().equals("body") || currentElement.tagName().startsWith("#") || currentElement.tagName().equals("bellatrix-root")) {
+            if (currentElement.tagName().equals("html") || currentElement.tagName().equals("body") || currentElement.tagName().startsWith("#") || currentElement.tagName().equals(ROOT_ELEMENT_TAG)) {
                 // ignore the <html> and <body>, because jsoup added them to the html fragment
+                // ignore added bellatrix root element
+                // ignore invalid element tags
                 break;
             }
 
@@ -74,7 +81,7 @@ public class HtmlService {
             previousSibling = previousSibling.previousSibling();
         }
 
-        return "/" + element.tagName() + "[" + index + "]";
+        return NODE + element.tagName() + "[" + index + "]";
     }
 
     public <T> T getAttribute(Element element, String attributeName, Class<T> clazz) {
@@ -86,7 +93,7 @@ public class HtmlService {
     }
 
     public static String convertAbsoluteXpathToCss(String xpath) {
-        String cssSelector = xpath.replace("/", " > ");
+        String cssSelector = xpath.replace(NODE, CHILD_COMBINATOR);
 
         // Use regular expression to replace [number] with :nth-of-type(number)
         Pattern pattern = Pattern.compile("\\[(\\d+)\\]");
@@ -100,7 +107,7 @@ public class HtmlService {
 
         var semiFinalLocator = builder.toString();
 
-        if (semiFinalLocator.startsWith(" > ")) {
+        if (semiFinalLocator.startsWith(CHILD_COMBINATOR)) {
             semiFinalLocator = semiFinalLocator.substring(2);
         }
 
@@ -108,11 +115,11 @@ public class HtmlService {
     }
 
     public static String removeDanglingChildCombinatorsFromCss(String css) {
-        if (css.startsWith(" > ")) {
+        if (css.startsWith(CHILD_COMBINATOR)) {
             css = css.substring(2);
         }
 
-        if (css.endsWith(" > ")) {
+        if (css.endsWith(CHILD_COMBINATOR)) {
             css = css.substring(0, css.length() - 3);
         }
 
