@@ -16,8 +16,11 @@ package solutions.bellatrix.playwright.components.shadowdom;
 import lombok.experimental.UtilityClass;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+import org.openqa.selenium.By;
 import solutions.bellatrix.core.utilities.HtmlService;
 import solutions.bellatrix.core.utilities.InstanceFactory;
+import solutions.bellatrix.core.utilities.Ref;
 import solutions.bellatrix.playwright.components.WebComponent;
 import solutions.bellatrix.playwright.findstrategies.CssFindStrategy;
 import solutions.bellatrix.playwright.findstrategies.FindStrategy;
@@ -25,6 +28,7 @@ import solutions.bellatrix.playwright.findstrategies.ShadowXpathFindStrategy;
 import solutions.bellatrix.playwright.findstrategies.XpathFindStrategy;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Stack;
 
@@ -129,24 +133,13 @@ public class ShadowDomService {
     private static <TComponent extends WebComponent> TComponent createComponent(Class<TComponent> clazz, ShadowRoot initialShadowRoot, Element jsoupNode, FindStrategy findStrategy) {
         var component = InstanceFactory.create(clazz);
 
-        var shadowRoot = initialShadowRoot;
-        var nestedShadowRootStack = new Stack<Element>();
+        // passed as a reference, the inside value will change:
+        Ref<ShadowRoot> shadowRoot = new Ref<>(initialShadowRoot);
 
-        var jsoupNodeCss = HtmlService.convertAbsoluteXpathToCss(HtmlService.getAbsoluteXpath(jsoupNode));
-
-        if (tryFindNestedShadowRoots(jsoupNode, nestedShadowRootStack)) {
-            while (!nestedShadowRootStack.isEmpty()) {
-                var parent = nestedShadowRootStack.pop();
-                var css = HtmlService.convertAbsoluteXpathToCss(HtmlService.getAbsoluteXpath(parent));
-
-                shadowRoot = createNestedShadowRoot(shadowRoot, HtmlService.removeDanglingChildCombinatorsFromCss(cleanFromShadowRootTags(css)));
-
-                jsoupNodeCss = jsoupNodeCss.replace(css, "");
-                jsoupNodeCss = HtmlService.removeDanglingChildCombinatorsFromCss(jsoupNodeCss);
-            }
-        }
-
-        jsoupNodeCss = cleanFromShadowRootTags(jsoupNodeCss);
+        // create missing shadow roots between the element and the initial shadow root;
+        // chain them;
+        // return the element's css relative to the innermost shadow root
+        var jsoupNodeCss = buildMissingShadowRootsAndReturnElementRelativeCss(shadowRoot, jsoupNode);
 
         if (findStrategy instanceof XpathFindStrategy) {
             component.setFindStrategy(new ShadowXpathFindStrategy(findStrategy.getValue(), jsoupNodeCss));
@@ -154,21 +147,58 @@ public class ShadowDomService {
             component.setFindStrategy(new CssFindStrategy(jsoupNodeCss));
         }
 
-        component.setParentComponent(shadowRoot);
-        component.setWrappedElement(component.getFindStrategy().convert(shadowRoot.getWrappedElement()).first());
+        component.setParentComponent(shadowRoot.value);
 
         return component;
     }
 
-    private static String cleanFromShadowRootTags(String css) {
-        css = css.replace(SHADOW_ROOT_TAG + CHILD_COMBINATOR, "");
-        css = css.replace(CHILD_COMBINATOR + SHADOW_ROOT_TAG + ":nth-of-type(1)", "");
-        return css;
+    private static String buildMissingShadowRootsAndReturnElementRelativeCss(Ref<ShadowRoot> shadowRoot, Element jsoupNode) {
+        var nestedShadowRootStack = new Stack<Element>();
+
+        // initial absolute xpath, relative to the outermost shadow root element
+        var jsoupNodeCss = HtmlService.convertAbsoluteXpathToCss(HtmlService.getAbsoluteXpath(jsoupNode)).split(CHILD_COMBINATOR);
+
+        // if there are <shadow-root> elements found between the outermost shadow root and the element
+        // populate the Stack<Element>
+        if (tryFindNestedShadowRoots(jsoupNode, nestedShadowRootStack)) {
+            String[] previousCss = null;
+
+            while (!nestedShadowRootStack.isEmpty()) {
+                var parent = nestedShadowRootStack.pop();
+                var css = HtmlService.convertAbsoluteXpathToCss(HtmlService.getAbsoluteXpath(parent)).split(CHILD_COMBINATOR);
+                if (previousCss != null) {
+                    css = removeRedundantSteps(css, previousCss);
+                }
+
+
+                shadowRoot.value = createNestedShadowRoot(shadowRoot.value, cleanFromShadowRootTags(css));
+
+                jsoupNodeCss = removeRedundantSteps(jsoupNodeCss, css);
+
+                previousCss = HtmlService.convertAbsoluteXpathToCss(HtmlService.getAbsoluteXpath(parent)).split(CHILD_COMBINATOR);
+            }
+        }
+
+        return String.join(CHILD_COMBINATOR, cleanFromShadowRootTags(jsoupNodeCss));
     }
 
-    private static ShadowRoot createNestedShadowRoot(ShadowRoot parent, String locator) {
+    private static String[] removeRedundantSteps(String[] elementCss, String[] currentCss) {
+        return Arrays.stream(elementCss)
+                .skip(currentCss.length)
+                .toArray(String[]::new);
+    }
+
+    private static String[] cleanFromShadowRootTags(String[] css) {
+        return Arrays.stream(css)
+                .filter(x -> !x.contains(SHADOW_ROOT_TAG))
+                .toArray(String[]::new);
+    }
+
+    private static ShadowRoot createNestedShadowRoot(ShadowRoot parent, String[] locator) {
+        var finalLocator = String.join(CHILD_COMBINATOR, cleanFromShadowRootTags(locator));
+
         ShadowRoot nestedShadowRoot = InstanceFactory.create(ShadowRoot.class);
-        nestedShadowRoot.setFindStrategy(new CssFindStrategy(locator));
+        nestedShadowRoot.setFindStrategy(new CssFindStrategy(finalLocator));
         nestedShadowRoot.setParentComponent(parent);
 
         return nestedShadowRoot;
@@ -188,42 +218,46 @@ public class ShadowDomService {
         return !parentShadowRootStack.isEmpty();
     }
 
+    /**
+     * Find from root element in shadow root's html.
+     */
     private static Element getElement(ShadowRoot component, FindStrategy findStrategy) {
         var doc = Jsoup.parse(component.getHtml());
 
-        var value = findStrategy.getValue();
-
-        if (findStrategy instanceof XpathFindStrategy) {
-            return doc.selectXpath(findStrategy.getValue()).get(0);
-        } else {
-            return doc.select(findStrategy.getValue()).get(0);
-        }
+        return getElement(doc, findStrategy);
     }
 
+    /**
+     * Find relatively from element.
+     */
     private static Element getElement(Element element, FindStrategy findStrategy) {
-        if (findStrategy instanceof XpathFindStrategy) {
-            return element.selectXpath(findStrategy.getValue()).get(0);
-        } else {
-            return element.select(findStrategy.getValue()).get(0);
-        }
+        return getElements(element, findStrategy).get(0);
     }
 
+    /**
+     * Find from root element in shadow root's html.
+     */
     private static List<Element> getElements(ShadowRoot component, FindStrategy findStrategy) {
         var doc = Jsoup.parse(component.getHtml());
 
-        if (findStrategy instanceof XpathFindStrategy) {
-            return doc.selectXpath(findStrategy.getValue());
-        } else {
-            return doc.select(findStrategy.getValue());
-        }
+        return getElements(doc, findStrategy);
     }
 
+    /**
+     * Find relatively from element.
+     */
     private static List<Element> getElements(Element element, FindStrategy findStrategy) {
-        if (findStrategy instanceof XpathFindStrategy) {
-            return element.selectXpath(findStrategy.getValue());
-        } else {
-            return element.select(findStrategy.getValue());
+        Elements foundElements = null;
+        var strategyValue = findStrategy.getValue();
+
+        if (findStrategy instanceof CssFindStrategy) {
+            foundElements = element.select(strategyValue);
         }
+        if (findStrategy instanceof XpathFindStrategy) {
+            foundElements = element.selectXpath(strategyValue);
+        }
+
+        return foundElements;
     }
 
     private static Stack<ShadowRoot> getShadowRootAncestors(WebComponent initialComponent) {
