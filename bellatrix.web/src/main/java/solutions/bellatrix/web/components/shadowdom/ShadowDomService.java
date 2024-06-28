@@ -191,7 +191,7 @@ public class ShadowDomService {
 
     private static String[] cleanFromShadowRootTags(String[] css) {
         return Arrays.stream(css)
-                .filter(x -> !x.contains("shadow-root"))
+                .filter(x -> !x.contains(SHADOW_ROOT_TAG))
                 .toArray(String[]::new);
     }
 
@@ -220,13 +220,35 @@ public class ShadowDomService {
         return !parentShadowRootStack.isEmpty();
     }
 
+    /**
+     * Find from root element in shadow root's html.
+     */
     private static Element getElement(ShadowRoot component, FindStrategy findStrategy) {
         var doc = Jsoup.parse(component.getHtml());
 
         return getElement(doc, findStrategy);
     }
 
+    /**
+     * Find relatively from element.
+     */
     private static Element getElement(Element element, FindStrategy findStrategy) {
+        return getElements(element, findStrategy).get(0);
+    }
+
+    /**
+     * Find from root element in shadow root's html.
+     */
+    private static List<Element> getElements(ShadowRoot component, FindStrategy findStrategy) {
+        var doc = Jsoup.parse(component.getHtml());
+
+        return getElements(doc, findStrategy);
+    }
+
+    /**
+     * Find relatively from element.
+     */
+    private static List<Element> getElements(Element element, FindStrategy findStrategy) {
         Elements foundElements = null;
         var strategyType = findStrategy.convert();
         var strategyValue = findStrategy.getValue();
@@ -256,27 +278,7 @@ public class ShadowDomService {
             foundElements = element.selectXpath(String.format("//a[contains(text(), '%s')]", strategyValue));
         }
 
-        assert foundElements != null;
-
-        return foundElements.get(0);
-    }
-
-    private static List<Element> getElements(ShadowRoot component, FindStrategy findStrategy) {
-        var doc = Jsoup.parse(component.getHtml());
-
-        if (findStrategy.convert() instanceof By.ByXPath) {
-            return doc.selectXpath(findStrategy.getValue());
-        } else {
-            return doc.select(findStrategy.getValue());
-        }
-    }
-
-    private static List<Element> getElements(Element element, FindStrategy findStrategy) {
-        if (findStrategy.convert() instanceof By.ByXPath) {
-            return element.selectXpath(findStrategy.getValue());
-        } else {
-            return element.select(findStrategy.getValue());
-        }
+        return foundElements;
     }
 
     private static Stack<ShadowRoot> getShadowRootAncestors(WebComponent initialComponent) {
