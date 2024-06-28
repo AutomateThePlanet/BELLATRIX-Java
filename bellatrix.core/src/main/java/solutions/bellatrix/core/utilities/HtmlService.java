@@ -19,6 +19,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import solutions.bellatrix.core.utilities.parsing.TypeParser;
 
+import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -115,14 +116,13 @@ public class HtmlService {
     }
 
     public static String removeDanglingChildCombinatorsFromCss(String css) {
-        if (css.startsWith(CHILD_COMBINATOR)) {
-            css = css.substring(2);
-        }
+        // convert to array by splitting the css by the child combinator
+        // and remove from that array empty steps
+        var steps = Arrays.stream(css.split(CHILD_COMBINATOR))
+                .filter(x -> !x.isBlank())
+                .toArray(String[]::new);
 
-        if (css.endsWith(CHILD_COMBINATOR)) {
-            css = css.substring(0, css.length() - 3);
-        }
-
-        return css;
+        // join the remaining steps with child combinator operators
+        return String.join(CHILD_COMBINATOR, steps);
     }
 }
