@@ -16,6 +16,8 @@ package solutions.bellatrix.web.components.contracts;
 import lombok.SneakyThrows;
 import solutions.bellatrix.core.utilities.SingletonFactory;
 import solutions.bellatrix.web.components.WebComponent;
+import solutions.bellatrix.web.components.enums.CssStyle;
+import solutions.bellatrix.web.services.JavaScriptService;
 import solutions.bellatrix.web.validations.ComponentValidator;
 
 import java.lang.reflect.InvocationTargetException;
@@ -48,5 +50,22 @@ public interface ComponentStyle extends Component {
     @SneakyThrows
     default void validateStyleNotContains(String value) {
         ComponentValidator.defaultValidateAttributeNotContains((WebComponent)this, this::getStyle, value, "style");
+    }
+
+    default String getStyle(CssStyle style) {
+        var script = String.format("return window.getComputedStyle(arguments[0],null).getPropertyValue('%s');", style);
+        var result = new JavaScriptService().execute(script, (WebComponent) this);
+
+        return result;
+    }
+
+    @SneakyThrows
+    default void validateStyle(CssStyle style, String expectedValue) {
+        try {
+            Method method = ComponentValidator.class.getDeclaredMethod("defaultValidateAttributeIs", WebComponent.class, Supplier.class, java.lang.String.class, java.lang.String.class);
+            method.invoke(SingletonFactory.getInstance(ComponentValidator.class), (WebComponent) this, (Supplier<Object>) () -> this.getStyle(style), expectedValue, java.lang.String.format("expected color should be %s", expectedValue));
+        } catch (InvocationTargetException e) {
+            throw e.getCause();
+        }
     }
 }

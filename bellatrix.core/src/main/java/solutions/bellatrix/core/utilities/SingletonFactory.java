@@ -32,10 +32,15 @@ public class SingletonFactory {
 
     @SneakyThrows
     public static <T> T getInstance(Class<T> classOf, Object... initargs) {
-        if (!SINGLETON_FACTORY.mapHolder.containsKey(classOf)) {
-
-            T obj = (T)classOf.getConstructors()[0].newInstance(initargs);
-            SINGLETON_FACTORY.mapHolder.put(classOf, obj);
+        try {
+            if (!SINGLETON_FACTORY.mapHolder.containsKey(classOf)) {
+                T obj = (T)classOf.getConstructors()[0].newInstance(initargs);
+                SINGLETON_FACTORY.mapHolder.put(classOf, obj);
+            }
+            return (T)SINGLETON_FACTORY.mapHolder.get(classOf);
+        } catch (Exception e) {
+            Log.error("Failed to create instance of the object. Exception was: " + e);
+            return null;
         }
 
         return (T)SINGLETON_FACTORY.mapHolder.get(classOf);

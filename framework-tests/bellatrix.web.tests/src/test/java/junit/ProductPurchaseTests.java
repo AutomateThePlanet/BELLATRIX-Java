@@ -37,12 +37,12 @@ public class ProductPurchaseTests extends WebTest {
         var blogLink = app().create().byInnerTextContaining(Anchor.class, "Blog");
         addToCartFalcon9.click();
         blogLink.above(addToCartFalcon9).validate();
-        new MainPage().asserts().productBoxLink("Falcon 9", "http://demos.bellatrix.solutions/product/falcon-9/");
+        new MainPage().asserts().productBoxLink("Falcon 9", "https://demos.bellatrix.solutions/product/falcon-9/");
     }
 
     @Test
     public void completePurchaseSuccessfully_second() {
-        app().navigate().to("http://demos.bellatrix.solutions/");
+        app().navigate().to("https://demos.bellatrix.solutions/");
         var addToCartFalcon9 = app().create().byCss(Anchor.class, "[data-product_id*='28']");
         addToCartFalcon9.click();
     }
@@ -51,14 +51,14 @@ public class ProductPurchaseTests extends WebTest {
     public void falcon9LinkAddsCorrectProduct() {
         var mainPage = app().goTo(MainPage.class);
 
-        mainPage.asserts().productBoxLink("Falcon 9", "http://demos.bellatrix.solutions/product/falcon-9/");
+        mainPage.asserts().productBoxLink("Falcon 9", "https://demos.bellatrix.solutions/product/falcon-9/");
     }
 
     @Test
     public void saturnVLinkAddsCorrectProduct() {
         var mainPage = app().goTo(MainPage.class);
 
-        mainPage.asserts().productBoxLink("Saturn V", "http://demos.bellatrix.solutions/product/saturn-v/");
+        mainPage.asserts().productBoxLink("Saturn V", "https://demos.bellatrix.solutions/product/saturn-v/");
     }
 
     @Test
@@ -66,7 +66,7 @@ public class ProductPurchaseTests extends WebTest {
         var mainPage = app().goTo(MainPage.class);
         mainPage.addRocketToShoppingCart("Falcon 9");
 
-        var cartPage = app().create(CartPage.class);
+        var cartPage = app().createPage(CartPage.class);
         cartPage.applyCoupon("happybirthday");
         cartPage.asserts().couponAppliedSuccessfully();
         cartPage.increaseProductQuantity(2);
@@ -85,7 +85,7 @@ public class ProductPurchaseTests extends WebTest {
 //        purchaseInfo.setZip("10115");
 //        purchaseInfo.setPhone("+498888999281");
 
-        var checkoutPage = app().create(CheckoutPage.class);
+        var checkoutPage = app().createPage(CheckoutPage.class);
         checkoutPage.fillBillingInfo(purchaseInfo);
         checkoutPage.asserts().orderReceived();
     }
@@ -95,7 +95,7 @@ public class ProductPurchaseTests extends WebTest {
         var mainPage = app().goTo(MainPage.class);
         mainPage.addRocketToShoppingCart("Saturn V");
 
-        var cartPage = app().create(CartPage.class);
+        var cartPage = app().createPage(CartPage.class);
         cartPage.applyCoupon("happybirthday");
         cartPage.asserts().couponAppliedSuccessfully();
         cartPage.increaseProductQuantity(3);
@@ -114,7 +114,7 @@ public class ProductPurchaseTests extends WebTest {
 //        purchaseInfo.setZip("10115");
 //        purchaseInfo.setPhone("+498888999281");
 
-        var checkoutPage = app().create(CheckoutPage.class);
+        var checkoutPage = app().createPage(CheckoutPage.class);
         checkoutPage.fillBillingInfo(purchaseInfo);
         checkoutPage.asserts().orderReceived();
     }

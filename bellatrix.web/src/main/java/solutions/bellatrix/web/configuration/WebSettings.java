@@ -27,6 +27,7 @@ package solutions.bellatrix.web.configuration;/*
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class WebSettings {
@@ -34,7 +35,8 @@ public class WebSettings {
     @Getter @Setter private String executionType;
     @Getter @Setter private String defaultLifeCycle;
     @Getter @Setter private String defaultBrowser;
-
+    @Getter @Setter private Integer defaultBrowserWidth = 0;
+    @Getter @Setter private Integer defaultBrowserHeight = 0;
     @Getter @Setter private List<GridSettings> gridSettings;
 
     @Getter @Setter private int artificialDelayBeforeAction;
@@ -47,6 +49,8 @@ public class WebSettings {
     @Getter @Setter private Boolean shouldCaptureHttpTraffic;
     @Getter @Setter private Boolean toastNotificationBddLogging;
     @Getter @Setter private long notificationToastTimeout;
+
+    @Getter @Setter private ArrayList<String> consoleErrorsWhitelist;
 
     @Getter @Setter private Boolean screenshotsOnFailEnabled;
     @Getter @Setter private String screenshotsSaveLocation;

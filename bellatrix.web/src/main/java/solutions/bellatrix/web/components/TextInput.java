@@ -13,6 +13,7 @@
 
 package solutions.bellatrix.web.components;
 
+import org.openqa.selenium.Keys;
 import solutions.bellatrix.core.plugins.EventListener;
 import solutions.bellatrix.web.components.contracts.*;
 

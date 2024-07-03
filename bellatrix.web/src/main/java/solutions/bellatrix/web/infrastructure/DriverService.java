@@ -13,7 +13,6 @@
 
 package solutions.bellatrix.web.infrastructure;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
 import net.lightbody.bmp.client.ClientUtil;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -24,6 +23,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.ie.InternetExplorerOptions;
+import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.safari.SafariDriver;
@@ -42,10 +42,7 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -106,9 +103,16 @@ public class DriverService {
             }
 
             driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(ConfigurationService.get(WebSettings.class).getTimeoutSettings().getPageLoadTimeout()));
-            driver.manage().timeouts().setScriptTimeout(Duration.ofSeconds(ConfigurationService.get(WebSettings.class).getTimeoutSettings().getScriptTimeout()));
-            driver.manage().window().maximize();
-            changeWindowSize(driver);
+            driver.manage().timeouts().scriptTimeout(Duration.ofSeconds(ConfigurationService.get(WebSettings.class).getTimeoutSettings().getScriptTimeout()));
+
+            if(getBrowserConfiguration().getHeight() != 0 && getBrowserConfiguration().getWidth() != 0) {
+                changeWindowSize(driver);
+            }
+            else {
+                driver.manage().window().maximize();
+            }
+
+            Log.info(String.format("Window resized to dimensions: %s", driver.manage().window().getSize().toString()));
             WRAPPED_DRIVER.set(driver);
 
             return driver;
@@ -160,7 +164,6 @@ public class DriverService {
             var url = getUrl(gridSettings.getUrl());
             driver = new RemoteWebDriver(new URI(url).toURL(), caps);
         } catch (Exception e) {
-            ;
             DebugInformation.printStackTrace(e);
         }
 
@@ -235,35 +238,54 @@ public class DriverService {
         if (shouldCaptureHttpTraffic) {
             ProxyServer.init();
             proxyConfig = ClientUtil.createSeleniumProxy(ProxyServer.get());
+            ProxyServer.newHar();
         }
-
 
         switch (BROWSER_CONFIGURATION.get().getBrowser()) {
             case CHROME -> {
-                //WebDriverManager.chromedriver().setup();
                 var chromeOptions = new ChromeOptions();
                 addDriverOptions(chromeOptions);
-                chromeOptions.addArguments("--log-level=3", "--remote-allow-origins=*");
+                addDriverCapabilities(chromeOptions);
+                chromeOptions.addArguments("--log-level=3","--remote-allow-origins=*");
                 chromeOptions.setAcceptInsecureCerts(true);
+                chromeOptions.setCapability(CapabilityType.UNHANDLED_PROMPT_BEHAVIOUR, UnexpectedAlertBehaviour.ACCEPT);
                 System.setProperty("webdriver.chrome.silentOutput", "true");
-                if (shouldCaptureHttpTraffic) chromeOptions.setProxy(proxyConfig);
+                if (shouldCaptureHttpTraffic) {
+                    chromeOptions.setProxy(proxyConfig);
+                }
 
                 driver = new ChromeDriver(chromeOptions);
             }
             case CHROME_HEADLESS -> {
-                WebDriverManager.chromedriver().setup();
                 var chromeHeadlessOptions = new ChromeOptions();
                 addDriverOptions(chromeHeadlessOptions);
                 chromeHeadlessOptions.setAcceptInsecureCerts(true);
-                chromeHeadlessOptions.addArguments("--log-level=3");
-                chromeHeadlessOptions.addArguments("--headless");
+                chromeHeadlessOptions.addArguments("--log-level=3","--remote-allow-origins=*");
+                chromeHeadlessOptions.setCapability(CapabilityType.UNHANDLED_PROMPT_BEHAVIOUR, UnexpectedAlertBehaviour.ACCEPT);
+                chromeHeadlessOptions.addArguments("--headless=old");
                 System.setProperty("webdriver.chrome.silentOutput", "true");
                 if (shouldCaptureHttpTraffic) chromeHeadlessOptions.setProxy(proxyConfig);
 
                 driver = new ChromeDriver(chromeHeadlessOptions);
             }
+            case CHROME_MOBILE -> {
+                var chromeHeadlessOptions = new ChromeOptions();
+                addDriverOptions(chromeHeadlessOptions);
+                chromeHeadlessOptions.setAcceptInsecureCerts(true);
+                chromeHeadlessOptions.addArguments("--log-level=3","--remote-allow-origins=*");
+                chromeHeadlessOptions.setCapability(CapabilityType.UNHANDLED_PROMPT_BEHAVIOUR, UnexpectedAlertBehaviour.ACCEPT);
+
+                var deviceNameOption = new HashMap<String, String>();
+                deviceNameOption.put("deviceName", BROWSER_CONFIGURATION.get().getDeviceName().getName());
+
+                chromeHeadlessOptions.setExperimentalOption("mobileEmulation", deviceNameOption);
+                System.setProperty("webdriver.chrome.silentOutput", "true");
+                if (shouldCaptureHttpTraffic) chromeHeadlessOptions.setProxy(proxyConfig);
+
+                driver = new TouchableWebDriver(chromeHeadlessOptions);
+            }
+
             case FIREFOX -> {
-                WebDriverManager.firefoxdriver().setup();
                 var firefoxOptions = new FirefoxOptions();
                 addDriverOptions(firefoxOptions);
                 firefoxOptions.setAcceptInsecureCerts(true);
@@ -271,7 +293,6 @@ public class DriverService {
                 driver = new FirefoxDriver(firefoxOptions);
             }
             case FIREFOX_HEADLESS -> {
-                WebDriverManager.firefoxdriver().setup();
                 var firefoxHeadlessOptions = new FirefoxOptions();
                 addDriverOptions(firefoxHeadlessOptions);
                 firefoxHeadlessOptions.setAcceptInsecureCerts(true);
@@ -280,8 +301,6 @@ public class DriverService {
                 driver = new FirefoxDriver(firefoxHeadlessOptions);
             }
             case EDGE -> {
-
-                WebDriverManager.edgedriver().setup();
                 var edgeOptions = new EdgeOptions();
                 addDriverOptions(edgeOptions);
                 if (shouldCaptureHttpTraffic) edgeOptions.setProxy(proxyConfig);
@@ -295,7 +314,6 @@ public class DriverService {
                 driver = new SafariDriver(safariOptions);
             }
             case INTERNET_EXPLORER -> {
-                WebDriverManager.iedriver().setup();
                 var internetExplorerOptions = new InternetExplorerOptions();
                 addDriverOptions(internetExplorerOptions);
                 internetExplorerOptions.introduceFlakinessByIgnoringSecurityDomains().ignoreZoomSettings();
@@ -305,6 +323,25 @@ public class DriverService {
         }
 
         return driver;
+    }
+
+    private static DesiredCapabilities addDriverCapabilities(ChromeOptions chromeOptions) {
+        DesiredCapabilities caps = new DesiredCapabilities();
+        // INIT CHROME OPTIONS
+        Map<String, Object> prefs = new HashMap<String, Object>();
+        Map<String, Object> profile = new HashMap<String, Object>();
+        Map<String, Object> contentSettings = new HashMap<String, Object>();
+
+        // SET CHROME OPTIONS
+        // 0 - Default, 1 - Allow, 2 - Block
+        contentSettings.put("notifications", 1);
+        profile.put("managed_default_content_settings", contentSettings);
+        prefs.put("profile", profile);
+        chromeOptions.setExperimentalOption("prefs", prefs);
+
+        // SET CAPABILITY
+        caps.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
+        return caps;
     }
 
     private static <TOption extends MutableCapabilities> void addGridOptions(HashMap<String, Object> options, GridSettings gridSettings) {
@@ -382,9 +419,10 @@ public class DriverService {
     private static void changeWindowSize(WebDriver wrappedDriver) {
         try {
             if (getBrowserConfiguration().getHeight() != 0 && getBrowserConfiguration().getWidth() != 0) {
-                wrappedDriver.manage().window().setSize(new Dimension(getBrowserConfiguration().getHeight(), getBrowserConfiguration().getWidth()));
+                Log.info(String.format("Setting window size to %sx%s",getBrowserConfiguration().getWidth(), getBrowserConfiguration().getHeight()));
+                wrappedDriver.manage().window().setSize(new Dimension(getBrowserConfiguration().getWidth(), getBrowserConfiguration().getHeight()));
             }
-        } catch (Exception ignored) {}
+        } catch (Exception ex) { System.out.println("Error while resizing browser window: " + ex.getMessage());}
     }
 
     private static String getBuildName() {
