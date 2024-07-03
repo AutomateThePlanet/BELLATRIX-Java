@@ -1,4 +1,4 @@
-package shadowdom;
+package controls.shadowdom;
 
 import common.configuration.TestPagesSettings;
 import org.junit.jupiter.api.Assertions;

@@ -42,8 +42,6 @@ public class SingletonFactory {
             Log.error("Failed to create instance of the object. Exception was: " + e);
             return null;
         }
-
-        return (T)SINGLETON_FACTORY.mapHolder.get(classOf);
     }
 
     public static <T> void register(T instance) {
