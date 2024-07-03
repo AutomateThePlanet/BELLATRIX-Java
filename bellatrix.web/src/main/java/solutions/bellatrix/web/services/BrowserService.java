@@ -19,6 +19,7 @@ import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.*;
 import org.openqa.selenium.logging.LogEntry;
 import org.openqa.selenium.logging.LogType;
+import org.openqa.selenium.remote.http.HttpMethod;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
@@ -27,6 +28,7 @@ import solutions.bellatrix.core.utilities.Log;
 import solutions.bellatrix.core.utilities.Wait;
 import solutions.bellatrix.web.components.Frame;
 import solutions.bellatrix.web.configuration.WebSettings;
+import solutions.bellatrix.web.infrastructure.ProxyServer;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -417,11 +419,14 @@ public class BrowserService extends WebService {
     }
 
     public void tryWaitForRequest(String partialUrl) {
-        var javascriptExecutor = (JavascriptExecutor)getWrappedDriver();
-        String script = "return performance.getEntriesByType('resource').filter(item => item.name.toLowerCase().includes('" + partialUrl.toLowerCase() + "'))[0] !== undefined;";
-
         try {
-            waitUntil(e -> (boolean)javascriptExecutor.executeScript(script));
+            if(ProxyServer.get() != null) {
+                ProxyServer.waitForResponse(getWrappedDriver(), partialUrl, HttpMethod.GET, 0);
+            } else {
+                var javascriptExecutor = (JavascriptExecutor)getWrappedDriver();
+                String script = "return performance.getEntriesByType('resource').filter(item => item.name.toLowerCase().includes('" + partialUrl.toLowerCase() + "'))[0] !== undefined;";
+                waitUntil(e -> (boolean)javascriptExecutor.executeScript(script));
+            }
         } catch (Exception exception) {
             Log.error("The expected request with URL '%s' is not loaded!", partialUrl);
         }
