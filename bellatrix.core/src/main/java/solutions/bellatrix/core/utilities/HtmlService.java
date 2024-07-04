@@ -31,7 +31,7 @@ public class HtmlService {
     private static final String CHILD_COMBINATOR = " > ";
     private static final String NODE = "/";
     private static final String NODE_OR_SELF = "//";
-    private static final String ROOT_ELEMENT_TAG = "bellatrix-core";
+    private static final String ROOT_ELEMENT_TAG = "bellatrix-root";
 
     public static Document addRootElementIfNeeded(Document doc) {
         boolean hasMultipleTopLevelElements = doc.childNodes().stream()
