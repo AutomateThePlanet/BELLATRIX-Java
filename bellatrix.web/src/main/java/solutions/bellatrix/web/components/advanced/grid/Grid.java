@@ -135,8 +135,9 @@ public class Grid extends WebComponent {
         String innerXpath = HtmlService.getAbsoluteXpath(getTableService().getCell(row, column));
         if (innerXpath.startsWith(".")) innerXpath = innerXpath.substring(1);
         String outerXpath = getCurrentElementXPath();
-        String fullXpath = outerXpath + innerXpath;
-        if (fullXpath.startsWith("///")) fullXpath = fullXpath.substring(1);
+
+        String fullXpath = Objects.requireNonNullElse(outerXpath, ".") + innerXpath;
+
         GridCell cell = this.createByXPath(GridCell.class, fullXpath);
         setCellMetaData(cell, row, column);
 
@@ -436,33 +437,38 @@ public class Grid extends WebComponent {
 
     protected String getCurrentElementXPath() {
         String jsScriptText ="""
-                    function createXPathFromElement(elm) {
-                        var allNodes = document.getElementsByTagName('*');
-                        for (var segs = []; elm && elm.nodeType === 1; elm = elm.parentNode) {
-                            if (elm.hasAttribute('id')) {
-                                var uniqueIdCount = 0;
-                                for (var n = 0; n < allNodes.length; n++) {
-                                    if (allNodes[n].hasAttribute('id') && allNodes[n].id === elm.id) uniqueIdCount++;
-                                    if (uniqueIdCount > 1) break;
-                                };
-                                if (uniqueIdCount === 1) {
-                                    segs.unshift('//*[@id=\\'' + elm.getAttribute('id') + '\\']');
-                                    return segs.join('/');
-                                }
-                                else {
-                                    segs.unshift('//' + elm.localName.toLowerCase() + '[@id=\\'' + elm.getAttribute('id') + '\\']');
-                                }
-                            }
-                            else {
-                                for (i = 1, sib = elm.previousSibling; sib; sib = sib.previousSibling) {
-                                    if (sib.localName === elm.localName) i++;
-                                };
-                                segs.unshift(elm.localName.toLowerCase() + '[' + i + ']');
-                            };
-                        };
-                        return segs.length ? '/' + segs.join('/') : null;
-                    };
-                    return createXPathFromElement(arguments[0]);
+                    (function(elm) {
+                      var allNodes = document.getElementsByTagName("*");
+                      for (var segs = []; elm && elm.nodeType === 1; elm = elm.parentNode) {
+                          if (elm.hasAttribute("id")) {
+                              var uniqueIdCount = 0;
+                              for (var n = 0; n < allNodes.length; n++) {
+                                  if (allNodes[n].hasAttribute("id") && allNodes[n].id === elm.id) uniqueIdCount++;
+                                  if (uniqueIdCount > 1) break;
+                              };
+                              if (uniqueIdCount === 1) {
+                                  segs.unshift(`//*[@id='${elm.getAttribute('id')}']`);
+                                  return segs.join('/');
+                              }
+                              else {
+                                  segs.unshift(`//${elm.localName.toLowerCase()}[@id='${elm.getAttribute('id')}']`);
+                              }
+                          }
+                          else {
+                              for (i = 1, sib = elm.previousSibling; sib; sib = sib.previousSibling) {
+                                  if (sib.localName === elm.localName) i++;
+                              };
+                              segs.unshift(`${elm.localName.toLowerCase()}[${i}]`);
+                          };
+                      };
+                    
+                      if (segs.length) {
+                        let xpath = "/" + segs.join("/");
+                        if (xpath.startsWith("///")) xpath = xpath.substring(1);
+                        return xpath;
+                      }
+                      return null;
+                    })(arguments[0]);
                     """;
 
         return getJavaScriptService().execute(jsScriptText, this);

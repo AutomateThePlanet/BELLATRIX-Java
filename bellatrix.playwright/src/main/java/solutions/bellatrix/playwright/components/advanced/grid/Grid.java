@@ -136,11 +136,13 @@ public class Grid extends WebComponent {
     }
 
     public GridCell getCell(int row, int column) {
-        String innerXpath = HtmlService.getAbsoluteXpath(getTableService().getCell(row, column));
-        if (innerXpath.startsWith(".")) innerXpath = innerXpath.substring(1);
-        String outerXpath = getCurrentElementXPath();
-        String fullXpath = outerXpath + innerXpath;
-        GridCell cell = this.create().byXpath(GridCell.class, fullXpath);
+        String xpath = HtmlService.getAbsoluteXpath(getTableService().getCell(row, column));
+//        if (innerXpath.startsWith(".")) innerXpath = innerXpath.substring(1);
+//        String outerXpath = getCurrentElementXPath();
+//
+//        String fullXpath = Objects.requireNonNullElse(outerXpath, ".") + innerXpath;
+
+        GridCell cell = this.create().byXpath(GridCell.class, xpath);
         setCellMetaData(cell, row, column);
 
         return cell;
@@ -162,10 +164,8 @@ public class Grid extends WebComponent {
     }
 
     public void forEachCell(Consumer<GridCell> action) {
-        var outerXpath = getCurrentElementXPath();
         for (var gridCell : getTableService().getCells()) {
-            var fullXpath = outerXpath + HtmlService.getAbsoluteXpath(gridCell);
-            action.accept(this.create().byXpath(GridCell.class, "." + fullXpath));
+            action.accept(this.create().byXpath(GridCell.class, "." + HtmlService.getAbsoluteXpath(gridCell)));
         }
     }
 
@@ -433,39 +433,6 @@ public class Grid extends WebComponent {
         var element = this.create().by(controlData.getComponentClass(), controlData.getFindStrategy());
 
         return ControlDataHandler.getData((WebComponent)element);
-    }
-
-    protected String getCurrentElementXPath() {
-        String jsScriptText ="""
-                    elm => {
-                        var allNodes = document.getElementsByTagName('*');
-                        for (var segs = []; elm && elm.nodeType === 1; elm = elm.parentNode) {
-                            if (elm.hasAttribute('id')) {
-                                var uniqueIdCount = 0;
-                                for (var n = 0; n < allNodes.length; n++) {
-                                    if (allNodes[n].hasAttribute('id') && allNodes[n].id === elm.id) uniqueIdCount++;
-                                    if (uniqueIdCount > 1) break;
-                                };
-                                if (uniqueIdCount === 1) {
-                                    segs.unshift('//*[@id=\\'' + elm.getAttribute('id') + '\\']');
-                                    return segs.join('/');
-                                }
-                                else {
-                                    segs.unshift('//' + elm.localName.toLowerCase() + '[@id=\\'' + elm.getAttribute('id') + '\\']');
-                                }
-                            }
-                            else {
-                                for (i = 1, sib = elm.previousSibling; sib; sib = sib.previousSibling) {
-                                    if (sib.localName === elm.localName) i++;
-                                };
-                                segs.unshift(elm.localName.toLowerCase() + '[' + i + ']');
-                            };
-                        };
-                        return segs.length ? '/' + segs.join('/') : null;
-                    };
-                    """;
-
-        return (String)this.evaluate(jsScriptText);
     }
 
     private ControlColumnData getControlColumnDataByHeaderName(List<? extends HeaderInfo> controlColumnDataCollection, String headerName) {
