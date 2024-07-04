@@ -103,7 +103,7 @@ public class ShadowDomTests extends WebTest {
 
         var row = table.getFirstOrDefaultRow(GridCell.class, cell -> cell.getText().equals("jsmith@gmail.com"));
 
-        var edit = table.getColumn("Action").get(row.getIndex()).create().byXpath(Anchor.class, "[href='#edit']");
+        var edit = table.getColumn("Action").get(row.getIndex()).create().byCss(Anchor.class, "[href='#edit']");
         Assertions.assertEquals("edit", edit.getText());
     }
 
