@@ -77,4 +77,12 @@ public class Wait {
     public static void retry(Runnable action, Duration timeout, Duration sleepInterval, Class<? extends Throwable> ... exceptionsToIgnore) {
         Wait.retry(action, timeout, sleepInterval, true, exceptionsToIgnore);
     }
+
+    public static void forMilliseconds(int millis) {
+        try {
+            Thread.sleep(millis);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
