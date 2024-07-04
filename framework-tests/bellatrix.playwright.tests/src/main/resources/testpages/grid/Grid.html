@@ -38,7 +38,7 @@
                 </thead>
                 <tbody>
                     <tr scope="row">
-                        <td><input type="text" value="0"/></td>
+                        <td><input type="text" value="0" /></td>
                         <td><b>John</b></td>
                         <td>Doe</td>
                         <td>john.doe@gmail.com</td>
@@ -66,10 +66,13 @@
         </div>
     </div>
     <script>
-        function deleteRow(e) {
-            debugger;
-            e.parentNode.parentNode.remove();
-        }
+        const inputs = document.querySelectorAll('input');
+
+        inputs.forEach(input => {
+          input.addEventListener('input', function(event) {
+            input.setAttribute('value', event.target.value);
+          });
+        });
     </script>
 </body>
 </html>
