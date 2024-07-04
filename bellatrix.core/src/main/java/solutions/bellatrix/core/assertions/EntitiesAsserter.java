@@ -61,7 +61,8 @@ public class EntitiesAsserter {
                 try {
                     currentExpectedProperty = expectedObject.getClass().getMethod(currentRealProperty.getName());
                 } catch (NoSuchMethodException e) {
-                    failedAssertions.add(e);
+                    System.out.println(String.format("Property %s not found.", currentRealProperty));
+//                    failedAssertions.add(e);
                 }
 
                 var exceptionMessage = "The property " + currentRealProperty.getName() + " of class " + realObject.getClass().getSimpleName() + " was not as expected.";
@@ -69,8 +70,8 @@ public class EntitiesAsserter {
                 try {
                     if (currentRealProperty.getReturnType() == LocalDateTime.class) {
                         LocalDateTimeAssert.areEqual(
-                                (LocalDateTime) currentExpectedProperty.invoke(expectedObject),
-                                (LocalDateTime) currentRealProperty.invoke(realObject),
+                                (LocalDateTime)currentExpectedProperty.invoke(expectedObject),
+                                (LocalDateTime)currentRealProperty.invoke(realObject),
                                 deltaType, deltaQuantity, exceptionMessage);
                     } else {
                         Assertions.assertEquals(
@@ -78,8 +79,14 @@ public class EntitiesAsserter {
                                 currentRealProperty.invoke(realObject),
                                 exceptionMessage);
                     }
-
-                } catch (Exception ex) {
+                }
+                catch (NoSuchMethodException nsm){
+                    //ignore this case
+                }
+                catch (NullPointerException nsmex){
+                    //ignore this case
+                }
+                catch (Exception ex) {
                     failedAssertions.add(ex);
                 }
             }

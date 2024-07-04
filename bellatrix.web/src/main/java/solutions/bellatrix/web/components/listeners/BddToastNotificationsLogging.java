@@ -52,7 +52,7 @@ public class BddToastNotificationsLogging extends Listener {
             WeekInput.SETTING_WEEK.addListener((x) -> new BrowserService().injectInfoNotificationToast("setting '%s' in %s", x.getActionValue(), x.getComponent().getComponentName()));
             WebComponent.HOVERING.addListener((x) -> new BrowserService().injectInfoNotificationToast("hovering %s", x.getComponent().getComponentName()));
             WebComponent.FOCUSING.addListener((x) -> new BrowserService().injectInfoNotificationToast("focusing %s", x.getComponent().getComponentName()));
-            WebComponent.SCROLLING_TO_VISIBLE.addListener((x) -> new BrowserService().injectInfoNotificationToast("scrolling to %s", x.getComponent().getComponentName()));
+//            WebComponent.SCROLLING_TO_VISIBLE.addListener((x) -> new BrowserService().injectInfoNotificationToast("scrolling to %s", x.getComponent().getComponentName()));
             WebComponent.SETTING_ATTRIBUTE.addListener((x) -> new BrowserService().injectInfoNotificationToast("setting %s to '%s' in %s", x.getActionValue(), x.getMessage(), x.getComponent().getComponentName()));
             ComponentValidator.VALIDATING_ATTRIBUTE.addListener((x) -> new BrowserService().injectInfoNotificationToast(x.getMessage()));
             isBddLoggingTurnedOn = true;

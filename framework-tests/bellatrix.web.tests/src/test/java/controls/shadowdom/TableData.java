@@ -1,4 +1,4 @@
-package shadowdom;
+package controls.shadowdom;
 
 import lombok.Getter;
 import lombok.Setter;

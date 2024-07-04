@@ -17,13 +17,15 @@ import java.util.Arrays;
 
 public enum Browser {
     CHROME("chrome"),
-    CHROME_HEADLESS("chrome"),
+    CHROME_HEADLESS("chrome_headless"),
+    CHROME_MOBILE("chrome_mobile"),
     FIREFOX("firefox"),
-    FIREFOX_HEADLESS("firefox"),
+    FIREFOX_HEADLESS("firefox_headless"),
     EDGE("edge"),
     // EDGE_HEADLESS("edge"), // Unsupported by Selenium 3, Selenium 4 has support
     OPERA("opera"),
     SAFARI("safari"),
+    NOT_SET("not_set"),
     INTERNET_EXPLORER("ie");
 
     private final String value;

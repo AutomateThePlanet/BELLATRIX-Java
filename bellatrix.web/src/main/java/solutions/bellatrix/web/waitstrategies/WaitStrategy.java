@@ -40,6 +40,7 @@ public abstract class WaitStrategy {
 
     protected void waitUntil(Function<SearchContext, Boolean> waitCondition) {
         webDriverWait = new WebDriverWait(DriverService.getWrappedDriver(), Duration.ofSeconds(timeoutInterval), Duration.ofSeconds(sleepInterval));
+        webDriverWait.withMessage(Thread.currentThread().getStackTrace()[2].getMethodName());
         webDriverWait.until(waitCondition);
     }
 
