@@ -44,4 +44,8 @@ public class SingletonFactory {
     public static <T> void register(T instance) {
         SINGLETON_FACTORY.mapHolder.put(instance.getClass(), instance);
     }
+
+    public static <T> void register(Class<?> classKey, T instance) {
+        SINGLETON_FACTORY.mapHolder.put(classKey, instance);
+    }
 }
