@@ -156,7 +156,7 @@ public class ShadowDomService {
     private static String buildMissingShadowRootsAndReturnElementRelativeCss(Ref<ShadowRoot> shadowRoot, Element jsoupNode) {
         var nestedShadowRootStack = new Stack<Element>();
 
-        // initial absolute xpath, relative to the outermost shadow root element
+        // initial absolute css, relative to the outermost shadow root element
         var jsoupNodeCss = HtmlService.convertAbsoluteXpathToCss(HtmlService.getAbsoluteXpath(jsoupNode)).split(CHILD_COMBINATOR);
 
         // if there are <shadow-root> elements found between the outermost shadow root and the element

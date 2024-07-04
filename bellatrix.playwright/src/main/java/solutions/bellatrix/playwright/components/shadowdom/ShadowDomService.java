@@ -148,6 +148,7 @@ public class ShadowDomService {
         }
 
         component.setParentComponent(shadowRoot.value);
+        component.setWrappedElement(component.getFindStrategy().convert(component.getParentComponent().getWrappedElement()).first());
 
         return component;
     }
