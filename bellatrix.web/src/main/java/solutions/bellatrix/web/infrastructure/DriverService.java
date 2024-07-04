@@ -96,6 +96,10 @@ public class DriverService {
                 var gridSettings = webSettings.getGridSettings().stream().filter(g -> g.getProviderName().equals(executionType.toLowerCase())).findFirst();
                 assert gridSettings.isPresent() : String.format("The specified execution type '%s' is not declared in the configuration", executionType);
                 driver = initializeDriverGridMode(gridSettings.get());
+            } else if (executionType.equals("healenium")) {
+                var gridSettings = webSettings.getGridSettings().stream().filter(g -> g.getProviderName().equals(executionType.toLowerCase())).findFirst();
+                assert gridSettings.isPresent() : String.format("The specified execution type '%s' is not declared in the configuration", executionType);
+                driver = initializeDriverGridMode(gridSettings.get());
             } else {
                 var gridSettings = webSettings.getGridSettings().stream().filter(g -> g.getProviderName().equals(executionType.toLowerCase())).findFirst();
                 assert gridSettings.isPresent() : String.format("The specified execution type '%s' is not declared in the configuration", executionType);
