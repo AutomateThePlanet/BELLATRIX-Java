@@ -14,6 +14,7 @@
 package solutions.bellatrix.web.infrastructure;
 
 import plugins.screenshots.ScreenshotPlugin;
+import plugins.screenshots.ScreenshotPluginEventArgs;
 import ru.yandex.qatools.ashot.AShot;
 import ru.yandex.qatools.ashot.shooting.ShootingStrategies;
 import solutions.bellatrix.core.configuration.ConfigurationService;
@@ -22,9 +23,12 @@ import solutions.bellatrix.core.utilities.PathNormalizer;
 import solutions.bellatrix.web.configuration.WebSettings;
 
 import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.Base64;
 import java.util.UUID;
 
 public class WebScreenshotPlugin extends ScreenshotPlugin {
@@ -33,17 +37,48 @@ public class WebScreenshotPlugin extends ScreenshotPlugin {
     }
 
     @Override
-    protected void takeScreenshot(String screenshotSaveDir, String filename) {
+    public String takeScreenshot(String name) {
+        var screenshotSaveDir = getOutputFolder();
+        var filename = getUniqueFileName(name);
+
         var screenshot = new AShot()
                 .shootingStrategy(ShootingStrategies.viewportPasting(100))
                 .takeScreenshot(DriverService.getWrappedDriver());
-        var destFile = new File(Paths.get(screenshotSaveDir, filename).toString());
+
+        var path = Paths.get(screenshotSaveDir, filename).toString();
+        var destFile = new File(path);
         Log.info("Saving screenshot with path: " + destFile);
         try {
             ImageIO.write(screenshot.getImage(), "png", destFile);
         } catch (IOException e) {
             Log.error(e.toString());
         }
+
+        var base64image = bufferedImageToBase64(screenshot.getImage());
+
+        SCREENSHOT_GENERATED.broadcast(new ScreenshotPluginEventArgs(path.toString(), filename, base64image));
+        return base64image;
+    }
+
+    @Override
+    public String takeScreenshot(String screenshotSaveDir, String filename) {
+        var screenshot = new AShot()
+                .shootingStrategy(ShootingStrategies.viewportPasting(100))
+                .takeScreenshot(DriverService.getWrappedDriver());
+
+        var path = Paths.get(screenshotSaveDir, filename).toString();
+        var destFile = new File(path);
+        Log.info("Saving screenshot with path: " + destFile);
+        try {
+            ImageIO.write(screenshot.getImage(), "png", destFile);
+        } catch (IOException e) {
+            Log.error(e.toString());
+        }
+
+        var base64image = bufferedImageToBase64(screenshot.getImage());
+
+        SCREENSHOT_GENERATED.broadcast(new ScreenshotPluginEventArgs(path.toString(), filename, base64image));
+        return base64image;
     }
 
     @Override
@@ -62,5 +97,24 @@ public class WebScreenshotPlugin extends ScreenshotPlugin {
     @Override
     protected String getUniqueFileName(String testName) {
         return testName.concat(UUID.randomUUID().toString()).concat(".png");
+    }
+
+    private static String bufferedImageToBase64(BufferedImage image) {
+        String base64String = null;
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        try {
+            ImageIO.write(image, "png", outputStream);
+            byte[] imageBytes = outputStream.toByteArray();
+            base64String = Base64.getEncoder().encodeToString(imageBytes);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                outputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return base64String;
     }
 }

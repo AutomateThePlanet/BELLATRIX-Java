@@ -16,11 +16,13 @@ package solutions.bellatrix.playwright.infrastructure;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.ScreenshotType;
 import plugins.screenshots.ScreenshotPlugin;
+import plugins.screenshots.ScreenshotPluginEventArgs;
 import solutions.bellatrix.core.utilities.PathNormalizer;
 import solutions.bellatrix.playwright.utilities.Settings;
 
 import java.io.File;
 import java.nio.file.Paths;
+import java.util.Base64;
 import java.util.UUID;
 
 public class WebScreenshotPlugin extends ScreenshotPlugin {
@@ -29,12 +31,36 @@ public class WebScreenshotPlugin extends ScreenshotPlugin {
     }
 
     @Override
-    protected void takeScreenshot(String screenshotSaveDir, String filename) {
+    public String takeScreenshot(String name) {
+        var screenshotSaveDir = getOutputFolder();
+        var filename = getUniqueFileName(name);
+
+        var path = Paths.get(screenshotSaveDir, filename);
         var screenshot = PlaywrightService.wrappedBrowser().getCurrentPage()
                 .screenshot(new Page.ScreenshotOptions()
-                        .setPath(Paths.get(screenshotSaveDir, filename))
+                        .setPath(path)
                         .setType(ScreenshotType.PNG)
                 );
+
+        var image = Base64.getEncoder().encodeToString(screenshot);
+
+        SCREENSHOT_GENERATED.broadcast(new ScreenshotPluginEventArgs(path.toString(), filename, image));
+        return image;
+    }
+
+    @Override
+    public String takeScreenshot(String screenshotSaveDir, String filename) {
+        var path = Paths.get(screenshotSaveDir, filename);
+        var screenshot = PlaywrightService.wrappedBrowser().getCurrentPage()
+                .screenshot(new Page.ScreenshotOptions()
+                        .setPath(path)
+                        .setType(ScreenshotType.PNG)
+                );
+
+        var image = Base64.getEncoder().encodeToString(screenshot);
+
+        SCREENSHOT_GENERATED.broadcast(new ScreenshotPluginEventArgs(path.toString(), filename, image));
+        return image;
     }
 
     @Override

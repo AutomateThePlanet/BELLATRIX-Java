@@ -1,6 +1,6 @@
 /*
- * Copyright 2022 Automate The Planet Ltd.
- * Author: Anton Angelov
+ * Copyright 2024 Automate The Planet Ltd.
+ * Author: Miriam Kyoseva
  * Licensed under the Apache License, Version 2.0 (the "License");
  * You may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -11,17 +11,19 @@
  * limitations under the License.
  */
 
-package plugins.screenshots;
+package solutions.bellatrix.plugins.vrt;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Getter
-public class ScreenshotPluginEventArgs {
-    private final String screenshotPath;
-    private final String fileName;
-
-    public ScreenshotPluginEventArgs(String screenshotPath, String fileName, String image) {
-        this.screenshotPath = screenshotPath;
-        this.fileName = fileName;
-    }
+@Getter @Setter @NoArgsConstructor
+public class VisualRegressionTrackerSettings {
+    private String apiUrl;
+    private String project;
+    private String apiKey;
+    private String branch;
+    private boolean enableSoftAssert;
+    private String ciBuildId;
+    private int httpTimeout;
 }
