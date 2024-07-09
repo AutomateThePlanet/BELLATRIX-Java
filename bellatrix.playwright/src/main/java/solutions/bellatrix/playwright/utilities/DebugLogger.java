@@ -14,12 +14,12 @@
 package solutions.bellatrix.playwright.utilities;
 
 import lombok.experimental.UtilityClass;
-import solutions.bellatrix.playwright.utilities.functionalinterfaces.AssertionMethod;
+import solutions.bellatrix.playwright.utilities.functionalinterfaces.Assertable;
 
 // ToDo rename class and method or remove altogether
 @UtilityClass
 public class DebugLogger {
-    public void assertAndLogOnFail(AssertionMethod assertion, String infoLog) {
+    public void assertAndLogOnFail(Assertable assertion, String infoLog) {
         try {
             assertion.perform();
         } catch (Exception exception) {

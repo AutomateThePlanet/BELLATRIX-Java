@@ -42,6 +42,7 @@ import solutions.bellatrix.playwright.components.options.actions.ClickOptions;
 import solutions.bellatrix.playwright.components.options.actions.HoverOptions;
 import solutions.bellatrix.playwright.components.options.actions.UncheckOptions;
 import solutions.bellatrix.playwright.components.options.states.BoundingBoxOptions;
+import solutions.bellatrix.playwright.components.shadowdom.ShadowRoot;
 import solutions.bellatrix.playwright.configuration.WebSettings;
 import solutions.bellatrix.playwright.findstrategies.*;
 import solutions.bellatrix.playwright.findstrategies.options.*;
@@ -75,7 +76,7 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
     public final static EventListener<ComponentActionEventArgs> CREATING = new EventListener<>();
     public final static EventListener<ComponentActionEventArgs> CREATED = new EventListener<>();
 
-    private final WebSettings webSettings;
+    protected WebSettings webSettings;
     @Getter @Setter private WebComponent parentComponent;
     @Getter @Setter private int elementIndex;
     @Getter @Setter protected FindStrategy findStrategy;
@@ -104,7 +105,7 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
         var component = InstanceFactory.create(componentClass);
 
         if (componentClass == Frame.class) {
-            component.setWrappedElement(new FrameElement(this.wrappedElement));
+            component.setWrappedElement(this.wrappedElement.locateFrame());
 
             var findStrategy = (FindStrategy)this.findStrategy.clone();
             findStrategy.setWebElement(component.getWrappedElement());
@@ -123,6 +124,7 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
     }
 
     public WebElement getWrappedElement() {
+        RETURNING_WRAPPED_ELEMENT.broadcast(new ComponentActionEventArgs(this));
         return wrappedElement;
     }
 
@@ -192,6 +194,10 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
         }
 
         return wrappedElement;
+    }
+
+    public ShadowRoot getShadowRoot() {
+        return this.as(ShadowRoot.class);
     }
 
     @Override
@@ -615,425 +621,771 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
 
     // createBy methods
 
+    /**
+     * Use {@link WebComponent#create() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> TComponent createByName(Class<TComponent> componentClass, String name) {
         return create().by(componentClass, new NameFindStrategy(name));
     }
 
+    /**
+     * Use {@link WebComponent#create() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> List<TComponent> createAllByName(Class<TComponent> componentClass, String name) {
         return create().allBy(componentClass, new NameFindStrategy(name));
     }
 
+    /**
+     * Use {@link WebComponent#create() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> TComponent createByNameEndingWith(Class<TComponent> componentClass, String value) {
         return create().by(componentClass, new NameEndingWithFindStrategy(value));
     }
 
+    /**
+     * Use {@link WebComponent#create() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> List<TComponent> createAllByNameEndingWith(Class<TComponent> componentClass, String value) {
         return create().allBy(componentClass, new NameEndingWithFindStrategy(value));
     }
 
+    /**
+     * Use {@link WebComponent#create() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> TComponent createByTag(Class<TComponent> componentClass, String tag) {
         return create().by(componentClass, new TagFindStrategy(tag));
     }
 
+    /**
+     * Use {@link WebComponent#create() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> List<TComponent> createAllByTag(Class<TComponent> componentClass, String tag) {
         return create().allBy(componentClass, new TagFindStrategy(tag));
     }
 
+    /**
+     * Use {@link WebComponent#create() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> TComponent createByValueContaining(Class<TComponent> componentClass, String value) {
         return create().by(componentClass, new ValueContainingFindStrategy(value));
     }
 
+    /**
+     * Use {@link WebComponent#create() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> List<TComponent> createAllByValueContaining(Class<TComponent> componentClass, String value) {
         return create().allBy(componentClass, new ValueContainingFindStrategy(value));
     }
 
+    /**
+     * Use {@link WebComponent#create() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> TComponent createByLinkText(Class<TComponent> componentClass, String text) {
         return create().by(componentClass, new LinkTextFindStrategy(text));
     }
 
+    /**
+     * Use {@link WebComponent#create() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> List<TComponent> createAllByLinkText(Class<TComponent> componentClass, String text) {
         return create().allBy(componentClass, new LinkTextFindStrategy(text));
     }
 
+    /**
+     * Use {@link WebComponent#create() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> TComponent createByLinkTextContaining(Class<TComponent> componentClass, String text) {
         return create().by(componentClass, new LinkTextContainingFindStrategy(text));
     }
 
+    /**
+     * Use {@link WebComponent#create() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> List<TComponent> createAllByLinkTextContaining(Class<TComponent> componentClass, String text) {
         return create().allBy(componentClass, new LinkTextContainingFindStrategy(text));
     }
 
+    /**
+     * Use {@link WebComponent#create() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> TComponent createByIdEndingWith(Class<TComponent> componentClass, String value) {
         return create().by(componentClass, new IdEndingWithFindStrategy(value));
     }
 
+    /**
+     * Use {@link WebComponent#create() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> List<TComponent> createAllByIdEndingWith(Class<TComponent> componentClass, String value) {
         return create().allBy(componentClass, new IdEndingWithFindStrategy(value));
     }
 
+    /**
+     * Use {@link WebComponent#create() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> TComponent createByPlaceholder(Class<TComponent> componentClass, String text) {
         return create().byPlaceholder(componentClass, text, null);
     }
 
+    /**
+     * Use {@link WebComponent#create() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> List<TComponent> createAllByPlaceholder(Class<TComponent> componentClass, String text) {
         return create().allByPlaceholder(componentClass, text, null);
     }
 
+    /**
+     * Use {@link WebComponent#create() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> TComponent createByPlaceholder(Class<TComponent> componentClass, Pattern pattern) {
         return create().byPlaceholder(componentClass, pattern, null);
     }
 
+    /**
+     * Use {@link WebComponent#create() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> List<TComponent> createAllByPlaceholder(Class<TComponent> componentClass, Pattern pattern) {
         return create().allByPlaceholder(componentClass, pattern, null);
     }
 
+    /**
+     * Use {@link WebComponent#create() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> TComponent createByRole(Class<TComponent> componentClass, AriaRole role) {
         return create().byRole(componentClass, role, null);
     }
 
+    /**
+     * Use {@link WebComponent#create() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> List<TComponent> createAllByRole(Class<TComponent> componentClass, AriaRole role) {
         return create().allByRole(componentClass, role, null);
     }
 
+    /**
+     * Use {@link WebComponent#create() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> TComponent createByAltText(Class<TComponent> componentClass, String text) {
         return create().byAltText(componentClass, text, null);
     }
 
+    /**
+     * Use {@link WebComponent#create() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> List<TComponent> createAllByAltText(Class<TComponent> componentClass, String text) {
         return create().allByAltText(componentClass, text, null);
     }
 
+    /**
+     * Use {@link WebComponent#create() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> TComponent createByAltText(Class<TComponent> componentClass, Pattern pattern) {
         return create().byAltText(componentClass, pattern, null);
     }
 
+    /**
+     * Use {@link WebComponent#create() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> List<TComponent> createAllByAltText(Class<TComponent> componentClass, Pattern pattern) {
         return create().allByAltText(componentClass, pattern, null);
     }
 
-    public <TComponent extends WebComponent> TComponent createByText(Class<TComponent> componentClass, String text) {
-        return create().byText(componentClass, text, null);
-    }
-
-    public <TComponent extends WebComponent> List<TComponent> createAllByText(Class<TComponent> componentClass, String text) {
-        return create().allByText(componentClass, text, null);
-    }
-
+    /**
+     * Use {@link WebComponent#create() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> TComponent createByTextContaining(Class<TComponent> componentClass, String text) {
-        return create().byText(componentClass, Pattern.compile(String.format(".*%s.*", text)), null);
+        return create().byInnerTextContaining(componentClass, text);
     }
 
+    /**
+     * Use {@link WebComponent#create() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> List<TComponent> createAllByTextContaining(Class<TComponent> componentClass, String text) {
-        return create().allByText(componentClass, Pattern.compile(String.format(".*%s.*", text)), null);
+        return create().allByInnerTextContaining(componentClass, text);
     }
 
+    /**
+     * Use {@link WebComponent#create() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> TComponent createByTitle(Class<TComponent> componentClass, String text) {
         return create().byTitle(componentClass, text, null);
     }
 
+    /**
+     * Use {@link WebComponent#create() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> List<TComponent> createAllByTitle(Class<TComponent> componentClass, String text) {
         return create().allByTitle(componentClass, text, null);
     }
 
+    /**
+     * Use {@link WebComponent#create() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> TComponent createByTitle(Class<TComponent> componentClass, Pattern pattern) {
         return create().byTitle(componentClass, pattern, null);
     }
 
+    /**
+     * Use {@link WebComponent#create() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> List<TComponent> createAllByTitle(Class<TComponent> componentClass, Pattern pattern) {
         return create().allByTitle(componentClass, pattern, null);
     }
 
+    /**
+     * Use {@link WebComponent#create() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> TComponent createByIdContaining(Class<TComponent> componentClass, String value) {
         return create().by(componentClass, new IdContainingFindStrategy(value));
     }
 
+    /**
+     * Use {@link WebComponent#create() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> List<TComponent> createAllByIdContaining(Class<TComponent> componentClass, String value) {
         return create().allBy(componentClass, new IdContainingFindStrategy(value));
     }
 
+    /**
+     * Use {@link WebComponent#create() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> TComponent createById(Class<TComponent> componentClass, String value) {
         return create().by(componentClass, new IdFindStrategy(value));
     }
 
+    /**
+     * Use {@link WebComponent#create() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> List<TComponent> createAllById(Class<TComponent> componentClass, String value) {
         return create().allBy(componentClass, new IdFindStrategy(value));
     }
 
+    /**
+     * Use {@link WebComponent#create() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> TComponent createByClass(Class<TComponent> componentClass, String value) {
         return create().by(componentClass, new ClassFindStrategy(value));
     }
 
+    /**
+     * Use {@link WebComponent#create() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> List<TComponent> createAllByClass(Class<TComponent> componentClass, String value) {
         return create().allBy(componentClass, new ClassFindStrategy(value));
     }
 
+    /**
+     * Use {@link WebComponent#create() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> TComponent createByClassContaining(Class<TComponent> componentClass, String value) {
         return create().by(componentClass, new ClassContainingFindStrategy(value));
     }
 
+    /**
+     * Use {@link WebComponent#create() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> List<TComponent> createAllByClassContaining(Class<TComponent> componentClass, String value) {
         return create().allBy(componentClass, new ClassContainingFindStrategy(value));
     }
 
+    /**
+     * Use {@link WebComponent#create() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> TComponent createByAttributeContaining(Class<TComponent> componentClass, String attributeName, String value) {
         return create().by(componentClass, new AttributeContainingFindStrategy(attributeName, value));
     }
 
+    /**
+     * Use {@link WebComponent#create() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> List<TComponent> createAllByAttributeContaining(Class<TComponent> componentClass, String attributeName, String value) {
         return create().allBy(componentClass, new AttributeContainingFindStrategy(attributeName, value));
     }
 
+    /**
+     * Use {@link WebComponent#create() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> TComponent createByPlaceholder(Class<TComponent> componentClass, String text, Function<Page.GetByPlaceholderOptions, Page.GetByPlaceholderOptions> options) {
         var placeholderOptions = PlaceholderOptions.createAbsolute(options);
         return create().by(componentClass, new PlaceholderFindStrategy(text, placeholderOptions));
     }
 
+    /**
+     * Use {@link WebComponent#create() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> List<TComponent> createAllByPlaceholder(Class<TComponent> componentClass, String text, Function<Page.GetByPlaceholderOptions, Page.GetByPlaceholderOptions> options) {
         var placeholderOptions = PlaceholderOptions.createAbsolute(options);
         return create().allBy(componentClass, new PlaceholderFindStrategy(text, placeholderOptions));
     }
 
+    /**
+     * Use {@link WebComponent#create() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> TComponent createByPlaceholder(Class<TComponent> componentClass, Pattern pattern, Function<Page.GetByPlaceholderOptions, Page.GetByPlaceholderOptions> options) {
         var placeholderOptions = PlaceholderOptions.createAbsolute(options);
         return create().by(componentClass, new PlaceholderFindStrategy(pattern, placeholderOptions));
     }
 
+    /**
+     * Use {@link WebComponent#create() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> List<TComponent> createAllByPlaceholder(Class<TComponent> componentClass, Pattern pattern, Function<Page.GetByPlaceholderOptions, Page.GetByPlaceholderOptions> options) {
         var placeholderOptions = PlaceholderOptions.createAbsolute(options);
         return create().allBy(componentClass, new PlaceholderFindStrategy(pattern, placeholderOptions));
     }
 
+    /**
+     * Use {@link WebComponent#create() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> TComponent createByTestId(Class<TComponent> componentClass, String text) {
         return create().by(componentClass, new TestIdFindStrategy(text));
     }
 
+    /**
+     * Use {@link WebComponent#create() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> List<TComponent> createAllByTestId(Class<TComponent> componentClass, String text) {
         return create().allBy(componentClass, new TestIdFindStrategy(text));
     }
 
+    /**
+     * Use {@link WebComponent#create() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> TComponent createByTestId(Class<TComponent> componentClass, Pattern pattern) {
         return create().by(componentClass, new TestIdFindStrategy(pattern));
     }
 
+    /**
+     * Use {@link WebComponent#create() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> List<TComponent> createAllByTestId(Class<TComponent> componentClass, Pattern pattern) {
         return create().allBy(componentClass, new TestIdFindStrategy(pattern));
     }
 
+    /**
+     * Use {@link WebComponent#create() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> TComponent createByRole(Class<TComponent> componentClass, AriaRole role, Function<Page.GetByRoleOptions, Page.GetByRoleOptions> options) {
         var roleOptions = RoleOptions.createAbsolute(options);
         return create().by(componentClass, new AriaRoleFindStrategy(role, roleOptions));
     }
 
+    /**
+     * Use {@link WebComponent#create() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> List<TComponent> createAllByRole(Class<TComponent> componentClass, AriaRole role, Function<Page.GetByRoleOptions, Page.GetByRoleOptions> options) {
         var roleOptions = RoleOptions.createAbsolute(options);
         return create().allBy(componentClass, new AriaRoleFindStrategy(role, roleOptions));
     }
 
+    /**
+     * Use {@link WebComponent#create() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> TComponent createByAltText(Class<TComponent> componentClass, String text, Function<Page.GetByAltTextOptions, Page.GetByAltTextOptions> options) {
         var altTextOptions = AltTextOptions.createAbsolute(options);
         return create().by(componentClass, new AltTextFindStrategy(text, altTextOptions));
     }
 
+    /**
+     * Use {@link WebComponent#create() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> List<TComponent> createAllByAltText(Class<TComponent> componentClass, String text, Function<Page.GetByAltTextOptions, Page.GetByAltTextOptions> options) {
         var altTextOptions = AltTextOptions.createAbsolute(options);
         return create().allBy(componentClass, new AltTextFindStrategy(text, altTextOptions));
     }
 
+    /**
+     * Use {@link WebComponent#create() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> TComponent createByAltText(Class<TComponent> componentClass, Pattern pattern, Function<Page.GetByAltTextOptions, Page.GetByAltTextOptions> options) {
         var altTextOptions = AltTextOptions.createAbsolute(options);
         return create().by(componentClass, new AltTextFindStrategy(pattern, altTextOptions));
     }
 
+    /**
+     * Use {@link WebComponent#create() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> List<TComponent> createAllByAltText(Class<TComponent> componentClass, Pattern pattern, Function<Page.GetByAltTextOptions, Page.GetByAltTextOptions> options) {
         var altTextOptions = AltTextOptions.createAbsolute(options);
         return create().allBy(componentClass, new AltTextFindStrategy(pattern, altTextOptions));
     }
 
-    public <TComponent extends WebComponent> TComponent createByText(Class<TComponent> componentClass, String text, Function<Page.GetByTextOptions, Page.GetByTextOptions> options) {
-        var textOptions = TextOptions.createAbsolute(options);
-        return create().by(componentClass, new TextFindStrategy(text, textOptions));
-    }
-
-    public <TComponent extends WebComponent> List<TComponent> createAllByText(Class<TComponent> componentClass, String text, Function<Page.GetByTextOptions, Page.GetByTextOptions> options) {
-        var textOptions = TextOptions.createAbsolute(options);
-        return create().allBy(componentClass, new TextFindStrategy(text, textOptions));
-    }
-
-    public <TComponent extends WebComponent> TComponent createByText(Class<TComponent> componentClass, Pattern pattern, Function<Page.GetByTextOptions, Page.GetByTextOptions> options) {
-        var textOptions = TextOptions.createAbsolute(options);
-        return create().by(componentClass, new TextFindStrategy(pattern, textOptions));
-    }
-
-    public <TComponent extends WebComponent> List<TComponent> createAllByText(Class<TComponent> componentClass, Pattern pattern, Function<Page.GetByTextOptions, Page.GetByTextOptions> options) {
-        var textOptions = TextOptions.createAbsolute(options);
-        return create().allBy(componentClass, new TextFindStrategy(pattern, textOptions));
-    }
-
+    /**
+     * Use {@link WebComponent#create() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> TComponent createByTitle(Class<TComponent> componentClass, String text, Function<Page.GetByTitleOptions, Page.GetByTitleOptions> options) {
         var titleOptions = TitleOptions.createAbsolute(options);
         return create().by(componentClass, new TitleFindStrategy(text, titleOptions));
     }
 
+    /**
+     * Use {@link WebComponent#create() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> List<TComponent> createAllByTitle(Class<TComponent> componentClass, String text, Function<Page.GetByTitleOptions, Page.GetByTitleOptions> options) {
         var titleOptions = TitleOptions.createAbsolute(options);
         return create().allBy(componentClass, new TitleFindStrategy(text, titleOptions));
     }
 
+    /**
+     * Use {@link WebComponent#create() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> TComponent createByTitle(Class<TComponent> componentClass, Pattern pattern, Function<Page.GetByTitleOptions, Page.GetByTitleOptions> options) {
         var titleOptions = TitleOptions.createAbsolute(options);
         return create().by(componentClass, new TitleFindStrategy(pattern, titleOptions));
     }
 
+    /**
+     * Use {@link WebComponent#create() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> List<TComponent> createAllByTitle(Class<TComponent> componentClass, Pattern pattern, Function<Page.GetByTitleOptions, Page.GetByTitleOptions> options) {
         var titleOptions = TitleOptions.createAbsolute(options);
         return create().allBy(componentClass, new TitleFindStrategy(pattern, titleOptions));
     }
 
+    /**
+     * Use {@link WebComponent#create() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> TComponent createByXpath(Class<TComponent> componentClass, String xpath) {
         return create().by(componentClass, new XpathFindStrategy(xpath));
     }
 
+    /**
+     * Use {@link WebComponent#create() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> List<TComponent> createAllByXpath(Class<TComponent> componentClass, String xpath) {
         return create().allBy(componentClass, new XpathFindStrategy(xpath));
     }
 
+    /**
+     * Use {@link WebComponent#create() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> TComponent createByCss(Class<TComponent> componentClass, String css) {
         return create().by(componentClass, new CssFindStrategy(css));
     }
 
+    /**
+     * Use {@link WebComponent#create() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> List<TComponent> createAllByCss(Class<TComponent> componentClass, String css) {
         return create().allBy(componentClass, new CssFindStrategy(css));
     }
 
+    /**
+     * Use {@link WebComponent#getShadowRoot() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent, TFindStrategy extends FindStrategy> TComponent shadowRootCreate(Class<TFindStrategy> findStrategyClass, Class<TComponent> componentClass, Object... args) {
         var findStrategy = InstanceFactory.create(findStrategyClass, args);
         return create().by(componentClass, findStrategy);
     }
 
+    /**
+     * Use {@link WebComponent#getShadowRoot() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent, TFindStrategy extends FindStrategy> List<TComponent> shadowRootCreateAll(Class<TFindStrategy> findStrategyClass, Class<TComponent> componentClass, Object... args) {
         var findStrategy = InstanceFactory.create(findStrategyClass, args);
         return create().allBy(componentClass, findStrategy);
     }
 
-
-    // There is no need for shadowRootCreate, because the native playwright locators pierce the shadow DOM (except for xpath)
+    /**
+     * Use {@link WebComponent#getShadowRoot() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> TComponent shadowRootCreateById(Class<TComponent> componentClass, String id) {
         return create().by(componentClass, new IdFindStrategy(id));
     }
 
+    /**
+     * Use {@link WebComponent#getShadowRoot() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> TComponent shadowRootCreateByAttributeContaining(Class<TComponent> componentClass, String attributeName, String value) {
         return create().by(componentClass, new AttributeContainingFindStrategy(attributeName, value));
     }
 
+    /**
+     * Use {@link WebComponent#getShadowRoot() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> TComponent shadowRootCreateByIdEndingWith(Class<TComponent> componentClass, String idEnding) {
         return create().by(componentClass, new IdEndingWithFindStrategy(idEnding));
     }
 
+    /**
+     * Use {@link WebComponent#getShadowRoot() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> TComponent shadowRootCreateByCss(Class<TComponent> componentClass, String css) {
         return create().by(componentClass, new CssFindStrategy(css));
     }
 
+    /**
+     * Use {@link WebComponent#getShadowRoot() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> TComponent shadowRootCreateByClass(Class<TComponent> componentClass, String className) {
         return create().by(componentClass, new ClassFindStrategy(className));
     }
 
+    /**
+     * Use {@link WebComponent#getShadowRoot() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> TComponent shadowRootCreateByName(Class<TComponent> componentClass, String name) {
         return create().by(componentClass, new NameFindStrategy(name));
     }
 
+    /**
+     * Use {@link WebComponent#getShadowRoot() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> TComponent shadowRootCreateByNameEnding(Class<TComponent> componentClass, String nameEnding) {
         return create().by(componentClass, new NameEndingWithFindStrategy(nameEnding));
     }
 
+    /**
+     * Use {@link WebComponent#getShadowRoot() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> TComponent shadowRootCreateByValueContaining(Class<TComponent> componentClass, String valueContaining) {
         return create().by(componentClass, new ValueContainingFindStrategy(valueContaining));
     }
 
+    /**
+     * Use {@link WebComponent#getShadowRoot() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> TComponent shadowRootCreateByClassContaining(Class<TComponent> componentClass, String classNameContaining) {
         return create().by(componentClass, new ClassContainingFindStrategy(classNameContaining));
     }
 
+    /**
+     * Use {@link WebComponent#getShadowRoot() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> TComponent shadowRootCreateByXPath(Class<TComponent> componentClass, String xpath) {
         return create().by(componentClass, new XpathFindStrategy(xpath));
     }
 
+    /**
+     * Use {@link WebComponent#getShadowRoot() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> TComponent shadowRootCreateByLinkText(Class<TComponent> componentClass, String linkText) {
         return create().by(componentClass, new LinkTextFindStrategy(linkText));
     }
 
+    /**
+     * Use {@link WebComponent#getShadowRoot() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> TComponent shadowRootCreateByLinkTextContaining(Class<TComponent> componentClass, String linkTextContaining) {
         return create().by(componentClass, new LinkTextContainingFindStrategy(linkTextContaining));
     }
 
+    /**
+     * Use {@link WebComponent#getShadowRoot() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> TComponent shadowRootCreateByTag(Class<TComponent> componentClass, String tag) {
         return create().by(componentClass, new TagFindStrategy(tag));
     }
 
+    /**
+     * Use {@link WebComponent#getShadowRoot() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> TComponent shadowRootCreateByIdContaining(Class<TComponent> componentClass, String idContaining) {
         return create().by(componentClass, new IdContainingFindStrategy(idContaining));
     }
 
+    /**
+     * Use {@link WebComponent#getShadowRoot() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> TComponent shadowRootCreateByInnerTextContaining(Class<TComponent> componentClass, String innerText) {
-        return create().by(componentClass, new TextFindStrategy(Pattern.compile(String.format(".*%s.*", innerText))));
+        return create().by(componentClass, new InnerTextContainingFindStrategy(innerText));
     }
 
+    /**
+     * Use {@link WebComponent#getShadowRoot() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> List<TComponent> shadowRootCreateAllById(Class<TComponent> componentClass, String id) {
         return create().allBy(componentClass, new IdFindStrategy(id));
     }
 
+    /**
+     * Use {@link WebComponent#getShadowRoot() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> List<TComponent> shadowRootCreateAllByAttributeContaining(Class<TComponent> componentClass, String attributeName, String value) {
         return create().allBy(componentClass, new AttributeContainingFindStrategy(attributeName, value));
     }
 
+    /**
+     * Use {@link WebComponent#getShadowRoot() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> List<TComponent> shadowRootCreateAllByIdEndingWith(Class<TComponent> componentClass, String idEnding) {
         return create().allBy(componentClass, new IdEndingWithFindStrategy(idEnding));
     }
 
+    /**
+     * Use {@link WebComponent#getShadowRoot() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> List<TComponent> shadowRootCreateAllByCss(Class<TComponent> componentClass, String css) {
         return create().allBy(componentClass, new CssFindStrategy(css));
     }
 
+    /**
+     * Use {@link WebComponent#getShadowRoot() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> List<TComponent> shadowRootCreateAllByClass(Class<TComponent> componentClass, String className) {
         return create().allBy(componentClass, new ClassFindStrategy(className));
     }
 
+    /**
+     * Use {@link WebComponent#getShadowRoot() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> List<TComponent> shadowRootCreateAllByName(Class<TComponent> componentClass, String name) {
         return create().allBy(componentClass, new NameFindStrategy(name));
     }
 
+    /**
+     * Use {@link WebComponent#getShadowRoot() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> List<TComponent> shadowRootCreateAllByNameEnding(Class<TComponent> componentClass, String nameEnding) {
         return create().allBy(componentClass, new NameEndingWithFindStrategy(nameEnding));
     }
 
+    /**
+     * Use {@link WebComponent#getShadowRoot() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> List<TComponent> shadowRootCreateAllByValueContaining(Class<TComponent> componentClass, String valueContaining) {
         return create().allBy(componentClass, new ValueContainingFindStrategy(valueContaining));
     }
 
+    /**
+     * Use {@link WebComponent#getShadowRoot() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> List<TComponent> shadowRootCreateAllByClassContaining(Class<TComponent> componentClass, String classNameContaining) {
         return create().allBy(componentClass, new ClassContainingFindStrategy(classNameContaining));
     }
 
+    /**
+     * Use {@link WebComponent#getShadowRoot() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> List<TComponent> shadowRootCreateAllByXPath(Class<TComponent> componentClass, String xpath) {
         return create().allBy(componentClass, new XpathFindStrategy(xpath));
     }
 
+    /**
+     * Use {@link WebComponent#getShadowRoot() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> List<TComponent> shadowRootCreateAllByLinkText(Class<TComponent> componentClass, String linkText) {
         return create().allBy(componentClass, new LinkTextFindStrategy(linkText));
     }
 
+    /**
+     * Use {@link WebComponent#getShadowRoot() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> List<TComponent> shadowRootCreateAllByLinkTextContaining(Class<TComponent> componentClass, String linkTextContaining) {
         return create().allBy(componentClass, new LinkTextContainingFindStrategy(linkTextContaining));
     }
 
+    /**
+     * Use {@link WebComponent#getShadowRoot() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> List<TComponent> shadowRootCreateAllByTag(Class<TComponent> componentClass, String tag) {
         return create().allBy(componentClass, new TagFindStrategy(tag));
     }
 
+    /**
+     * Use {@link WebComponent#getShadowRoot() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> List<TComponent> shadowRootCreateAllByIdContaining(Class<TComponent> componentClass, String idContaining) {
         return create().allBy(componentClass, new IdContainingFindStrategy(idContaining));
     }
 
+    /**
+     * Use {@link WebComponent#getShadowRoot() } instead
+     */
+    @Deprecated
     public <TComponent extends WebComponent> List<TComponent> shadowRootCreateAllByInnerTextContaining(Class<TComponent> componentClass, String innerText) {
-        return create().allBy(componentClass, new TextFindStrategy(Pattern.compile(String.format(".*%s.*", innerText))));
+        return create().allBy(componentClass, new InnerTextContainingFindStrategy(innerText));
     }
 }
