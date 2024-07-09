@@ -16,6 +16,7 @@ package solutions.bellatrix.playwright.infrastructure.junit;
 import org.junit.jupiter.api.extension.ExtendWith;
 import solutions.bellatrix.core.plugins.junit.BaseTest;
 import solutions.bellatrix.core.plugins.junit.TestResultWatcher;
+import solutions.bellatrix.core.utilities.SingletonFactory;
 import solutions.bellatrix.playwright.components.listeners.BddConsoleLogging;
 import solutions.bellatrix.playwright.components.listeners.BddToastNotificationsLogging;
 import solutions.bellatrix.playwright.components.listeners.HighlightElements;
@@ -28,7 +29,7 @@ import solutions.bellatrix.playwright.services.App;
 @ExtendWith(TestResultWatcher.class)
 public class WebTest extends BaseTest {
     public App app() {
-        return new App();
+        return SingletonFactory.getInstance(App.class);
     }
 
     @Override

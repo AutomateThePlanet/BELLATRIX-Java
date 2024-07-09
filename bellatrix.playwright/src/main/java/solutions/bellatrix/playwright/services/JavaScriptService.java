@@ -18,7 +18,7 @@ import solutions.bellatrix.core.utilities.DebugInformation;
 import solutions.bellatrix.core.utilities.SingletonFactory;
 import solutions.bellatrix.playwright.components.Frame;
 import solutions.bellatrix.playwright.components.WebComponent;
-import solutions.bellatrix.playwright.utilities.functionalinterfaces.EvaluationMethod;
+import solutions.bellatrix.playwright.utilities.functionalinterfaces.Evaluable;
 
 
 @SuppressWarnings("resource")
@@ -48,7 +48,7 @@ public class JavaScriptService extends WebService {
         return (String) performEvaluation(() -> nativeLocator.evaluate(script));
     }
 
-    private Object performEvaluation(EvaluationMethod method) {
+    private Object performEvaluation(Evaluable method) {
         try {
             return method.evaluate();
         } catch (Exception ex) {

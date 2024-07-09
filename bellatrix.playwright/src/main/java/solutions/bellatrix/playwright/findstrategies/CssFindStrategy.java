@@ -27,12 +27,13 @@ public class CssFindStrategy extends FindStrategy {
 
     @Override
     public WebElement convert(Page page) {
-        return get(page, By.LOCATOR, value);
-
+        if (!value.startsWith("css="))return get(page, By.LOCATOR, "css=" + value);
+        else return get(page, By.LOCATOR, value);
     }
 
     @Override
     public WebElement convert(WebElement webElement) {
-        return get(webElement, By.LOCATOR, value);
+        if (!value.startsWith("css="))return get(webElement, By.LOCATOR, "css=" + value);
+        else return get(webElement, By.LOCATOR, value);
     }
 }
