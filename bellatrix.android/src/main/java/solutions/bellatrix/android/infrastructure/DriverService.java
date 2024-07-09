@@ -19,7 +19,6 @@ import io.appium.java_client.remote.AndroidMobileCapabilityType;
 import io.appium.java_client.remote.MobileCapabilityType;
 import lombok.SneakyThrows;
 import org.openqa.selenium.MutableCapabilities;
-import org.openqa.selenium.Platform;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import solutions.bellatrix.android.configuration.AndroidSettings;
 import solutions.bellatrix.android.configuration.GridSettings;
@@ -30,11 +29,10 @@ import solutions.bellatrix.core.utilities.TimestampBuilder;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.Properties;
-import java.util.concurrent.TimeUnit;
 
 public class DriverService {
     private static final ThreadLocal<Boolean> DISPOSED;
@@ -84,7 +82,7 @@ public class DriverService {
             driver = initializeDriverGridMode(gridSettings.get(), testName);
         }
 
-        driver.manage().timeouts().implicitlyWait(androidSettings.getTimeoutSettings().getImplicitWaitTimeout(), TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(androidSettings.getTimeoutSettings().getImplicitWaitTimeout()));
         WRAPPED_ANDROID_DRIVER.set(driver);
         solutions.bellatrix.web.infrastructure.DriverService.setWrappedDriver(driver);
         return driver;

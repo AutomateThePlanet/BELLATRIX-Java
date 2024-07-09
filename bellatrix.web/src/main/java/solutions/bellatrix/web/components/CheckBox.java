@@ -33,6 +33,15 @@ public class CheckBox extends WebComponent implements ComponentDisabled, Compone
         defaultCheck(CHECKING, CHECKED);
     }
 
+    public void check(boolean shouldCheck) {
+        if (shouldCheck) {
+            check();
+        }
+        else {
+            uncheck();
+        }
+    }
+
     public void uncheck() {
         defaultUncheck(UNCHECKING, UNCHECKED);
     }

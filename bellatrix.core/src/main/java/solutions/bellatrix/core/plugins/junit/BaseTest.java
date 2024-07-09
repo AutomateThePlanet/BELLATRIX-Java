@@ -13,10 +13,7 @@
 
 package solutions.bellatrix.core.plugins.junit;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.TestInfo;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import solutions.bellatrix.core.plugins.PluginExecutionEngine;
 import solutions.bellatrix.core.plugins.TestResult;
@@ -29,6 +26,7 @@ import java.util.Collections;
 import java.util.List;
 
 @ExtendWith(TestResultWatcher.class)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @ExtendWith(TestDurationWatcher.class)
 public class BaseTest extends UsesPlugins {
     static final ThreadLocal<TestResult> CURRENT_TEST_RESULT = new ThreadLocal<>();
@@ -95,7 +93,7 @@ public class BaseTest extends UsesPlugins {
         try {
             var testClass = this.getClass();
             assert testInfo.getTestMethod().isPresent();
-            var methodInfo = testClass.getMethod(testInfo.getTestMethod().get().getName());
+            var methodInfo = testClass.getMethod(testInfo.getTestMethod().get().getName(), testInfo.getTestMethod().get().getParameterTypes());
             PluginExecutionEngine.preAfterTest(CURRENT_TEST_RESULT.get(), methodInfo); // DEPRECATED, LEFT FOR COMPATIBILITY
             PluginExecutionEngine.preAfterTest(CURRENT_TEST_RESULT.get(), CURRENT_TEST_TIME_RECORD.get(), methodInfo);
             afterEach();
@@ -107,11 +105,12 @@ public class BaseTest extends UsesPlugins {
     }
 
     @AfterAll
-    public static void afterClassCore(TestInfo testInfo) {
+    public void afterClassCore(TestInfo testInfo) {
         try {
             var testClass = testInfo.getTestClass();
             if (testClass.isPresent()) {
                 PluginExecutionEngine.preAfterClass(testClass.get());
+                afterClass();
                 PluginExecutionEngine.postAfterClass(testClass.get());
             }
         } catch (Exception e) {
@@ -137,5 +136,8 @@ public class BaseTest extends UsesPlugins {
     }
 
     protected void afterEach() {
+    }
+
+    protected void afterClass() {
     }
 }

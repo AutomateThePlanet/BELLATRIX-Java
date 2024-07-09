@@ -21,11 +21,13 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import solutions.bellatrix.core.utilities.SingletonFactory;
 
 @Data
 public class WrappedBrowser {
     public WrappedBrowser(Playwright playwright) {
         this.playwright = playwright;
+        SingletonFactory.register(this);
     }
 
     public WrappedBrowser(Playwright playwright, Browser browser, BrowserContext context, Page page) {
@@ -33,6 +35,7 @@ public class WrappedBrowser {
         this.browser = browser;
         currentContext = context;
         currentPage = page;
+        SingletonFactory.register(this);
     }
 
     @Getter(AccessLevel.PACKAGE) @Setter(AccessLevel.PACKAGE) private Playwright playwright;
@@ -42,18 +45,18 @@ public class WrappedBrowser {
     private String gridSessionId;
 
     public void close() {
-        // ToDo maybe only the playwright object needs to be explicitly closed
-        currentPage.close();
-        currentContext.close();
+        // Close everything manually
+        for (var page : currentContext.pages()) page.close();
+        for (var context : browser.contexts()) context.close();
         browser.close();
         playwright.close();
     }
 
     public void changeContext(BrowserContext context) {
-        currentPage.close();
+        for (var page : currentContext.pages()) page.close();
         currentContext.close();
 
         setCurrentContext(context);
-        setCurrentPage(currentContext.newPage());
+        setCurrentPage(context.newPage());
     }
 }

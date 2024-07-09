@@ -21,6 +21,7 @@ import java.util.HashMap;
 
 public class BrowserConfiguration {
     @Setter @Getter private Browser browser;
+    @Setter @Getter private DeviceName deviceName;
     @Setter @Getter private Lifecycle lifecycle;
     @Setter @Getter private int height;
     @Setter @Getter private int width;
@@ -39,10 +40,33 @@ public class BrowserConfiguration {
         driverOptions = new HashMap<>();
     }
 
+    public BrowserConfiguration(Browser browser, DeviceName deviceName, Lifecycle browserBehavior) {
+        this.deviceName = deviceName;
+        this.browser = browser;
+        this.lifecycle = browserBehavior;
+        driverOptions = new HashMap<>();
+    }
+
+    public BrowserConfiguration(Browser browser, Lifecycle browserBehavior, Integer browserWidth, Integer browserHeight) {
+        this.browser = browser;
+        this.lifecycle = browserBehavior;
+        this.width = browserWidth;
+        this.height = browserHeight;
+        driverOptions = new HashMap<>();
+    }
+
     public BrowserConfiguration(Browser browser, Lifecycle browserBehavior, String testName) {
         this.browser = browser;
         this.lifecycle = browserBehavior;
         this.testName = testName;
+        driverOptions = new HashMap<>();
+    }
+
+    public BrowserConfiguration(DeviceName deviceName, Lifecycle browserBehavior, String testName) {
+        this.browser = Browser.CHROME_MOBILE;
+        this.lifecycle = browserBehavior;
+        this.testName = testName;
+        this.deviceName = deviceName;
         driverOptions = new HashMap<>();
     }
 

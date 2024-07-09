@@ -14,6 +14,7 @@
 package solutions.bellatrix.playwright.components;
 
 import solutions.bellatrix.core.utilities.InstanceFactory;
+import solutions.bellatrix.playwright.components.common.webelement.FrameElement;
 import solutions.bellatrix.playwright.findstrategies.FindStrategy;
 import solutions.bellatrix.playwright.components.common.webelement.WebElement;
 
@@ -32,10 +33,10 @@ public class Frame extends WebComponent {
      * @param componentClass type of component
      */
     public <ComponentT extends WebComponent> ComponentT as(Class<ComponentT> componentClass) {
-        if (componentClass == Frame.class) return (ComponentT)this;
+        if (componentClass == this.getClass()) return (ComponentT)this;
 
         var component = InstanceFactory.create(componentClass);
-        var element = new WebElement(this.wrappedElement.getWrappedLocator());
+        var element = ((FrameElement)this.wrappedElement).owner();
         component.setWrappedElement(element);
 
         var findStrategy = (FindStrategy)this.findStrategy.clone();

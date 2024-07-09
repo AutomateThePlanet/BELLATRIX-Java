@@ -24,7 +24,7 @@ public class Progress extends WebComponent implements ComponentMaxText, Componen
     }
 
     @Override
-    public String getInnerText() {
+    public String getText() {
         return defaultGetText();
     }
 

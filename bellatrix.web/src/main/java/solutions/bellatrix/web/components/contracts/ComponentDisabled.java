@@ -14,13 +14,8 @@
 package solutions.bellatrix.web.components.contracts;
 
 import lombok.SneakyThrows;
-import solutions.bellatrix.core.utilities.SingletonFactory;
 import solutions.bellatrix.web.components.WebComponent;
 import solutions.bellatrix.web.validations.ComponentValidator;
-
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.function.BooleanSupplier;
 
 public interface ComponentDisabled extends Component {
     boolean isDisabled();

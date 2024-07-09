@@ -14,11 +14,10 @@
 package solutions.bellatrix.core.plugins;
 
 import java.lang.reflect.Method;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.*;
 
 public final class PluginExecutionEngine {
-    private final static Set<Plugin> PLUGINS;
+    private final static LinkedHashSet<Plugin> PLUGINS;
 
     static {
         PLUGINS = new LinkedHashSet<>();
@@ -92,7 +91,7 @@ public final class PluginExecutionEngine {
                 currentObserver.preAfterTest(result, timeRecord, memberInfo);
         }
     }
-    
+
     /**
      * Deprecated. <br>
      * Use {@link #postAfterTest(TestResult, TimeRecord, Method, Throwable)} as it offers more information about the test.
