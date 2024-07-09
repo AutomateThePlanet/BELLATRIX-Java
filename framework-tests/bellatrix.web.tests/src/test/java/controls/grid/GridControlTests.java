@@ -140,7 +140,7 @@ public class GridControlTests extends WebTest {
 
     @Test
     public void assertRow() {
-        testGrid.getRow(0).assertRow(Employee.class, expectedItems.get(0));
+        testGrid.getRow(0).assertRow(expectedItems.get(0));
     }
 
     @Test
