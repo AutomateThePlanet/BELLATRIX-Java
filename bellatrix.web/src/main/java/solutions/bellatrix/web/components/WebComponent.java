@@ -192,6 +192,10 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
         return new java.awt.Dimension(size.getWidth(), size.getHeight());
     }
 
+    public String getTagName() {
+        return getWrappedElement().getTagName();
+    }
+
     public String getTitle() {
         return getAttribute("title");
     }

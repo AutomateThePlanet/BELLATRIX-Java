@@ -91,13 +91,14 @@ public class GridRow extends WebComponent implements ComponentHtml {
         return parentGrid.castRow(clazz, index, fieldsToSkip);
     }
 
-    public <T> void assertRow(Class<T> clazz, T expectedItem, String... fieldsNotToCompare) {
+    public <T> void assertRow(T expectedItem, String... fieldsNotToCompare) {
+        var clazz = expectedItem.getClass();
         var actualItem = getItem(clazz, fieldsNotToCompare);
 
         EntitiesAsserter.assertAreEqual(expectedItem, actualItem, fieldsNotToCompare);
     }
 
-    public <T> void assertRow(Class<T> clazz, T expectedItem) {
+    public <T> void assertRow(T expectedItem) {
         List<String> propsNotToCompare = Arrays.stream(expectedItem.getClass().getDeclaredFields())
                 .filter(field -> {
                     field.setAccessible(true);
@@ -110,6 +111,6 @@ public class GridRow extends WebComponent implements ComponentHtml {
                 .map(field -> parentGrid.getHeaderNamesService().getHeaderNameByField(field))
                 .toList();
 
-        assertRow(clazz, expectedItem, propsNotToCompare.toArray(new String[0]));
+        assertRow(expectedItem, propsNotToCompare.toArray(new String[0]));
     }
 }

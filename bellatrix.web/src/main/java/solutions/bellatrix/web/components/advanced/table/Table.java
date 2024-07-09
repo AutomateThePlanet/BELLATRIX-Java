@@ -107,6 +107,14 @@ public class Table extends WebComponent {
         }
     }
 
+    public void forEachCell(Consumer<TableCell> action) {
+        for (var row : getRows()) {
+            for (var rowCell : row.getCells()) {
+                action.accept(rowCell);
+            }
+        }
+    }
+
     public List<TableCell> getColumn(int column) {
         var tableCells = getRows().stream().map(row -> row.getCell(column)).toList();
 
@@ -173,6 +181,10 @@ public class Table extends WebComponent {
 
     public TableRow getFirstOrDefaultRow(Predicate<TableCell> selector) {
         return getRows(selector).stream().findFirst().orElse(null);
+    }
+
+    public TableCell getFirstOrDefaultCell(Predicate<TableCell> selector) {
+        return getCells(selector).stream().findFirst().orElse(null);
     }
 
     public <T> void assertTable(List<T> expectedEntities) {
