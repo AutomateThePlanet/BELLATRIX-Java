@@ -77,4 +77,28 @@ public class Wait {
     public static void retry(Runnable action, Duration timeout, Duration sleepInterval, Class<? extends Throwable> ... exceptionsToIgnore) {
         Wait.retry(action, timeout, sleepInterval, true, exceptionsToIgnore);
     }
+
+    public static boolean forConditionUntilTimeout(Comparator condition, long timeoutInMilliseconds, long pollingIntervalInMilliseconds) {
+        boolean isConditionMet = false;
+
+        long startTime = System.currentTimeMillis();
+
+        while (!isConditionMet && (System.currentTimeMillis() - startTime) <= (timeoutInMilliseconds)) {
+            try {
+                if (condition.evaluate()) {
+                    isConditionMet = true;
+                } else {
+                    Thread.sleep(pollingIntervalInMilliseconds);
+                }
+            } catch (Exception ignored) {
+            }
+        }
+
+        return isConditionMet;
+    }
+
+    @FunctionalInterface
+    public interface Comparator {
+        boolean evaluate();
+    }
 }

@@ -17,7 +17,7 @@ import lombok.experimental.UtilityClass;
 import solutions.bellatrix.core.plugins.EventListener;
 import solutions.bellatrix.playwright.components.WebComponent;
 import solutions.bellatrix.playwright.components.common.ComponentActionEventArgs;
-import solutions.bellatrix.playwright.utilities.functionalinterfaces.AssertionMethod;
+import solutions.bellatrix.playwright.utilities.functionalinterfaces.Assertable;
 
 import java.util.List;
 import java.util.function.BooleanSupplier;
@@ -45,7 +45,7 @@ public class ComponentValidator {
     public static void defaultValidateAttributeIsNull(WebComponent component, Supplier<Object> supplier, String attributeName) {
         VALIDATING_ATTRIBUTE.broadcast(new ComponentActionEventArgs(component, null, String.format("validating %s's %s is null", component.getComponentName(), attributeName)));
 
-        AssertionMethod assertion = () -> {
+        Assertable assertion = () -> {
             Validator.validateCondition(() -> supplier.get() == null);
         };
         Validator.validate(assertion, component, attributeName, "null", supplier, "be");
@@ -56,7 +56,7 @@ public class ComponentValidator {
     public static void defaultValidateAttributeNotNull(WebComponent component, Supplier<Object> supplier, String attributeName) {
         VALIDATING_ATTRIBUTE.broadcast(new ComponentActionEventArgs(component, null, String.format("validating %s's %s is NOT null", component.getComponentName(), attributeName)));
 
-        AssertionMethod assertion = () -> {
+        Assertable assertion = () -> {
             Validator.validateCondition(() -> supplier.get() != null);
         };
         Validator.validate(assertion, component, attributeName, "not null", (Supplier<String>) () -> "null", "be");
@@ -67,7 +67,7 @@ public class ComponentValidator {
     public static void defaultValidateAttributeIsSet(WebComponent component, Supplier<String> supplier, String attributeName) {
         VALIDATING_ATTRIBUTE.broadcast(new ComponentActionEventArgs(component, null, String.format("validating %s's %s is set", component.getComponentName(), attributeName)));
 
-        AssertionMethod assertion = () -> {
+        Assertable assertion = () -> {
             Validator.validateCondition(() -> !supplier.get().isEmpty());
         };
         Validator.validate(assertion, component, attributeName, "set", supplier, "be");
@@ -78,7 +78,7 @@ public class ComponentValidator {
     public static void defaultValidateAttributeNotSet(WebComponent component, Supplier<String> supplier, String attributeName) {
         VALIDATING_ATTRIBUTE.broadcast(new ComponentActionEventArgs(component, null, String.format("validating %s's %s is NOT set", component.getComponentName(), attributeName)));
 
-        AssertionMethod assertion = () -> {
+        Assertable assertion = () -> {
             Validator.validateCondition(() -> supplier.get().isEmpty());
         };
         Validator.validate(assertion, component, attributeName, "not set", supplier, "be");
@@ -89,7 +89,7 @@ public class ComponentValidator {
     public static void defaultValidateAttributeIs(WebComponent component, Supplier<String> supplier, String value, String attributeName) {
         VALIDATING_ATTRIBUTE.broadcast(new ComponentActionEventArgs(component, value, String.format("validating %s's %s is '%s'", component.getComponentName(), attributeName, value)));
 
-        AssertionMethod assertion = () -> {
+        Assertable assertion = () -> {
             Validator.validateCondition(() -> supplier.get().equals(value));
         };
         Validator.validate(assertion, component, attributeName, value, supplier, "be");
@@ -100,7 +100,7 @@ public class ComponentValidator {
     public void defaultValidateAttributeIs(WebComponent component, Supplier<Number> supplier, Number value, String attributeName) {
         VALIDATING_ATTRIBUTE.broadcast(new ComponentActionEventArgs(component, value.toString(), String.format("validating %s's %s is '%s'", component.getComponentName(), attributeName, value)));
 
-        AssertionMethod assertion = () -> {
+        Assertable assertion = () -> {
             Validator.validateCondition(() -> supplier.get().equals(value));
         };
         Validator.validate(assertion, component, attributeName, value, supplier, "be");
@@ -111,7 +111,7 @@ public class ComponentValidator {
     public static void defaultValidateAttributeContains(WebComponent component, Supplier<String> supplier, String value, String attributeName) {
         VALIDATING_ATTRIBUTE.broadcast(new ComponentActionEventArgs(component, value, String.format("validating %s's %s contains '%s'", component.getComponentName(), attributeName, value)));
 
-        AssertionMethod assertion = () -> {
+        Assertable assertion = () -> {
             Validator.validateCondition(() -> supplier.get().contains(value));
         };
         Validator.validate(assertion, component, attributeName, value, supplier, "contain");
@@ -122,7 +122,7 @@ public class ComponentValidator {
     public static void defaultValidateAttributeNotContains(WebComponent component, Supplier<String> supplier, String value, String attributeName) {
         VALIDATING_ATTRIBUTE.broadcast(new ComponentActionEventArgs(component, value, String.format("validating %s's %s doesn't contain '%s'", component.getComponentName(), attributeName, value)));
 
-        AssertionMethod assertion = () -> {
+        Assertable assertion = () -> {
             Validator.validateCondition(() -> !supplier.get().contains(value));
         };
         Validator.validate(assertion, component, attributeName, value, supplier, "not contain");
@@ -133,7 +133,7 @@ public class ComponentValidator {
     public static void defaultValidateAttributeTrue(WebComponent component, BooleanSupplier supplier, String attributeName) {
         VALIDATING_ATTRIBUTE.broadcast(new ComponentActionEventArgs(component, null, String.format("validating %s is %s", component.getComponentName(), attributeName)));
 
-        AssertionMethod assertion = () -> {
+        Assertable assertion = () -> {
             Validator.validateCondition(supplier::getAsBoolean);
         };
         Validator.validate(assertion, component, attributeName, "true", () -> "false", "be");
@@ -144,7 +144,7 @@ public class ComponentValidator {
     public static void defaultValidateAttributeFalse(WebComponent component, BooleanSupplier supplier, String attributeName) {
         VALIDATING_ATTRIBUTE.broadcast(new ComponentActionEventArgs(component, null, String.format("validating %s is not %s", component.getComponentName(), attributeName)));
 
-        AssertionMethod assertion = () -> {
+        Assertable assertion = () -> {
             Validator.validateCondition(() -> !supplier.getAsBoolean());
         };
         Validator.validate(assertion, component, attributeName, "false", () -> "true", "be");
@@ -155,7 +155,7 @@ public class ComponentValidator {
     public static <Entity> void defaultValidateCollectionIs(WebComponent component, Supplier<List<Entity>> supplier, List<Entity> value, String attributeName) {
         VALIDATING_ATTRIBUTE.broadcast(new ComponentActionEventArgs(component, value.toString(), String.format("validating %s's %s is '%s'", component.getComponentName(), attributeName, value)));
 
-        AssertionMethod assertion = () -> {
+        Assertable assertion = () -> {
             Validator.validateCondition(() -> supplier.get().equals(value));
         };
         Validator.validate(assertion, component, attributeName, value, supplier, "be");

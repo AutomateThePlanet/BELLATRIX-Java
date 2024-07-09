@@ -39,10 +39,26 @@ public abstract class Plugin {
     public void beforeTestFailed(Exception e) throws Exception {
     }
 
+    /**
+     * Deprecated. <br>
+     * Use {@link #preAfterTest(TestResult, TimeRecord, Method)} as it offers more information about the test.
+     */
+    @Deprecated
     public void preAfterTest(TestResult testResult, Method memberInfo) throws IOException {
     }
 
+    public void preAfterTest(TestResult testResult, TimeRecord timeRecord, Method memberInfo) throws IOException {
+    }
+
+    /**
+     * Deprecated. <br>
+     * Use {@link #postAfterTest(TestResult, TimeRecord, Method, Throwable)} as it offers more information about the test.
+     */
+    @Deprecated
     public void postAfterTest(TestResult testResult, Method memberInfo, Throwable failedTestException) {
+    }
+
+    public void postAfterTest(TestResult testResult, TimeRecord timeRecord, Method memberInfo, Throwable failedTestException) {
     }
 
     public void afterTestFailed(Exception e) {

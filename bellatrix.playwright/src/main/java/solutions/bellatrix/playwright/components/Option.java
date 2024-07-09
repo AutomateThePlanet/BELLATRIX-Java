@@ -30,7 +30,7 @@ public class Option extends WebComponent implements ComponentText, ComponentValu
     }
 
     @Override
-    public String getInnerText() {
+    public String getText() {
         return defaultGetText();
     }
 
@@ -40,7 +40,7 @@ public class Option extends WebComponent implements ComponentText, ComponentValu
     }
 
     private boolean equals(Option option) {
-        return this.getInnerText().equals(option.getInnerText()) &&
+        return this.getText().equals(option.getText()) &&
                 this.getValue().equals(option.getValue());
     }
 }

@@ -17,7 +17,6 @@ import com.microsoft.playwright.Dialog;
 import lombok.Getter;
 import solutions.bellatrix.playwright.components.common.validate.Validator;
 import solutions.bellatrix.playwright.utilities.Settings;
-import solutions.bellatrix.playwright.utilities.functionalinterfaces.Action;
 
 import java.util.concurrent.*;
 import java.util.function.Consumer;
@@ -26,7 +25,7 @@ import java.util.function.Consumer;
 public class DialogService extends WebService {
     private Dialog dialog;
 
-    public Dialog runAndWaitForDialog(Action action) {
+    public Dialog runAndWaitForDialog(Runnable action) {
         listenForDialog();
 
         tryPerformAction(action, Settings.timeout().inMilliseconds().getActionTimeoutWhenHandlingDialogs());
@@ -36,7 +35,7 @@ public class DialogService extends WebService {
         return dialog;
     }
 
-    public Dialog runAndWaitForDialog(Action action, long timeout) {
+    public Dialog runAndWaitForDialog(Runnable action, long timeout) {
         listenForDialog();
 
         tryPerformAction(action, timeout);
@@ -82,13 +81,13 @@ public class DialogService extends WebService {
         wrappedBrowser().getCurrentPage().onceDialog((dialog) -> this.dialog = dialog);
     }
 
-    private void tryPerformAction(Action action, long timeout) {
+    private void tryPerformAction(Runnable action, long timeout) {
         try (ExecutorService executor = Executors.newSingleThreadExecutor()) {
             try {
                 // Create a callable task representing the action to be executed
                 Callable<Void> callableTask = () -> {
                     // Perform the action here
-                    action.perform();
+                    action.run();
                     return null;
                 };
 

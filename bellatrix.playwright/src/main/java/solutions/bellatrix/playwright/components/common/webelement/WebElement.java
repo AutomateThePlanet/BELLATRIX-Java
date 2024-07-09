@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 /**
- * Wrapper for Playwright Locator with internal logic for conversion between the two.
+ * Wrapper for Playwright Locator.
  */
 @Getter
 public class WebElement {
@@ -135,6 +135,10 @@ public class WebElement {
 
     public FrameElement locateFrame(String selector) {
         return new FrameElement(locate(selector));
+    }
+
+    public FrameElement locateFrame() {
+        return new FrameElement(this);
     }
 
     public List<WebElement> all() {

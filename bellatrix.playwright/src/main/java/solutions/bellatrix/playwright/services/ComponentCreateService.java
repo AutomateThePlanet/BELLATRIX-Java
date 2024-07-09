@@ -126,20 +126,12 @@ public class ComponentCreateService extends WebService {
         return allByAltText(componentClass, pattern, null);
     }
 
-    public <TComponent extends WebComponent> TComponent byText(Class<TComponent> componentClass, String text) {
-        return byText(componentClass, text, null);
-    }
-
-    public <TComponent extends WebComponent> List<TComponent> allByText(Class<TComponent> componentClass, String text) {
-        return allByText(componentClass, text, null);
-    }
-
     public <TComponent extends WebComponent> TComponent byInnerTextContaining(Class<TComponent> componentClass, String text) {
-        return byText(componentClass, Pattern.compile(String.format(".*%s.*", text)), null);
+        return by(componentClass, new InnerTextContainingFindStrategy(text));
     }
 
     public <TComponent extends WebComponent> List<TComponent> allByInnerTextContaining(Class<TComponent> componentClass, String text) {
-        return allByText(componentClass, Pattern.compile(String.format(".*%s.*", text)), null);
+        return allBy(componentClass, new InnerTextContainingFindStrategy(text));
     }
 
     public <TComponent extends WebComponent> TComponent byTitle(Class<TComponent> componentClass, String text) {
@@ -262,26 +254,6 @@ public class ComponentCreateService extends WebService {
     public <TComponent extends WebComponent> List<TComponent> allByAltText(Class<TComponent> componentClass, Pattern pattern, Function<Page.GetByAltTextOptions, Page.GetByAltTextOptions> options) {
         var altTextOptions = AltTextOptions.createAbsolute(options);
         return allBy(componentClass, new AltTextFindStrategy(pattern, altTextOptions));
-    }
-
-    public <TComponent extends WebComponent> TComponent byText(Class<TComponent> componentClass, String text, Function<Page.GetByTextOptions, Page.GetByTextOptions> options) {
-        var textOptions = TextOptions.createAbsolute(options);
-        return by(componentClass, new TextFindStrategy(text, textOptions));
-    }
-
-    public <TComponent extends WebComponent> List<TComponent> allByText(Class<TComponent> componentClass, String text, Function<Page.GetByTextOptions, Page.GetByTextOptions> options) {
-        var textOptions = TextOptions.createAbsolute(options);
-        return allBy(componentClass, new TextFindStrategy(text, textOptions));
-    }
-
-    public <TComponent extends WebComponent> TComponent byText(Class<TComponent> componentClass, Pattern pattern, Function<Page.GetByTextOptions, Page.GetByTextOptions> options) {
-        var textOptions = TextOptions.createAbsolute(options);
-        return by(componentClass, new TextFindStrategy(pattern, textOptions));
-    }
-
-    public <TComponent extends WebComponent> List<TComponent> allByText(Class<TComponent> componentClass, Pattern pattern, Function<Page.GetByTextOptions, Page.GetByTextOptions> options) {
-        var textOptions = TextOptions.createAbsolute(options);
-        return allBy(componentClass, new TextFindStrategy(pattern, textOptions));
     }
 
     public <TComponent extends WebComponent> TComponent byTitle(Class<TComponent> componentClass, String text, Function<Page.GetByTitleOptions, Page.GetByTitleOptions> options) {

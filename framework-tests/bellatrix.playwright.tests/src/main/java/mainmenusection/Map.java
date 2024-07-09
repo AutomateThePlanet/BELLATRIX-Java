@@ -1,0 +1,44 @@
+/*
+ * Copyright 2022 Automate The Planet Ltd.
+ * Author: Anton Angelov
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package mainmenusection;
+
+import solutions.bellatrix.playwright.components.Anchor;
+import solutions.bellatrix.playwright.pages.PageMap;
+
+public class Map extends PageMap {
+
+    public Anchor homeLink() {
+        return create().byLinkText(Anchor.class, "Home");
+    }
+
+    public Anchor blogLink() {
+        return create().byLinkText(Anchor.class, "Blog");
+    }
+
+    public Anchor cartLink() {
+        return create().byLinkText(Anchor.class, "Cart");
+    }
+
+    public Anchor checkoutLink() {
+        return create().byLinkText(Anchor.class, "Checkout");
+    }
+
+    public Anchor myAccountLink() {
+        return create().byLinkText(Anchor.class, "My Account");
+    }
+
+    public Anchor promotionsLink() {
+        return create().byLinkText(Anchor.class, "Promotions");
+    }
+}
