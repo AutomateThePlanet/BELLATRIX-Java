@@ -7,6 +7,7 @@
         <groupId>solutions.bellatrix</groupId>
         <artifactId>bellatrix</artifactId>
         <version>1.0-SNAPSHOT</version>
+        <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <groupId>org.example</groupId>
