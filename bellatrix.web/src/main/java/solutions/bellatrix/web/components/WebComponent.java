@@ -1254,7 +1254,6 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
         }
     }
 
-
     private void scrollToVisible(WebElement wrappedElement, boolean shouldWait, ScrollPosition scrollPosition) {
         SCROLLING_TO_VISIBLE.broadcast(new ComponentActionEventArgs(this));
         try {
