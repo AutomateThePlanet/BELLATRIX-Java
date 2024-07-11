@@ -209,22 +209,24 @@ public class BrowserService extends WebService {
     }
 
     public void waitForAjax() {
-        long ajaxTimeout = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getWaitForAjaxTimeout();
-        long sleepInterval = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getSleepInterval();
-        var webDriverWait = new WebDriverWait(getWrappedDriver(), Duration.ofSeconds(ajaxTimeout), Duration.ofSeconds(sleepInterval));
-        var javascriptExecutor = (JavascriptExecutor)getWrappedDriver();
-        webDriverWait.until(d -> {
-                    var numberOfAjaxConnections = javascriptExecutor.executeScript("return !isNaN(window.openHTTPs) ? window.openHTTPs : null");
-                    if (Objects.nonNull(numberOfAjaxConnections)) {
-                        int ajaxConnections = Integer.parseInt(numberOfAjaxConnections.toString());
-                        return ajaxConnections == 0;
-                    } else {
-                        monkeyPatchXMLHttpRequest();
-                    }
-
-                    return false;
-                }
-        );
+        waitUntilPageLoadsCompletely();
+        // TODO: navramov 11/07/2024 Uncomment when a better way is found as it causes the system to throw console errors
+//        long ajaxTimeout = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getWaitForAjaxTimeout();
+//        long sleepInterval = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getSleepInterval();
+//        var webDriverWait = new WebDriverWait(getWrappedDriver(), Duration.ofSeconds(ajaxTimeout), Duration.ofSeconds(sleepInterval));
+//        var javascriptExecutor = (JavascriptExecutor)getWrappedDriver();
+//        webDriverWait.until(d -> {
+//                    var numberOfAjaxConnections = javascriptExecutor.executeScript("return !isNaN(window.openHTTPs) ? window.openHTTPs : null");
+//                    if (Objects.nonNull(numberOfAjaxConnections)) {
+//                        int ajaxConnections = Integer.parseInt(numberOfAjaxConnections.toString());
+//                        return ajaxConnections == 0;
+//                    } else {
+//                        monkeyPatchXMLHttpRequest();
+//                    }
+//
+//                    return false;
+//                }
+//        );
     }
 
     private void monkeyPatchXMLHttpRequest() {
