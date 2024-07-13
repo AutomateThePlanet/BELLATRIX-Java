@@ -22,22 +22,19 @@ import java.util.Map;
 // Based on http://neutrofoton.github.io/blog/2013/08/29/generic-singleton-pattern-in-java/
 // Can be used inside App design pattern.
 @SuppressWarnings("unchecked")
+@UtilityClass
 public class SingletonFactory {
-    private static final SingletonFactory SINGLETON_FACTORY = new SingletonFactory();
-
-    private final Map<Class<?>, Object> mapHolder = new HashMap<>();
-
-    private SingletonFactory() {
-    }
+    private static final ThreadLocal<Map<Class<?>, Object>> mapHolder = ThreadLocal.withInitial(HashMap::new);
 
     @SneakyThrows
     public static <T> T getInstance(Class<T> classOf, Object... initargs) {
         try {
-            if (!SINGLETON_FACTORY.mapHolder.containsKey(classOf)) {
+            if (!mapHolder.get().containsKey(classOf)) {
                 T obj = (T)classOf.getConstructors()[0].newInstance(initargs);
-                SINGLETON_FACTORY.mapHolder.put(classOf, obj);
+                register(obj);
             }
-            return (T)SINGLETON_FACTORY.mapHolder.get(classOf);
+
+            return (T)mapHolder.get().get(classOf);
         } catch (Exception e) {
             Log.error("Failed to create instance of the object. Exception was: " + e);
             return null;
@@ -45,10 +42,10 @@ public class SingletonFactory {
     }
 
     public static <T> void register(T instance) {
-        SINGLETON_FACTORY.mapHolder.put(instance.getClass(), instance);
+        mapHolder.get().put(instance.getClass(), instance);
     }
 
     public static <T> void register(Class<?> classKey, T instance) {
-        SINGLETON_FACTORY.mapHolder.put(classKey, instance);
+        mapHolder.get().put(classKey, instance);
     }
 }

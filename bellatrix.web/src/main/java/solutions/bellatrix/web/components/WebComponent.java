@@ -208,10 +208,6 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
         return getAttribute("accesskey");
     }
 
-    public String getStyle() {
-        return getAttribute("style");
-    }
-
     public String getDir() {
         return getAttribute("dir");
     }
@@ -224,6 +220,7 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
         return getAttribute("class");
     }
 
+    @Override
     public String getAttribute(String name) {
         return getWrappedElement().getAttribute(name);
     }

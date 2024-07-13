@@ -24,6 +24,10 @@ public class EventListener<TArgs> {
         listeners.add(listener);
     }
 
+    public void removeListener(Consumer<TArgs> listener) {
+        listeners.remove(listener);
+    }
+
     public void broadcast(TArgs args) {
         if (listeners.size() > 0) {
             listeners.forEach(x -> x.accept(args));

@@ -9,7 +9,7 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>bellatrix.addons.visual-regression-tracker</artifactId>
+    <artifactId>bellatrix.plugins.visual-regression-tracker</artifactId>
 
     <repositories>
         <repository>
