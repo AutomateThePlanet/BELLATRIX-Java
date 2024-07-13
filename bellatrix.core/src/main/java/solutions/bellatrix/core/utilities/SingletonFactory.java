@@ -31,8 +31,9 @@ public class SingletonFactory {
         try {
             if (!mapHolder.get().containsKey(classOf)) {
                 T obj = (T)classOf.getConstructors()[0].newInstance(initargs);
-                mapHolder.get().put(classOf, obj);
+                register(obj);
             }
+
             return (T)mapHolder.get().get(classOf);
         } catch (Exception e) {
             Log.error("Failed to create instance of the object. Exception was: " + e);
