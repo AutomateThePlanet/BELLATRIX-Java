@@ -22,7 +22,7 @@ public enum Browser {
     FIREFOX("firefox"),
     FIREFOX_HEADLESS("firefox_headless"),
     EDGE("edge"),
-    EDGE_HEADLESS("edge"),
+    EDGE_HEADLESS("edge_headless"),
     OPERA("opera"),
     SAFARI("safari"),
     INTERNET_EXPLORER("ie"),
