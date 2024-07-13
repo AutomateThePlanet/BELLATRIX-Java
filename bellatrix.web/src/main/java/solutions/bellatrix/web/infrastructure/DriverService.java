@@ -139,6 +139,7 @@ public class DriverService {
                 caps.setCapability(ChromeOptions.CAPABILITY, firefoxOptions);
                 break;
             }
+            case EDGE_HEADLESS:
             case EDGE: {
                 var edgeOptions = new EdgeOptions();
                 caps.setCapability(ChromeOptions.CAPABILITY, edgeOptions);
@@ -201,6 +202,7 @@ public class DriverService {
                 caps.setCapability(ChromeOptions.CAPABILITY, firefoxOptions);
                 break;
             }
+            case EDGE_HEADLESS:
             case EDGE: {
                 var edgeOptions = new EdgeOptions();
                 addGridOptions(edgeOptions, gridSettings);
@@ -306,6 +308,14 @@ public class DriverService {
             }
             case EDGE -> {
                 var edgeOptions = new EdgeOptions();
+                addDriverOptions(edgeOptions);
+                if (shouldCaptureHttpTraffic) edgeOptions.setProxy(proxyConfig);
+                driver = new EdgeDriver(edgeOptions);
+            }
+            case EDGE_HEADLESS -> {
+                var edgeOptions = new EdgeOptions();
+                edgeOptions.addArguments("--headless");
+                edgeOptions.addArguments("--disable-gpu");
                 addDriverOptions(edgeOptions);
                 if (shouldCaptureHttpTraffic) edgeOptions.setProxy(proxyConfig);
                 driver = new EdgeDriver(edgeOptions);
