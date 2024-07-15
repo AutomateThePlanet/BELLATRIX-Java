@@ -209,45 +209,40 @@ public class BrowserService extends WebService {
     }
 
     public void waitForAjax() {
-        waitUntilPageLoadsCompletely();
-        // TODO: navramov 11/07/2024 Uncomment when a better way is found as it causes the system to throw console errors
-//        long ajaxTimeout = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getWaitForAjaxTimeout();
-//        long sleepInterval = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getSleepInterval();
-//        var webDriverWait = new WebDriverWait(getWrappedDriver(), Duration.ofSeconds(ajaxTimeout), Duration.ofSeconds(sleepInterval));
-//        var javascriptExecutor = (JavascriptExecutor)getWrappedDriver();
-//        webDriverWait.until(d -> {
-//                    var numberOfAjaxConnections = javascriptExecutor.executeScript("return !isNaN(window.openHTTPs) ? window.openHTTPs : null");
-//                    if (Objects.nonNull(numberOfAjaxConnections)) {
-//                        int ajaxConnections = Integer.parseInt(numberOfAjaxConnections.toString());
-//                        return ajaxConnections == 0;
-//                    } else {
-//                        monkeyPatchXMLHttpRequest();
-//                    }
-//
-//                    return false;
-//                }
-//        );
+        long ajaxTimeout = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getWaitForAjaxTimeout();
+        long sleepInterval = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getSleepInterval();
+        var webDriverWait = new WebDriverWait(getWrappedDriver(), Duration.ofSeconds(ajaxTimeout), Duration.ofSeconds(sleepInterval));
+        var javascriptExecutor = (JavascriptExecutor)getWrappedDriver();
+        webDriverWait.until(d -> {
+            var numberOfAjaxConnections = javascriptExecutor.executeScript("return !isNaN(window.$openHTTPs) ? window.$openHTTPs : null");
+            if (Objects.nonNull(numberOfAjaxConnections)) {
+                int ajaxConnections = Integer.parseInt(numberOfAjaxConnections.toString());
+                return ajaxConnections == 0;
+            } else {
+                monkeyPatchXMLHttpRequest();
+            }
+
+            return false;
+        });
     }
 
     private void monkeyPatchXMLHttpRequest() {
-        var numberOfAjaxConnections = javascriptExecutor.executeScript(("return !isNaN(window.openHTTPs) ? window.openHTTPs : null"));
+        var numberOfAjaxConnections = javascriptExecutor.executeScript(("return !isNaN(window.$openHTTPs) ? window.$openHTTPs : null"));
 
-        if (Objects.nonNull(numberOfAjaxConnections)) {
-            var ajaxConnections = Integer.parseInt(numberOfAjaxConnections.toString());
-        } else {
-            var script = "  (function() {" +
-                    "var oldOpen = XMLHttpRequest.prototype.open;" +
-                    "window.openHTTPs = 0;" +
-                    "XMLHttpRequest.prototype.open = function(method, url, async, user, pass) {" +
-                    "window.openHTTPs++;" +
-                    "this.addEventListener('readystatechange', function() {" +
-                    "if(this.readyState == 4) {" +
-                    "window.openHTTPs--;" +
-                    "}" +
-                    "}, false);" +
-                    "oldOpen.call(this, method, url, async, user, pass);" +
-                    "}" +
-                    "})();";
+        if (Objects.isNull(numberOfAjaxConnections)) {
+            var script = "(function() {" +
+                            "const oldOpen = XMLHttpRequest.prototype.open;" +
+                            "window.$openHTTPs = 0;" +
+                            "XMLHttpRequest.prototype.open = function() {" +
+                                "window.$openHTTPs++;" +
+                                "this.addEventListener('readystatechange', function() {" +
+                                    "if(this.readyState == 4) {" +
+                                        "window.$openHTTPs--;" +
+                                    "}" +
+                                "}, false);" +
+                                "return oldOpen.call(this, ...arguments);" +
+                            "}" +
+                        "})();";
 
             javascriptExecutor.executeScript(script);
         }
