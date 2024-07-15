@@ -108,7 +108,7 @@ public class ComponentValidator {
         var validationTimeout = timeoutSettings.getValidationsTimeout();
         var sleepInterval = timeoutSettings.getSleepInterval();
 
-        FluentWait<WebDriver> wait = new FluentWait<>(DriverService.getWrappedDriver())
+        FluentWait<WebDriver> wait = new FluentWait<>(DriverService.current().getWrappedDriver())
                 .withTimeout(Duration.ofSeconds(validationTimeout))
                 .pollingEvery(Duration.ofSeconds(sleepInterval > 0 ? sleepInterval : 1));
 

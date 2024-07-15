@@ -43,7 +43,7 @@ public class WebScreenshotPlugin extends ScreenshotPlugin {
 
         var screenshot = new AShot()
                 .shootingStrategy(ShootingStrategies.viewportPasting(100))
-                .takeScreenshot(DriverService.getWrappedDriver());
+                .takeScreenshot(DriverService.current().getWrappedDriver());
 
         var path = Paths.get(screenshotSaveDir, filename).toString();
         var destFile = new File(path);
@@ -64,7 +64,7 @@ public class WebScreenshotPlugin extends ScreenshotPlugin {
     public String takeScreenshot(String screenshotSaveDir, String filename) {
         var screenshot = new AShot()
                 .shootingStrategy(ShootingStrategies.viewportPasting(100))
-                .takeScreenshot(DriverService.getWrappedDriver());
+                .takeScreenshot(DriverService.current().getWrappedDriver());
 
         var path = Paths.get(screenshotSaveDir, filename).toString();
         var destFile = new File(path);

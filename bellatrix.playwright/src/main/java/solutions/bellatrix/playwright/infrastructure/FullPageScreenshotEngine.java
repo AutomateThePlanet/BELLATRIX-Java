@@ -24,7 +24,7 @@ import java.util.Base64;
 @UtilityClass
 public class FullPageScreenshotEngine {
     public static File takeScreenshot() {
-        var screenshot = PlaywrightService.wrappedBrowser().getCurrentPage()
+        var screenshot = PlaywrightService.current().wrappedBrowser().getCurrentPage()
                 .screenshot(new Page.ScreenshotOptions()
                         .setFullPage(true)
                         .setType(ScreenshotType.PNG)

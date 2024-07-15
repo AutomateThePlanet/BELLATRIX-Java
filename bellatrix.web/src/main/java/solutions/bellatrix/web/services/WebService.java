@@ -18,6 +18,6 @@ import solutions.bellatrix.web.infrastructure.DriverService;
 
 public abstract class WebService {
     public WebDriver getWrappedDriver() {
-        return DriverService.getWrappedDriver();
+        return DriverService.current().getWrappedDriver();
     }
 }

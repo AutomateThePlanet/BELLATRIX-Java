@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class WebSettings {
+    @Getter @Setter private boolean forceCloseBrowser;
     @Getter @Setter private String baseUrl;
     @Getter @Setter private String executionType;
     @Getter @Setter private String defaultLifeCycle;

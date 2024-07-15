@@ -92,14 +92,14 @@ public class BrowserLifecyclePlugin extends Plugin {
     }
 
     private void shutdownBrowser() {
-        DriverService.close();
+        DriverService.current().close();
         PREVIOUS_BROWSER_CONFIGURATION.remove();
     }
 
     private void startBrowser() {
 //        shutdownBrowser();
         try {
-            DriverService.start(CURRENT_BROWSER_CONFIGURATION.get());
+            DriverService.current().start(CURRENT_BROWSER_CONFIGURATION.get());
             IS_BROWSER_STARTED_CORRECTLY.set(true);
         } catch (Exception ex) {
             DebugInformation.printStackTrace(ex);

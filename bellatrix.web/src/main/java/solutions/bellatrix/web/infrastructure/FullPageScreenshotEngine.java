@@ -32,7 +32,7 @@ public class FullPageScreenshotEngine {
         var javaScriptService = new JavaScriptService();
         var timeoutInterval = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getWaitForAjaxTimeout();
         var sleepInterval = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getSleepInterval();
-        var webDriverWait = new WebDriverWait(DriverService.getWrappedDriver(), Duration.ofSeconds(timeoutInterval), Duration.ofSeconds(sleepInterval));
+        var webDriverWait = new WebDriverWait(DriverService.current().getWrappedDriver(), Duration.ofSeconds(timeoutInterval), Duration.ofSeconds(sleepInterval));
         webDriverWait.ignoring(IllegalArgumentException.class);
         javaScriptService.execute(html2CanvasContent);
         javaScriptService.execute(GENERATE_SCREENSHOT_JS);

@@ -43,7 +43,7 @@ public class Screen implements LayoutComponent {
     }
 
     private java.awt.Dimension convertDimension() {
-        var playwrightSize = PlaywrightService.wrappedBrowser().getCurrentPage().viewportSize();
+        var playwrightSize = PlaywrightService.current().wrappedBrowser().getCurrentPage().viewportSize();
         return new Dimension(playwrightSize.width, playwrightSize.height);
     }
 }

@@ -20,6 +20,7 @@ import java.util.List;
 
 @Getter @Setter
 public class WebSettings {
+    private boolean forceCloseBrowser;
     private String baseUrl;
     private String executionType;
     private String defaultLifeCycle;

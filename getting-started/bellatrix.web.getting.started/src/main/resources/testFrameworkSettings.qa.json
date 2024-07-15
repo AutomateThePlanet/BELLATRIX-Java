@@ -3,6 +3,7 @@
     "debugInformationEnabled": "true"
   },
   "webSettings": {
+    "forceCloseBrowser": "true",
     "baseUrl": "https://ecommerce-playground.lambdatest.io",
     "executionType": "regular",
     "defaultBrowser": "chrome",

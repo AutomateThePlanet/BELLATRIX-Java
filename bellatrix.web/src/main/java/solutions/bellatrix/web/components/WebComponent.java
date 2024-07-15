@@ -91,7 +91,7 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
         browserService = new BrowserService();
         componentCreateService = new ComponentCreateService();
         componentWaitService = new ComponentWaitService();
-        wrappedDriver = DriverService.getWrappedDriver();
+        wrappedDriver = DriverService.current().getWrappedDriver();
     }
 
     /**
@@ -720,7 +720,7 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
     public void highlight() {
         if (this.getWrappedElement() instanceof ShadowHost) return;
 
-        var currentBrowser = DriverService.getBrowserConfiguration().getBrowser();
+        var currentBrowser = DriverService.current().getBrowserConfiguration().getBrowser();
         if (currentBrowser == Browser.CHROME_HEADLESS) return;
 
         try {

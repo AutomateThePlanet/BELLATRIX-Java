@@ -13,6 +13,8 @@
 
 package solutions.bellatrix.web.services;
 
+import solutions.bellatrix.core.utilities.DebugInformation;
+import solutions.bellatrix.core.utilities.ShutdownManager;
 import solutions.bellatrix.core.utilities.SingletonFactory;
 import solutions.bellatrix.web.infrastructure.DriverService;
 import solutions.bellatrix.web.pages.WebPage;
@@ -50,7 +52,7 @@ public class App implements AutoCloseable {
     }
 
     public void addDriverOptions(String key, String value) {
-        DriverService.addDriverOptions(key, value);
+        DriverService.current().addDriverOptions(key, value);
     }
 
     public <TPage extends WebPage> TPage goTo(Class<TPage> pageOf, Object... args) {
@@ -85,7 +87,7 @@ public class App implements AutoCloseable {
             return;
         }
 
-        DriverService.close();
+        DriverService.current().close();
 
         disposed = true;
     }

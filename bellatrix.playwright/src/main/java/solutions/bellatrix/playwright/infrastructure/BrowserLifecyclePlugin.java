@@ -82,7 +82,7 @@ public class BrowserLifecyclePlugin extends Plugin {
     public void postAfterTest(TestResult testResult, Method memberInfo, Throwable failedTestException) {
 
         if (currentConfiguration().getLifecycle() == Lifecycle.REUSE_IF_STARTED) {
-            PlaywrightService.restartBrowserContext();
+            PlaywrightService.current().restartBrowserContext();
             return;
         }
 
@@ -95,14 +95,14 @@ public class BrowserLifecyclePlugin extends Plugin {
     }
 
     private void shutdownBrowser() {
-        PlaywrightService.close();
+        PlaywrightService.current().close();
         PREVIOUS_BROWSER_CONFIGURATION.remove();
     }
 
     private void startBrowser() {
         // shutdownBrowser();
         try {
-            PlaywrightService.start(currentConfiguration());
+            PlaywrightService.current().start(currentConfiguration());
             isBrowserStartedCorrectly(true);
         } catch (Exception ex) {
             DebugInformation.printStackTrace(ex);
