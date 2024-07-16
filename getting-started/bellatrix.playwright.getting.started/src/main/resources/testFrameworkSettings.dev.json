@@ -3,7 +3,6 @@
     "debugInformationEnabled": "true"
   },
   "webSettings": {
-    "forceCloseBrowser": "true",
     "baseUrl": "http://demos.bellatrix.solutions/",
     "executionType":"regular",
     "defaultBrowser": "chrome",
