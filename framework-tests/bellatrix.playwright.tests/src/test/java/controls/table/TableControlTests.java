@@ -6,12 +6,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.playwright.components.advanced.table.Table;
-import solutions.bellatrix.playwright.infrastructure.Browsers;
+import solutions.bellatrix.playwright.infrastructure.BrowserTypes;
 import solutions.bellatrix.playwright.infrastructure.ExecutionBrowser;
 import solutions.bellatrix.playwright.infrastructure.Lifecycle;
 import solutions.bellatrix.playwright.infrastructure.junit.WebTest;
 
-@ExecutionBrowser(browser = Browsers.CHROME, lifecycle = Lifecycle.REUSE_IF_STARTED)
+@ExecutionBrowser(browser = BrowserTypes.CHROME, lifecycle = Lifecycle.REUSE_IF_STARTED)
 public class TableControlTests extends WebTest {
     @BeforeEach
     public void testInit() {

@@ -5,7 +5,7 @@ import solutions.bellatrix.playwright.components.Anchor;
 import solutions.bellatrix.playwright.infrastructure.*;
 import solutions.bellatrix.playwright.infrastructure.junit.WebTest;
 
-@ExecutionBrowser (browser = Browsers.CHROME, browserVersion = 89, lifecycle = Lifecycle.REUSE_IF_STARTED)
+@ExecutionBrowser (browser = BrowserTypes.CHROME, browserVersion = 89, lifecycle = Lifecycle.REUSE_IF_STARTED)
 public class SeleniumGridTests extends WebTest {
     @Test
     public void promotionsPageOpened_When_PromotionsButtonClicked() {

@@ -154,7 +154,7 @@ public class BrowserLifecyclePlugin extends Plugin {
     private BrowserConfiguration getExecutionBrowserClassLevel(Class<?> type) {
         var executionBrowserAnnotation = (ExecutionBrowser)type.getDeclaredAnnotation(ExecutionBrowser.class);
         if (executionBrowserAnnotation == null) {
-            var defaultBrowser = Browsers.fromText(Settings.web().getDefaultBrowser());
+            var defaultBrowser = BrowserTypes.fromText(Settings.web().getDefaultBrowser());
             var defaultLifecycle = Lifecycle.fromText(Settings.web().getDefaultLifeCycle());
             return new BrowserConfiguration(defaultBrowser, defaultLifecycle);
         }

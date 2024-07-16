@@ -11,12 +11,12 @@ import solutions.bellatrix.playwright.components.Select;
 import solutions.bellatrix.playwright.components.advanced.grid.Grid;
 import solutions.bellatrix.playwright.components.advanced.grid.GridCell;
 import solutions.bellatrix.playwright.components.shadowdom.ShadowRoot;
-import solutions.bellatrix.playwright.infrastructure.Browsers;
+import solutions.bellatrix.playwright.infrastructure.BrowserTypes;
 import solutions.bellatrix.playwright.infrastructure.ExecutionBrowser;
 import solutions.bellatrix.playwright.infrastructure.Lifecycle;
 import solutions.bellatrix.playwright.infrastructure.junit.WebTest;
 
-@ExecutionBrowser(browser = Browsers.CHROME, lifecycle = Lifecycle.REUSE_IF_STARTED)
+@ExecutionBrowser(browser = BrowserTypes.CHROME, lifecycle = Lifecycle.REUSE_IF_STARTED)
 public class ShadowDomTests extends WebTest {
     @BeforeEach
     public void init() {

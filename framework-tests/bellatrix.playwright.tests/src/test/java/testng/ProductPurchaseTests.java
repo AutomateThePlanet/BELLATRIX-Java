@@ -19,12 +19,12 @@ import checkoutpage.PurchaseInfo;
 import mainpage.MainPage;
 import org.testng.annotations.Test;
 import solutions.bellatrix.playwright.components.Anchor;
-import solutions.bellatrix.playwright.infrastructure.Browsers;
+import solutions.bellatrix.playwright.infrastructure.BrowserTypes;
 import solutions.bellatrix.playwright.infrastructure.ExecutionBrowser;
 import solutions.bellatrix.playwright.infrastructure.Lifecycle;
 import solutions.bellatrix.playwright.infrastructure.testng.WebTest;
 
-@ExecutionBrowser(browser = Browsers.CHROME, lifecycle = Lifecycle.RESTART_ON_FAIL)
+@ExecutionBrowser(browser = BrowserTypes.CHROME, lifecycle = Lifecycle.RESTART_ON_FAIL)
 public class ProductPurchaseTests extends WebTest {
     @Override
     protected void afterEach() {

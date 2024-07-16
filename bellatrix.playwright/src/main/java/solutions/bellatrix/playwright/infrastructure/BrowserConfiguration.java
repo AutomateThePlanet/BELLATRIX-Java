@@ -20,7 +20,7 @@ import java.util.HashMap;
 
 @Getter @Setter
 public class BrowserConfiguration {
-    private Browsers browsers;
+    private BrowserTypes browserTypes;
     private Lifecycle lifecycle;
     private int height;
     private int width;
@@ -28,14 +28,14 @@ public class BrowserConfiguration {
     private String testName;
     private final HashMap<String, String> playwrightOptions;
 
-    public BrowserConfiguration(Browsers browsers, Lifecycle browserBehavior) {
-        this.browsers = browsers;
+    public BrowserConfiguration(BrowserTypes browserTypes, Lifecycle browserBehavior) {
+        this.browserTypes = browserTypes;
         this.lifecycle = browserBehavior;
         playwrightOptions = new HashMap<>();
     }
 
-    public BrowserConfiguration(Browsers browsers, Lifecycle browserBehavior, String testName) {
-        this.browsers = browsers;
+    public BrowserConfiguration(BrowserTypes browserTypes, Lifecycle browserBehavior, String testName) {
+        this.browserTypes = browserTypes;
         this.lifecycle = browserBehavior;
         this.testName = testName;
         playwrightOptions = new HashMap<>();
@@ -45,7 +45,7 @@ public class BrowserConfiguration {
     public boolean equals(Object obj) {
         if (!(obj instanceof BrowserConfiguration that))
             return false;
-        if (!(this.getBrowsers() == null ? that.getBrowsers() == null : this.getBrowsers().equals(that.getBrowsers())))
+        if (!(this.getBrowserTypes() == null ? that.getBrowserTypes() == null : this.getBrowserTypes().equals(that.getBrowserTypes())))
             return false;
         if (!(this.getLifecycle() == null ? that.getLifecycle() == null : this.getLifecycle().equals(that.getLifecycle())))
             return false;

@@ -13,7 +13,7 @@ import solutions.bellatrix.playwright.components.advanced.grid.GridRow;
 import solutions.bellatrix.playwright.components.advanced.table.TableCell;
 import solutions.bellatrix.playwright.findstrategies.TagFindStrategy;
 import solutions.bellatrix.playwright.findstrategies.XpathFindStrategy;
-import solutions.bellatrix.playwright.infrastructure.Browsers;
+import solutions.bellatrix.playwright.infrastructure.BrowserTypes;
 import solutions.bellatrix.playwright.infrastructure.ExecutionBrowser;
 import solutions.bellatrix.playwright.infrastructure.Lifecycle;
 import solutions.bellatrix.playwright.infrastructure.junit.WebTest;
@@ -21,7 +21,7 @@ import solutions.bellatrix.playwright.infrastructure.junit.WebTest;
 import java.util.ArrayList;
 import java.util.List;
 
-@ExecutionBrowser(browser = Browsers.CHROME, lifecycle = Lifecycle.REUSE_IF_STARTED)
+@ExecutionBrowser(browser = BrowserTypes.CHROME, lifecycle = Lifecycle.REUSE_IF_STARTED)
 public class GridControlTests extends WebTest {
     private Grid testGrid;
     private List<Employee> expectedItems;

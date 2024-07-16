@@ -32,6 +32,7 @@ import solutions.bellatrix.core.utilities.InstanceFactory;
 import solutions.bellatrix.playwright.components.common.ComponentActionEventArgs;
 import solutions.bellatrix.playwright.components.common.create.RelativeCreateService;
 import solutions.bellatrix.playwright.components.common.validate.Validator;
+import solutions.bellatrix.playwright.components.common.webelement.FrameElement;
 import solutions.bellatrix.playwright.components.common.webelement.WebElement;
 import solutions.bellatrix.playwright.components.contracts.Component;
 import solutions.bellatrix.playwright.components.contracts.ComponentStyle;
@@ -45,7 +46,7 @@ import solutions.bellatrix.playwright.components.shadowdom.ShadowRoot;
 import solutions.bellatrix.playwright.configuration.WebSettings;
 import solutions.bellatrix.playwright.findstrategies.*;
 import solutions.bellatrix.playwright.findstrategies.options.*;
-import solutions.bellatrix.playwright.infrastructure.Browsers;
+import solutions.bellatrix.playwright.infrastructure.BrowserTypes;
 import solutions.bellatrix.playwright.infrastructure.PlaywrightService;
 import solutions.bellatrix.playwright.infrastructure.WrappedBrowser;
 import solutions.bellatrix.playwright.utilities.Settings;
@@ -229,7 +230,7 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
     // Update: We should use js, native playwright highlight() method's function is unknown.
     // Update: the js script seems to work, but not for TextField elements
     public void highlight() {
-        if (PlaywrightService.browserConfiguration().getBrowsers() == Browsers.CHROME_HEADLESS) {
+        if (PlaywrightService.browserConfiguration().getBrowserTypes() == BrowserTypes.CHROME_HEADLESS) {
             return;
         }
 
