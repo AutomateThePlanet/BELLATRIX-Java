@@ -16,7 +16,7 @@ import solutions.bellatrix.playwright.infrastructure.ExecutionBrowser;
 import solutions.bellatrix.playwright.infrastructure.Lifecycle;
 import solutions.bellatrix.playwright.infrastructure.junit.WebTest;
 
-@ExecutionBrowser(browser = BrowserTypes.CHROME, lifecycle = Lifecycle.REUSE_IF_STARTED)
+@ExecutionBrowser(browser = BrowserTypes.FIREFOX, lifecycle = Lifecycle.REUSE_IF_STARTED)
 public class ShadowDomTests extends WebTest {
     @BeforeEach
     public void init() {

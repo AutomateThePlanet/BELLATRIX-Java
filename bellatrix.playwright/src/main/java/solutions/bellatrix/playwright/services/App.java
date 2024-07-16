@@ -80,7 +80,7 @@ public class App implements AutoCloseable {
             return;
         }
 
-        PlaywrightService.current().close();
+        PlaywrightService.close();
 
         disposed = true;
     }

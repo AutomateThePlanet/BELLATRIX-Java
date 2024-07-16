@@ -52,7 +52,7 @@ public class App implements AutoCloseable {
     }
 
     public void addDriverOptions(String key, String value) {
-        DriverService.current().addDriverOptions(key, value);
+        DriverService.addDriverOptions(key, value);
     }
 
     public <TPage extends WebPage> TPage goTo(Class<TPage> pageOf, Object... args) {
@@ -87,7 +87,7 @@ public class App implements AutoCloseable {
             return;
         }
 
-        DriverService.current().close();
+        DriverService.close();
 
         disposed = true;
     }

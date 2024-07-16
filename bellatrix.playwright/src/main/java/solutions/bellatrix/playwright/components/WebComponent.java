@@ -137,7 +137,7 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
     }
 
     protected static WrappedBrowser wrappedBrowser() {
-        return PlaywrightService.current().wrappedBrowser();
+        return PlaywrightService.wrappedBrowser();
     }
 
     public void scrollToVisible() {
@@ -230,7 +230,7 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
     // Update: We should use js, native playwright highlight() method's function is unknown.
     // Update: the js script seems to work, but not for TextField elements
     public void highlight() {
-        if (PlaywrightService.current().browserConfiguration().getBrowserTypes() == BrowserTypes.CHROME_HEADLESS) {
+        if (PlaywrightService.browserConfiguration().getBrowserTypes() == BrowserTypes.CHROME_HEADLESS) {
             return;
         }
 

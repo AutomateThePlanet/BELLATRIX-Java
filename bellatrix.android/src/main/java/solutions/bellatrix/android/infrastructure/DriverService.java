@@ -84,7 +84,7 @@ public class DriverService {
 
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(androidSettings.getTimeoutSettings().getImplicitWaitTimeout()));
         WRAPPED_ANDROID_DRIVER.set(driver);
-        solutions.bellatrix.web.infrastructure.DriverService.current().setWrappedDriver(driver);
+        solutions.bellatrix.web.infrastructure.DriverService.setWrappedDriver(driver);
         return driver;
     }
 
@@ -110,7 +110,7 @@ public class DriverService {
         AndroidDriver driver = null;
         try {
             driver = new AndroidDriver(new URL(gridSettings.getUrl()), caps);
-            solutions.bellatrix.web.infrastructure.DriverService.current().setWrappedDriver(driver);
+            solutions.bellatrix.web.infrastructure.DriverService.setWrappedDriver(driver);
         } catch (Exception e) {
             DebugInformation.printStackTrace(e);
         }
@@ -136,7 +136,7 @@ public class DriverService {
         addDriverConfigOptions(caps);
         addCustomDriverOptions(caps);
         var driver = new AndroidDriver(new URL(serviceUrl), caps);
-        solutions.bellatrix.web.infrastructure.DriverService.current().setWrappedDriver(driver);
+        solutions.bellatrix.web.infrastructure.DriverService.setWrappedDriver(driver);
         return driver;
     }
 

@@ -36,7 +36,7 @@ public class WebScreenshotPlugin extends ScreenshotPlugin {
         var filename = getUniqueFileName(name);
 
         var path = Paths.get(screenshotSaveDir, filename);
-        var screenshot = PlaywrightService.current().wrappedBrowser().getCurrentPage()
+        var screenshot = PlaywrightService.wrappedBrowser().getCurrentPage()
                 .screenshot(new Page.ScreenshotOptions()
                         .setPath(path)
                         .setType(ScreenshotType.PNG)
@@ -51,7 +51,7 @@ public class WebScreenshotPlugin extends ScreenshotPlugin {
     @Override
     public String takeScreenshot(String screenshotSaveDir, String filename) {
         var path = Paths.get(screenshotSaveDir, filename);
-        var screenshot = PlaywrightService.current().wrappedBrowser().getCurrentPage()
+        var screenshot = PlaywrightService.wrappedBrowser().getCurrentPage()
                 .screenshot(new Page.ScreenshotOptions()
                         .setPath(path)
                         .setType(ScreenshotType.PNG)

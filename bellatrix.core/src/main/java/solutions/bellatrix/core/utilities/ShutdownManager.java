@@ -34,7 +34,10 @@ public class ShutdownManager {
         if (instructions.isEmpty()) return;
 
         for (var instruction : instructions) {
-            instruction.run();
+            try {
+                instruction.run();
+            } catch (Exception ignored) {
+            }
         }
     }
 }

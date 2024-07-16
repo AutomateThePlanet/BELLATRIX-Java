@@ -18,6 +18,6 @@ import solutions.bellatrix.playwright.infrastructure.WrappedBrowser;
 
 public abstract class WebService {
     protected static WrappedBrowser wrappedBrowser() {
-        return PlaywrightService.current().wrappedBrowser();
+        return PlaywrightService.wrappedBrowser();
     }
 }
