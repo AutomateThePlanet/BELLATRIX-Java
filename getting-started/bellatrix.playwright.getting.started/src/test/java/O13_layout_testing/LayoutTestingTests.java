@@ -2,13 +2,13 @@ package O13_layout_testing;
 
 import org.junit.jupiter.api.Test;
 import solutions.bellatrix.playwright.components.*;
-import solutions.bellatrix.playwright.infrastructure.BrowserTypes;
+import solutions.bellatrix.playwright.infrastructure.Browsers;
 import solutions.bellatrix.playwright.infrastructure.ExecutionBrowser;
 import solutions.bellatrix.playwright.infrastructure.Lifecycle;
 import solutions.bellatrix.playwright.infrastructure.junit.WebTest;
 
 // Layout testing is a module from BELLATRIX that allows you to test the responsiveness of your website.
-@ExecutionBrowser (browser = BrowserTypes.CHROME, width = 1280, height = 1024, lifecycle = Lifecycle.RESTART_EVERY_TIME)
+@ExecutionBrowser (browser = Browsers.CHROME, width = 1280, height = 1024, lifecycle = Lifecycle.RESTART_EVERY_TIME)
 public class LayoutTestingTests extends WebTest {
     @Test
     public void testPageLayout() {
