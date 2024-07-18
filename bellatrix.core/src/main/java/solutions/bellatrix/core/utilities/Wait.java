@@ -78,6 +78,14 @@ public class Wait {
         Wait.retry(action, timeout, sleepInterval, true, exceptionsToIgnore);
     }
 
+    public static void forMilliseconds(int millis) {
+        try {
+            Thread.sleep(millis);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public static boolean forConditionUntilTimeout(Comparator condition, long timeoutInMilliseconds, long pollingIntervalInMilliseconds) {
         boolean isConditionMet = false;
 
