@@ -65,10 +65,14 @@ public class BrowserLifecyclePlugin extends Plugin {
     @Override
     public void preBeforeTest(TestResult testResult, Method memberInfo) {
         CURRENT_BROWSER_CONFIGURATION.set(getBrowserConfiguration(memberInfo));
-        if (shouldRestartBrowser()) {
-            shutdownBrowser();
-            startBrowser();
+
+        if (!IS_BROWSER_STARTED_DURING_PRE_BEFORE_CLASS.get()) {
+            if (shouldRestartBrowser()) {
+                startBrowser();
+            }
         }
+
+        IS_BROWSER_STARTED_DURING_PRE_BEFORE_CLASS.set(false);
     }
 
     @Override
@@ -139,32 +143,31 @@ public class BrowserLifecyclePlugin extends Plugin {
     }
 
     private BrowserConfiguration getExecutionBrowserMethodLevel(Method memberInfo) {
-        var executionBrowserAnnotation = (ExecutionBrowser)memberInfo.getDeclaredAnnotation(ExecutionBrowser.class);
-        if (executionBrowserAnnotation == null) {
-            return null;
-        }
+        if (!memberInfo.isAnnotationPresent(ExecutionBrowser.class)) return null;
 
+        var executionBrowserAnnotation = (ExecutionBrowser)memberInfo.getDeclaredAnnotation(ExecutionBrowser.class);
         return new BrowserConfiguration(executionBrowserAnnotation.browser(), executionBrowserAnnotation.deviceName(), executionBrowserAnnotation.lifecycle());
     }
 
-    private BrowserConfiguration getExecutionBrowserClassLevel(Class<?> type) {
-        var executionBrowserAnnotation = (ExecutionBrowser)type.getDeclaredAnnotation(ExecutionBrowser.class);
+    private BrowserConfiguration getExecutionBrowserClassLevel(Class<?> clazz) {
+        var browser = Browser.fromText(SecretsResolver.getSecret(ConfigurationService.get(WebSettings.class).getDefaultBrowser()));
+        var lifecycle = Lifecycle.fromText(ConfigurationService.get(WebSettings.class).getDefaultLifeCycle());
+        var width = ConfigurationService.get(WebSettings.class).getDefaultBrowserWidth();
+        var height = ConfigurationService.get(WebSettings.class).getDefaultBrowserHeight();
 
-        var defaultBrowser = Browser.fromText(SecretsResolver.getSecret(ConfigurationService.get(WebSettings.class).getDefaultBrowser()));
-        var defaultLifecycle = Lifecycle.fromText(ConfigurationService.get(WebSettings.class).getDefaultLifeCycle());
-        var defaultWidth = ConfigurationService.get(WebSettings.class).getDefaultBrowserWidth();
-        var defaultHeight = ConfigurationService.get(WebSettings.class).getDefaultBrowserHeight();
+        if (clazz.isAnnotationPresent(ExecutionBrowser.class)) {
+            var executionBrowserAnnotation = clazz.getDeclaredAnnotation(ExecutionBrowser.class);
 
-        var finalBrowser = executionBrowserAnnotation.browser() != Browser.NOT_SET && executionBrowserAnnotation.browser() != defaultBrowser ? executionBrowserAnnotation.browser() : defaultBrowser;
-        var finalLifecycle = executionBrowserAnnotation.lifecycle() != defaultLifecycle ? executionBrowserAnnotation.lifecycle() : defaultLifecycle;
-        var finalWidth = executionBrowserAnnotation.width() != 0 ? executionBrowserAnnotation.width() : defaultWidth;
-        var finalHeight = executionBrowserAnnotation.height() != 0 ? executionBrowserAnnotation.height() : defaultHeight;
+            browser = executionBrowserAnnotation.browser() != Browser.NOT_SET && executionBrowserAnnotation.browser() != browser ? executionBrowserAnnotation.browser() : browser;
+            lifecycle = executionBrowserAnnotation.lifecycle() != lifecycle ? executionBrowserAnnotation.lifecycle() : lifecycle;
+            width = executionBrowserAnnotation.width() != 0 ? executionBrowserAnnotation.width() : width;
+            height = executionBrowserAnnotation.height() != 0 ? executionBrowserAnnotation.height() : height;
 
-        if (executionBrowserAnnotation.browser() == Browser.CHROME_MOBILE) {
-            return new BrowserConfiguration(executionBrowserAnnotation.deviceName(), finalLifecycle, type.getName());
+            if (executionBrowserAnnotation.browser() == Browser.CHROME_MOBILE) {
+                return new BrowserConfiguration(executionBrowserAnnotation.deviceName(), lifecycle, clazz.getName());
+            }
         }
-        else {
-            return new BrowserConfiguration(finalBrowser, finalLifecycle, finalWidth, finalHeight);
-        }
+
+        return new BrowserConfiguration(browser, lifecycle, width, height);
     }
 }

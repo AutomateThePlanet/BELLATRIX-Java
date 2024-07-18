@@ -27,12 +27,14 @@ public class XpathFindStrategy extends FindStrategy {
 
     @Override
     public WebElement convert(Page page) {
-        return get(page, By.LOCATOR, value);
+        if (!value.startsWith("xpath=")) return get(page, By.LOCATOR, "xpath=" + value);
+        else return get(page, By.LOCATOR, value);
 
     }
 
     @Override
     public WebElement convert(WebElement webElement) {
-        return get(webElement, By.LOCATOR, value);
+        if (!value.startsWith("xpath=")) return get(webElement, By.LOCATOR, "xpath=" + value);
+        else return get(webElement, By.LOCATOR, value);
     }
 }

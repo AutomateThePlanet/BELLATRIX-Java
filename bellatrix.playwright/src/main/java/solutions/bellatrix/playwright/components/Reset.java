@@ -33,7 +33,7 @@ public class Reset extends WebComponent implements ComponentDisabled, ComponentT
     }
 
     @Override
-    public String getInnerText() {
+    public String getText() {
         return defaultGetText();
     }
 

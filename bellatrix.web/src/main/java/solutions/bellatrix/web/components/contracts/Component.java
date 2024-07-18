@@ -21,4 +21,5 @@ public interface Component extends LayoutComponent {
     Class<?> getComponentClass();
     WebElement getWrappedElement();
     FindStrategy getFindStrategy();
+    String getAttribute(String attributeName);
 }

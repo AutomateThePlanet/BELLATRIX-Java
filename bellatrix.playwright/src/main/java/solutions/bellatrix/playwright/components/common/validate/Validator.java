@@ -16,13 +16,13 @@ package solutions.bellatrix.playwright.components.common.validate;
 import lombok.experimental.UtilityClass;
 import org.opentest4j.AssertionFailedError;
 import solutions.bellatrix.core.configuration.ConfigurationService;
+import solutions.bellatrix.core.utilities.Wait;
 import solutions.bellatrix.playwright.components.WebComponent;
 import solutions.bellatrix.playwright.configuration.TimeoutSettings;
 import solutions.bellatrix.playwright.configuration.WebSettings;
 import solutions.bellatrix.playwright.services.WebService;
 import solutions.bellatrix.playwright.utilities.DebugLogger;
-import solutions.bellatrix.playwright.utilities.functionalinterfaces.AssertionMethod;
-import solutions.bellatrix.playwright.utilities.functionalinterfaces.ComparatorMethod;
+import solutions.bellatrix.playwright.utilities.functionalinterfaces.Assertable;
 
 import java.util.function.Supplier;
 
@@ -30,54 +30,22 @@ import java.util.function.Supplier;
 public class Validator extends WebService {
     private static final TimeoutSettings timeoutSettings = ConfigurationService.get(WebSettings.class).getTimeoutSettings();
 
-    public static void validateCondition(ComparatorMethod condition) {
-        boolean isConditionMet = false;
-
+    public static void validateCondition(Wait.Comparator condition) {
         long pollingInterval = timeoutSettings.inMilliseconds().getSleepInterval();
         long timeout = timeoutSettings.inMilliseconds().getValidationsTimeout();
 
-        long startTime = System.currentTimeMillis();
-
-        while (!isConditionMet && (System.currentTimeMillis() - startTime) <= timeout) {
-            try {
-                if (condition.evaluate()) {
-                    isConditionMet = true;
-                } else {
-                    Thread.sleep(pollingInterval);
-                }
-            } catch (Exception e) {
-                // ignore
-            }
-        }
-
-        if (!isConditionMet) {
+        if (!Wait.forConditionUntilTimeout(condition, timeout, pollingInterval)) {
             throw new AssertionFailedError(String.format("Assertion failed.\n%s", condition.toString()));
         }
     }
 
-    public static void validateCondition(ComparatorMethod condition, long timeoutInMilliseconds, long pollingIntervalInMilliseconds) {
-        boolean isConditionMet = false;
-
-        long startTime = System.currentTimeMillis();
-
-        while (!isConditionMet && (System.currentTimeMillis() - startTime) <= (timeoutInMilliseconds)) {
-            try {
-                if (condition.evaluate()) {
-                    isConditionMet = true;
-                } else {
-                    Thread.sleep(pollingIntervalInMilliseconds);
-                }
-            } catch (Exception e) {
-                // ignore
-            }
-        }
-
-        if (!isConditionMet) {
+    public static void validateCondition(Wait.Comparator condition, long timeoutInMilliseconds, long pollingIntervalInMilliseconds) {
+        if (!Wait.forConditionUntilTimeout(condition, timeoutInMilliseconds, pollingIntervalInMilliseconds)) {
             throw new AssertionFailedError(String.format("Assertion failed.\n%s", condition.toString()));
         }
     }
 
-    public static <T, V> void validate(AssertionMethod assertion, WebComponent component, String attributeName, V value, Supplier<T> supplier, String prefix) {
+    public static <T, V> void validate(Assertable assertion, WebComponent component, String attributeName, V value, Supplier<T> supplier, String prefix) {
         var error = String.format("The %s of %s (%s)%n" +
                         "  Should %s: \"%s\"%n" +
                         "  %" + prefix.length() + "sBut was: \"%s\"%n" +

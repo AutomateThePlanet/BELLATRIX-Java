@@ -20,7 +20,7 @@ public class ScreenshotPluginEventArgs {
     private final String screenshotPath;
     private final String fileName;
 
-    public ScreenshotPluginEventArgs(String screenshotPath, String fileName) {
+    public ScreenshotPluginEventArgs(String screenshotPath, String fileName, String image) {
         this.screenshotPath = screenshotPath;
         this.fileName = fileName;
     }
