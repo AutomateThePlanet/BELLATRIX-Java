@@ -41,15 +41,15 @@ public class Wait {
         retry(action, Duration.ofSeconds(30), Duration.ofSeconds(1), exceptionsToIgnore);
     }
 
-    public static boolean retry(Runnable action, Duration timeout, Duration sleepInterval, boolean shouldThrowExceptions, Class<? extends Throwable> ... exceptionsToIgnore) {
+    public static boolean retry(Runnable action, Duration timeout, Duration sleepInterval, boolean shouldThrowException, Class<? extends Throwable> ... exceptionsToIgnore) {
         boolean returnValue = true;
-        boolean shouldThrow = shouldThrowExceptions;
+        boolean shouldThrow = shouldThrowException;
 
         long start = System.currentTimeMillis();
         long end = start + timeout.toMillis();
         while (System.currentTimeMillis() < end) {
             try {
-                shouldThrow = shouldThrowExceptions;
+                shouldThrow = shouldThrowException;
                 action.run();
                 break;
             } catch (Exception exc) {
