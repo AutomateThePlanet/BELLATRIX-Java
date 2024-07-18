@@ -7,19 +7,20 @@ public class Wait {
         Wait.retry(action, timesToRetry, sleepInterval, true, exceptionsToIgnore);
     }
 
-    public static void retry(Runnable action, int timesToRetry, long sleepInterval,boolean shouldThrowException, Class<? extends Throwable> ... exceptionsToIgnore) {
+    public static void retry(Runnable action, int timesToRetry, long sleepInterval, boolean shouldThrowException, Class<? extends Throwable> ... exceptionsToIgnore) {
+        var shouldThrow = shouldThrowException;
         int repeat = 0;
-        while(repeat <= timesToRetry) {
+        while (repeat <= timesToRetry) {
             try {
-                shouldThrowException = true;
+                shouldThrow = shouldThrowException;
                 action.run();
                 break;
-            } catch(Exception exc) {
+            } catch (Exception exc) {
                 for (var currentException : exceptionsToIgnore) {
                     if (currentException.isInstance(exc)) {
                         //exc.printStackTrace();
                         repeat++;
-                        shouldThrowException = false;
+                        shouldThrow = false;
                         try {
                             Thread.sleep(Duration.ofSeconds(sleepInterval).toMillis());
                         } catch (InterruptedException e) {
@@ -29,7 +30,7 @@ public class Wait {
                     }
                 }
 
-                if (shouldThrowException) {
+                if (shouldThrow) {
                     throw exc;
                 }
             }
@@ -40,19 +41,22 @@ public class Wait {
         retry(action, Duration.ofSeconds(30), Duration.ofSeconds(1), exceptionsToIgnore);
     }
 
-    public static boolean retry(Runnable action, Duration timeout, Duration sleepInterval, Boolean shouldThrowException, Class<? extends Throwable> ... exceptionsToIgnore) {
+    public static boolean retry(Runnable action, Duration timeout, Duration sleepInterval, boolean shouldThrowExceptions, Class<? extends Throwable> ... exceptionsToIgnore) {
+        boolean returnValue = true;
+        boolean shouldThrow = shouldThrowExceptions;
+
         long start = System.currentTimeMillis();
         long end = start + timeout.toMillis();
-        while(System.currentTimeMillis() < end) {
+        while (System.currentTimeMillis() < end) {
             try {
-                shouldThrowException = true;
+                shouldThrow = shouldThrowExceptions;
                 action.run();
                 break;
-            } catch(Exception exc) {
+            } catch (Exception exc) {
                 for (var currentException : exceptionsToIgnore) {
                     if (currentException.isInstance(exc)) {
                         //exc.printStackTrace();
-                        shouldThrowException = false;
+                        shouldThrow = false;
                         try {
                             Thread.sleep(sleepInterval.toMillis());
                         } catch (InterruptedException e) {
@@ -62,16 +66,15 @@ public class Wait {
                     }
                 }
 
-                if (shouldThrowException) {
+                if (shouldThrow) {
                     throw exc;
-                }
-                else {
-                    return false;
+                } else {
+                    returnValue = false;
                 }
             }
         }
 
-        return true;
+        return returnValue;
     }
 
     public static void retry(Runnable action, Duration timeout, Duration sleepInterval, Class<? extends Throwable> ... exceptionsToIgnore) {
