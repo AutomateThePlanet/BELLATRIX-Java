@@ -26,53 +26,38 @@ import java.util.Objects;
 public class BrowserLifecyclePlugin extends Plugin {
     private static final ThreadLocal<BrowserConfiguration> CURRENT_BROWSER_CONFIGURATION;
     private static final ThreadLocal<BrowserConfiguration> PREVIOUS_BROWSER_CONFIGURATION;
-    private static final ThreadLocal<Boolean> IS_BROWSER_STARTED_DURING_PRE_BEFORE_CLASS;
     private static final ThreadLocal<Boolean> IS_BROWSER_STARTED_CORRECTLY;
 
     static {
         CURRENT_BROWSER_CONFIGURATION = new ThreadLocal<>();
         PREVIOUS_BROWSER_CONFIGURATION = new ThreadLocal<>();
-        IS_BROWSER_STARTED_DURING_PRE_BEFORE_CLASS = ThreadLocal.withInitial(() -> false);
         IS_BROWSER_STARTED_CORRECTLY = ThreadLocal.withInitial(() -> false);
     }
 
     @Override
     public void preBeforeClass(Class type) {
         if (Objects.equals(ConfigurationService.get(WebSettings.class).getExecutionType(), "regular")) {
-            CURRENT_BROWSER_CONFIGURATION.set(getExecutionBrowserClassLevel(type));
             if (shouldRestartBrowser()) {
                 shutdownBrowser();
                 startBrowser();
-                // TODO: maybe we can simplify and remove this parameter.
-                IS_BROWSER_STARTED_DURING_PRE_BEFORE_CLASS.set(true);
-            } else {
-                IS_BROWSER_STARTED_DURING_PRE_BEFORE_CLASS.set(false);
             }
-        } else {
-            IS_BROWSER_STARTED_DURING_PRE_BEFORE_CLASS.set(false);
         }
-
         super.preBeforeClass(type);
     }
 
     @Override
     public void postAfterClass(Class type) {
         shutdownBrowser();
-        IS_BROWSER_STARTED_DURING_PRE_BEFORE_CLASS.set(false);
         super.preAfterClass(type);
     }
 
     @Override
     public void preBeforeTest(TestResult testResult, Method memberInfo) {
         CURRENT_BROWSER_CONFIGURATION.set(getBrowserConfiguration(memberInfo));
-
-        if (!IS_BROWSER_STARTED_DURING_PRE_BEFORE_CLASS.get()) {
-            if (shouldRestartBrowser()) {
-                startBrowser();
-            }
+        if (shouldRestartBrowser()) {
+            shutdownBrowser();
+            startBrowser();
         }
-
-        IS_BROWSER_STARTED_DURING_PRE_BEFORE_CLASS.set(false);
     }
 
     @Override
