@@ -16,11 +16,12 @@ package solutions.bellatrix.web.infrastructure;
 import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.core.plugins.Plugin;
 import solutions.bellatrix.core.plugins.TestResult;
-import solutions.bellatrix.core.utilities.DebugInformation;
+import solutions.bellatrix.core.utilities.Log;
 import solutions.bellatrix.core.utilities.SecretsResolver;
 import solutions.bellatrix.web.configuration.WebSettings;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 import java.util.Objects;
 
 public class BrowserLifecyclePlugin extends Plugin {
@@ -37,6 +38,7 @@ public class BrowserLifecyclePlugin extends Plugin {
     @Override
     public void preBeforeClass(Class type) {
         if (Objects.equals(ConfigurationService.get(WebSettings.class).getExecutionType(), "regular")) {
+            CURRENT_BROWSER_CONFIGURATION.set(getBrowserConfiguration(type));
             if (shouldRestartBrowser()) {
                 shutdownBrowser();
                 startBrowser();
@@ -86,12 +88,11 @@ public class BrowserLifecyclePlugin extends Plugin {
     }
 
     private void startBrowser() {
-//        shutdownBrowser();
         try {
             DriverService.start(CURRENT_BROWSER_CONFIGURATION.get());
             IS_BROWSER_STARTED_CORRECTLY.set(true);
         } catch (Exception ex) {
-            DebugInformation.printStackTrace(ex);
+            Log.error("Error occurred while trying to start browser: %s".formatted(ex.getMessage()));
             IS_BROWSER_STARTED_CORRECTLY.set(false);
         }
 
@@ -125,6 +126,10 @@ public class BrowserLifecyclePlugin extends Plugin {
         String testFullName = String.format("%s.%s", memberInfo.getDeclaringClass().getName(), memberInfo.getName());
         result.setTestName(testFullName);
         return result;
+    }
+
+    private BrowserConfiguration getBrowserConfiguration(Type classType) {
+        return getExecutionBrowserClassLevel(classType.getClass());
     }
 
     private BrowserConfiguration getExecutionBrowserMethodLevel(Method memberInfo) {

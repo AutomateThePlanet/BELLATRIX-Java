@@ -74,7 +74,7 @@ public class Wait {
         return true;
     }
 
-    public static void retry(Runnable action, Duration timeout, Duration sleepInterval, Class<? extends Throwable> ... exceptionsToIgnore) {
+    public static void retry(Runnable action, Duration sleepInterval, Duration timeout, Class<? extends Throwable> ... exceptionsToIgnore) {
         Wait.retry(action, timeout, sleepInterval, true, exceptionsToIgnore);
     }
 

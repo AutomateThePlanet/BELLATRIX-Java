@@ -211,19 +211,32 @@ public class BrowserService extends WebService {
     public void waitForAjax() {
         long ajaxTimeout = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getWaitForAjaxTimeout();
         long sleepInterval = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getSleepInterval();
-        var webDriverWait = new WebDriverWait(getWrappedDriver(), Duration.ofSeconds(ajaxTimeout), Duration.ofSeconds(sleepInterval));
         var javascriptExecutor = (JavascriptExecutor)getWrappedDriver();
-        webDriverWait.until(d -> {
-            var numberOfAjaxConnections = javascriptExecutor.executeScript("return !isNaN(window.$openHTTPs) ? window.$openHTTPs : null");
-            if (Objects.nonNull(numberOfAjaxConnections)) {
-                int ajaxConnections = Integer.parseInt(numberOfAjaxConnections.toString());
-                return ajaxConnections == 0;
-            } else {
-                monkeyPatchXMLHttpRequest();
-            }
-
-            return false;
-        });
+        try {
+            Wait.retry(() -> {
+                        var numberOfAjaxConnections = javascriptExecutor.executeScript("return !isNaN(window.$openHTTPs) ? window.$openHTTPs : null");
+                        if (Objects.nonNull(numberOfAjaxConnections)) {
+                            int ajaxConnections = Integer.parseInt(numberOfAjaxConnections.toString());
+                            if (ajaxConnections > 0) {
+                                String message = "Waiting for %s Ajax Connections...".formatted(ajaxConnections);
+                                injectInfoNotificationToast(message);
+                                Log.info(message);
+                                throw new TimeoutException(message);
+                            }
+                        } else {
+                            monkeyPatchXMLHttpRequest();
+                        }
+                    },
+                    Duration.ofSeconds(ajaxTimeout),
+                    Duration.ofSeconds(sleepInterval),
+                    true,
+                    TimeoutException.class);
+        }
+        catch (Exception e) {
+            var message = "Timed out waiting for Ajax connections.";
+            Log.error(message);
+            injectErrorNotificationToast(message);
+        }
     }
 
     private void monkeyPatchXMLHttpRequest() {
