@@ -129,7 +129,7 @@ public class BrowserLifecyclePlugin extends Plugin {
     }
 
     private BrowserConfiguration getBrowserConfiguration(Type classType) {
-        return getExecutionBrowserClassLevel(classType.getClass());
+        return getExecutionBrowserClassLevel((Class<?>)classType);
     }
 
     private BrowserConfiguration getExecutionBrowserMethodLevel(Method memberInfo) {
