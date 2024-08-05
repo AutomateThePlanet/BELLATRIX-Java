@@ -155,7 +155,7 @@ public class PlaywrightService {
                 BrowserType.LaunchOptions launchOptions = new BrowserType.LaunchOptions();
                 launchOptions.setChannel("chrome");
                 launchOptions.setHeadless(false);
-                launchOptions.setArgs(List.of("--log-level=3", "--remote-allow-origins=*"));
+                launchOptions.setArgs(List.of("--log-level=3", "--remote-allow-origins=*", "--disable-search-engine-choice-screen"));
                 launchOptions.setTimeout(Settings.web().getArtificialDelayBeforeAction());
                 // System.setProperty("webdriver.chrome.silentOutput", "true"); ?
 
@@ -166,7 +166,7 @@ public class PlaywrightService {
                 BrowserType.LaunchOptions launchOptions = new BrowserType.LaunchOptions();
                 launchOptions.setChannel("chrome");
                 launchOptions.setHeadless(true);
-                launchOptions.setArgs(List.of("--log-level=3"));
+                launchOptions.setArgs(List.of("--log-level=3", "--disable-search-engine-choice-screen"));
                 // System.setProperty("webdriver.chrome.silentOutput", "true"); ?
 
                 return browser(browserType.launch(launchOptions));
