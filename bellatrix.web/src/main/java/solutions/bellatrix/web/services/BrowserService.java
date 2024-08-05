@@ -428,7 +428,7 @@ public class BrowserService extends WebService {
         }
     }
 
-    public void tryWaitForRequest(String partialUrl) {
+    public void tryWaitForResponse(String partialUrl) {
         try {
             if(ProxyServer.get() != null) {
                 ProxyServer.waitForResponse(getWrappedDriver(), partialUrl, HttpMethod.GET, 0);
