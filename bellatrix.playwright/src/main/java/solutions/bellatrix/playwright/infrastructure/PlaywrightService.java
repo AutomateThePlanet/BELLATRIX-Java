@@ -45,14 +45,12 @@ import java.util.Properties;
 
 @SuppressWarnings("ALL")
 public class PlaywrightService {
-    private static ThreadLocal<PlaywrightManager> PLAYWRIGHT_MANAGER = new ThreadLocal<>();
-
-    static {
+    private static ThreadLocal<PlaywrightManager> PLAYWRIGHT_MANAGER = ThreadLocal.withInitial(() -> {
         var driverManager = new PlaywrightManager();
         SingletonFactory.register(driverManager);
         ShutdownManager.register(driverManager::close);
-        PLAYWRIGHT_MANAGER.set(driverManager);
-    }
+        return driverManager;
+    });
 
     public static WrappedBrowser start(BrowserConfiguration configuration) {
         return PLAYWRIGHT_MANAGER.get().start(configuration);
