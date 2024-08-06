@@ -48,14 +48,12 @@ import static io.restassured.RestAssured.given;
 
 @UtilityClass
 public class DriverService {
-    private static ThreadLocal<DriverManager> DRIVER_MANAGER = new ThreadLocal<>();
-
-    static {
+    private static final ThreadLocal<DriverManager> DRIVER_MANAGER = ThreadLocal.withInitial(() -> {
         var driverManager = new DriverManager();
         SingletonFactory.register(driverManager);
         ShutdownManager.register(driverManager::close);
-        DRIVER_MANAGER.set(driverManager);
-    }
+        return driverManager;
+    });
 
     public static WebDriver start(BrowserConfiguration configuration) {
         return DRIVER_MANAGER.get().start(configuration);
