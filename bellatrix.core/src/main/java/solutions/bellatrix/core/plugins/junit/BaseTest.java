@@ -31,22 +31,9 @@ import java.util.List;
 public class BaseTest extends UsesPlugins {
     static final ThreadLocal<TestResult> CURRENT_TEST_RESULT = new ThreadLocal<>();
     static final ThreadLocal<TimeRecord> CURRENT_TEST_TIME_RECORD = ThreadLocal.withInitial(TimeRecord::new);
-    private static final ThreadLocal<Boolean> CONFIGURATION_EXECUTED = new ThreadLocal<>();
+    private static final ThreadLocal<Boolean> CONFIGURATION_EXECUTED = ThreadLocal.withInitial(() -> false);
     private static final List<String> ALREADY_EXECUTED_BEFORE_CLASSES = Collections.synchronizedList(new ArrayList<>());
     private TestInfo testInfo;
-
-    public BaseTest() {
-//        try {
-//            Field theUnsafe = Unsafe.class.getDeclaredField("theUnsafe");
-//            theUnsafe.setAccessible(true);
-//            Unsafe u = (Unsafe)theUnsafe.get(null);
-//
-//            Class<?> cls = Class.forName("jdk.internal.module.IllegalAccessLogger");
-//            Field logger = cls.getDeclaredField("logger");
-//            u.putObjectVolatile(cls, u.staticFieldOffset(logger), null);
-//        } catch (Exception ignored) {}
-        CONFIGURATION_EXECUTED.set(false);
-    }
 
     @BeforeEach
     public void beforeMethodCore(TestInfo testInfo) throws Exception {

@@ -29,32 +29,32 @@ import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
-
+@Getter @Setter
 public class WebSettings {
-    @Getter @Setter private String baseUrl;
-    @Getter @Setter private String executionType;
-    @Getter @Setter private String defaultLifeCycle;
-    @Getter @Setter private String defaultBrowser;
-    @Getter @Setter private Integer defaultBrowserWidth = 0;
-    @Getter @Setter private Integer defaultBrowserHeight = 0;
-    @Getter @Setter private List<GridSettings> gridSettings;
+    private String baseUrl;
+    private String executionType;
+    private String defaultLifeCycle;
+    private String defaultBrowser;
+    private Integer defaultBrowserWidth = 0;
+    private Integer defaultBrowserHeight = 0;
+    private List<GridSettings> gridSettings;
 
-    @Getter @Setter private int artificialDelayBeforeAction;
-    @Getter @Setter private TimeoutSettings timeoutSettings;
+    private int artificialDelayBeforeAction;
+    private TimeoutSettings timeoutSettings;
 
-    @Getter @Setter private Boolean automaticallyScrollToVisible;
-    @Getter @Setter private Boolean waitUntilReadyOnElementFound;
-    @Getter @Setter private Boolean waitForAngular;
-    @Getter @Setter private Boolean shouldHighlightElements;
-    @Getter @Setter private Boolean shouldCaptureHttpTraffic;
-    @Getter @Setter private Boolean toastNotificationBddLogging;
-    @Getter @Setter private long notificationToastTimeout;
+    private Boolean automaticallyScrollToVisible;
+    private Boolean waitUntilReadyOnElementFound;
+    private Boolean waitForAngular;
+    private Boolean shouldHighlightElements;
+    private Boolean shouldCaptureHttpTraffic;
+    private Boolean toastNotificationBddLogging;
+    private long notificationToastTimeout;
 
-    @Getter @Setter private ArrayList<String> consoleErrorsWhitelist;
+    private ArrayList<String> consoleErrorsWhitelist;
 
-    @Getter @Setter private Boolean screenshotsOnFailEnabled;
-    @Getter @Setter private String screenshotsSaveLocation;
+    private Boolean screenshotsOnFailEnabled;
+    private String screenshotsSaveLocation;
 
-    @Getter @Setter private Boolean videosOnFailEnabled;
-    @Getter @Setter private String videosSaveLocation;
+    private Boolean videosOnFailEnabled;
+    private String videosSaveLocation;
 }

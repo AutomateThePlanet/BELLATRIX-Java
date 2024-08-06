@@ -48,4 +48,12 @@ public class SingletonFactory {
     public static <T> void register(Class<?> classKey, T instance) {
         mapHolder.get().put(classKey, instance);
     }
+
+    public static boolean containsKey(Class<?> classOf) {
+        return mapHolder.get().containsKey(classOf);
+    }
+
+    public static boolean containsValue(Object object) {
+        return mapHolder.get().containsValue(object);
+    }
 }

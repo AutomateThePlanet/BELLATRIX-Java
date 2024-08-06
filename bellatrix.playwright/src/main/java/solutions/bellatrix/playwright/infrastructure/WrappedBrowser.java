@@ -45,10 +45,6 @@ public class WrappedBrowser {
     private String gridSessionId;
 
     public void close() {
-        // Close everything manually
-        for (var page : currentContext.pages()) page.close();
-        for (var context : browser.contexts()) context.close();
-        browser.close();
         playwright.close();
     }
 
