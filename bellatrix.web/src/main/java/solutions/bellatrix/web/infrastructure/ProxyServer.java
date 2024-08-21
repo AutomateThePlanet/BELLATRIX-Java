@@ -151,7 +151,7 @@ public class ProxyServer {
             webDriverWait.until(d -> {
                 var harEntries = PROXY_SERVER.get().getHar().getLog().getEntries();
                 var isResponseReceived = harEntries.stream().anyMatch(
-                        r -> r.getRequest().getUrl().contains(requestPartialUrl)
+                        r -> (r.getRequest().getUrl().contains(requestPartialUrl) || r.getRequest().getUrl().contains(requestPartialUrl.replace("%20", "+")))
                         && r.getRequest().getMethod().equals(httpMethod.toString())
                         && successHttpStatusesList.contains(r.getResponse().getStatus())
                         && (httpMethod.equals(HttpMethod.DELETE)? true : (r.getResponse().getContent().getText() != null && !r.getResponse().getContent().getText().isEmpty()))
