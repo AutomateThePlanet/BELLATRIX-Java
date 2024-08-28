@@ -93,6 +93,8 @@ public class BrowserLifecyclePlugin extends Plugin {
         }
 
         shutdownBrowser();
+
+        SingletonFactory.clear();
     }
 
     private void shutdownBrowser() {
