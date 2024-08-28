@@ -18,6 +18,7 @@ import solutions.bellatrix.core.plugins.Plugin;
 import solutions.bellatrix.core.plugins.TestResult;
 import solutions.bellatrix.core.utilities.DebugInformation;
 import solutions.bellatrix.core.utilities.SecretsResolver;
+import solutions.bellatrix.core.utilities.SingletonFactory;
 import solutions.bellatrix.web.configuration.WebSettings;
 
 import java.lang.reflect.Method;
