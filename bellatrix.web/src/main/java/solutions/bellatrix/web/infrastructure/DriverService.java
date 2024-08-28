@@ -252,7 +252,7 @@ public class DriverService {
                 var chromeOptions = new ChromeOptions();
                 addDriverOptions(chromeOptions);
                 addDriverCapabilities(chromeOptions);
-                chromeOptions.addArguments("--log-level=3","--remote-allow-origins=*");
+                chromeOptions.addArguments("--log-level=3","--remote-allow-origins=*", "--disable-search-engine-choice-screen");
                 chromeOptions.setAcceptInsecureCerts(true);
                 chromeOptions.setCapability(CapabilityType.UNHANDLED_PROMPT_BEHAVIOUR, UnexpectedAlertBehaviour.ACCEPT);
                 System.setProperty("webdriver.chrome.silentOutput", "true");
@@ -266,7 +266,7 @@ public class DriverService {
                 var chromeHeadlessOptions = new ChromeOptions();
                 addDriverOptions(chromeHeadlessOptions);
                 chromeHeadlessOptions.setAcceptInsecureCerts(true);
-                chromeHeadlessOptions.addArguments("--log-level=3","--remote-allow-origins=*");
+                chromeHeadlessOptions.addArguments("--log-level=3","--remote-allow-origins=*", "--disable-search-engine-choice-screen");
                 chromeHeadlessOptions.setCapability(CapabilityType.UNHANDLED_PROMPT_BEHAVIOUR, UnexpectedAlertBehaviour.ACCEPT);
                 chromeHeadlessOptions.addArguments("--headless=old");
                 System.setProperty("webdriver.chrome.silentOutput", "true");
@@ -278,19 +278,24 @@ public class DriverService {
                 var chromeHeadlessOptions = new ChromeOptions();
                 addDriverOptions(chromeHeadlessOptions);
                 chromeHeadlessOptions.setAcceptInsecureCerts(true);
-                chromeHeadlessOptions.addArguments("--log-level=3","--remote-allow-origins=*");
+                chromeHeadlessOptions.addArguments("--log-level=3","--remote-allow-origins=*", "--disable-search-engine-choice-screen");
                 chromeHeadlessOptions.setCapability(CapabilityType.UNHANDLED_PROMPT_BEHAVIOUR, UnexpectedAlertBehaviour.ACCEPT);
 
-                var deviceNameOption = new HashMap<String, String>();
-                deviceNameOption.put("deviceName", BROWSER_CONFIGURATION.get().getDeviceName().getName());
+                Map<String, Object> deviceMetrics = new HashMap<>();
+                deviceMetrics.put("width", BROWSER_CONFIGURATION.get().getDeviceName().getWidth());
+                deviceMetrics.put("height", BROWSER_CONFIGURATION.get().getDeviceName().getHeight());
+                deviceMetrics.put("pixelRatio", BROWSER_CONFIGURATION.get().getDeviceName().getScaleFactor());
 
-                chromeHeadlessOptions.setExperimentalOption("mobileEmulation", deviceNameOption);
+                Map<String, Object> mobileEmulation = new HashMap<>();
+                mobileEmulation.put("deviceMetrics", deviceMetrics);
+                mobileEmulation.put("userAgent", "Mozilla/5.0 (Linux; Android 4.2.1; en-us; Nexus 5 Build/JOP40D) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.166 Mobile Safari/535.19");
+
+                chromeHeadlessOptions.setExperimentalOption("mobileEmulation", mobileEmulation);
                 System.setProperty("webdriver.chrome.silentOutput", "true");
                 if (shouldCaptureHttpTraffic) chromeHeadlessOptions.setProxy(proxyConfig);
 
                 driver = new TouchableWebDriver(chromeHeadlessOptions);
             }
-
             case FIREFOX -> {
                 var firefoxOptions = new FirefoxOptions();
                 addDriverOptions(firefoxOptions);

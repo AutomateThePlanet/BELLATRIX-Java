@@ -75,7 +75,9 @@ public class BrowserConfiguration {
         if (!(obj instanceof BrowserConfiguration))
             return false;
         BrowserConfiguration that = (BrowserConfiguration)obj;
-        if (!(this.getBrowser() == null ? that.getBrowser() == null : this.getBrowser().equals(that.getBrowser())))
+        if (!((this.getBrowser() == null) ? (that.getBrowser() == null) : this.getBrowser().equals(that.getBrowser())))
+            return false;
+        if (this.deviceName != that.deviceName)
             return false;
         if (!(this.getLifecycle() == null ? that.getLifecycle() == null : this.getLifecycle().equals(that.getLifecycle())))
             return false;

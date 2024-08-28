@@ -86,7 +86,7 @@ public class App implements AutoCloseable {
         }
 
         DriverService.close();
-
+        SingletonFactory.clear();
         disposed = true;
     }
 }

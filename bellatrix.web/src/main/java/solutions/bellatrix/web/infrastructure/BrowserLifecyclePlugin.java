@@ -16,63 +16,50 @@ package solutions.bellatrix.web.infrastructure;
 import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.core.plugins.Plugin;
 import solutions.bellatrix.core.plugins.TestResult;
-import solutions.bellatrix.core.utilities.DebugInformation;
+import solutions.bellatrix.core.utilities.Log;
 import solutions.bellatrix.core.utilities.SecretsResolver;
 import solutions.bellatrix.web.configuration.WebSettings;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 import java.util.Objects;
 
 public class BrowserLifecyclePlugin extends Plugin {
     private static final ThreadLocal<BrowserConfiguration> CURRENT_BROWSER_CONFIGURATION;
     private static final ThreadLocal<BrowserConfiguration> PREVIOUS_BROWSER_CONFIGURATION;
-    private static final ThreadLocal<Boolean> IS_BROWSER_STARTED_DURING_PRE_BEFORE_CLASS;
     private static final ThreadLocal<Boolean> IS_BROWSER_STARTED_CORRECTLY;
 
     static {
         CURRENT_BROWSER_CONFIGURATION = new ThreadLocal<>();
         PREVIOUS_BROWSER_CONFIGURATION = new ThreadLocal<>();
-        IS_BROWSER_STARTED_DURING_PRE_BEFORE_CLASS = ThreadLocal.withInitial(() -> false);
         IS_BROWSER_STARTED_CORRECTLY = ThreadLocal.withInitial(() -> false);
     }
 
     @Override
     public void preBeforeClass(Class type) {
         if (Objects.equals(ConfigurationService.get(WebSettings.class).getExecutionType(), "regular")) {
-            CURRENT_BROWSER_CONFIGURATION.set(getExecutionBrowserClassLevel(type));
+            CURRENT_BROWSER_CONFIGURATION.set(getBrowserConfiguration(type));
             if (shouldRestartBrowser()) {
                 shutdownBrowser();
                 startBrowser();
-                // TODO: maybe we can simplify and remove this parameter.
-                IS_BROWSER_STARTED_DURING_PRE_BEFORE_CLASS.set(true);
-            } else {
-                IS_BROWSER_STARTED_DURING_PRE_BEFORE_CLASS.set(false);
             }
-        } else {
-            IS_BROWSER_STARTED_DURING_PRE_BEFORE_CLASS.set(false);
         }
-
         super.preBeforeClass(type);
     }
 
     @Override
     public void postAfterClass(Class type) {
         shutdownBrowser();
-        IS_BROWSER_STARTED_DURING_PRE_BEFORE_CLASS.set(false);
         super.preAfterClass(type);
     }
 
     @Override
     public void preBeforeTest(TestResult testResult, Method memberInfo) {
         CURRENT_BROWSER_CONFIGURATION.set(getBrowserConfiguration(memberInfo));
-
-        if (!IS_BROWSER_STARTED_DURING_PRE_BEFORE_CLASS.get()) {
-            if (shouldRestartBrowser()) {
-                startBrowser();
-            }
+        if (shouldRestartBrowser()) {
+            shutdownBrowser();
+            startBrowser();
         }
-
-        IS_BROWSER_STARTED_DURING_PRE_BEFORE_CLASS.set(false);
     }
 
     @Override
@@ -101,12 +88,11 @@ public class BrowserLifecyclePlugin extends Plugin {
     }
 
     private void startBrowser() {
-//        shutdownBrowser();
         try {
             DriverService.start(CURRENT_BROWSER_CONFIGURATION.get());
             IS_BROWSER_STARTED_CORRECTLY.set(true);
         } catch (Exception ex) {
-            DebugInformation.printStackTrace(ex);
+            Log.error("Error occurred while trying to start browser: %s".formatted(ex.getMessage()));
             IS_BROWSER_STARTED_CORRECTLY.set(false);
         }
 
@@ -140,6 +126,10 @@ public class BrowserLifecyclePlugin extends Plugin {
         String testFullName = String.format("%s.%s", memberInfo.getDeclaringClass().getName(), memberInfo.getName());
         result.setTestName(testFullName);
         return result;
+    }
+
+    private BrowserConfiguration getBrowserConfiguration(Type classType) {
+        return getExecutionBrowserClassLevel((Class<?>)classType);
     }
 
     private BrowserConfiguration getExecutionBrowserMethodLevel(Method memberInfo) {

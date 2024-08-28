@@ -43,6 +43,21 @@ public class TouchableWebDriver extends ChromeDriver implements WebDriver  {
         tap.addAction(finger.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
         this.perform(Arrays.asList(tap));
     }
+
+    public void triggerHoldEvent(WebElement swipeFromElement) {
+        PointerInput finger = new PointerInput(PointerInput.Kind.TOUCH, "finger");
+        Sequence tap = new Sequence(finger, 1);
+
+        int centerX = swipeFromElement.getLocation().x + swipeFromElement.getSize().getWidth() / 2;
+        int centerY = swipeFromElement.getLocation().y + swipeFromElement.getSize().getHeight() / 2;
+
+        // Move to the center of the element and perform a tap
+        tap.addAction(finger.createPointerMove(Duration.ofMillis(0), PointerInput.Origin.viewport(), centerX, centerY));
+        tap.addAction(finger.createPointerDown(PointerInput.MouseButton.LEFT.asArg()));
+        tap.addAction(finger.createPointerDown(PointerInput.MouseButton.LEFT.asArg()));
+        this.perform(Arrays.asList(tap));
+    }
+
 //
 //    public void triggerTapEvent(WebElement tapElement)
 //    {
