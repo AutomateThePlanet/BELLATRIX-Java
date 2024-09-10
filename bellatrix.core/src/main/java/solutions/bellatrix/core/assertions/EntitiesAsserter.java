@@ -12,8 +12,6 @@
  */
 package solutions.bellatrix.core.assertions;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import org.junit.jupiter.api.Assertions;
 
 import java.lang.reflect.Method;
@@ -76,11 +74,9 @@ public class EntitiesAsserter {
                                 (LocalDateTime)currentRealProperty.invoke(realObject),
                                 deltaType, deltaQuantity, exceptionMessage);
                     } else {
-                        Gson serializer = new GsonBuilder().setPrettyPrinting().create();
-
                         Assertions.assertEquals(
-                                serializer.toJson(currentExpectedProperty.invoke(expectedObject)),
-                                serializer.toJson(currentRealProperty.invoke(realObject)),
+                                currentExpectedProperty.invoke(expectedObject),
+                                currentRealProperty.invoke(realObject),
                                 exceptionMessage);
                     }
                 }
