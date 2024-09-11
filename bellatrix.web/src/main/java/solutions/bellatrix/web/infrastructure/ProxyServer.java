@@ -13,10 +13,7 @@
 
 package solutions.bellatrix.web.infrastructure;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
 import lombok.SneakyThrows;
 import net.lightbody.bmp.BrowserMobProxyServer;
 import net.lightbody.bmp.core.har.HarEntry;
@@ -37,6 +34,7 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.net.ServerSocket;
 import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -55,6 +53,8 @@ public class ProxyServer {
             HttpStatus.SC_PARTIAL_CONTENT,
             HttpStatus.SC_MULTI_STATUS);
 
+    private static Gson gson;
+    
     @SneakyThrows
     public static int init() {
         Log.info("Starting Proxy Service...");
@@ -64,6 +64,9 @@ public class ProxyServer {
         PROXY_SERVER.get().enableHarCaptureTypes(CaptureType.REQUEST_CONTENT, CaptureType.RESPONSE_CONTENT, CaptureType.REQUEST_HEADERS);
         PORT.set(port);
         Log.info("Proxy Service Started at Port %s".formatted(port));
+        gson = new GsonBuilder()
+                .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
+                .create();
         return port;
     }
 
@@ -220,7 +223,7 @@ public class ProxyServer {
         return getCapturedEntries().stream()
                 .map(HarEntry::getRequest)
                 .filter(request -> request.getPostData() != null)
-                .map(request -> new Gson().fromJson(request.getPostData().getText(), requestModelClass))
+                .map(request -> gson.fromJson(request.getPostData().getText(), requestModelClass))
                 .reduce((first, second) -> second)
                 .orElse(null);
     }
@@ -229,7 +232,7 @@ public class ProxyServer {
         return getCapturedEntries().stream()
                 .map(HarEntry::getResponse)
                 .filter(response -> response.getContent() != null)
-                .map(response -> new Gson().fromJson(getDataObject(response.getContent().getText()), responseModelClass))
+                .map(response -> gson.fromJson(getDataObject(response.getContent().getText()), responseModelClass))
                 .reduce((first, second) -> second)
                 .orElse(null);
     }
@@ -238,13 +241,13 @@ public class ProxyServer {
         var entries = getCapturedEntries();
         var harEntry = entries.get(index);
         String json = harEntry.getRequest().getPostData().getText();
-        return new Gson().fromJson(json, requestModelClass);
+        return gson.fromJson(json, requestModelClass);
     }
 
     public static <T> T getResponseByIndex(int index, Class<T> responseModelClass) {
         var harEntry = getCapturedEntries().get(index);
         String json = harEntry.getResponse().getContent().getText();
-        return new Gson().fromJson(getDataObject(json), responseModelClass);
+        return gson.fromJson(getDataObject(json), responseModelClass);
     }
 
     public static <T> T getRequestByUrl(String url, String httpMethod, Class<T> requestModelClass) {
@@ -258,7 +261,7 @@ public class ProxyServer {
         }
         String json = harEntry.getRequest().getPostData().getText();
         try {
-            return new Gson().fromJson(json, requestModelClass);
+            return gson.fromJson(json, requestModelClass);
         }
         catch (Exception e) {
             throw new RuntimeException("Error occurred while converting json to model. Json was: %s".formatted(json), e);
@@ -276,7 +279,7 @@ public class ProxyServer {
         }
         String json = harEntry.getRequest().getPostData().getText();
         try {
-            return new Gson().fromJson(json, modelType);
+            return gson.fromJson(json, modelType);
         }
         catch (Exception e) {
             throw new RuntimeException("Error occurred while converting json to model. Json was: %s".formatted(json), e);
@@ -295,7 +298,7 @@ public class ProxyServer {
         }
         String json = harEntry.getResponse().getContent().getText();
         try {
-            return new Gson().fromJson(getDataObject(json), responseModelClass);
+            return gson.fromJson(getDataObject(json), responseModelClass);
         }
         catch (Exception ex){
             throw new AssertionFailedError("Cannot get JSON body from the string: " + json + ". Error was: " + ex.getMessage());
@@ -313,7 +316,7 @@ public class ProxyServer {
             return null;
         }
         String json = harEntry.getResponse().getContent().getText();
-        return new Gson().fromJson(getDataObject(json), responseModelType);
+        return gson.fromJson(getDataObject(json), responseModelType);
     }
 
     public static void blockRequestByUrl(String url, HttpMethod httpMethod) {
