@@ -16,6 +16,8 @@ import org.junit.jupiter.api.Assertions;
 
 import java.lang.reflect.Method;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.OffsetTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -72,6 +74,11 @@ public class EntitiesAsserter {
                         LocalDateTimeAssert.areEqual(
                                 (LocalDateTime)currentExpectedProperty.invoke(expectedObject),
                                 (LocalDateTime)currentRealProperty.invoke(realObject),
+                                deltaType, deltaQuantity, exceptionMessage);
+                    } else if (currentRealProperty.getReturnType() == OffsetDateTime.class) {
+                        LocalDateTimeAssert.areEqual(
+                                ((OffsetDateTime)currentExpectedProperty.invoke(expectedObject)).toLocalDateTime(),
+                                ((OffsetDateTime)currentRealProperty.invoke(realObject)).toLocalDateTime(),
                                 deltaType, deltaQuantity, exceptionMessage);
                     } else {
                         Assertions.assertEquals(

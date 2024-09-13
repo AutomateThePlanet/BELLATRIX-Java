@@ -35,6 +35,7 @@ import java.lang.reflect.Type;
 import java.net.ServerSocket;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -66,6 +67,7 @@ public class ProxyServer {
         Log.info("Proxy Service Started at Port %s".formatted(port));
         gson = new GsonBuilder()
                 .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
+                .registerTypeAdapter(OffsetDateTime.class, new OffsetDateTimeTypeAdapter())
                 .create();
         return port;
     }
