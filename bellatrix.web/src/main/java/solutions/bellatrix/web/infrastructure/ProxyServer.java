@@ -68,6 +68,7 @@ public class ProxyServer {
         gson = new GsonBuilder()
                 .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
                 .registerTypeAdapter(OffsetDateTime.class, new OffsetDateTimeTypeAdapter())
+                .registerTypeAdapterFactory(new EmptyObjectTypeAdapterFactory())
                 .create();
         return port;
     }
