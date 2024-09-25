@@ -428,7 +428,7 @@ public class BrowserService extends WebService {
         }
     }
 
-    public void tryWaitForResponse(String partialUrl) {
+    public void tryWaitForResponse(String partialUrl, int additionalTimeoutInSeconds) {
         try {
             if(ProxyServer.get() != null) {
                 ProxyServer.waitForResponse(getWrappedDriver(), partialUrl, HttpMethod.GET, 0);
@@ -440,6 +440,10 @@ public class BrowserService extends WebService {
         } catch (Exception exception) {
             Log.error("The expected request with URL '%s' is not loaded!", partialUrl);
         }
+    }
+
+    public void tryWaitForResponse(String partialUrl) {
+        tryWaitForResponse(partialUrl, 0);
     }
 
     public void waitForAngular() {

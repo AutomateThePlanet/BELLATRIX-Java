@@ -170,7 +170,7 @@ public class ProxyServer {
         catch (TimeoutException exception){
             String allUrlsString = getSimilarRequestsString(requestPartialUrl, allHarEntries);
 
-            throw new AssertionFailedError(String.format("The expected response with request URL '%s' with method %s is not loaded! \r\nSimilar requests: %s", requestPartialUrl, httpMethod, allUrlsString));
+            throw new RuntimeException(String.format("The expected response with request URL '%s' with method %s is not loaded! \r\nSimilar requests: %s", requestPartialUrl, httpMethod, allUrlsString));
         }
     }
 
