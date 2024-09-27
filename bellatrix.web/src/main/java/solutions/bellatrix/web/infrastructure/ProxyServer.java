@@ -319,7 +319,12 @@ public class ProxyServer {
             return null;
         }
         String json = harEntry.getResponse().getContent().getText();
-        return gson.fromJson(getDataObject(json), responseModelType);
+        try {
+            return gson.fromJson(getDataObject(json), responseModelType);
+        }
+        catch (Exception ex) {
+            throw new RuntimeException("Failed to Serialize Json to Object: \n Entity Type: %s\n Json was: %s".formatted(responseModelType.getTypeName(), json));
+        }
     }
 
     public static void blockRequestByUrl(String url, HttpMethod httpMethod) {
