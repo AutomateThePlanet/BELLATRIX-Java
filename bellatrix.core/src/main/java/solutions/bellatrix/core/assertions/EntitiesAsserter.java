@@ -70,6 +70,7 @@ public class EntitiesAsserter {
                 var exceptionMessage = "The property " + currentRealProperty.getName() + " of class " + realObject.getClass().getSimpleName() + " was not as expected.";
 
                 try {
+                    assert currentExpectedProperty != null;
                     if (currentRealProperty.getReturnType() == LocalDateTime.class) {
                         LocalDateTimeAssert.areEqual(
                                 (LocalDateTime)currentExpectedProperty.invoke(expectedObject),
@@ -82,8 +83,8 @@ public class EntitiesAsserter {
                                 deltaType, deltaQuantity, exceptionMessage);
                     } else {
                         Assertions.assertEquals(
-                                currentExpectedProperty.invoke(expectedObject),
-                                currentRealProperty.invoke(realObject),
+                                ((Object)currentExpectedProperty.invoke(expectedObject)).toString(),
+                                currentRealProperty.invoke(realObject).toString(),
                                 exceptionMessage);
                     }
                 }
