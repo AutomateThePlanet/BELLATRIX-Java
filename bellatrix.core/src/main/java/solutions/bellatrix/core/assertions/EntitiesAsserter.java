@@ -17,7 +17,6 @@ import org.junit.jupiter.api.Assertions;
 import java.lang.reflect.Method;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
-import java.time.OffsetTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -25,10 +24,7 @@ import java.util.List;
 public class EntitiesAsserter {
     public static <TEntity> Boolean areEqual(TEntity expectedObject, TEntity realObject, DateTimeDeltaType deltaType, int deltaQuantity, String... propertiesNotToCompare) {
         List<Exception> failedAssertions = assertAreEqualsInternal(expectedObject, realObject, deltaType, deltaQuantity, propertiesNotToCompare);
-        if (failedAssertions.size() > 1) {
-            return false;
-        }
-        return true;
+        return failedAssertions.size() <= 1;
     }
     public static <TEntity> Boolean areEqual(TEntity expectedObject, TEntity realObject, String... propertiesNotToCompare) {
         return areEqual(expectedObject, realObject, DateTimeDeltaType.MILLISECONDS, 300, propertiesNotToCompare);
@@ -70,21 +66,22 @@ public class EntitiesAsserter {
                 var exceptionMessage = "The property " + currentRealProperty.getName() + " of class " + realObject.getClass().getSimpleName() + " was not as expected.";
 
                 try {
-                    assert currentExpectedProperty != null;
                     if (currentRealProperty.getReturnType() == LocalDateTime.class) {
+                    assert currentExpectedProperty != null;
                         LocalDateTimeAssert.areEqual(
                                 (LocalDateTime)currentExpectedProperty.invoke(expectedObject),
                                 (LocalDateTime)currentRealProperty.invoke(realObject),
                                 deltaType, deltaQuantity, exceptionMessage);
                     } else if (currentRealProperty.getReturnType() == OffsetDateTime.class) {
+                        assert currentExpectedProperty != null;
                         LocalDateTimeAssert.areEqual(
                                 ((OffsetDateTime)currentExpectedProperty.invoke(expectedObject)).toLocalDateTime(),
                                 ((OffsetDateTime)currentRealProperty.invoke(realObject)).toLocalDateTime(),
                                 deltaType, deltaQuantity, exceptionMessage);
                     } else {
                         Assertions.assertEquals(
-                                ((Object)currentExpectedProperty.invoke(expectedObject)).toString(),
-                                currentRealProperty.invoke(realObject).toString(),
+                                currentExpectedProperty != null ? currentExpectedProperty.invoke(expectedObject) : null,
+                                currentRealProperty.invoke(realObject),
                                 exceptionMessage);
                     }
                 }
