@@ -132,6 +132,13 @@ public final class PluginExecutionEngine {
         }
     }
 
+    public static void postAfterAll() {
+        for (var currentObserver : PLUGINS) {
+            if (currentObserver != null)
+                currentObserver.postAfterAll();
+        }
+    }
+
     public static void afterClassFailed(Exception e) {
         for (var currentObserver : PLUGINS) {
             if (currentObserver != null)

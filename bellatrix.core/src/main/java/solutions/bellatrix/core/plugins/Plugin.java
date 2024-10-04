@@ -70,6 +70,9 @@ public abstract class Plugin {
     public void postAfterClass(Class type) {
     }
 
+    public void postAfterAll() {
+    }
+
     public void afterClassFailed(Exception e) {
     }
 }
