@@ -49,7 +49,8 @@ public class BrowserLifecyclePlugin extends Plugin {
 
     @Override
     public void postAfterClass(Class type) {
-        if(Objects.equals(ConfigurationService.get(WebSettings.class).getExecutionType(), "grid")) {
+        if(CURRENT_BROWSER_CONFIGURATION.get().getLifecycle() == Lifecycle.REUSE_IF_STARTED
+                && CURRENT_BROWSER_CONFIGURATION.get().getMaxBrowserLifespan() == MaxBrowserLifeSpan.CLASS) {
             shutdownBrowser();
         }
         super.preAfterClass(type);
@@ -86,7 +87,10 @@ public class BrowserLifecyclePlugin extends Plugin {
 
     @Override
     public void postAfterAll() {
-        shutdownBrowser();
+        if(CURRENT_BROWSER_CONFIGURATION.get().getLifecycle() == Lifecycle.REUSE_IF_STARTED
+                && CURRENT_BROWSER_CONFIGURATION.get().getMaxBrowserLifespan() != MaxBrowserLifeSpan.CLASS) {
+            shutdownBrowser();
+        }
     }
 
     private void shutdownBrowser() {
@@ -150,6 +154,7 @@ public class BrowserLifecyclePlugin extends Plugin {
     private BrowserConfiguration getExecutionBrowserClassLevel(Class<?> clazz) {
         var browser = Browser.fromText(SecretsResolver.getSecret(ConfigurationService.get(WebSettings.class).getDefaultBrowser()));
         var lifecycle = Lifecycle.fromText(ConfigurationService.get(WebSettings.class).getDefaultLifeCycle());
+        var lifespan = MaxBrowserLifeSpan.fromText(ConfigurationService.get(WebSettings.class).getMaxBrowserLifespan());
         var width = ConfigurationService.get(WebSettings.class).getDefaultBrowserWidth();
         var height = ConfigurationService.get(WebSettings.class).getDefaultBrowserHeight();
 
@@ -166,6 +171,6 @@ public class BrowserLifecyclePlugin extends Plugin {
             }
         }
 
-        return new BrowserConfiguration(browser, lifecycle, width, height);
+        return new BrowserConfiguration(browser, lifecycle, lifespan, width, height);
     }
 }

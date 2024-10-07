@@ -24,6 +24,7 @@ public class BrowserConfiguration {
     @Setter @Getter private Browser browser;
     @Setter @Getter private DeviceName deviceName;
     @Setter @Getter private Lifecycle lifecycle;
+    @Setter @Getter private MaxBrowserLifeSpan maxBrowserLifespan;
     @Setter @Getter private int height;
     @Setter @Getter private int width;
     @Setter @Getter private int version;
@@ -48,9 +49,10 @@ public class BrowserConfiguration {
         driverOptions = new HashMap<>();
     }
 
-    public BrowserConfiguration(Browser browser, Lifecycle browserBehavior, Integer browserWidth, Integer browserHeight) {
+    public BrowserConfiguration(Browser browser, Lifecycle browserBehavior, MaxBrowserLifeSpan lifespan, Integer browserWidth, Integer browserHeight) {
         this.browser = browser;
         this.lifecycle = browserBehavior;
+        this.maxBrowserLifespan = lifespan;
         this.width = browserWidth;
         this.height = browserHeight;
         driverOptions = new HashMap<>();
@@ -66,6 +68,7 @@ public class BrowserConfiguration {
     public BrowserConfiguration(DeviceName deviceName, Lifecycle browserBehavior, String testName) {
         this.browser = Browser.CHROME_MOBILE;
         this.lifecycle = browserBehavior;
+        this.maxBrowserLifespan = MaxBrowserLifeSpan.TEST_RUN;
         this.testName = testName;
         this.deviceName = deviceName;
         driverOptions = new HashMap<>();
