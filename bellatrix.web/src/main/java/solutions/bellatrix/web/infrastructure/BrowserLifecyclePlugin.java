@@ -49,9 +49,7 @@ public class BrowserLifecyclePlugin extends Plugin {
 
     @Override
     public void postAfterClass(Class type) {
-        if(Objects.equals(ConfigurationService.get(WebSettings.class).getExecutionType(), "grid")) {
-            shutdownBrowser();
-        }
+        shutdownBrowser();
         super.preAfterClass(type);
     }
 
@@ -84,13 +82,7 @@ public class BrowserLifecyclePlugin extends Plugin {
         shutdownBrowser();
     }
 
-    @Override
-    public void postAfterAll() {
-        shutdownBrowser();
-    }
-
     private void shutdownBrowser() {
-        Log.info("Shutting down driver...");
         DriverService.close();
         PREVIOUS_BROWSER_CONFIGURATION.remove();
     }

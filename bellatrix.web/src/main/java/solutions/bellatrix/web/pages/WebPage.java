@@ -13,6 +13,7 @@
 
 package solutions.bellatrix.web.pages;
 
+import solutions.bellatrix.web.infrastructure.Browser;
 import solutions.bellatrix.web.services.App;
 import solutions.bellatrix.web.services.BrowserService;
 import solutions.bellatrix.web.services.ComponentCreateService;

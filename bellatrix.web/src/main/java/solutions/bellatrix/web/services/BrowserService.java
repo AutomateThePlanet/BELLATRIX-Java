@@ -164,11 +164,7 @@ public class BrowserService extends WebService {
     }
 
     public void clearLocalStorage() {
-        try {
-            ((JavascriptExecutor)getWrappedDriver()).executeScript("localStorage.clear()");
-        } catch (Exception ex) {
-            Log.error("Failed to clear local storage because of error: %s".formatted(ex.getMessage()));
-        }
+        ((JavascriptExecutor)getWrappedDriver()).executeScript("localStorage.clear()");
     }
 
     public List<LogEntry> getBrowserLogs() {
