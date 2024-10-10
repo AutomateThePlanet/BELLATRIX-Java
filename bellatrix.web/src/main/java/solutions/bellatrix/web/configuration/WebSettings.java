@@ -34,7 +34,6 @@ public class WebSettings {
     @Getter @Setter private String baseUrl;
     @Getter @Setter private String executionType;
     @Getter @Setter private String defaultLifeCycle;
-    @Getter @Setter private String maxBrowserLifespan;
     @Getter @Setter private String defaultBrowser;
     @Getter @Setter private Integer defaultBrowserWidth = 0;
     @Getter @Setter private Integer defaultBrowserHeight = 0;
