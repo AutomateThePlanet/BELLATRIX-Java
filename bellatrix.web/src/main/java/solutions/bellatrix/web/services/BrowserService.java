@@ -38,6 +38,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.logging.Level;
 
@@ -212,12 +213,13 @@ public class BrowserService extends WebService {
         long ajaxTimeout = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getWaitForAjaxTimeout();
         long sleepInterval = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getSleepInterval();
         var javascriptExecutor = (JavascriptExecutor)getWrappedDriver();
+        AtomicInteger ajaxConnections = new AtomicInteger();
         try {
             Wait.retry(() -> {
                         var numberOfAjaxConnections = javascriptExecutor.executeScript("return !isNaN(window.$openHTTPs) ? window.$openHTTPs : null");
                         if (Objects.nonNull(numberOfAjaxConnections)) {
-                            int ajaxConnections = Integer.parseInt(numberOfAjaxConnections.toString());
-                            if (ajaxConnections > 0) {
+                            ajaxConnections.set(Integer.parseInt(numberOfAjaxConnections.toString()));
+                            if (ajaxConnections.get() > 0) {
                                 String message = "Waiting for %s Ajax Connections...".formatted(ajaxConnections);
                                 injectInfoNotificationToast(message);
                                 Log.info(message);
@@ -233,7 +235,7 @@ public class BrowserService extends WebService {
                     TimeoutException.class);
         }
         catch (Exception e) {
-            var message = "Timed out waiting for Ajax connections.";
+            var message = "Timed out waiting for %s Ajax connections.".formatted(ajaxConnections.get());
             Log.error(message);
             injectErrorNotificationToast(message);
         }
