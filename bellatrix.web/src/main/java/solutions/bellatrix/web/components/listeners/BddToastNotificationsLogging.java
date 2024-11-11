@@ -55,6 +55,8 @@ public class BddToastNotificationsLogging extends Listener {
 //            WebComponent.SCROLLING_TO_VISIBLE.addListener((x) -> new BrowserService().injectInfoNotificationToast("scrolling to %s", x.getComponent().getComponentName()));
             WebComponent.SETTING_ATTRIBUTE.addListener((x) -> new BrowserService().injectInfoNotificationToast("setting %s to '%s' in %s", x.getActionValue(), x.getMessage(), x.getComponent().getComponentName()));
             ComponentValidator.VALIDATING_ATTRIBUTE.addListener((x) -> new BrowserService().injectInfoNotificationToast(x.getMessage()));
+            ActionImage.CLICKING.addListener((x) -> new BrowserService().injectInfoNotificationToast("clicking %s", x.getMessage()));
+            ActionImage.HOVERED.addListener((x) -> new BrowserService().injectInfoNotificationToast("hovering %s", x.getMessage()));
             isBddLoggingTurnedOn = true;
         }
     }

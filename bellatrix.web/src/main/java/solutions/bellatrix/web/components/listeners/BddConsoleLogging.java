@@ -52,6 +52,8 @@ public class BddConsoleLogging extends Listener {
 //            WebComponent.SCROLLING_TO_VISIBLE.addListener((x) -> Log.info("scrolling to %s", x.getComponent().getComponentName()));
             WebComponent.SETTING_ATTRIBUTE.addListener((x) -> Log.info("setting %s to '%s' in %s", x.getActionValue(), x.getMessage(), x.getComponent().getComponentName()));
             ComponentValidator.VALIDATING_ATTRIBUTE.addListener((x) -> Log.info(x.getMessage()));
+            ActionImage.CLICKING.addListener((x) -> Log.info("clicking %s", x.getMessage()));
+            ActionImage.HOVERED.addListener((x) -> Log.info("hovering %s", x.getMessage()));
             isBddLoggingTurnedOn = true;
         }
     }
