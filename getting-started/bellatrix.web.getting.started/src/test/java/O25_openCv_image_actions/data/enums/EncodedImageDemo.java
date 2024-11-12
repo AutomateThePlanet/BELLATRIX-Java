@@ -7,26 +7,31 @@ public enum EncodedImageDemo implements Base64Encodable {
     /**
      * <img src={@value ImageInBase64#falcon9}/>
      */
-    FALCON_9("falcon9", ImageInBase64.falcon9, 55, 70),
+    FALCON_9("falcon9", ImageInBase64.falcon9, 50, 25),
     /**
      * <img src={@value ImageInBase64#falcon9BackButton}/>
      */
-    FALCON_9_BACK_BUTTON("falcon9BackButton", ImageInBase64.falcon9BackButton, 20, 5),
+    FALCON_9_BACK_BUTTON("falcon9BackButton", ImageInBase64.falcon9BackButton),
     /**
      * <img src={@value ImageInBase64#commentTextArea}/>
      */
-    COMMENT_TEXT_AREA("commentTextArea", ImageInBase64.commentTextArea, 30, 50);
+    COMMENT_TEXT_AREA("commentTextArea", ImageInBase64.commentTextArea);
 
     private final String imageName;
     private final String encodedImage;
-    private final int xOffset;
-    private final int yOffset;
+    private int xOffset = 0;
+    private int yOffset = 0;
 
     EncodedImageDemo(String imageName, String encodedImage, int xOffset, int yOffset) {
         this.imageName = imageName;
         this.encodedImage = encodedImage;
         this.xOffset = xOffset;
         this.yOffset = yOffset;
+    }
+
+    EncodedImageDemo(String imageName, String encodedImage) {
+        this.imageName = imageName;
+        this.encodedImage = encodedImage;
     }
 
     @Override
