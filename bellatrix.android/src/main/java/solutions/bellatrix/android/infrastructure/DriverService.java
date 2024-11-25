@@ -94,6 +94,7 @@ public class DriverService {
         options.put(MobileCapabilityType.PLATFORM_NAME, "Android");
         options.put(MobileCapabilityType.PLATFORM_VERSION, getAppConfiguration().getAndroidVersion());
         options.put(MobileCapabilityType.DEVICE_NAME, getAppConfiguration().getDeviceName());
+        getCustomDriverOptions().forEach(caps::setCapability);
 
         if (getAppConfiguration().getIsMobileWebExecution()) {
             options.put(MobileCapabilityType.BROWSER_NAME, ConfigurationService.get(AndroidSettings.class).getDefaultBrowser());
@@ -124,6 +125,7 @@ public class DriverService {
         caps.setCapability(MobileCapabilityType.PLATFORM_NAME, "Android");
         caps.setCapability(MobileCapabilityType.PLATFORM_VERSION, getAppConfiguration().getAndroidVersion());
         caps.setCapability(MobileCapabilityType.DEVICE_NAME, getAppConfiguration().getDeviceName());
+        getCustomDriverOptions().forEach(caps::setCapability);
 
         if (getAppConfiguration().getIsMobileWebExecution()) {
             caps.setCapability(MobileCapabilityType.BROWSER_NAME, ConfigurationService.get(AndroidSettings.class).getDefaultBrowser());
