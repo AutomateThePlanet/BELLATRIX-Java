@@ -225,7 +225,7 @@ public class DriverService {
 
         if (WRAPPED_ANDROID_DRIVER.get() != null) {
             WRAPPED_ANDROID_DRIVER.get().quit();
-            CUSTOM_DRIVER_OPTIONS.get().clear();
+            // CUSTOM_DRIVER_OPTIONS.get().clear();
         }
 
         DISPOSED.set(true);
