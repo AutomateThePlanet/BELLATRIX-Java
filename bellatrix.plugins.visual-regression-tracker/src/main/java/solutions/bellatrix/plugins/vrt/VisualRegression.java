@@ -13,17 +13,14 @@
 
 package solutions.bellatrix.plugins.vrt;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-@Getter @Setter @NoArgsConstructor
-public class VisualRegressionTrackerSettings {
-    private String apiUrl;
-    private String project;
-    private String apiKey;
-    private String branch;
-    private boolean enableSoftAssert;
-    private String ciBuildId;
-    private int httpTimeout;
+@Target({ElementType.TYPE, ElementType.METHOD})
+@Retention(RetentionPolicy.RUNTIME)
+public @interface VisualRegression {
+    String projectName() default "";
+    ViewportSize viewportSize() default ViewportSize.DESKTOP;
 }
