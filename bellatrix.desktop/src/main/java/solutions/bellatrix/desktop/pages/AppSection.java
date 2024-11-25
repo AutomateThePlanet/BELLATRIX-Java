@@ -13,12 +13,13 @@
 
 package solutions.bellatrix.desktop.pages;
 
+import solutions.bellatrix.core.utilities.PageObjectModel;
 import solutions.bellatrix.desktop.services.AppService;
 import solutions.bellatrix.desktop.services.ComponentCreateService;
 
 import java.lang.reflect.ParameterizedType;
 
-public abstract class AppSection<MapT extends PageMap, AssertionsT extends PageAsserts<MapT>> {
+public abstract class AppSection<MapT extends PageMap, AssertionsT extends PageAsserts<MapT>> implements PageObjectModel {
     public AppService browser() {
         return new AppService();
     }

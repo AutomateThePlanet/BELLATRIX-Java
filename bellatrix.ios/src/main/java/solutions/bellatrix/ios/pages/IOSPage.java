@@ -13,12 +13,13 @@
 
 package solutions.bellatrix.ios.pages;
 
+import solutions.bellatrix.core.utilities.PageObjectModel;
 import solutions.bellatrix.ios.services.AppService;
 import solutions.bellatrix.ios.services.ComponentCreateService;
 
 import java.lang.reflect.ParameterizedType;
 
-public abstract class IOSPage<MapT extends PageMap, AssertsT extends PageAsserts<MapT>> {
+public abstract class IOSPage<MapT extends PageMap, AssertsT extends PageAsserts<MapT>> implements PageObjectModel {
     public AppService appService() {
         return new AppService();
     }
