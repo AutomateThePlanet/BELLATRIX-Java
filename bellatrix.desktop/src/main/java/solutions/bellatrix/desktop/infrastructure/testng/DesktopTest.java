@@ -13,6 +13,7 @@
 
 package solutions.bellatrix.desktop.infrastructure.testng;
 
+import plugins.screenshots.ScreenshotPlugin;
 import solutions.bellatrix.core.plugins.testng.BaseTest;
 import solutions.bellatrix.desktop.components.listeners.BddLogging;
 import solutions.bellatrix.desktop.infrastructure.AppLifecyclePlugin;
@@ -30,7 +31,7 @@ public class DesktopTest extends BaseTest {
     @Override
     protected void configure() {
         addPlugin(AppLifecyclePlugin.class);
-        addPlugin(DesktopScreenshotPlugin.class);
+        addPluginWithKey(ScreenshotPlugin.class, DesktopScreenshotPlugin.class);
         addPlugin(DesktopVideoPlugin.class);
         addPlugin(DownloadDemoAppsPlugin.class);
         addListener(BddLogging.class);
