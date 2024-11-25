@@ -94,7 +94,6 @@ public class DriverService {
         options.put(MobileCapabilityType.PLATFORM_NAME, "Android");
         options.put(MobileCapabilityType.PLATFORM_VERSION, getAppConfiguration().getAndroidVersion());
         options.put(MobileCapabilityType.DEVICE_NAME, getAppConfiguration().getDeviceName());
-        getCustomDriverOptions().forEach(caps::setCapability);
 
         if (getAppConfiguration().getIsMobileWebExecution()) {
             options.put(MobileCapabilityType.BROWSER_NAME, ConfigurationService.get(AndroidSettings.class).getDefaultBrowser());
@@ -125,7 +124,6 @@ public class DriverService {
         caps.setCapability(MobileCapabilityType.PLATFORM_NAME, "Android");
         caps.setCapability(MobileCapabilityType.PLATFORM_VERSION, getAppConfiguration().getAndroidVersion());
         caps.setCapability(MobileCapabilityType.DEVICE_NAME, getAppConfiguration().getDeviceName());
-        getCustomDriverOptions().forEach(caps::setCapability);
 
         if (getAppConfiguration().getIsMobileWebExecution()) {
             caps.setCapability(MobileCapabilityType.BROWSER_NAME, ConfigurationService.get(AndroidSettings.class).getDefaultBrowser());
@@ -209,15 +207,13 @@ public class DriverService {
     }
 
     private static <TOption extends MutableCapabilities> void addDriverConfigOptions(TOption chromeOptions) {
-        for (var optionKey : APP_CONFIGURATION.get().appiumOptions.keySet()) {
-            chromeOptions.setCapability(optionKey, APP_CONFIGURATION.get().appiumOptions.get(optionKey));
+        for (var optionEntry : APP_CONFIGURATION.get().appiumOptions.entrySet()) {
+            chromeOptions.setCapability(optionEntry.getKey(), optionEntry.getValue());
         }
     }
 
     private static <TOption extends MutableCapabilities> void addCustomDriverOptions(TOption mobileOptions) {
-        for (var optionKey : CUSTOM_DRIVER_OPTIONS.get().keySet()) {
-            mobileOptions.setCapability(optionKey, CUSTOM_DRIVER_OPTIONS.get().get(optionKey));
-        }
+        getCustomDriverOptions().forEach(mobileOptions::setCapability);
     }
 
     public static void close() {
