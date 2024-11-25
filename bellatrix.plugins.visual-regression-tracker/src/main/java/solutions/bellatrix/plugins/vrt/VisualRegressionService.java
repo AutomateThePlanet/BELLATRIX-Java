@@ -44,15 +44,18 @@ public class VisualRegressionService {
 
     public static void initService(VisualRegression attribute, VisualRegressionSettings settings) {
         VISUAL_REGRESSION_ATTRIBUTE.set(attribute);
-        VISUAL_REGRESSION_TRACKER_THREAD_LOCAL.set(new VisualRegressionTracker(new VisualRegressionTrackerConfig(
+
+        var config = new VisualRegressionTrackerConfig(
                 settings.getApiUrl(),
                 settings.getApiKey(),
-                settings.getProject(),
+                !attribute.projectName().isBlank() ? attribute.projectName() : settings.getProject(),
                 settings.getBranch(),
                 settings.getCiBuildId(),
                 settings.isEnableSoftAssert(),
                 settings.getHttpTimeout()
-        )));
+        );
+
+        VISUAL_REGRESSION_TRACKER_THREAD_LOCAL.set(new VisualRegressionTracker(config));
     }
 
     public static TestRunResult track(String name, Float diffTolerance, String screenshot) {
