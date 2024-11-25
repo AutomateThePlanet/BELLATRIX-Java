@@ -23,7 +23,7 @@ import solutions.bellatrix.web.services.NavigationService;
 
 import java.lang.reflect.ParameterizedType;
 
-public abstract class WebPage<MapT extends PageMap, AssertsT extends PageAsserts<MapT>> implements PageObjectModel {
+public abstract class WebPage<MapT extends PageMap, AssertsT extends PageAsserts<MapT>> implements PageObjectModel<MapT, AssertsT> {
     public BrowserService browser() {
         return new BrowserService();
     }

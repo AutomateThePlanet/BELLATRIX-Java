@@ -19,7 +19,7 @@ import solutions.bellatrix.web.services.ComponentCreateService;
 
 import java.lang.reflect.ParameterizedType;
 
-public abstract class WebSection<MapT extends PageMap, AssertionsT extends PageAsserts<MapT>> implements PageObjectModel {
+public abstract class WebSection<MapT extends PageMap, AssertionsT extends PageAsserts<MapT>> implements PageObjectModel<MapT, AssertionsT> {
     public BrowserService browser() {
         return new BrowserService();
     }

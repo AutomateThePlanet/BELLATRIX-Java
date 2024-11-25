@@ -21,7 +21,7 @@ import solutions.bellatrix.playwright.services.BrowserService;
 import solutions.bellatrix.playwright.services.ComponentCreateService;
 import solutions.bellatrix.playwright.services.NavigationService;
 
-public abstract class WebPage<MapT extends PageMap, AssertionsT extends PageAsserts<MapT>> implements PageObjectModel {
+public abstract class WebPage<MapT extends PageMap, AssertionsT extends PageAsserts<MapT>> implements PageObjectModel<MapT, AssertionsT> {
     public ComponentCreateService create() {
         return SingletonFactory.getInstance(ComponentCreateService.class);
     }
