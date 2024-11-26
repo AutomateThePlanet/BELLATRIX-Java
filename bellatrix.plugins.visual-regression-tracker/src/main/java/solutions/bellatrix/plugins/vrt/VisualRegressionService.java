@@ -17,7 +17,6 @@ import io.visual_regression_tracker.sdk_java.TestRunOptions;
 import io.visual_regression_tracker.sdk_java.TestRunResult;
 import io.visual_regression_tracker.sdk_java.VisualRegressionTracker;
 import io.visual_regression_tracker.sdk_java.VisualRegressionTrackerConfig;
-import lombok.experimental.UtilityClass;
 import plugins.screenshots.ScreenshotPlugin;
 import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.core.utilities.SingletonFactory;
@@ -26,6 +25,10 @@ import java.io.IOException;
 import java.util.Objects;
 
 public class VisualRegressionService {
+    private static float defaultDiffTolerance() {
+        return ConfigurationService.get(VisualRegressionSettings.class).getDefaultDiffTolerance();
+    }
+
     private static final ThreadLocal<VisualRegressionTracker> VISUAL_REGRESSION_TRACKER_THREAD_LOCAL;
     private static final ThreadLocal<VisualRegression> VISUAL_REGRESSION_ATTRIBUTE;
 
@@ -71,7 +74,7 @@ public class VisualRegressionService {
     }
 
     public static TestRunResult track(String name) {
-        return track(name, 0.000f);
+        return track(name, defaultDiffTolerance());
     }
 
     public static String takeSnapshot(String name) {

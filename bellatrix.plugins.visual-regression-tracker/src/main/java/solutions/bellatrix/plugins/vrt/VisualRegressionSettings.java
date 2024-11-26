@@ -26,4 +26,5 @@ public class VisualRegressionSettings {
     private boolean enableSoftAssert;
     private String ciBuildId;
     private int httpTimeout;
+    private float defaultDiffTolerance;
 }

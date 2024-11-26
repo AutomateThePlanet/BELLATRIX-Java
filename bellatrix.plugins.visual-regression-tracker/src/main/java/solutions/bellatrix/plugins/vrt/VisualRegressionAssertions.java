@@ -17,18 +17,23 @@ import io.visual_regression_tracker.sdk_java.TestRunResult;
 import io.visual_regression_tracker.sdk_java.TestRunStatus;
 import lombok.experimental.UtilityClass;
 import org.junit.jupiter.api.Assertions;
+import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.core.utilities.PageObjectModel;
 
 @UtilityClass
 public class VisualRegressionAssertions {
+    private static float defaultDiffTolerance() {
+        return ConfigurationService.get(VisualRegressionSettings.class).getDefaultDiffTolerance();
+    }
+
     public static void assertSameAsBaseline(String name, String... testCasesName) {
-        TestRunResult result = VisualRegressionService.track(name + String.join(" ", testCasesName), 0.01f);
+        TestRunResult result = VisualRegressionService.track(name + String.join(" ", testCasesName), defaultDiffTolerance());
         Assertions.assertSame(result.getTestRunResponse().getStatus(), TestRunStatus.OK,
                 String.format("Visual comparison has detected a difference at: %s", result.getTestRunResponse().getUrl()));
     }
 
     public static void assertSameAsBaseline(String name, String screenshot, String... testCasesName) {
-        TestRunResult result = VisualRegressionService.track(name + String.join(" ", testCasesName), 0.01f, screenshot);
+        TestRunResult result = VisualRegressionService.track(name + String.join(" ", testCasesName), defaultDiffTolerance(), screenshot);
         Assertions.assertSame(result.getTestRunResponse().getStatus(), TestRunStatus.OK,
                 String.format("Visual comparison has detected a difference at: %s", result.getTestRunResponse().getUrl()));
     }
