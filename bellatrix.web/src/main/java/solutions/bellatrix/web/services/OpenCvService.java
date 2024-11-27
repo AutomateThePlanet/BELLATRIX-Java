@@ -80,7 +80,7 @@ public class OpenCvService {
     /**
      * @return the coordinates of the image found on the screen
      */
-    public static Point getLocation(Base64Encodable encodedImage) {
+    public static Point getLocation(Base64Encodable encodedImage, boolean shouldGrayScale) {
         App app = new App();
         BufferedImage bufferedImage;
         String templatePath = getImagePathByBase64(encodedImage);
@@ -91,7 +91,18 @@ public class OpenCvService {
 
         // Load images
         Mat template = Imgcodecs.imread(templatePath);
+        Mat template_grayscale = new Mat();
+        Imgproc.cvtColor(template, template_grayscale, Imgproc.COLOR_BGR2GRAY);
+        if (shouldGrayScale) {
+            template = template_grayscale;
+        }
+
         Mat source = Imgcodecs.imread(screenshot.getPath());
+        Mat source_grayscale = new Mat();
+        Imgproc.cvtColor(source, source_grayscale, Imgproc.COLOR_BGR2GRAY);
+        if (shouldGrayScale) {
+            source = source_grayscale;
+        }
 
         // Create result matrix
         Mat result = new Mat();
