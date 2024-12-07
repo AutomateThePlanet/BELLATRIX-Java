@@ -14,6 +14,7 @@
 package solutions.bellatrix.web.infrastructure.junit;
 
 import org.junit.jupiter.api.extension.ExtendWith;
+import plugins.screenshots.ScreenshotPlugin;
 import solutions.bellatrix.core.plugins.junit.BaseTest;
 import solutions.bellatrix.core.plugins.junit.TestResultWatcher;
 import solutions.bellatrix.core.utilities.SingletonFactory;
@@ -36,7 +37,7 @@ public class WebTest extends BaseTest {
     @Override
     protected void configure() {
         addPlugin(BrowserLifecyclePlugin.class);
-        addPlugin(WebScreenshotPlugin.class);
+        addPluginWithKey(ScreenshotPlugin.class, WebScreenshotPlugin.class);
         addPlugin(WebVideoPlugin.class);
         addPlugin(LogLifecyclePlugin.class);
         addListener(BddConsoleLogging.class);

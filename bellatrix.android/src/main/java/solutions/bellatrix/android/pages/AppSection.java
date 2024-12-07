@@ -14,10 +14,11 @@
 package solutions.bellatrix.android.pages;
 
 import solutions.bellatrix.android.services.App;
+import solutions.bellatrix.core.utilities.PageObjectModel;
 
 import java.lang.reflect.ParameterizedType;
 
-public abstract class AppSection<MapT extends PageMap, AssertionsT extends PageAsserts<MapT>> {
+public abstract class AppSection<MapT extends PageMap, AssertionsT extends PageAsserts<MapT>> implements PageObjectModel<MapT, AssertionsT> {
     public App app() {
         return new App();
     }

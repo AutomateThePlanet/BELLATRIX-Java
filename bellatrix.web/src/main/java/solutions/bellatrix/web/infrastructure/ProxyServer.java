@@ -19,7 +19,6 @@ import net.lightbody.bmp.BrowserMobProxyServer;
 import net.lightbody.bmp.core.har.HarEntry;
 import net.lightbody.bmp.proxy.CaptureType;
 import org.apache.http.HttpStatus;
-import org.asynchttpclient.uri.Uri;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.http.HttpMethod;
@@ -33,6 +32,7 @@ import solutions.bellatrix.web.configuration.WebSettings;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.net.ServerSocket;
+import java.net.URI;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
@@ -178,7 +178,7 @@ public class ProxyServer {
         try{
             ArrayList<String> allUrls = new ArrayList<>();
             allHarEntries.stream().forEach(e -> {
-                Uri uri = Uri.create(requestPartialUrl);
+                URI uri = URI.create(requestPartialUrl);
                 if(e.getRequest().getUrl().contains(uri.getHost()) || e.getRequest().getUrl().contains(requestPartialUrl)){
                     allUrls.add(String.format("[%s]%s[%s]", e.getRequest().getMethod(), e.getRequest().getUrl(), e.getResponse().getStatusText()));
                 }
