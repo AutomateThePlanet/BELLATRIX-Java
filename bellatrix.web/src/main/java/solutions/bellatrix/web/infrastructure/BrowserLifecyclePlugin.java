@@ -18,6 +18,7 @@ import solutions.bellatrix.core.plugins.Plugin;
 import solutions.bellatrix.core.plugins.TestResult;
 import solutions.bellatrix.core.utilities.Log;
 import solutions.bellatrix.core.utilities.SecretsResolver;
+import solutions.bellatrix.core.utilities.Wait;
 import solutions.bellatrix.web.configuration.WebSettings;
 
 import java.lang.reflect.Method;
@@ -83,8 +84,14 @@ public class BrowserLifecyclePlugin extends Plugin {
     }
 
     private void shutdownBrowser() {
-        DriverService.close();
-        PREVIOUS_BROWSER_CONFIGURATION.remove();
+        try {
+            DriverService.close();
+        } catch (Exception ex) {
+            PREVIOUS_BROWSER_CONFIGURATION.remove();
+            Log.error("Failed to close the browser due to error: %s. Trying again...".formatted(ex.getMessage()));
+            Wait.forMilliseconds(100);
+            DriverService.close();
+        }
     }
 
     private void startBrowser() {
