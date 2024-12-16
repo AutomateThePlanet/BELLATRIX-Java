@@ -19,7 +19,8 @@ import lombok.Setter;
 import java.util.HashMap;
 import java.util.List;
 
-@Getter @Setter
+@Getter
+@Setter
 public class ApiSettings {
     private String baseUri;
     private String basePath;

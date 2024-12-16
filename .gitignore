@@ -8,8 +8,8 @@
 
 # macOS resource fork
 *.DS_Store
-.AppleDouble
 .LSOverride
+.AppleDouble
 .*.icloud
 
 # Compiled class file

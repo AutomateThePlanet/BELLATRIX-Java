@@ -207,15 +207,13 @@ public class DriverService {
     }
 
     private static <TOption extends MutableCapabilities> void addDriverConfigOptions(TOption chromeOptions) {
-        for (var optionKey : APP_CONFIGURATION.get().appiumOptions.keySet()) {
-            chromeOptions.setCapability(optionKey, APP_CONFIGURATION.get().appiumOptions.get(optionKey));
+        for (var optionEntry : APP_CONFIGURATION.get().appiumOptions.entrySet()) {
+            chromeOptions.setCapability(optionEntry.getKey(), optionEntry.getValue());
         }
     }
 
     private static <TOption extends MutableCapabilities> void addCustomDriverOptions(TOption mobileOptions) {
-        for (var optionKey : CUSTOM_DRIVER_OPTIONS.get().keySet()) {
-            mobileOptions.setCapability(optionKey, CUSTOM_DRIVER_OPTIONS.get().get(optionKey));
-        }
+        getCustomDriverOptions().forEach(mobileOptions::setCapability);
     }
 
     public static void close() {
@@ -225,7 +223,7 @@ public class DriverService {
 
         if (WRAPPED_ANDROID_DRIVER.get() != null) {
             WRAPPED_ANDROID_DRIVER.get().quit();
-            CUSTOM_DRIVER_OPTIONS.get().clear();
+            // CUSTOM_DRIVER_OPTIONS.get().clear();
         }
 
         DISPOSED.set(true);
