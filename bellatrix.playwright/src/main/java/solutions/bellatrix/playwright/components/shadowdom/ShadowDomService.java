@@ -14,21 +14,14 @@
 package solutions.bellatrix.playwright.components.shadowdom;
 
 import lombok.experimental.UtilityClass;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-import org.openqa.selenium.By;
-import solutions.bellatrix.core.utilities.HtmlService;
 import solutions.bellatrix.core.utilities.InstanceFactory;
 import solutions.bellatrix.core.utilities.Ref;
+import solutions.bellatrix.core.utilities.SingletonFactory;
 import solutions.bellatrix.playwright.components.WebComponent;
-import solutions.bellatrix.playwright.findstrategies.CssFindStrategy;
-import solutions.bellatrix.playwright.findstrategies.FindStrategy;
-import solutions.bellatrix.playwright.findstrategies.ShadowXpathFindStrategy;
-import solutions.bellatrix.playwright.findstrategies.XpathFindStrategy;
+import solutions.bellatrix.playwright.findstrategies.*;
+import solutions.bellatrix.playwright.services.JavaScriptService;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Stack;
 
@@ -37,242 +30,317 @@ public class ShadowDomService {
     private static final String CHILD_COMBINATOR = " > ";
     private static final String SHADOW_ROOT_TAG = "shadow-root";
 
-    public static String getShadowHtml(ShadowRoot shadowRoot) {
-        var function = String.format("""
-                el => {
-                           function clone(element, tag) {
-                               let cloneElement;
-                             	if (element instanceof ShadowRoot && !tag) {
-                                 cloneElement = new DocumentFragment();
-                               } else if (tag) {
-                                 cloneElement = document.createElement(tag);
-                               }
-                               else {
-                                 cloneElement = element.cloneNode(false);
-                                 if (element.firstChild && element.firstChild.nodeType === 3) {
-                                   cloneElement.appendChild(element.firstChild.cloneNode(false));
-                                 }
-                               }
-
-                               if (element.shadowRoot) {
-                                   cloneElement.appendChild(clone(element.shadowRoot, "%s"));
-                               }
-
-                               if (element.children) {
-                                   for (const child of element.children) {
-                                       cloneElement.appendChild(clone(child, undefined));
-                                   }
-                               }
-
-                               return cloneElement;
-                           }
-                       
-                        	var temporaryDiv = document.createElement("div");
-                         	temporaryDiv.appendChild(clone(el.shadowRoot, undefined));
-                           return temporaryDiv.innerHTML;
-                };
-                """, SHADOW_ROOT_TAG);
-
-        return (String)shadowRoot.evaluate(function);
+    public static String getShadowHtml(WebComponent shadowComponent, boolean isShadowRoot) {
+        return (String)shadowComponent.evaluate(String.format("(el, [isShadowRoot]) => (%s)(el, isShadowRoot)", getInnerHtmlScript), new Object[] { isShadowRoot });
     }
 
-    public static <TComponent extends WebComponent, TFindStrategy extends FindStrategy> TComponent createInShadowContext(WebComponent parentComponent, Class<TComponent> componentClass, TFindStrategy findStrategy) {
-        var shadowRoots = getShadowRootAncestors(parentComponent);
-
-        ShadowRoot initialShadowRoot = shadowRoots.pop();
-
-        var locatorBuilder = new StringBuilder();
-        while (!shadowRoots.isEmpty()) {
-            locatorBuilder.append(shadowRoots.pop().getFindStrategy().getValue()).append(CHILD_COMBINATOR + SHADOW_ROOT_TAG);
-        }
-        CssFindStrategy fullLocator = new CssFindStrategy(locatorBuilder.toString() + parentComponent.getFindStrategy().getValue());
-
-        var parentElement = getElement(initialShadowRoot, fullLocator);
-
-        var newElement = getElement(parentElement, findStrategy);
-
-        return createComponent(componentClass, initialShadowRoot, newElement, findStrategy);
+    public static <TComponent extends WebComponent, TFindStrategy extends FindStrategy> TComponent createFromShadowRoot(Class<TComponent> componentClass, ShadowRoot parentComponent, TFindStrategy findStrategy) {
+        return createAllFromShadowRoot(componentClass, parentComponent, findStrategy).get(0);
     }
 
-    public static <TComponent extends WebComponent, TFindStrategy extends FindStrategy> List<TComponent> createAllInShadowContext(WebComponent parentComponent, Class<TComponent> componentClass, TFindStrategy findStrategy) {
-        List<TComponent> componentList = new ArrayList<>();
+    public static <TComponent extends WebComponent, TFindStrategy extends FindStrategy> List<TComponent> createAllFromShadowRoot(Class<TComponent> componentClass, ShadowRoot parentComponent, TFindStrategy findStrategy) {
+        var locator = findStrategy.getValue();
 
-        var shadowRoots = getShadowRootAncestors(parentComponent);
+        var foundLocators = getAbsoluteCss(parentComponent, locator);
 
-        ShadowRoot initialShadowRoot = shadowRoots.pop();
+        List<TComponent> componentList = new ArrayList<>(foundLocators.length);
+        for (var i = 0; i < foundLocators.length; i++) {
+            Ref<String> currentCss = new Ref<>(foundLocators[i]);
+            var component = buildMissingShadowRootsAndCreate(componentClass, parentComponent, currentCss);
 
-        var locatorBuilder = new StringBuilder();
-        while (!shadowRoots.isEmpty()) {
-            locatorBuilder.append(shadowRoots.pop().getFindStrategy().getValue()).append(CHILD_COMBINATOR + SHADOW_ROOT_TAG);
-        }
-        CssFindStrategy fullLocator = new CssFindStrategy(locatorBuilder.toString() + parentComponent.getFindStrategy().getValue());
+            if (findStrategy instanceof XpathFindStrategy) {
+                component.setFindStrategy(new ShadowXpathFindStrategy(findStrategy.getValue(), currentCss.value));
+            } else {
+                component.setFindStrategy(new CssFindStrategy(currentCss.value));
+            }
 
-        var parentElement = getElement(initialShadowRoot, fullLocator);
+            component.setWrappedElement(component.getFindStrategy().convert(component.getParentComponent().getWrappedElement()).nth(i));
 
-        for (var element : getElements(parentElement, findStrategy)) {
-            componentList.add(createComponent(componentClass, initialShadowRoot, element, findStrategy));
+            componentList.add(component);
         }
 
         return componentList;
     }
 
-    public static <TComponent extends WebComponent, TFindStrategy extends FindStrategy> TComponent createFromShadowRoot(ShadowRoot shadowRoot, Class<TComponent> componentClass, TFindStrategy findStrategy) {
-        return createComponent(componentClass, shadowRoot, getElement(shadowRoot, findStrategy), findStrategy);
+    public static <TComponent extends WebComponent, TFindStrategy extends FindStrategy> TComponent createInShadowContext(Class<TComponent> componentClass, WebComponent parentComponent, TFindStrategy findStrategy) {
+        return createAllInShadowContext(componentClass, parentComponent, findStrategy).get(0);
     }
 
-    public static <TComponent extends WebComponent, TFindStrategy extends FindStrategy> List<TComponent> createAllFromShadowRoot(ShadowRoot shadowRoot, Class<TComponent> componentClass, TFindStrategy findStrategy) {
-        List<TComponent> componentList = new ArrayList<>();
+    public static <TComponent extends WebComponent, TFindStrategy extends FindStrategy> List<TComponent> createAllInShadowContext(Class<TComponent> componentClass, WebComponent parentComponent, TFindStrategy findStrategy) {
+        var locator = findStrategy.getValue();
+        var parentLocator = retraceParentShadowRoots(parentComponent);
 
-        for (var element : getElements(shadowRoot, findStrategy)) {
-            componentList.add(createComponent(componentClass, shadowRoot, element, findStrategy));
+        var outermostShadowRoot = getOutermostShadowRoot(parentComponent);
+        var foundLocators = getRelativeCss(outermostShadowRoot, locator, parentLocator);
+
+        List<TComponent> componentList = new ArrayList<>(foundLocators.length);
+        for (var i = 0; i < foundLocators.length; i++) {
+            Ref<String> currentCss = new Ref<>(foundLocators[i]);
+            var component = buildMissingShadowRootsAndCreate(componentClass, outermostShadowRoot, currentCss);
+
+            if (findStrategy instanceof ShadowXpathFindStrategy) {
+                component.setFindStrategy(new ShadowXpathFindStrategy(findStrategy.getValue(), currentCss.value));
+            } else {
+                component.setFindStrategy(new CssFindStrategy(currentCss.value));
+            }
+
+            component.setWrappedElement(component.getFindStrategy().convert(component.getParentComponent().getWrappedElement()).nth(i));
+
+            componentList.add(component);
         }
 
         return componentList;
     }
 
-    private static <TComponent extends WebComponent> TComponent createComponent(Class<TComponent> clazz, ShadowRoot initialShadowRoot, Element jsoupNode, FindStrategy findStrategy) {
+    private static String[] getAbsoluteCss(ShadowRoot shadowRoot, String locator) {
+        return ((ArrayList<String>)shadowRoot
+                .evaluate(String.format("(el, [locator]) => (%s)(el, locator)", javaScript), new Object[] { locator }))
+                .toArray(String[]::new);
+    }
+
+    private static String[] getRelativeCss(ShadowRoot shadowRoot, String locator, String parentLocator) {
+        return ((ArrayList<String>)shadowRoot
+                .evaluate(String.format("(el, [locator, parentLocator]) => (%s)(el, locator, parentLocator)", javaScript), new Object[] { locator, parentLocator }))
+                .toArray(String[]::new);
+    }
+
+    private static <TComponent extends WebComponent> TComponent buildMissingShadowRootsAndCreate(Class<TComponent> clazz, ShadowRoot parentComponent, Ref<String> fullCss) {
         var component = InstanceFactory.create(clazz);
 
-        // passed as a reference, the inside value will change:
-        Ref<ShadowRoot> shadowRoot = new Ref<>(initialShadowRoot);
+        String[] fullCssArray = fullCss.value.split(CHILD_COMBINATOR + SHADOW_ROOT_TAG + CHILD_COMBINATOR);
 
-        // create missing shadow roots between the element and the initial shadow root;
-        // chain them;
-        // return the element's css relative to the innermost shadow root
-        var jsoupNodeCss = buildMissingShadowRootsAndReturnElementRelativeCss(shadowRoot, jsoupNode);
+        ShadowRoot parent = parentComponent;
 
-        if (findStrategy instanceof XpathFindStrategy) {
-            component.setFindStrategy(new ShadowXpathFindStrategy(findStrategy.getValue(), jsoupNodeCss));
-        } else {
-            component.setFindStrategy(new CssFindStrategy(jsoupNodeCss));
+        // we don't need the last String in the array when building the missing shadow root parents,
+        // as it is the local css relative to the innermost shadow root parent
+        for (var i = 0; i < fullCssArray.length - 1; i++) {
+            var nestedShadowRoot = InstanceFactory.create(ShadowRoot.class);
+            nestedShadowRoot.setFindStrategy(new CssFindStrategy(fullCssArray[i]));
+            nestedShadowRoot.setParentComponent(parent);
+
+            parent = nestedShadowRoot;
         }
 
-        component.setParentComponent(shadowRoot.value);
-        component.setWrappedElement(component.getFindStrategy().convert(component.getParentComponent().getWrappedElement()).first());
+        fullCss.value = fullCssArray[fullCssArray.length - 1];
 
+        component.setParentComponent(parent);
         return component;
     }
 
-    private static String buildMissingShadowRootsAndReturnElementRelativeCss(Ref<ShadowRoot> shadowRoot, Element jsoupNode) {
-        var nestedShadowRootStack = new Stack<Element>();
 
-        // initial absolute xpath, relative to the outermost shadow root element
-        var jsoupNodeCss = HtmlService.convertAbsoluteXpathToCss(HtmlService.getAbsoluteXpath(jsoupNode)).split(CHILD_COMBINATOR);
+    private static ShadowRoot getOutermostShadowRoot(WebComponent component) {
+        var parent = component.getParentComponent();
+        ShadowRoot outermostShadowRoot = null;
 
-        // if there are <shadow-root> elements found between the outermost shadow root and the element
-        // populate the Stack<Element>
-        if (tryFindNestedShadowRoots(jsoupNode, nestedShadowRootStack)) {
-            String[] previousCss = null;
-
-            while (!nestedShadowRootStack.isEmpty()) {
-                var parent = nestedShadowRootStack.pop();
-                var css = HtmlService.convertAbsoluteXpathToCss(HtmlService.getAbsoluteXpath(parent)).split(CHILD_COMBINATOR);
-                if (previousCss != null) {
-                    css = removeRedundantSteps(css, previousCss);
-                }
-
-
-                shadowRoot.value = createNestedShadowRoot(shadowRoot.value, cleanFromShadowRootTags(css));
-
-                jsoupNodeCss = removeRedundantSteps(jsoupNodeCss, css);
-
-                previousCss = HtmlService.convertAbsoluteXpathToCss(HtmlService.getAbsoluteXpath(parent)).split(CHILD_COMBINATOR);
-            }
+        while (parent instanceof ShadowRoot) {
+            outermostShadowRoot = (ShadowRoot)parent;
+            parent = parent.getParentComponent();
         }
 
-        return String.join(CHILD_COMBINATOR, cleanFromShadowRootTags(jsoupNodeCss));
+        return outermostShadowRoot;
     }
 
-    private static String[] removeRedundantSteps(String[] elementCss, String[] currentCss) {
-        return Arrays.stream(elementCss)
-                .skip(currentCss.length)
-                .toArray(String[]::new);
+    private static int getNestedLevel(WebComponent component) {
+        var parent = component.getParentComponent();
+
+        var count = 0;
+        while (parent instanceof ShadowRoot) {
+            count++;
+
+            parent = parent.getParentComponent();
+        }
+
+        return count;
     }
 
-    private static String[] cleanFromShadowRootTags(String[] css) {
-        return Arrays.stream(css)
-                .filter(x -> !x.contains(SHADOW_ROOT_TAG))
-                .toArray(String[]::new);
-    }
+    private static String retraceParentShadowRoots(WebComponent component) {
+        if (getNestedLevel(component) > 1) {
+            var parent = component.getParentComponent();
 
-    private static ShadowRoot createNestedShadowRoot(ShadowRoot parent, String[] locator) {
-        var finalLocator = String.join(CHILD_COMBINATOR, cleanFromShadowRootTags(locator));
+            Stack<String> findStrategies = new Stack<>();
 
-        ShadowRoot nestedShadowRoot = InstanceFactory.create(ShadowRoot.class);
-        nestedShadowRoot.setFindStrategy(new CssFindStrategy(finalLocator));
-        nestedShadowRoot.setParentComponent(parent);
+            checkIfCss(component.getFindStrategy());
 
-        return nestedShadowRoot;
-    }
+            findStrategies.push(component.getFindStrategy().getValue());
 
-    private static boolean tryFindNestedShadowRoots(Element jsoupElement, Stack<Element> parentShadowRootStack) {
-        var parent = jsoupElement.parent();
+            while (parent instanceof ShadowRoot) {
+                checkIfCss(parent.getFindStrategy());
 
-        while (parent != null) {
-            if (parent.tagName().equals(SHADOW_ROOT_TAG)) {
-                parentShadowRootStack.push(parent);
+                findStrategies.push(CHILD_COMBINATOR + SHADOW_ROOT_TAG + CHILD_COMBINATOR);
+                findStrategies.push(parent.getFindStrategy().getValue());
+
+                parent = parent.getParentComponent();
             }
 
-            parent = parent.parent();
+            StringBuilder finalCss = new StringBuilder();
+            while(!findStrategies.isEmpty()) {
+                finalCss.append(findStrategies.pop());
+            }
+
+            return finalCss.toString();
+        } else {
+            return component.getFindStrategy().getValue();
         }
-
-        return !parentShadowRootStack.isEmpty();
     }
 
-    /**
-     * Find from root element in shadow root's html.
-     */
-    private static Element getElement(ShadowRoot component, FindStrategy findStrategy) {
-        var doc = Jsoup.parse(component.getHtml());
-
-        return getElement(doc, findStrategy);
-    }
-
-    /**
-     * Find relatively from element.
-     */
-    private static Element getElement(Element element, FindStrategy findStrategy) {
-        return getElements(element, findStrategy).get(0);
-    }
-
-    /**
-     * Find from root element in shadow root's html.
-     */
-    private static List<Element> getElements(ShadowRoot component, FindStrategy findStrategy) {
-        var doc = Jsoup.parse(component.getHtml());
-
-        return getElements(doc, findStrategy);
-    }
-
-    /**
-     * Find relatively from element.
-     */
-    private static List<Element> getElements(Element element, FindStrategy findStrategy) {
-        Elements foundElements = null;
-        var strategyValue = findStrategy.getValue();
-
-        if (findStrategy instanceof CssFindStrategy) {
-            foundElements = element.select(strategyValue);
-        }
+    private static void checkIfCss(FindStrategy findStrategy) {
         if (findStrategy instanceof XpathFindStrategy) {
-            foundElements = element.selectXpath(strategyValue);
+            throw new IllegalArgumentException("Inside Shadow DOM, there cannot be anything different than CSS locator.");
         }
-
-        return foundElements;
     }
 
-    private static Stack<ShadowRoot> getShadowRootAncestors(WebComponent initialComponent) {
-        var component = initialComponent.getParentComponent();
+    private static final String javaScript = /* lang=js */ """
+            function (element, strategy, relativeElementCss) {
+                const child_combinator = " > ";
+                const node = "/";
+                        
+                function clone(element, tag) {
+                  let cloneElement;
+                  if (element instanceof ShadowRoot && !tag) {
+                    cloneElement = new DocumentFragment();
+                  } else if (tag) {
+                    cloneElement = document.createElement(tag);
+                  }
+                  else {
+                    cloneElement = element.cloneNode();
+                    if (element.firstChild && element.firstChild.nodeType === 3) {
+                      cloneElement.appendChild(element.firstChild.cloneNode());
+                    }
+                  }
+                        
+                  if (element.shadowRoot) {
+                    cloneElement.appendChild(clone(element.shadowRoot, "shadow-root"));
+                  }
+                        
+                  if (element.children) {
+                    for (const child of element.children) {
+                      cloneElement.appendChild(clone(child, undefined));
+                    }
+                  }
+                        
+                  return cloneElement;
+                }
+                        
+                function getAbsoluteXpath(element) {
+                  function indexElement(el) {
+                    let index = 1;
+                        
+                    let previousSibling = el.previousElementSibling;
+                    while (previousSibling) {
+                      if (previousSibling.nodeName.toLowerCase() === el.nodeName.toLowerCase()) {
+                        index++;
+                      }
+                      previousSibling = previousSibling.previousElementSibling;
+                    }
+                        
+                    if (el.tagName.toLowerCase() === "shadow-root") {
+                      return node + el.tagName.toLowerCase();
+                    } else {
+                      return node + el.tagName.toLowerCase() + "[" + index + "]";
+                    }
+                  }
+                        
+                  let xpath = [];
+                        
+                  let currentElement = element;
+                  while (currentElement) {
+                    if (currentElement.tagName.toLowerCase() === 'html' || currentElement.tagName.toLowerCase() === 'body' || currentElement.tagName.startsWith() === '#' || currentElement.tagName.toLowerCase() === "temporary-div") {
+                      break;
+                    }
+                        
+                    xpath.unshift(indexElement(currentElement));
+                        
+                    currentElement = currentElement.parentElement;
+                  }
+                  return xpath.join("");
+                }
+                        
+                function getAbsoluteCss(xpath) {
+                    let regex = new RegExp(node, 'g');
+                    let cssSelector = xpath.replace(regex, child_combinator);
+                    cssSelector = cssSelector.replace(/\\[(\\d+)\\]/g, ':nth-of-type($1)');
+                    if (cssSelector.startsWith(child_combinator)) {
+                        cssSelector = cssSelector.substring(child_combinator.length);
+                    }
+                    return cssSelector;
+                }
+                        
+                const temporaryDiv = document.createElement("temporary-div");
+                if (element.shadowRoot) {
+                      temporaryDiv.appendChild(clone(element.shadowRoot, undefined));
+                } else {
+                  temporaryDiv.appendChild(clone(element, "shadow-root"));
+                }
+                
+                let startPoint = temporaryDiv;
+    
+                if (relativeElementCss) {
+                    startPoint = temporaryDiv.querySelector(relativeElementCss);
+                }
+    
+                let elements;
+                if (strategy.startsWith("/") || strategy.startsWith("./")) {
+                  let result = document.evaluate(strategy, startPoint, null, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null);
+                  elements = [];
+                  let node;
+                  while ((node = result.iterateNext())) {
+                    elements.push(node);
+                  }
+                } else {
+                  elements = Array.from(startPoint.querySelectorAll(strategy));
+                }
+    
+                let finalLocators = [];
+                elements.forEach((el) => {
+                  finalLocators.push(getAbsoluteCss(getAbsoluteXpath(el)));
+                });
+    
+                return finalLocators;
+            }""";
 
-        var shadowRoots = new Stack<ShadowRoot>();
-
-        while (component != null) {
-            if (component instanceof ShadowRoot) {
-                shadowRoots.push((ShadowRoot)component);
+    private static final String getInnerHtmlScript = """
+            function (element, isShadowRoot) {
+                const child_combinator = " > ";
+                const node = "/";
+            
+                function clone(element, tag) {
+                  let cloneElement;
+                  if (element instanceof ShadowRoot && !tag) {
+                    cloneElement = new DocumentFragment();
+                  } else if (tag) {
+                    cloneElement = document.createElement(tag);
+                  }
+                  else {
+                    cloneElement = element.cloneNode();
+                    if (element.firstChild && element.firstChild.nodeType === 3) {
+                      cloneElement.appendChild(element.firstChild.cloneNode());
+                    }
+                  }
+            
+                  if (element.shadowRoot) {
+                    cloneElement.appendChild(clone(element.shadowRoot, "shadow-root"));
+                  }
+            
+                  if (element.children) {
+                    for (const child of element.children) {
+                      cloneElement.appendChild(clone(child, undefined));
+                    }
+                  }
+            
+                  return cloneElement;
+                }
+            
+                let temporaryDiv = document.createElement("temporary-div");
+                if (element.shadowRoot) {
+                      temporaryDiv.appendChild(clone(element.shadowRoot, undefined));
+                } else if (isShadowRoot) {
+                  temporaryDiv.appendChild(clone(element, "shadow-root"));
+                } else {
+                    temporaryDiv.appendChild(clone(element, "redundant-el"));
+                    temporaryDiv = temporaryDiv.querySelector("redundant-el");
+                }
+            
+                return temporaryDiv.innerHTML;
             }
-            component = component.getParentComponent();
-        }
-
-        return shadowRoots;
-    }
+            """;
 }
