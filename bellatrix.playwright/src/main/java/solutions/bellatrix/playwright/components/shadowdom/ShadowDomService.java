@@ -279,7 +279,7 @@ public class ShadowDomService {
                 }
     
                 let elements;
-                if (strategy.startsWith("/") || strategy.startsWith("./")) {
+                if (strategy.startsWith("/") || strategy.startsWith("./") || strategy.startsWith("(")) {
                   let result = document.evaluate(strategy, startPoint, null, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null);
                   elements = [];
                   let node;

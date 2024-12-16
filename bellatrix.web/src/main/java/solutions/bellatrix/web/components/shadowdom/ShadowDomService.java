@@ -320,7 +320,7 @@ public class ShadowDomService {
                 }
     
                 let elements;
-                if (locator.startsWith("/") || locator.startsWith("./")) {
+                if (locator.startsWith("/") || locator.startsWith("./") || strategy.startsWith("(")) {
                   let result = document.evaluate(locator, startPoint, null, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null);
                   elements = [];
                   let node;
