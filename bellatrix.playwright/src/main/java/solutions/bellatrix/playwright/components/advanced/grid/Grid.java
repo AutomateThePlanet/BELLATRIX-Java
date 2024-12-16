@@ -24,6 +24,7 @@ import solutions.bellatrix.playwright.findstrategies.FindStrategy;
 import solutions.bellatrix.playwright.findstrategies.XpathFindStrategy;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -137,12 +138,8 @@ public class Grid extends WebComponent {
 
     public GridCell getCell(int row, int column) {
         String xpath = HtmlService.getAbsoluteXpath(getTableService().getCell(row, column));
-//        if (innerXpath.startsWith(".")) innerXpath = innerXpath.substring(1);
-//        String outerXpath = getCurrentElementXPath();
-//
-//        String fullXpath = Objects.requireNonNullElse(outerXpath, ".") + innerXpath;
 
-        GridCell cell = this.create().byXpath(GridCell.class, xpath);
+        GridCell cell = this.create().byXpath(GridCell.class, "." + xpath);
         setCellMetaData(cell, row, column);
 
         return cell;
@@ -310,8 +307,13 @@ public class Grid extends WebComponent {
             if (!clazz.equals(Object.class)) {
                 entity = castRow(clazz, i, propsNotToCompare);
             } else {
-                Method method = this.getClass().getMethod("castRow", int.class, List.class);
-                entity = (TRowObject)method.invoke(this, i, Arrays.stream(propsNotToCompare).toList());
+                Method method = null;
+                try {
+                    method = this.getClass().getMethod("castRow", int.class, List.class);
+                    entity = (TRowObject)method.invoke(this, i, Arrays.stream(propsNotToCompare).toList());
+                } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+                    throw new RuntimeException(e);
+                }
             }
             EntitiesAsserter.areEqual(expectedEntities.get(i), entity, propsNotToCompare);
         }
@@ -355,9 +357,10 @@ public class Grid extends WebComponent {
         }
 
         var dto = InstanceFactory.create(clazz);
-        var fields = clazz.getFields();
+        var fields = clazz.getDeclaredFields();
         for (var field : fields) {
             var fieldType = field.getType();
+            field.setAccessible(true);
 
             var headerInfo = getHeaderNamesService().getHeaderInfoByField(field);
 
@@ -492,7 +495,9 @@ public class Grid extends WebComponent {
 
     public <TGridModel> Grid setModelColumns(Class<TGridModel> clazz) {
         controlColumnDataCollection = new ArrayList<>();
-        for (var field : clazz.getFields()) {
+        List<Field> declaredFields = List.of(clazz.getDeclaredFields());
+        for (var field : declaredFields) {
+            field.setAccessible(true);
             var headerName = field.isAnnotationPresent(TableHeader.class) ? field.getAnnotation(TableHeader.class).name() : field.getName();
             controlColumnDataCollection.add(new ControlColumnData(headerName));
         }
