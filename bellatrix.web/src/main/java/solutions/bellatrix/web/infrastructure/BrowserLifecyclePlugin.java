@@ -109,10 +109,6 @@ public class BrowserLifecyclePlugin extends Plugin {
             return true;
         } else if (!previousConfiguration.equals(currentConfiguration)) {
             return true;
-        } else if (currentConfiguration.getLifecycle() == Lifecycle.REUSE_IF_STARTED) {
-            return false;
-        } else if (currentConfiguration.getLifecycle() == Lifecycle.RESTART_EVERY_TIME) {
-            return true;
         } else {
             return false;
         }

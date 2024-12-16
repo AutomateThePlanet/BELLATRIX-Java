@@ -38,6 +38,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.logging.Level;
 
@@ -208,16 +209,21 @@ public class BrowserService extends WebService {
         return logs;
     }
 
+    public List<String> getRequestEntries(String partialUrl) {
+        return (List<String>)((JavascriptExecutor)getWrappedDriver()).executeScript(String.format("return window.performance.getEntriesByType('resource').filter(x => x.name.indexOf('%s') >= 0).map(y => y.name);", partialUrl));
+    }
+
     public void waitForAjax() {
         long ajaxTimeout = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getWaitForAjaxTimeout();
         long sleepInterval = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getSleepInterval();
         var javascriptExecutor = (JavascriptExecutor)getWrappedDriver();
+        AtomicInteger ajaxConnections = new AtomicInteger();
         try {
             Wait.retry(() -> {
                         var numberOfAjaxConnections = javascriptExecutor.executeScript("return !isNaN(window.$openHTTPs) ? window.$openHTTPs : null");
                         if (Objects.nonNull(numberOfAjaxConnections)) {
-                            int ajaxConnections = Integer.parseInt(numberOfAjaxConnections.toString());
-                            if (ajaxConnections > 0) {
+                            ajaxConnections.set(Integer.parseInt(numberOfAjaxConnections.toString()));
+                            if (ajaxConnections.get() > 0) {
                                 String message = "Waiting for %s Ajax Connections...".formatted(ajaxConnections);
                                 injectInfoNotificationToast(message);
                                 Log.info(message);
@@ -233,7 +239,7 @@ public class BrowserService extends WebService {
                     TimeoutException.class);
         }
         catch (Exception e) {
-            var message = "Timed out waiting for Ajax connections.";
+            var message = "Timed out waiting for %s Ajax connections.".formatted(ajaxConnections.get());
             Log.error(message);
             injectErrorNotificationToast(message);
         }
@@ -428,7 +434,7 @@ public class BrowserService extends WebService {
         }
     }
 
-    public void tryWaitForResponse(String partialUrl) {
+    public void tryWaitForResponse(String partialUrl, int additionalTimeoutInSeconds) {
         try {
             if(ProxyServer.get() != null) {
                 ProxyServer.waitForResponse(getWrappedDriver(), partialUrl, HttpMethod.GET, 0);
@@ -440,6 +446,10 @@ public class BrowserService extends WebService {
         } catch (Exception exception) {
             Log.error("The expected request with URL '%s' is not loaded!", partialUrl);
         }
+    }
+
+    public void tryWaitForResponse(String partialUrl) {
+        tryWaitForResponse(partialUrl, 0);
     }
 
     public void waitForAngular() {
