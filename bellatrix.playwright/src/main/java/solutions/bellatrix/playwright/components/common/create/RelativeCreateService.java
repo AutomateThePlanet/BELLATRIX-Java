@@ -50,7 +50,7 @@ public class RelativeCreateService extends ComponentCreateService {
         TComponent newComponent;
 
         if (inShadowContext()) {
-            newComponent = ShadowDomService.createInShadowContext((WebComponent)baseComponent, componentClass, findStrategy);
+            newComponent = ShadowDomService.createInShadowContext(componentClass, (WebComponent)baseComponent, findStrategy);
         } else {
             newComponent = createFromParentComponent(componentClass, findStrategy);
         }
@@ -69,7 +69,7 @@ public class RelativeCreateService extends ComponentCreateService {
         List<TComponent> componentList = new ArrayList<>();
 
         if (inShadowContext()) {
-            componentList = ShadowDomService.createAllInShadowContext((WebComponent)baseComponent, componentClass, findStrategy);
+            componentList = ShadowDomService.createAllInShadowContext(componentClass, (WebComponent)baseComponent, findStrategy);
         } else {
             var elements = findStrategy.convert(baseComponent.getWrappedElement()).all();
 
