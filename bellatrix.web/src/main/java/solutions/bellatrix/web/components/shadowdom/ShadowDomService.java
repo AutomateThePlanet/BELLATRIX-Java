@@ -13,23 +13,29 @@
 
 package solutions.bellatrix.web.components.shadowdom;
 
+import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.openqa.selenium.By;
+import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.core.utilities.HtmlService;
 import solutions.bellatrix.core.utilities.InstanceFactory;
 import solutions.bellatrix.core.utilities.Ref;
+import solutions.bellatrix.core.utilities.Wait;
 import solutions.bellatrix.web.components.WebComponent;
+import solutions.bellatrix.web.configuration.WebSettings;
 import solutions.bellatrix.web.findstrategies.CssFindStrategy;
 import solutions.bellatrix.web.findstrategies.FindStrategy;
 import solutions.bellatrix.web.findstrategies.ShadowXPathFindStrategy;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Stack;
+import java.util.concurrent.Callable;
 import java.util.stream.Collectors;
 
 @UtilityClass
@@ -97,16 +103,56 @@ public class ShadowDomService {
         return componentList;
     }
 
+    @SneakyThrows
     private static String[] getAbsoluteCss(ShadowRoot shadowRoot, String locator) {
-        return shadowRoot.getJavaScriptService()
-                .<ArrayList<String>>genericExecute(String.format("return (%s)(arguments[0], arguments[1], arguments[2]);", javaScript),
-                        shadowRoot.findElement(), locator, null).toArray(String[]::new);
+        Callable<String[]> js = () -> {
+            return shadowRoot.getJavaScriptService()
+                    .<ArrayList<String>>genericExecute(String.format("return (%s)(arguments[0], arguments[1], arguments[2]);", javaScript),
+                            shadowRoot.findElement(), locator, null).toArray(String[]::new);
+        };
+
+        if (Wait.retry(() -> {
+            String[] foundElements;
+            try {
+                foundElements = js.call();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+
+            if (foundElements == null || foundElements.length == 0) {
+                throw new IllegalArgumentException();
+            }
+        }, Duration.ofSeconds(ConfigurationService.get(WebSettings.class).getTimeoutSettings().getElementWaitTimeout()), Duration.ofSeconds(1), false)) {
+            return js.call();
+        } else {
+            throw new IllegalArgumentException("No elements inside the shadow DOM were found with the locator: " + locator);
+        }
     }
 
+    @SneakyThrows
     private static String[] getRelativeCss(ShadowRoot shadowRoot, String locator, String parentLocator) {
-        return shadowRoot.getJavaScriptService()
-                .<ArrayList<String>>genericExecute(String.format("return (%s)(arguments[0], arguments[1], arguments[2]);", javaScript),
-                        shadowRoot.findElement(), locator, parentLocator).toArray(String[]::new);
+        Callable<String[]> js = () -> {
+            return shadowRoot.getJavaScriptService()
+                    .<ArrayList<String>>genericExecute(String.format("return (%s)(arguments[0], arguments[1], arguments[2]);", javaScript),
+                            shadowRoot.findElement(), locator, parentLocator).toArray(String[]::new);
+        };
+
+        if (Wait.retry(() -> {
+            String[] foundElements;
+            try {
+                foundElements = js.call();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+
+            if (foundElements == null || foundElements.length == 0) {
+                throw new IllegalArgumentException();
+            }
+        }, Duration.ofSeconds(ConfigurationService.get(WebSettings.class).getTimeoutSettings().getElementWaitTimeout()), Duration.ofSeconds(1), false)) {
+            return js.call();
+        } else {
+            throw new IllegalArgumentException("No elements inside the shadow DOM were found with the locator: " + locator);
+        }
     }
 
     private static <TComponent extends WebComponent> TComponent buildMissingShadowRootsAndCreate(Class<TComponent> clazz, ShadowRoot parentComponent, Ref<String> fullCss) {
