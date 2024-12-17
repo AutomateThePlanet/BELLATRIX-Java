@@ -22,20 +22,17 @@ import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.core.utilities.SingletonFactory;
 
 import java.io.IOException;
-import java.util.Objects;
 
 public class VisualRegressionService {
-    private static float defaultDiffTolerance() {
-        return ConfigurationService.get(VisualRegressionSettings.class).getDefaultDiffTolerance();
-    }
+    private static final float DEFAULT_DIFF_TOLERANCE = ConfigurationService.get(VisualRegressionSettings.class).getDefaultDiffTolerance();
 
     private static final ThreadLocal<VisualRegressionTracker> VISUAL_REGRESSION_TRACKER_THREAD_LOCAL;
     private static final ThreadLocal<VisualRegression> VISUAL_REGRESSION_ATTRIBUTE;
 
     static {
         try {
-            VISUAL_REGRESSION_TRACKER_THREAD_LOCAL = new ThreadLocal<>();
-            VISUAL_REGRESSION_ATTRIBUTE = new ThreadLocal<>();
+            VISUAL_REGRESSION_TRACKER_THREAD_LOCAL = ThreadLocal.withInitial(() -> null);
+            VISUAL_REGRESSION_ATTRIBUTE = ThreadLocal.withInitial(() -> null);
         } catch (Exception e) {
             throw new RuntimeException("Failed to initialize VisualRegressionService", e);
         }
@@ -74,12 +71,16 @@ public class VisualRegressionService {
     }
 
     public static TestRunResult track(String name) {
-        return track(name, defaultDiffTolerance());
+        return track(name, DEFAULT_DIFF_TOLERANCE);
     }
 
     public static String takeSnapshot(String name) {
         var screenshotPlugin = SingletonFactory.getInstance(ScreenshotPlugin.class);
-        return Objects.requireNonNull(screenshotPlugin).takeScreenshot(name);
+        if (screenshotPlugin == null) {
+            throw new IllegalArgumentException("It seems that the screenshot plugin isn't registered by the 'ScreenshotPlugin.class' key inside SingletonFactory's map or isn't registered at all!");
+        }
+
+        return screenshotPlugin.takeScreenshot(name);
     }
 
     public static TestRunOptions buildRunOptions(Float diffTolerance) {
