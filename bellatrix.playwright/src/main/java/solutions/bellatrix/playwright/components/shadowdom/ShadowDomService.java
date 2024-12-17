@@ -100,7 +100,6 @@ public class ShadowDomService {
         return componentList;
     }
 
-    @SneakyThrows
     private static String[] getAbsoluteCss(ShadowRoot shadowRoot, String locator) {
         Callable<String[]> js = () -> {
             return ((ArrayList<String>)shadowRoot
@@ -118,13 +117,16 @@ public class ShadowDomService {
                 throw new IllegalArgumentException();
             }
         }, Duration.ofSeconds(ConfigurationService.get(WebSettings.class).getTimeoutSettings().getElementWaitTimeout()), Duration.ofSeconds(1), false)) {
-            return js.call();
+            try {
+                return js.call();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
         } else {
             throw new IllegalArgumentException("No elements inside the shadow DOM were found with the locator: " + locator);
         }
     }
 
-    @SneakyThrows
     private static String[] getRelativeCss(ShadowRoot shadowRoot, String locator, String parentLocator) {
         Callable<String[]> js = () -> {
             return ((ArrayList<String>)shadowRoot
@@ -143,7 +145,11 @@ public class ShadowDomService {
                 throw new IllegalArgumentException();
             }
         }, Duration.ofSeconds(ConfigurationService.get(WebSettings.class).getTimeoutSettings().getElementWaitTimeout()), Duration.ofSeconds(1), false)) {
-            return js.call();
+            try {
+                return js.call();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
         } else {
             throw new IllegalArgumentException("No elements inside the shadow DOM were found with the locator: " + locator);
         }
