@@ -33,14 +33,6 @@ public abstract class WebPage<MapT extends PageMap, AssertionsT extends PageAsse
         return SingletonFactory.getInstance(App.class);
     }
 
-    public MapT map() {
-        return InstanceFactory.createByTypeParameter(this.getClass(), 0);
-    }
-
-    public AssertionsT asserts() {
-        return InstanceFactory.createByTypeParameter(this.getClass(), 1);
-    }
-
     public NavigationService navigate() {
         return SingletonFactory.getInstance(NavigationService.class);
     }

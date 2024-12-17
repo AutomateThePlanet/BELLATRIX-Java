@@ -26,12 +26,4 @@ public abstract class WebSection<MapT extends PageMap, AssertionsT extends PageA
     public ComponentCreateService create() {
         return SingletonFactory.getInstance(ComponentCreateService.class);
     }
-
-    public MapT map() {
-        return InstanceFactory.createByTypeParameter(this.getClass(), 0);
-    }
-
-    public AssertionsT asserts() {
-        return InstanceFactory.createByTypeParameter(this.getClass(), 1);
-    }
 }
