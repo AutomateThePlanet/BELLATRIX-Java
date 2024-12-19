@@ -13,17 +13,27 @@
 
 package solutions.bellatrix.core.utilities;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
+import java.util.Arrays;
+import java.util.Optional;
 
 @SuppressWarnings("unchecked")
 public final class InstanceFactory {
     public static <T> T create(Class<T> classOf) {
         T obj = null;
         try {
-            obj = (T)classOf.getConstructors()[0].newInstance();
+            Optional<Constructor<?>> constructor = Arrays.stream(classOf.getConstructors())
+                    .filter(c -> c.getParameterCount() == 0)
+                    .findFirst();
+            if (constructor.isPresent()) {
+                obj = (T)constructor.get().newInstance();
+            } else {
+                throw new RuntimeException("No parameterless constructor found for type %s.".formatted(classOf.getName()));
+            }
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Failed to create an instance of type %s".formatted(classOf.getName()), e);
         }
         return obj;
     }
