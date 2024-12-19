@@ -13,6 +13,7 @@
 
 package solutions.bellatrix.web.pages;
 
+import solutions.bellatrix.core.infrastructure.PageObjectModel;
 import solutions.bellatrix.web.infrastructure.Browser;
 import solutions.bellatrix.web.services.App;
 import solutions.bellatrix.web.services.BrowserService;
@@ -22,7 +23,7 @@ import solutions.bellatrix.web.services.NavigationService;
 
 import java.lang.reflect.ParameterizedType;
 
-public abstract class WebPage<MapT extends PageMap, AssertsT extends PageAsserts<MapT>> {
+public abstract class WebPage<MapT extends PageMap, AssertsT extends PageAsserts<MapT>> implements PageObjectModel<MapT, AssertsT> {
     public BrowserService browser() {
         return new BrowserService();
     }
@@ -37,24 +38,6 @@ public abstract class WebPage<MapT extends PageMap, AssertsT extends PageAsserts
 
     public App app() {
         return new App();
-    }
-
-    public MapT map() {
-        try {
-            var elementsClass = (Class<MapT>)((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[0];
-            return elementsClass.getDeclaredConstructor().newInstance();
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-    public AssertsT asserts() {
-        try {
-            var assertionsClass = (Class<AssertsT>)((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[1];
-            return assertionsClass.getDeclaredConstructor().newInstance();
-        } catch (Exception e) {
-            return null;
-        }
     }
 
     public NavigationService navigate() {

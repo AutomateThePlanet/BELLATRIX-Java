@@ -13,35 +13,18 @@
 
 package solutions.bellatrix.ios.pages;
 
+import solutions.bellatrix.core.infrastructure.PageObjectModel;
 import solutions.bellatrix.ios.services.AppService;
 import solutions.bellatrix.ios.services.ComponentCreateService;
 
 import java.lang.reflect.ParameterizedType;
 
-public abstract class AppSection<MapT extends PageMap, AssertionsT extends PageAsserts<MapT>> {
+public abstract class AppSection<MapT extends PageMap, AssertionsT extends PageAsserts<MapT>> implements PageObjectModel<MapT, AssertionsT> {
     public AppService browser() {
         return new AppService();
     }
 
     public ComponentCreateService create() {
         return new ComponentCreateService();
-    }
-
-    public MapT map() {
-        try {
-            var elementsClass = (Class<MapT>)((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[0];
-            return elementsClass.getDeclaredConstructor().newInstance();
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-    public AssertionsT asserts() {
-        try {
-            var assertionsClass = (Class<AssertionsT>)((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[1];
-            return assertionsClass.getDeclaredConstructor().newInstance();
-        } catch (Exception e) {
-            return null;
-        }
     }
 }

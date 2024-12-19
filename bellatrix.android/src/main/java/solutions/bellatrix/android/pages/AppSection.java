@@ -14,29 +14,12 @@
 package solutions.bellatrix.android.pages;
 
 import solutions.bellatrix.android.services.App;
+import solutions.bellatrix.core.infrastructure.PageObjectModel;
 
 import java.lang.reflect.ParameterizedType;
 
-public abstract class AppSection<MapT extends PageMap, AssertionsT extends PageAsserts<MapT>> {
+public abstract class AppSection<MapT extends PageMap, AssertionsT extends PageAsserts<MapT>> implements PageObjectModel<MapT, AssertionsT> {
     public App app() {
         return new App();
-    }
-
-    public MapT map() {
-        try {
-            var elementsClass = (Class<MapT>)((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[0];
-            return elementsClass.getDeclaredConstructor().newInstance();
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-    public AssertionsT asserts() {
-        try {
-            var assertionsClass = (Class<AssertionsT>)((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[1];
-            return assertionsClass.getDeclaredConstructor().newInstance();
-        } catch (Exception e) {
-            return null;
-        }
     }
 }

@@ -13,35 +13,18 @@
 
 package solutions.bellatrix.desktop.pages;
 
+import solutions.bellatrix.core.infrastructure.PageObjectModel;
 import solutions.bellatrix.desktop.services.AppService;
 import solutions.bellatrix.desktop.services.ComponentCreateService;
 
 import java.lang.reflect.ParameterizedType;
 
-public abstract class DesktopPage<MapT extends PageMap, AssertsT extends PageAsserts<MapT>> {
+public abstract class DesktopPage<MapT extends PageMap, AssertsT extends PageAsserts<MapT>> implements PageObjectModel<MapT, AssertsT> {
     public AppService appService() {
         return new AppService();
     }
 
     public ComponentCreateService create() {
         return new ComponentCreateService();
-    }
-
-    public MapT map() {
-        try {
-            var elementsClass = (Class<MapT>)((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[0];
-            return elementsClass.getDeclaredConstructor().newInstance();
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-    public AssertsT asserts() {
-        try {
-            var assertionsClass = (Class<AssertsT>)((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[1];
-            return assertionsClass.getDeclaredConstructor().newInstance();
-        } catch (Exception e) {
-            return null;
-        }
     }
 }
