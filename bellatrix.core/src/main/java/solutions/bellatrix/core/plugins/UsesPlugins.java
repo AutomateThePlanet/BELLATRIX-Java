@@ -9,7 +9,7 @@ public abstract class UsesPlugins {
         PluginExecutionEngine.addPlugin(SingletonFactory.getInstance(plugin, args));
     }
 
-    public <T extends Plugin> void addPluginWithKey(Class key, Class<T> plugin, Object... args) {
+    public <T extends Plugin> void addPluginAs(Class key, Class<T> plugin, Object... args) {
         var instance = SingletonFactory.getInstance(plugin, args);
         SingletonFactory.register(key, instance);
         PluginExecutionEngine.addPlugin(instance);

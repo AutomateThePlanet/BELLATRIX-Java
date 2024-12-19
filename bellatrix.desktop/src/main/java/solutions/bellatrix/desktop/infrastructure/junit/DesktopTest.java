@@ -31,7 +31,7 @@ public class DesktopTest extends BaseTest {
     @Override
     protected void configure() {
         addPlugin(AppLifecyclePlugin.class);
-        addPluginWithKey(ScreenshotPlugin.class, DesktopScreenshotPlugin.class);
+        addPluginAs(ScreenshotPlugin.class, DesktopScreenshotPlugin.class);
         addPlugin(DesktopVideoPlugin.class);
         addPlugin(DownloadDemoAppsPlugin.class);
         addListener(BddLogging.class);

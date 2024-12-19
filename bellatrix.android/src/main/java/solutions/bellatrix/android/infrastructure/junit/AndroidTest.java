@@ -17,7 +17,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import plugins.screenshots.ScreenshotPlugin;
 import solutions.bellatrix.android.components.listeners.BddLogging;
 import solutions.bellatrix.android.infrastructure.AppLifecyclePlugin;
-import solutions.bellatrix.android.infrastructure.DownloadDemoAppsPlugin;
 import solutions.bellatrix.android.infrastructure.MobileScreenshotPlugin;
 import solutions.bellatrix.android.infrastructure.MobileVideoPlugin;
 import solutions.bellatrix.android.services.App;
@@ -34,7 +33,7 @@ public class AndroidTest extends BaseTest {
     @Override
     protected void configure() {
         addPlugin(AppLifecyclePlugin.class);
-        addPluginWithKey(ScreenshotPlugin.class, MobileScreenshotPlugin.class);
+        addPluginAs(ScreenshotPlugin.class, MobileScreenshotPlugin.class);
         addPlugin(MobileVideoPlugin.class);
         //addPlugin(DownloadDemoAppsPlugin.class);
         addListener(BddLogging.class);
