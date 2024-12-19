@@ -13,17 +13,19 @@
 
 package solutions.bellatrix.plugins.vrt;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter @Setter @NoArgsConstructor
-public class VisualRegressionTrackerSettings {
+@Data
+public class VisualRegressionSettings {
     private String apiUrl;
-    private String project;
     private String apiKey;
+    private String project;
     private String branch;
     private boolean enableSoftAssert;
     private String ciBuildId;
     private int httpTimeout;
+    private float defaultDiffTolerance;
 }

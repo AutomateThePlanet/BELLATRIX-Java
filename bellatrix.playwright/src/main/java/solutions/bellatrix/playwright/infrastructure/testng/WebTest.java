@@ -13,6 +13,7 @@
 
 package solutions.bellatrix.playwright.infrastructure.testng;
 
+import plugins.screenshots.ScreenshotPlugin;
 import solutions.bellatrix.core.plugins.testng.BaseTest;
 import solutions.bellatrix.core.utilities.SingletonFactory;
 import solutions.bellatrix.playwright.components.listeners.BddConsoleLogging;
@@ -31,7 +32,7 @@ public class WebTest extends BaseTest {
     @Override
     protected void configure() {
         addPlugin(BrowserLifecyclePlugin.class);
-        addPlugin(WebScreenshotPlugin.class);
+        addPluginAs(ScreenshotPlugin.class, WebScreenshotPlugin.class);
         addPlugin(WebVideoPlugin.class);
         addPlugin(LogLifecyclePlugin.class);
         addListener(BddConsoleLogging.class);

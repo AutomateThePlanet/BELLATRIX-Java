@@ -13,6 +13,7 @@
 
 package solutions.bellatrix.ios.infrastructure.testng;
 
+import plugins.screenshots.ScreenshotPlugin;
 import solutions.bellatrix.core.plugins.testng.BaseTest;
 import solutions.bellatrix.ios.components.listeners.BddLogging;
 import solutions.bellatrix.ios.infrastructure.AppLifecyclePlugin;
@@ -29,7 +30,7 @@ public class IOSTest extends BaseTest {
     @Override
     protected void configure() {
         addPlugin(AppLifecyclePlugin.class);
-        addPlugin(MobileScreenshotPlugin.class);
+        addPluginAs(ScreenshotPlugin.class, MobileScreenshotPlugin.class);
         addPlugin(MobileVideoPlugin.class);
         addPlugin(DownloadDemoAppsPlugin.class);
         addListener(BddLogging.class);

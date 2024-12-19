@@ -1,6 +1,6 @@
 /*
- * Copyright 2022 Automate The Planet Ltd.
- * Author: Anton Angelov
+ * Copyright 2024 Automate The Planet Ltd.
+ * Author: Miriam Kyoseva
  * Licensed under the Apache License, Version 2.0 (the "License");
  * You may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -11,15 +11,14 @@
  * limitations under the License.
  */
 
-package solutions.bellatrix.android.pages;
+package solutions.bellatrix.core.utilities;
 
-import solutions.bellatrix.android.services.App;
-import solutions.bellatrix.core.utilities.PageObjectModel;
+public interface PageObjectModel<MapT, AssertsT> {
+    default MapT map() {
+        return InstanceFactory.createByTypeParameter(this.getClass(), 0);
+    }
 
-import java.lang.reflect.ParameterizedType;
-
-public abstract class AppSection<MapT extends PageMap, AssertionsT extends PageAsserts<MapT>> implements PageObjectModel<MapT, AssertionsT> {
-    public App app() {
-        return new App();
+    default AssertsT asserts() {
+        return InstanceFactory.createByTypeParameter(this.getClass(), 1);
     }
 }
