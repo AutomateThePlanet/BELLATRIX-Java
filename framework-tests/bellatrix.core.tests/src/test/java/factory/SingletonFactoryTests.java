@@ -1,6 +1,7 @@
 package factory;
 
 import factory.data.Employee;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import solutions.bellatrix.core.plugins.junit.BaseTest;
@@ -29,11 +30,21 @@ public class SingletonFactoryTests extends BaseTest {
 
     @Test
     public void testAllArgsConstructorWithVarArgs() {
-        Assertions.assertNotNull(SingletonFactory.getInstance(Employee.class, "0", "John", "Doe", "jdoe@corp.com", "john.doe@gmail.com", new Object[] { new Employee("Jane", "Doe") }));
+        Assertions.assertNotNull(SingletonFactory.getInstance(Employee.class, "0", "John", "Doe", "jdoe@corp.com", "john.doe@gmail.com", new Object[]{new Employee("Jane", "Doe")}));
     }
 
     @Test
     public void testCustomArgsConstructor() {
         Assertions.assertNotNull(SingletonFactory.getInstance(Employee.class, "John", "Doe"));
+    }
+
+    @Test
+    public void testUsingNonExistentConstructor() {
+        Assertions.assertNull(SingletonFactory.getInstance(Employee.class, "John Doe"));
+    }
+
+    @AfterEach
+    public void clearSingletonFactoryMap() {
+        SingletonFactory.clear();
     }
 }

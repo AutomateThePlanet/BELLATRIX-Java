@@ -1,6 +1,7 @@
 package factory;
 
 import factory.data.Employee;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import solutions.bellatrix.core.plugins.junit.BaseTest;
@@ -25,5 +26,10 @@ public class InstanceFactoryTests extends BaseTest {
     @Test
     public void testCustomArgsConstructor() {
         Assertions.assertNotNull(InstanceFactory.create(Employee.class, "John", "Doe"));
+    }
+
+    @Test
+    public void testUsingNonExistentConstructor() {
+        Assertions.assertNull(InstanceFactory.create(Employee.class, "John Doe"));
     }
 }
