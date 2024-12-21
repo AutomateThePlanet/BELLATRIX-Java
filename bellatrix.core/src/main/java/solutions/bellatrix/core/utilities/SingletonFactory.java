@@ -38,18 +38,21 @@ public class SingletonFactory extends ObjectFactory {
     private static <T> T tryGetInstance(Class<T> classOf, Object... initargs) {
         try {
             return newInstance(classOf, initargs);
-        } catch (InvocationTargetException|InstantiationException|IllegalAccessException|ConstructorNotFoundException e) {
+        } catch (InvocationTargetException | InstantiationException | IllegalAccessException |
+                 ConstructorNotFoundException e) {
             Log.error("Failed to create instance of the class %s.\nException was:\n%s".formatted(classOf.getName(), e));
             return null;
         }
     }
 
     public static <T> void register(T instance) {
-        mapHolder.get().put(instance.getClass(), instance);
+        if (instance != null)
+            mapHolder.get().put(instance.getClass(), instance);
     }
 
     public static <T> void register(Class<?> classKey, T instance) {
-        mapHolder.get().put(classKey, instance);
+        if (instance != null)
+            mapHolder.get().put(classKey, instance);
     }
 
     public static void clear() {
