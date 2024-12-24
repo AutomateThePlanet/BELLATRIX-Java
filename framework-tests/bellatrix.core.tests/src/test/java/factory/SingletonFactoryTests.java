@@ -19,6 +19,16 @@ public class SingletonFactoryTests extends BaseTest {
     }
 
     @Test
+    public void noEntriesRemaining_When_SingletonFactoryClear() {
+        var johnDoe = new Employee("John", "Doe");
+        SingletonFactory.register(johnDoe);
+
+        SingletonFactory.clear();
+
+        Assertions.assertNotEquals(johnDoe, SingletonFactory.getInstance(Employee.class));
+    }
+
+    @Test
     public void objectReturned_When_UsedNoArgsConstructor() {
         Assertions.assertNotNull(SingletonFactory.getInstance(Employee.class));
     }
