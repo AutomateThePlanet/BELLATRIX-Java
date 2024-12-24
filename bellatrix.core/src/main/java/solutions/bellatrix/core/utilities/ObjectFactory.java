@@ -44,12 +44,7 @@ public abstract class ObjectFactory {
                 types.append(type.getName() + System.lineSeparator());
             }
 
-            throw new ConstructorNotFoundException(("""
-                    No constructor with the specified parameters was found.
-                    Given argument count: %d
-                    Given argument types: %s
-                    """).formatted(argumentTypes.length, types.toString())
-            );
+            throw new ConstructorNotFoundException(argumentTypes.length, types.toString());
         }
     }
 
@@ -107,6 +102,13 @@ public abstract class ObjectFactory {
     }
 
     public static class ConstructorNotFoundException extends Exception {
+        public ConstructorNotFoundException(int numberOfTypes, String types) {
+            super(("""
+                    No constructor with the specified parameters was found.
+                    Given argument count: %d
+                    Given argument types: %s
+                    """).formatted(numberOfTypes, types));
+        }
         public ConstructorNotFoundException() {
         }
 
