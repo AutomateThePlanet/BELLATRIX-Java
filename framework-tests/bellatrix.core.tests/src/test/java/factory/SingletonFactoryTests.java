@@ -9,7 +9,7 @@ import solutions.bellatrix.core.utilities.SingletonFactory;
 
 public class SingletonFactoryTests extends BaseTest {
     @Test
-    public void testExistingObjectReturnedWhenFound() {
+    public void existingObjectReturned_When_GetInstance() {
         var johnDoe = new Employee("John", "Doe");
         SingletonFactory.register(johnDoe);
 
@@ -19,27 +19,27 @@ public class SingletonFactoryTests extends BaseTest {
     }
 
     @Test
-    public void testNoArgsConstructor() {
+    public void objectReturned_When_UsedNoArgsConstructor() {
         Assertions.assertNotNull(SingletonFactory.getInstance(Employee.class));
     }
 
     @Test
-    public void testAllArgsConstructor() {
+    public void objectReturned_When_UsedAllArgsConstructor() {
         Assertions.assertNotNull(SingletonFactory.getInstance(Employee.class, "0", "John", "Doe", "jdoe@corp.com", "john.doe@gmail.com"));
     }
 
     @Test
-    public void testAllArgsConstructorWithVarArgs() {
+    public void objectReturned_When_UsedAllArgsWithVarArgsConstructor() {
         Assertions.assertNotNull(SingletonFactory.getInstance(Employee.class, "0", "John", "Doe", "jdoe@corp.com", "john.doe@gmail.com", new Object[]{new Employee("Jane", "Doe")}));
     }
 
     @Test
-    public void testCustomArgsConstructor() {
+    public void objectReturned_When_UsedCustomArgsConstructor() {
         Assertions.assertNotNull(SingletonFactory.getInstance(Employee.class, "John", "Doe"));
     }
 
     @Test
-    public void testUsingNonExistentConstructor() {
+    public void objectNotReturned_When_UsedNonExistentConstructor() {
         Assertions.assertNull(SingletonFactory.getInstance(Employee.class, "John Doe"));
     }
 
