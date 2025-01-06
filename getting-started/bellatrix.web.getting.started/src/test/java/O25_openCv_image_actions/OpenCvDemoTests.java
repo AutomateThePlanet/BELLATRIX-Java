@@ -4,6 +4,7 @@ import O25_openCv_image_actions.data.enums.EncodedImageDemo;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.Dimension;
 import solutions.bellatrix.web.components.ActionImage;
+import solutions.bellatrix.web.components.Button;
 import solutions.bellatrix.web.components.Span;
 import solutions.bellatrix.web.components.TextArea;
 import solutions.bellatrix.web.findstrategies.ImageBase64FindStrategy;
@@ -19,6 +20,16 @@ public class OpenCvDemoTests extends WebTest {
     @Test
     public void actionPerformed_when_convertBase64ToImage_and_clickImage() {
         var falcon9Image = app().create().byImage(ActionImage.class, EncodedImageDemo.FALCON_9);
+
+        app().navigate().to("http://demos.bellatrix.solutions/");
+        falcon9Image.click();
+
+        app().browser().assertLandedOnPage("product/falcon-9");
+    }
+
+    @Test
+    public void actionPerformed_when_convertBase64ToImage_and_clickButton() {
+        var falcon9Image = app().create().byImage(Button.class, EncodedImageDemo.FALCON_9);
 
         app().navigate().to("http://demos.bellatrix.solutions/");
         falcon9Image.click();
