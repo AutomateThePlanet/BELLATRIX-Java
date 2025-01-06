@@ -66,6 +66,14 @@ public class BrowserService extends WebService {
         getWrappedDriver().navigate().back();
     }
 
+    public void setSize(int width, int height) {
+        setSize(new Dimension(width, height));
+    }
+
+    public void setSize(Dimension dimension) {
+        getWrappedDriver().manage().window().setSize(dimension);
+    }
+
     public void maximize() {
         getWrappedDriver().manage().window().maximize();
     }

@@ -13,8 +13,7 @@ public class OpenCvDemoTests extends WebTest {
     @Override
     public void beforeEach() throws Exception {
         super.beforeEach();
-        var dimension = new Dimension(1920, 1080);
-        app().browser().getWrappedDriver().manage().window().setSize(dimension);
+        app().browser().setSize(1920, 1080);
     }
 
     @Test
