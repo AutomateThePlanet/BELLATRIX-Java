@@ -3,6 +3,8 @@ package solutions.bellatrix.web.components.enums;
 public enum CssStyle {
     BACKGROUND_COLOR("background-color"),
     BORDER_COLOR("border-color"),
+    BORDER("border"),
+    BORDER_RIGHT("border-right"),
     COLOR("color"),
     FONT_FAMILY("font-family"),
     FONT_WEIGHT("font-weight"),

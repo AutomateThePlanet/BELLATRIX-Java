@@ -25,6 +25,16 @@ public class JavaScriptService extends WebService {
         javascriptExecutor = (JavascriptExecutor)getWrappedDriver();
     }
 
+    public <T> T genericExecute(String script, Object... args) {
+        try {
+            T result = (T)javascriptExecutor.executeScript(script, args);
+            return result;
+        } catch (Exception ex) {
+            DebugInformation.printStackTrace(ex);
+            return null;
+        }
+    }
+
     public Object execute(String script) {
         try {
             var result = javascriptExecutor.executeScript(script);

@@ -792,7 +792,7 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
         TComponent component;
 
         if (inShadowContext()) {
-            component = ShadowDomService.createInShadowContext(this, componentClass, findStrategy);
+            component = ShadowDomService.createInShadowContext(componentClass, this, findStrategy);
         } else {
             component = InstanceFactory.create(componentClass);
             component.setFindStrategy(findStrategy);
@@ -811,7 +811,7 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
         List<TComponent> componentList = new ArrayList<>();
 
         if (inShadowContext()) {
-            componentList = ShadowDomService.createAllInShadowContext(this, componentClass, findStrategy);
+            componentList = ShadowDomService.createAllInShadowContext(componentClass, this, findStrategy);
         } else {
             var nativeElements = wrappedElement.findElements(findStrategy.convert());
 
@@ -1064,10 +1064,18 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
     }
 
     protected String defaultGetInnerHtmlAttribute() {
-        try {
-            return Optional.ofNullable(getAttribute("innerHTML")).orElse("");
-        } catch (StaleElementReferenceException e) {
-            return Optional.ofNullable(findElement().getAttribute("innerHTML")).orElse("");
+        if (!this.inShadowContext()) {
+            try {
+                return Optional.ofNullable(getAttribute("innerHTML")).orElse("");
+            } catch (StaleElementReferenceException e) {
+                return Optional.ofNullable(findElement().getAttribute("innerHTML")).orElse("");
+            }
+        } else {
+            if (this instanceof ShadowRoot) {
+                return ShadowDomService.getShadowHtml(this, true);
+            } else {
+                return ShadowDomService.getShadowHtml(this, false);
+            }
         }
     }
 

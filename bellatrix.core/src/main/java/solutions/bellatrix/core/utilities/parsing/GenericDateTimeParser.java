@@ -82,6 +82,7 @@ public class GenericDateTimeParser {
         FORMATTERS.add(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssXXX"));
         FORMATTERS.add(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS"));
         FORMATTERS.add(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"));
+        FORMATTERS.add(DateTimeFormatter.ofPattern("dd.MM.yyyy, HH:mm"));
     }
 
     public static LocalDateTime parse(String data) {

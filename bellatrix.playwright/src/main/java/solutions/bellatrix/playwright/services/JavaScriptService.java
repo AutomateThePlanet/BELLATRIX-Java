@@ -23,6 +23,10 @@ import solutions.bellatrix.playwright.utilities.functionalinterfaces.Evaluable;
 
 @SuppressWarnings("resource")
 public class JavaScriptService extends WebService {
+    public <T> T genericExecute(String script, Object... args) {
+        return (T)performEvaluation(() -> wrappedBrowser().getCurrentPage().evaluate(script, new Object[] { args }));
+    }
+
     public Object execute(String script) {
         return performEvaluation(() -> wrappedBrowser().getCurrentPage().evaluate(script));
 
@@ -37,7 +41,7 @@ public class JavaScriptService extends WebService {
     }
 
     public String execute(String script, Object... args) {
-        return (String) performEvaluation(() -> wrappedBrowser().getCurrentPage().evaluate(script, args));
+        return (String) performEvaluation(() -> wrappedBrowser().getCurrentPage().evaluate(script, new Object[] { args }));
     }
 
     public <TComponent extends WebComponent> String execute(String script, TComponent component) {

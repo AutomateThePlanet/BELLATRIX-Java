@@ -217,6 +217,10 @@ public class BrowserService extends WebService {
         return logs;
     }
 
+    public List<String> getRequestEntries(String partialUrl) {
+        return (List<String>)((JavascriptExecutor)getWrappedDriver()).executeScript(String.format("return window.performance.getEntriesByType('resource').filter(x => x.name.indexOf('%s') >= 0).map(y => y.name);", partialUrl));
+    }
+
     public void waitForAjax() {
         long ajaxTimeout = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getWaitForAjaxTimeout();
         long sleepInterval = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getSleepInterval();

@@ -74,6 +74,7 @@ public class Wait {
 
     public static void forMilliseconds(long millis) {
         try {
+            Log.info("Waiting for %s milliseconds".formatted(millis));
             Thread.sleep(millis);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
