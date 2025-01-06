@@ -104,10 +104,7 @@ public class OpenCvService {
             source = sourceGrayscale;
         }
 
-        Mat result = new Mat();
-        int result_cols = source.cols() - template.cols() + 1;
-        int result_rows = source.rows() - template.rows() + 1;
-        result.create(result_rows, result_cols, CvType.CV_32FC1);
+        Mat result = createResultMatrix(source, template);
 
         Imgproc.matchTemplate(source, template, result, Imgproc.TM_CCOEFF_NORMED);
 
@@ -127,5 +124,14 @@ public class OpenCvService {
         }
 
         return matchLoc;
+    }
+
+    private static Mat createResultMatrix(Mat source, Mat template) {
+        Mat result = new Mat();
+        int result_cols = source.cols() - template.cols() + 1;
+        int result_rows = source.rows() - template.rows() + 1;
+        result.create(result_rows, result_cols, CvType.CV_32FC1);
+
+        return result;
     }
 }
