@@ -11,51 +11,14 @@ import plugins.screenshots.ScreenshotPlugin;
 import solutions.bellatrix.core.utilities.SingletonFactory;
 
 import javax.imageio.ImageIO;
-import javax.xml.bind.DatatypeConverter;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
-import java.io.*;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.Base64;
-import java.util.Objects;
 
 public class OpenCvService {
-    /**
-     * Convert the base 64 string to an image file
-     * @return the path of the created image file
-     */
-    private static String getImagePathByBase64(Base64Encodable encodedImage) {
-        String[] imageProperties = encodedImage.getBase64Image().split(",");
-        String extension = switch (imageProperties[0]) {
-            case "data:image/jpeg;base64" -> "jpeg";
-            case "data:image/png;base64" -> "png";
-            default -> "jpg";
-        };
-
-        byte[] data = DatatypeConverter.parseBase64Binary(imageProperties[1]);
-        String path;
-        Path rootPath = Paths.get(System.getProperty("user.dir"));
-        Path fullFilePath = Paths.get(String.valueOf(rootPath), "target", "classes", encodedImage.getImageName() + "." + extension);
-        path = fullFilePath.toFile().getPath();
-        File file = new File(path);
-
-        try (OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(file))) {
-            outputStream.write(data);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return path;
-    }
-
-    private static BufferedImage getImageWidthHeight(String filePath) throws IOException {
-        BufferedImage bimg = ImageIO.read(new File(filePath));
-
-        return bimg;
-    }
-
     /**
      * @return the current scaling factor (e.g., 1.0 for 100%, 1.25 for 125%)
      */
@@ -80,23 +43,53 @@ public class OpenCvService {
      * @return the coordinates of the image found on the screen
      */
     public static Point getLocation(Base64Encodable encodedImage, boolean shouldGrayScale) {
-        BufferedImage bufferedImage;
-        String templatePath = getImagePathByBase64(encodedImage);
-
-        byte[] decodedBytes = Objects.requireNonNull(SingletonFactory.getInstance(ScreenshotPlugin.class)).takeScreenshot();
+        var screenshot = SingletonFactory.getInstance(ScreenshotPlugin.class).takeScreenshot();
         OpenCV.loadLocally();
 
-        // Load images
-        Mat template = Imgcodecs.imread(templatePath);
-        Mat template_grayscale = new Mat();
-        Imgproc.cvtColor(template, template_grayscale, Imgproc.COLOR_BGR2GRAY);
-        if (shouldGrayScale) {
-            template = template_grayscale;
+        Mat result = loadImages(encodedImage, screenshot, shouldGrayScale);
+
+        return getMatchLocation(encodedImage, result);
+    }
+
+    private static Point getMatchLocation(Base64Encodable encodedImage, Mat result) {
+        BufferedImage bufferedImage;
+
+        Core.MinMaxLocResult mmr = Core.minMaxLoc(result);
+        Point matchLoc = mmr.maxLoc;
+
+        if (encodedImage.getXOffset() == 0 && encodedImage.getYOffset() == 0) {
+            try {
+                bufferedImage = getImageWidthHeight(encodedImage);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            double[] imageCenterCoordinates = {matchLoc.x / getJavaMonitorScaling() + (double)(bufferedImage.getWidth() / 2), matchLoc.y / getJavaMonitorScaling() + (double)(bufferedImage.getHeight() / 2)};
+            matchLoc.set(imageCenterCoordinates);
         }
 
-        Mat mat = new Mat(1, decodedBytes.length, CvType.CV_8U);
-        mat.put(0, 0, decodedBytes);
-        Mat source = Imgcodecs.imdecode(mat, Imgcodecs.IMREAD_COLOR);
+        return matchLoc;
+    }
+
+    private static BufferedImage getImageWidthHeight(Base64Encodable encodedImage) throws IOException {
+        String cleanBase64 = removePrefixFromBase64(encodedImage);
+
+        byte[] decodedBytes = Base64.getDecoder().decode(cleanBase64);
+        ByteArrayInputStream bis = new ByteArrayInputStream(decodedBytes);
+        BufferedImage bimg = ImageIO.read(bis);
+
+        return bimg;
+    }
+
+    private static Mat loadImages(Base64Encodable encodedImage, byte[] decodedBytes, boolean shouldGrayScale) {
+        Mat template = getMatrixFromBase64(encodedImage);
+        Mat templateGrayscale = new Mat();
+        Imgproc.cvtColor(template, templateGrayscale, Imgproc.COLOR_BGR2GRAY);
+        if (shouldGrayScale) {
+            template = templateGrayscale;
+        }
+
+        Mat source = getMatrixFromBinaryData(decodedBytes);
 
         Mat sourceGrayscale = new Mat();
         Imgproc.cvtColor(source, sourceGrayscale, Imgproc.COLOR_BGR2GRAY);
@@ -108,22 +101,26 @@ public class OpenCvService {
 
         Imgproc.matchTemplate(source, template, result, Imgproc.TM_CCOEFF_NORMED);
 
-        // Localize the best match
-        Core.MinMaxLocResult mmr = Core.minMaxLoc(result);
-        Point matchLoc = mmr.maxLoc;
+        return result;
+    }
 
-        if (encodedImage.getXOffset() == 0 && encodedImage.getYOffset() == 0) {
-            try {
-                bufferedImage = getImageWidthHeight(templatePath);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+    private static Mat getMatrixFromBase64(Base64Encodable encodedImage) {
+        String cleanBase64 = removePrefixFromBase64(encodedImage);
 
-            double[] imageCenterCoordinates = {matchLoc.x / getJavaMonitorScaling() + (double)(bufferedImage.getWidth() / 2), matchLoc.y / getJavaMonitorScaling() + (double)(bufferedImage.getHeight() / 2)};
-            matchLoc.set(imageCenterCoordinates);
-        }
+        byte[] decodedBytes = Base64.getDecoder().decode(cleanBase64);
+        return getMatrixFromBinaryData(decodedBytes);
+    }
 
-        return matchLoc;
+    private static String removePrefixFromBase64(Base64Encodable encodedImage) {
+        String base64Image = encodedImage.getBase64Image();
+        return base64Image.replaceFirst("^data:.+?;base64,", "");
+    }
+
+    private static Mat getMatrixFromBinaryData(byte[] decodedBytes) {
+        Mat mat = new Mat(1, decodedBytes.length, CvType.CV_8U);
+        mat.put(0, 0, decodedBytes);
+
+        return Imgcodecs.imdecode(mat, Imgcodecs.IMREAD_COLOR);
     }
 
     private static Mat createResultMatrix(Mat source, Mat template) {
