@@ -18,7 +18,7 @@ public class OpenCvDemoTests extends WebTest {
 
     @Test
     public void actionPerformed_when_convertBase64ToImage_and_clickImage() {
-        var falcon9Image = app().create().by(ActionImage.class, new ImageBase64FindStrategy(EncodedImageDemo.FALCON_9));
+        var falcon9Image = app().create().byImage(ActionImage.class, EncodedImageDemo.FALCON_9);
 
         app().navigate().to("http://demos.bellatrix.solutions/");
         falcon9Image.click();
@@ -30,8 +30,8 @@ public class OpenCvDemoTests extends WebTest {
     public void actionPerformed_when_convertBase64ToImage_and_dragAndDropImage() {
         var emailNotes = app().create().byId(Span.class, "email-notes");
         var commentTextArea = app().create().byId(TextArea.class, "comment");
-        var falcon9BackButtonImage = app().create().by(ActionImage.class, new ImageBase64FindStrategy(EncodedImageDemo.FALCON_9_BACK_BUTTON));
-        var commentTextAreaImage = app().create().by(ActionImage.class, new ImageBase64FindStrategy(EncodedImageDemo.COMMENT_TEXT_AREA));
+        var falcon9BackButtonImage = app().create().byImage(ActionImage.class, EncodedImageDemo.FALCON_9_BACK_BUTTON);
+        var commentTextAreaImage = app().create().byImage(ActionImage.class, EncodedImageDemo.COMMENT_TEXT_AREA);
 
         app().navigate().to("https://demos.bellatrix.solutions/2018/04/06/proton-rocket-family/");
         emailNotes.scrollToVisible();
