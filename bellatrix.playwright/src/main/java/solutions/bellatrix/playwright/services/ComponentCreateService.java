@@ -22,6 +22,7 @@ import solutions.bellatrix.playwright.findstrategies.*;
 import solutions.bellatrix.playwright.findstrategies.options.*;
 import solutions.bellatrix.playwright.components.common.webelement.FrameElement;
 import solutions.bellatrix.playwright.components.common.webelement.WebElement;
+import solutions.bellatrix.plugins.opencv.Base64Encodable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -164,6 +165,24 @@ public class ComponentCreateService extends WebService {
 
     public <TComponent extends WebComponent> List<TComponent> allById(Class<TComponent> componentClass, String value) {
         return allBy(componentClass, new IdFindStrategy(value));
+    }
+
+    public <TComponent extends WebComponent> TComponent byImage(Class<TComponent> componentClass, Base64Encodable encodedImage) {
+        wrappedBrowser().getCurrentPage().waitForLoadState();
+
+        var component = InstanceFactory.create(componentClass);
+        component.setFindStrategy(new ImageBase64FindStrategy(encodedImage));
+
+        return component;
+    }
+
+    public <TComponent extends WebComponent> List<TComponent> allByImage(Class<TComponent> componentClass, Base64Encodable encodedImage) {
+        wrappedBrowser().getCurrentPage().waitForLoadState();
+
+        var component = InstanceFactory.create(componentClass);
+        component.setFindStrategy(new ImageBase64FindStrategy(encodedImage));
+
+        return List.of(component);
     }
 
     public <TComponent extends WebComponent> TComponent byClass(Class<TComponent> componentClass, String value) {

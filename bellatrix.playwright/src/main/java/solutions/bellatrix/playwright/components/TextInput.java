@@ -26,7 +26,7 @@ public class TextInput extends WebComponent implements ComponentDisabled, Compon
         String text = defaultGetText();
 
         if (text.isEmpty()) {
-            return defaultGetValue();
+            return getWrappedElement().inputValue();
         }
 
         return text;

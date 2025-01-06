@@ -1,0 +1,6 @@
+    1. Take a screenshot of the place on the screen that you want to perform actions on
+    2. Convert the image to a base 64 format with an online tool
+    3. Create an enum implementing the Base64Encodable interface
+    4. Add the base 64 string, the name of the image and the offsets to the enum - check example enum: EncodedImageDemo
+       (Note) If the x and y offsets are set to 0 -> it will take the coordinates of the center of the picture
+    5. Create ActionImage component using the ImageBase64FindStrategy and passing the enum as an argument

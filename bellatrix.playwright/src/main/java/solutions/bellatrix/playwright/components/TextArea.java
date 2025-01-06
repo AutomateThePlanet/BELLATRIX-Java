@@ -26,7 +26,7 @@ public class TextArea extends WebComponent implements ComponentText, ComponentVa
         String text = defaultGetText();
 
         if (text.isEmpty()) {
-            return defaultGetValue();
+            return getWrappedElement().inputValue();
         }
 
         return text;
