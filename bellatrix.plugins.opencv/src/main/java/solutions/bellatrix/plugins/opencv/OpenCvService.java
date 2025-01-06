@@ -81,20 +81,15 @@ public class OpenCvService {
         return bimg;
     }
 
-    private static Mat loadImages(Base64Encodable encodedImage, byte[] decodedBytes, boolean shouldGrayScale) {
+    private static Mat loadImages(Base64Encodable encodedImage, byte[] screenshot, boolean shouldGrayScale) {
         Mat template = getMatrixFromBase64(encodedImage);
-        Mat templateGrayscale = new Mat();
-        Imgproc.cvtColor(template, templateGrayscale, Imgproc.COLOR_BGR2GRAY);
         if (shouldGrayScale) {
-            template = templateGrayscale;
+            changeToGrayscale(template);
         }
 
-        Mat source = getMatrixFromBinaryData(decodedBytes);
-
-        Mat sourceGrayscale = new Mat();
-        Imgproc.cvtColor(source, sourceGrayscale, Imgproc.COLOR_BGR2GRAY);
+        Mat source = getMatrixFromBinaryData(screenshot);
         if (shouldGrayScale) {
-            source = sourceGrayscale;
+            changeToGrayscale(source);
         }
 
         Mat result = createResultMatrix(source, template);
@@ -102,6 +97,14 @@ public class OpenCvService {
         Imgproc.matchTemplate(source, template, result, Imgproc.TM_CCOEFF_NORMED);
 
         return result;
+    }
+
+    private static Mat changeToGrayscale(Mat template) {
+        Mat templateGrayscale = new Mat();
+        Imgproc.cvtColor(template, templateGrayscale, Imgproc.COLOR_BGR2GRAY);
+
+        template = templateGrayscale;
+        return template;
     }
 
     private static Mat getMatrixFromBase64(Base64Encodable encodedImage) {
