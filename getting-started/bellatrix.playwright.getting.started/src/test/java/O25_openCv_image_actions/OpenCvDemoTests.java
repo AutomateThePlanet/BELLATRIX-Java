@@ -35,7 +35,6 @@ public class OpenCvDemoTests extends WebTest {
         emailNotes.scrollToVisible();
         falcon9BackButtonImage.dragAndDrop(commentTextAreaImage);
 
-        var text = commentTextArea.getText();
         commentTextArea.validateTextIs("https://demos.bellatrix.solutions/2018/04/06/hello-world/");
     }
 }
