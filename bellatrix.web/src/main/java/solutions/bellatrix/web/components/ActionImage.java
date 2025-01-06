@@ -14,10 +14,10 @@ import java.awt.*;
 @Getter
 @Setter
 public class ActionImage extends WebComponent {
-    private final App app = new App();
-    private Actions actions = new Actions(app.browser().getWrappedDriver());
     public final static EventListener<ComponentActionEventArgs> CLICKING = new EventListener<>();
     public final static EventListener<ComponentActionEventArgs> HOVERING = new EventListener<>();
+
+    private Actions actions = new Actions(getWrappedDriver());
 
     @Override
     public Point getLocation() {
