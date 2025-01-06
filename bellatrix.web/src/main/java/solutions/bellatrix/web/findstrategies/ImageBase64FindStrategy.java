@@ -2,8 +2,8 @@ package solutions.bellatrix.web.findstrategies;
 
 import lombok.Getter;
 import org.openqa.selenium.By;
+import solutions.bellatrix.plugins.opencv.Base64Encodable;
 import solutions.bellatrix.web.infrastructure.ByImageBase64;
-import solutions.bellatrix.web.infrastructure.Base64Encodable;
 
 @Getter
 public class ImageBase64FindStrategy extends FindStrategy {

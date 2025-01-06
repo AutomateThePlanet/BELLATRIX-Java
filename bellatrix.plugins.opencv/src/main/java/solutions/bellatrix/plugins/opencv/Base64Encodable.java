@@ -1,4 +1,4 @@
-package solutions.bellatrix.web.infrastructure;
+package solutions.bellatrix.plugins.opencv;
 
 public interface Base64Encodable {
     String getBase64Image();

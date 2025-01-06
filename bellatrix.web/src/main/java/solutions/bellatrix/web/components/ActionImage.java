@@ -5,8 +5,8 @@ import lombok.Setter;
 import org.openqa.selenium.InvalidArgumentException;
 import org.openqa.selenium.interactions.Actions;
 import solutions.bellatrix.core.plugins.EventListener;
+import solutions.bellatrix.plugins.opencv.OpenCvService;
 import solutions.bellatrix.web.findstrategies.ImageBase64FindStrategy;
-import solutions.bellatrix.web.services.OpenCvService;
 import solutions.bellatrix.web.services.App;
 
 import java.awt.*;

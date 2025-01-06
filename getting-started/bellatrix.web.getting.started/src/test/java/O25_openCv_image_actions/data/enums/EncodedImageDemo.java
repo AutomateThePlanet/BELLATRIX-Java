@@ -1,7 +1,7 @@
 package O25_openCv_image_actions.data.enums;
 
 import O25_openCv_image_actions.data.ImageInBase64;
-import solutions.bellatrix.web.infrastructure.Base64Encodable;
+import solutions.bellatrix.plugins.opencv.Base64Encodable;
 
 public enum EncodedImageDemo implements Base64Encodable {
     /**
