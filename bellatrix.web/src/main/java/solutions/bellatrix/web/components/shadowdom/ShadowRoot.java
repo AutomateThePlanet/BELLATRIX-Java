@@ -30,14 +30,14 @@ public class ShadowRoot extends WebComponent implements ComponentHtml {
      * Returns the innerHTML of the shadowRoot of the shadow host.
      */
     public String getHtml() {
-        return ShadowDomService.getShadowHtml(this);
+        return defaultGetInnerHtmlAttribute();
     }
 
     @Override
     protected <TComponent extends WebComponent, TFindStrategy extends FindStrategy> TComponent create(Class<TComponent> componentClass, TFindStrategy findStrategy) {
         CREATING_ELEMENT.broadcast(new ComponentActionEventArgs(this));
         findElement();
-        var component = ShadowDomService.createFromShadowRoot(this, componentClass, findStrategy);
+        var component = ShadowDomService.createFromShadowRoot(componentClass, this, findStrategy);
         CREATED_ELEMENT.broadcast(new ComponentActionEventArgs(this));
         return component;
     }
@@ -46,7 +46,7 @@ public class ShadowRoot extends WebComponent implements ComponentHtml {
     protected <TComponent extends WebComponent, TFindStrategy extends FindStrategy> List<TComponent> createAll(Class<TComponent> componentClass, TFindStrategy findStrategy) {
         CREATING_ELEMENTS.broadcast(new ComponentActionEventArgs(this));
         findElement();
-        List<TComponent> componentList = ShadowDomService.createAllFromShadowRoot(this, componentClass, findStrategy);
+        List<TComponent> componentList = ShadowDomService.createAllFromShadowRoot(componentClass, this, findStrategy);
         CREATED_ELEMENTS.broadcast(new ComponentActionEventArgs(this));
         return componentList;
     }

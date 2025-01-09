@@ -71,8 +71,102 @@ public class PlaywrightService {
         PLAYWRIGHT_MANAGER.get().wrappedBrowser = driver;
     }
 
-    public static BrowserConfiguration browserConfiguration() {
-        return PLAYWRIGHT_MANAGER.get().browserConfiguration;
+    private static Browser initializeBrowserRegularMode() {
+        BrowserTypes browserTypes = browserConfiguration().getBrowserTypes();
+
+        switch (browserTypes) {
+            case CHROMIUM -> {
+                var browserType = playwright().chromium();
+                BrowserType.LaunchOptions launchOptions = new BrowserType.LaunchOptions();
+                launchOptions.setHeadless(false);
+                launchOptions.setArgs(List.of("--log-level=3", "--remote-allow-origins=*"));
+                launchOptions.setTimeout(Settings.web().getArtificialDelayBeforeAction());
+                // System.setProperty("webdriver.chrome.silentOutput", "true"); ?
+
+                return browser(browserType.launch(launchOptions));
+            }
+            case CHROMIUM_HEADLESS -> {
+                var browserType = playwright().chromium();
+                BrowserType.LaunchOptions launchOptions = new BrowserType.LaunchOptions();
+                launchOptions.setHeadless(true);
+                launchOptions.setArgs(List.of("--log-level=3"));
+                // System.setProperty("webdriver.chrome.silentOutput", "true"); ?
+
+                return browser(browserType.launch(launchOptions));
+            }
+            case CHROME -> {
+                var browserType = playwright().chromium();
+                BrowserType.LaunchOptions launchOptions = new BrowserType.LaunchOptions();
+                launchOptions.setChannel("chrome");
+                launchOptions.setHeadless(false);
+                launchOptions.setArgs(List.of("--log-level=3", "--remote-allow-origins=*", "--disable-search-engine-choice-screen"));
+                launchOptions.setTimeout(Settings.web().getArtificialDelayBeforeAction());
+                // System.setProperty("webdriver.chrome.silentOutput", "true"); ?
+
+                return browser(browserType.launch(launchOptions));
+            }
+            case CHROME_HEADLESS -> {
+                var browserType = playwright().chromium();
+                BrowserType.LaunchOptions launchOptions = new BrowserType.LaunchOptions();
+                launchOptions.setChannel("chrome");
+                launchOptions.setHeadless(true);
+                launchOptions.setArgs(List.of("--log-level=3", "--disable-search-engine-choice-screen"));
+                // System.setProperty("webdriver.chrome.silentOutput", "true"); ?
+
+                return browser(browserType.launch(launchOptions));
+            }
+            case FIREFOX -> {
+                var browserType = playwright().firefox();
+                BrowserType.LaunchOptions launchOptions = new BrowserType.LaunchOptions();
+                launchOptions.setHeadless(false);
+                launchOptions.setTimeout(Settings.web().getArtificialDelayBeforeAction());
+
+                return browser(browserType.launch(launchOptions));
+            }
+            case FIREFOX_HEADLESS -> {
+                var browserType = playwright().firefox();
+                BrowserType.LaunchOptions launchOptions = new BrowserType.LaunchOptions();
+                launchOptions.setHeadless(true);
+
+                return browser(browserType.launch(launchOptions));
+            }
+            case EDGE -> {
+                var browserType = playwright().chromium();
+                BrowserType.LaunchOptions launchOptions = new BrowserType.LaunchOptions();
+                launchOptions.setChannel("msedge");
+                launchOptions.setHeadless(false);
+                // launchOptions.setArgs(List.of("--log-level=3"));
+                // System.setProperty("webdriver.chrome.silentOutput", "true"); ?
+
+                return browser(browserType.launch(launchOptions));
+            }
+            case EDGE_HEADLESS -> {
+                var browserType = playwright().chromium();
+                BrowserType.LaunchOptions launchOptions = new BrowserType.LaunchOptions();
+                launchOptions.setChannel("msedge");
+                launchOptions.setHeadless(true);
+                // launchOptions.setArgs(List.of("--log-level=3"));
+                // System.setProperty("webdriver.chrome.silentOutput", "true"); ?
+
+                return browser(browserType.launch(launchOptions));
+            }
+            case WEBKIT -> {
+                var browserType = playwright().webkit();
+                BrowserType.LaunchOptions launchOptions = new BrowserType.LaunchOptions();
+                launchOptions.setHeadless(false);
+                launchOptions.setTimeout(Settings.web().getArtificialDelayBeforeAction());
+
+                return browser(browserType.launch(launchOptions));
+            }
+            case WEBKIT_HEADLESS -> {
+                var browserType = playwright().webkit();
+                BrowserType.LaunchOptions launchOptions = new BrowserType.LaunchOptions();
+                launchOptions.setHeadless(true);
+
+                return browser(browserType.launch(launchOptions));
+            }
+            default -> throw new IllegalArgumentException("Unsupported.");
+        }
     }
 
     private static class PlaywrightManager {

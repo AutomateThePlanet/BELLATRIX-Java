@@ -39,6 +39,6 @@ public class ShadowRoot extends WebComponent implements ComponentHtml {
      * Returns the innerHTML of the shadowRoot of the shadow host.
      */
     public String getHtml() {
-        return ShadowDomService.getShadowHtml(this);
+        return defaultGetInnerHtmlAttribute();
     }
 }

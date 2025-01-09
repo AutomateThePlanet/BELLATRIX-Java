@@ -19,6 +19,7 @@ import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.*;
 import org.openqa.selenium.logging.LogEntry;
 import org.openqa.selenium.logging.LogType;
+import org.openqa.selenium.remote.http.HttpMethod;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
@@ -27,6 +28,7 @@ import solutions.bellatrix.core.utilities.Log;
 import solutions.bellatrix.core.utilities.Wait;
 import solutions.bellatrix.web.components.Frame;
 import solutions.bellatrix.web.configuration.WebSettings;
+import solutions.bellatrix.web.infrastructure.ProxyServer;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -36,6 +38,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.logging.Level;
 
@@ -206,44 +209,59 @@ public class BrowserService extends WebService {
         return logs;
     }
 
+    public List<String> getRequestEntries(String partialUrl) {
+        return (List<String>)((JavascriptExecutor)getWrappedDriver()).executeScript(String.format("return window.performance.getEntriesByType('resource').filter(x => x.name.indexOf('%s') >= 0).map(y => y.name);", partialUrl));
+    }
+
     public void waitForAjax() {
         long ajaxTimeout = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getWaitForAjaxTimeout();
         long sleepInterval = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getSleepInterval();
-        var webDriverWait = new WebDriverWait(getWrappedDriver(), Duration.ofSeconds(ajaxTimeout), Duration.ofSeconds(sleepInterval));
         var javascriptExecutor = (JavascriptExecutor)getWrappedDriver();
-        webDriverWait.until(d -> {
-                    var numberOfAjaxConnections = javascriptExecutor.executeScript("return !isNaN(window.openHTTPs) ? window.openHTTPs : null");
-                    if (Objects.nonNull(numberOfAjaxConnections)) {
-                        int ajaxConnections = Integer.parseInt(numberOfAjaxConnections.toString());
-                        return ajaxConnections == 0;
-                    } else {
-                        monkeyPatchXMLHttpRequest();
-                    }
-
-                    return false;
-                }
-        );
+        AtomicInteger ajaxConnections = new AtomicInteger();
+        try {
+            Wait.retry(() -> {
+                        var numberOfAjaxConnections = javascriptExecutor.executeScript("return !isNaN(window.$openHTTPs) ? window.$openHTTPs : null");
+                        if (Objects.nonNull(numberOfAjaxConnections)) {
+                            ajaxConnections.set(Integer.parseInt(numberOfAjaxConnections.toString()));
+                            if (ajaxConnections.get() > 0) {
+                                String message = "Waiting for %s Ajax Connections...".formatted(ajaxConnections);
+                                injectInfoNotificationToast(message);
+                                Log.info(message);
+                                throw new TimeoutException(message);
+                            }
+                        } else {
+                            monkeyPatchXMLHttpRequest();
+                        }
+                    },
+                    Duration.ofSeconds(ajaxTimeout),
+                    Duration.ofSeconds(sleepInterval),
+                    true,
+                    TimeoutException.class);
+        }
+        catch (Exception e) {
+            var message = "Timed out waiting for %s Ajax connections.".formatted(ajaxConnections.get());
+            Log.error(message);
+            injectErrorNotificationToast(message);
+        }
     }
 
     private void monkeyPatchXMLHttpRequest() {
-        var numberOfAjaxConnections = javascriptExecutor.executeScript(("return !isNaN(window.openHTTPs) ? window.openHTTPs : null"));
+        var numberOfAjaxConnections = javascriptExecutor.executeScript(("return !isNaN(window.$openHTTPs) ? window.$openHTTPs : null"));
 
-        if (Objects.nonNull(numberOfAjaxConnections)) {
-            var ajaxConnections = Integer.parseInt(numberOfAjaxConnections.toString());
-        } else {
-            var script = "  (function() {" +
-                    "var oldOpen = XMLHttpRequest.prototype.open;" +
-                    "window.openHTTPs = 0;" +
-                    "XMLHttpRequest.prototype.open = function(method, url, async, user, pass) {" +
-                    "window.openHTTPs++;" +
-                    "this.addEventListener('readystatechange', function() {" +
-                    "if(this.readyState == 4) {" +
-                    "window.openHTTPs--;" +
-                    "}" +
-                    "}, false);" +
-                    "oldOpen.call(this, method, url, async, user, pass);" +
-                    "}" +
-                    "})();";
+        if (Objects.isNull(numberOfAjaxConnections)) {
+            var script = "(function() {" +
+                            "const oldOpen = XMLHttpRequest.prototype.open;" +
+                            "window.$openHTTPs = 0;" +
+                            "XMLHttpRequest.prototype.open = function() {" +
+                                "window.$openHTTPs++;" +
+                                "this.addEventListener('readystatechange', function() {" +
+                                    "if(this.readyState == 4) {" +
+                                        "window.$openHTTPs--;" +
+                                    "}" +
+                                "}, false);" +
+                                "return oldOpen.call(this, ...arguments);" +
+                            "}" +
+                        "})();";
 
             javascriptExecutor.executeScript(script);
         }
@@ -416,15 +434,22 @@ public class BrowserService extends WebService {
         }
     }
 
-    public void tryWaitForRequest(String partialUrl) {
-        var javascriptExecutor = (JavascriptExecutor)getWrappedDriver();
-        String script = "return performance.getEntriesByType('resource').filter(item => item.name.toLowerCase().includes('" + partialUrl.toLowerCase() + "'))[0] !== undefined;";
-
+    public void tryWaitForResponse(String partialUrl, int additionalTimeoutInSeconds) {
         try {
-            waitUntil(e -> (boolean)javascriptExecutor.executeScript(script));
+            if(ProxyServer.get() != null) {
+                ProxyServer.waitForResponse(getWrappedDriver(), partialUrl, HttpMethod.GET, 0);
+            } else {
+                var javascriptExecutor = (JavascriptExecutor)getWrappedDriver();
+                String script = "return performance.getEntriesByType('resource').filter(item => item.name.toLowerCase().includes('" + partialUrl.toLowerCase() + "'))[0] !== undefined;";
+                waitUntil(e -> (boolean)javascriptExecutor.executeScript(script));
+            }
         } catch (Exception exception) {
             Log.error("The expected request with URL '%s' is not loaded!", partialUrl);
         }
+    }
+
+    public void tryWaitForResponse(String partialUrl) {
+        tryWaitForResponse(partialUrl, 0);
     }
 
     public void waitForAngular() {

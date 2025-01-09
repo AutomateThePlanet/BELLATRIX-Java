@@ -107,30 +107,71 @@ public class DriverService {
                 var webSettings = ConfigurationService.get(WebSettings.class);
                 var executionType = webSettings.getExecutionType();
 
-                if (executionType.equals("regular")) {
-                    driver = initializeDriverRegularMode();
-                } else {
-                    var gridSettings = webSettings.getGridSettings().stream().filter(g -> g.getProviderName().equals(executionType.toLowerCase())).findFirst();
-                    assert gridSettings.isPresent() : String.format("The specified execution type '%s' is not declared in the configuration", executionType);
-                    driver = initializeDriverCloudGridMode(gridSettings.get());
-                }
-
-                driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(ConfigurationService.get(WebSettings.class).getTimeoutSettings().getPageLoadTimeout()));
-                driver.manage().timeouts().scriptTimeout(Duration.ofSeconds(ConfigurationService.get(WebSettings.class).getTimeoutSettings().getScriptTimeout()));
-
-                if(getBrowserConfiguration().getHeight() != 0 && getBrowserConfiguration().getWidth() != 0) {
-                    changeWindowSize(driver);
-                }
-                else {
-                    driver.manage().window().maximize();
-                }
-
-                Log.info(String.format("Window resized to dimensions: %s", driver.manage().window().getSize().toString()));
-                wrappedDriver = driver;
-
-                return driver;
-            } else return wrappedDriver;
+            driver = new RemoteWebDriver(new URI(url).toURL(), caps);
+        } catch (MalformedURLException | URISyntaxException e) {
+            DebugInformation.printStackTrace(e);
         }
+
+        return driver;
+    }
+
+    private static WebDriver initializeDriverRegularMode() {
+        WebDriver driver = null;
+        boolean shouldCaptureHttpTraffic = ConfigurationService.get(WebSettings.class).getShouldCaptureHttpTraffic();
+
+        Proxy proxyConfig = null;
+        if (shouldCaptureHttpTraffic) {
+            ProxyServer.init();
+            proxyConfig = ClientUtil.createSeleniumProxy(ProxyServer.get());
+            ProxyServer.newHar();
+        }
+
+        switch (BROWSER_CONFIGURATION.get().getBrowser()) {
+            case CHROME -> {
+                var chromeOptions = new ChromeOptions();
+                addDriverOptions(chromeOptions);
+                addDriverCapabilities(chromeOptions);
+                chromeOptions.addArguments("--log-level=3","--remote-allow-origins=*", "--disable-search-engine-choice-screen");
+                chromeOptions.setAcceptInsecureCerts(true);
+                chromeOptions.setCapability(CapabilityType.UNHANDLED_PROMPT_BEHAVIOUR, UnexpectedAlertBehaviour.ACCEPT);
+                System.setProperty("webdriver.chrome.silentOutput", "true");
+                if (shouldCaptureHttpTraffic) {
+                    chromeOptions.setProxy(proxyConfig);
+                }
+
+                driver = new ChromeDriver(chromeOptions);
+            }
+            case CHROME_HEADLESS -> {
+                var chromeHeadlessOptions = new ChromeOptions();
+                addDriverOptions(chromeHeadlessOptions);
+                chromeHeadlessOptions.setAcceptInsecureCerts(true);
+                chromeHeadlessOptions.addArguments("--log-level=3","--remote-allow-origins=*", "--disable-search-engine-choice-screen");
+                chromeHeadlessOptions.setCapability(CapabilityType.UNHANDLED_PROMPT_BEHAVIOUR, UnexpectedAlertBehaviour.ACCEPT);
+                chromeHeadlessOptions.addArguments("--headless=old");
+                System.setProperty("webdriver.chrome.silentOutput", "true");
+                if (shouldCaptureHttpTraffic) chromeHeadlessOptions.setProxy(proxyConfig);
+
+                driver = new ChromeDriver(chromeHeadlessOptions);
+            }
+            case CHROME_MOBILE -> {
+                var chromeHeadlessOptions = new ChromeOptions();
+                addDriverOptions(chromeHeadlessOptions);
+                chromeHeadlessOptions.setAcceptInsecureCerts(true);
+                chromeHeadlessOptions.addArguments("--log-level=3","--remote-allow-origins=*", "--disable-search-engine-choice-screen");
+                chromeHeadlessOptions.setCapability(CapabilityType.UNHANDLED_PROMPT_BEHAVIOUR, UnexpectedAlertBehaviour.ACCEPT);
+
+                Map<String, Object> deviceMetrics = new HashMap<>();
+                deviceMetrics.put("width", BROWSER_CONFIGURATION.get().getDeviceName().getWidth());
+                deviceMetrics.put("height", BROWSER_CONFIGURATION.get().getDeviceName().getHeight());
+                deviceMetrics.put("pixelRatio", BROWSER_CONFIGURATION.get().getDeviceName().getScaleFactor());
+
+                Map<String, Object> mobileEmulation = new HashMap<>();
+                mobileEmulation.put("deviceMetrics", deviceMetrics);
+                mobileEmulation.put("userAgent", "Mozilla/5.0 (Linux; Android 4.2.1; en-us; Nexus 5 Build/JOP40D) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.166 Mobile Safari/535.19");
+
+                chromeHeadlessOptions.setExperimentalOption("mobileEmulation", mobileEmulation);
+                System.setProperty("webdriver.chrome.silentOutput", "true");
+                if (shouldCaptureHttpTraffic) chromeHeadlessOptions.setProxy(proxyConfig);
 
         private WebDriver initializeDriverCloudGridMode(GridSettings gridSettings) {
             MutableCapabilities caps = new MutableCapabilities();
@@ -153,25 +194,12 @@ public class DriverService {
                     caps.setCapability(ChromeOptions.CAPABILITY, safariOptions);
                 }
             }
-
-            HashMap<String, Object> options = new HashMap<String, Object>();
-
-            // Anton: maybe this is something else for other clouds, should be tested.
-            // If this is the case, we need to have branching per provider name.
-            options.put("sessionName", getBrowserConfiguration().getTestName());
-            // if (gridSettings.getProviderName() == "browserstack") {
-            // options.put("sessionName", getBrowserConfiguration().getTestName());
-            // }
-
-            addGridOptions(options, gridSettings);
-
-            caps.setCapability(gridSettings.getOptionsName(), options);
-            WebDriver driver = null;
-            try {
-                var url = getUrl(gridSettings.getUrl());
-                driver = new RemoteWebDriver(new URI(url).toURL(), caps);
-            } catch (Exception e) {
-                DebugInformation.printStackTrace(e);
+            case FIREFOX -> {
+                var firefoxOptions = new FirefoxOptions();
+                addDriverOptions(firefoxOptions);
+                firefoxOptions.setAcceptInsecureCerts(true);
+                if (shouldCaptureHttpTraffic) firefoxOptions.setProxy(proxyConfig);
+                driver = new FirefoxDriver(firefoxOptions);
             }
 
             return driver;

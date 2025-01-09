@@ -23,6 +23,7 @@ import solutions.bellatrix.web.findstrategies.FindStrategy;
 import solutions.bellatrix.web.findstrategies.XPathFindStrategy;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
 import java.util.function.Consumer;
@@ -284,7 +285,6 @@ public class Grid extends WebComponent {
         }
     }
 
-    @SneakyThrows
     @SuppressWarnings({"unchecked"})
     public <TRowObject> void assertTable(Class<TRowObject> clazz, List<TRowObject> expectedEntities) {
         scrollToVisible();
@@ -308,8 +308,13 @@ public class Grid extends WebComponent {
             if (!clazz.equals(Object.class)) {
                 entity = castRow(clazz, i, propsNotToCompare);
             } else {
-                Method method = this.getClass().getMethod("castRow", int.class, List.class);
-                entity = (TRowObject)method.invoke(this, i, Arrays.stream(propsNotToCompare).toList());
+                Method method = null;
+                try {
+                    method = this.getClass().getMethod("castRow", int.class, List.class);
+                    entity = (TRowObject)method.invoke(this, i, Arrays.stream(propsNotToCompare).toList());
+                } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+                    throw new RuntimeException(e);
+                }
             }
             EntitiesAsserter.areEqual(expectedEntities.get(i), entity, propsNotToCompare);
         }
@@ -353,10 +358,10 @@ public class Grid extends WebComponent {
         }
 
         var dto = InstanceFactory.create(clazz);
-        var fields = clazz.getFields();
+        var fields = clazz.getDeclaredFields();
         for (var field : fields) {
             var fieldType = field.getType();
-
+            field.setAccessible(true);
             var headerInfo = getHeaderNamesService().getHeaderInfoByField(field);
 
             if (Arrays.stream(fieldsToSkip).anyMatch(f -> f.equals(headerInfo.getHeaderName()))) continue;
@@ -531,11 +536,21 @@ public class Grid extends WebComponent {
 
     public <TGridModel> Grid setModelColumns(Class<TGridModel> clazz) {
         controlColumnDataCollection = new ArrayList<>();
-        for (var field : clazz.getFields()) {
+        List<Field> declaredFields = List.of(clazz.getDeclaredFields());
+        for (var field : declaredFields) {
+            field.setAccessible(true);
             var headerName = field.isAnnotationPresent(TableHeader.class) ? field.getAnnotation(TableHeader.class).name() : field.getName();
             controlColumnDataCollection.add(new ControlColumnData(headerName));
         }
 
         return this;
+    }
+
+    private static String getFieldNameFromGetter(String getterName) {
+        if (getterName.startsWith("get")) {
+            String fieldName = getterName.substring(3);  // Remove "get"
+            return Character.toLowerCase(fieldName.charAt(0)) + fieldName.substring(1); // Lowercase the first character
+        }
+        return getterName;
     }
 }

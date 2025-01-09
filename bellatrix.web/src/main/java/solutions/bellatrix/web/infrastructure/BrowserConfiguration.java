@@ -18,6 +18,7 @@ import lombok.Setter;
 import org.openqa.selenium.Platform;
 
 import java.util.HashMap;
+import java.util.Objects;
 
 public class BrowserConfiguration {
     @Setter @Getter private Browser browser;
@@ -72,23 +73,18 @@ public class BrowserConfiguration {
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof BrowserConfiguration))
-            return false;
-        BrowserConfiguration that = (BrowserConfiguration)obj;
-        if (!(this.getBrowser() == null ? that.getBrowser() == null : this.getBrowser().equals(that.getBrowser())))
-            return false;
-        if (!(this.getLifecycle() == null ? that.getLifecycle() == null : this.getLifecycle().equals(that.getLifecycle())))
-            return false;
-        if (this.getHeight() != that.getHeight())
-            return false;
-        if (this.getWidth() != that.getWidth())
-            return false;
-        if (this.getVersion() != that.getVersion())
-            return false;
-        if (!(this.getPlatform() == null ? that.getPlatform() == null : this.getPlatform().equals(that.getPlatform())))
-            return false;
-        if (!(this.getDriverOptions() == null ? that.getDriverOptions() == null : this.getDriverOptions().equals(that.getDriverOptions())))
-            return false;
-        return true;
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+
+        BrowserConfiguration that = (BrowserConfiguration) obj;
+
+        if (!Objects.equals(this.getBrowser(), that.getBrowser())) return false;
+        if (!Objects.equals(this.deviceName, that.deviceName)) return false;
+        if (!Objects.equals(this.getLifecycle(), that.getLifecycle())) return false;
+        if (this.getHeight() != that.getHeight()) return false;
+        if (this.getWidth() != that.getWidth()) return false;
+        if (this.getVersion() != that.getVersion()) return false;
+        if (!Objects.equals(this.getPlatform(), that.getPlatform())) return false;
+        return Objects.equals(this.getDriverOptions(), that.getDriverOptions());
     }
 }

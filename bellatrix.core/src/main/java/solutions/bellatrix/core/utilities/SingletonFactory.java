@@ -56,4 +56,8 @@ public class SingletonFactory {
     public static boolean containsValue(Object object) {
         return mapHolder.get().containsValue(object);
     }
+    
+    public static void clear() {
+        mapHolder.get().clear();
+    }
 }

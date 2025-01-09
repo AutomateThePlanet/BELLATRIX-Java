@@ -71,5 +71,6 @@ public abstract class WebPage<MapT extends PageMap, AssertsT extends PageAsserts
     }
 
     protected void waitForPageLoad() {
+        browser().waitForAjax();
     }
 }
