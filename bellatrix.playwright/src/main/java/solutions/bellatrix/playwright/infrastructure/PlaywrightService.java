@@ -20,12 +20,10 @@ import com.microsoft.playwright.BrowserType;
 import com.microsoft.playwright.Playwright;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
-import lombok.Getter;
+import lombok.experimental.UtilityClass;
 import org.apache.commons.lang3.NotImplementedException;
 import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.core.utilities.DebugInformation;
-import solutions.bellatrix.core.utilities.ShutdownManager;
-import solutions.bellatrix.core.utilities.SingletonFactory;
 import solutions.bellatrix.core.utilities.TimestampBuilder;
 import solutions.bellatrix.playwright.configuration.GridSettings;
 import solutions.bellatrix.playwright.configuration.WebSettings;
@@ -44,31 +42,89 @@ import java.util.Map;
 import java.util.Properties;
 
 @SuppressWarnings("ALL")
+@UtilityClass
 public class PlaywrightService {
-    private static ThreadLocal<PlaywrightManager> PLAYWRIGHT_MANAGER = ThreadLocal.withInitial(() -> {
-        var driverManager = new PlaywrightManager();
-        SingletonFactory.register(driverManager);
-        ShutdownManager.register(driverManager::close);
-        return driverManager;
-    });
+    private static final ThreadLocal<Boolean> DISPOSED;
+    private static final ThreadLocal<BrowserConfiguration> BROWSER_CONFIGURATION_THREAD_LOCAL;
+    private static final ThreadLocal<Playwright> PLAYWRIGHT_THREAD_LOCAL;
+    private static final ThreadLocal<WrappedBrowser> BROWSER_WRAPPER_THREAD_LOCAL;
+    private static boolean isBuildNameSet = false;
+    private static String buildName;
+
+    static {
+        DISPOSED = ThreadLocal.withInitial(() -> true);
+        BROWSER_CONFIGURATION_THREAD_LOCAL = new ThreadLocal<>();
+        PLAYWRIGHT_THREAD_LOCAL = new ThreadLocal<>();
+        BROWSER_WRAPPER_THREAD_LOCAL = new ThreadLocal<>();
+    }
 
     public static WrappedBrowser start(BrowserConfiguration configuration) {
-        return PLAYWRIGHT_MANAGER.get().start(configuration);
+        if (DISPOSED.get()) {
+            browserConfiguration(configuration);
+            playwright(Playwright.create());
+            DISPOSED.set(false);
+            var executionType = Settings.web().getExecutionType();
+
+            if (executionType.equals("regular")) {
+                return initializeBrowserWrapperRegularMode();
+            } else {
+                var gridSettings = ConfigurationService.get(WebSettings.class).getGridSettings().stream().filter(g -> g.getProviderName().equals(executionType.toLowerCase())).findFirst().orElse(null);
+                assert gridSettings != null : String.format("The specified execution type '%s' is not declared in the configuration", executionType);
+
+                return initializeBrowserWrapperGridMode(gridSettings);
+            }
+        }
+        else return wrappedBrowser();
+    }
+
+    public static void close() {
+        if (DISPOSED.get()) {
+            return;
+        }
+
+        if (playwright() != null) {
+            DebugInformation.debugInfo("SHUTTING DOWN PLAYWRIGHT");
+
+            if (wrappedBrowser() != null) {
+                wrappedBrowser().close();
+            }
+
+            PLAYWRIGHT_THREAD_LOCAL.remove();
+
+            if (wrappedBrowser().getGridSessionId() != null) {
+                RestAssured.baseURI = ConfigurationService.get(WebSettings.class).getGridSettings().stream().filter(g -> g.getProviderName().equals(Settings.web().getExecutionType().toLowerCase())).findFirst().orElse(null).getUrl();
+
+                var response = RestAssured.given()
+                        .delete(String.format("/session/%s", wrappedBrowser().getGridSessionId()));
+            }
+        }
+
+        DISPOSED.set(true);
     }
 
     public static void restartBrowserContext() {
-        PLAYWRIGHT_MANAGER.get().restartBrowserContext();
-    }
-    public static void close() {
-        PLAYWRIGHT_MANAGER.get().close();
+        DebugInformation.debugInfo("RESTARTING CONTEXT");
+        wrappedBrowser().changeContext(intializeBrowserContext());
     }
 
-    public static WrappedBrowser wrappedBrowser() {
-        return PLAYWRIGHT_MANAGER.get().wrappedBrowser;
+    private static WrappedBrowser initializeBrowserWrapperRegularMode() {
+        wrappedBrowser(new WrappedBrowser(playwright()));
+
+        wrappedBrowser().setBrowser(initializeBrowserRegularMode());
+        wrappedBrowser().setCurrentContext(intializeBrowserContext());
+        wrappedBrowser().setCurrentPage(wrappedBrowser().getCurrentContext().newPage());
+
+        return wrappedBrowser();
     }
 
-    public static void wrappedBrowser(WrappedBrowser driver) {
-        PLAYWRIGHT_MANAGER.get().wrappedBrowser = driver;
+    private static WrappedBrowser initializeBrowserWrapperGridMode(GridSettings gridSettings) {
+        wrappedBrowser(new WrappedBrowser(playwright()));
+
+        wrappedBrowser().setBrowser(initializeBrowserGridMode(gridSettings));
+        wrappedBrowser().setCurrentContext(intializeBrowserContext());
+        wrappedBrowser().setCurrentPage(wrappedBrowser().getCurrentContext().newPage());
+
+        return wrappedBrowser();
     }
 
     private static Browser initializeBrowserRegularMode() {
@@ -169,199 +225,20 @@ public class PlaywrightService {
         }
     }
 
-    private static class PlaywrightManager {
-        private PlaywrightManager() {
+    private static BrowserContext intializeBrowserContext() {
+        Browser.NewContextOptions options = getContextOptions();
+        var context = browser().newContext(options);
+
+        if (Settings.web().getShouldCaptureHttpTraffic()) {
+            startRecordingHttpTraffic(context);
         }
 
-        private boolean disposed = true;
-        @Getter private BrowserConfiguration browserConfiguration;
-        private Playwright playwright;
-        private WrappedBrowser wrappedBrowser;
-        private boolean isBuildNameSet = false;
-        private String buildName;
+        return context;
+    }
 
-        public WrappedBrowser start(BrowserConfiguration configuration) {
-            if (disposed) {
-                browserConfiguration(configuration);
-                playwright = Playwright.create();
-                disposed = false;
-
-                var executionType = Settings.web().getExecutionType();
-
-                if (executionType.equals("regular")) {
-                    return initializeBrowserWrapperRegularMode();
-                } else {
-                    var gridSettings = ConfigurationService.get(WebSettings.class).getGridSettings().stream().filter(g -> g.getProviderName().equals(executionType.toLowerCase())).findFirst().orElse(null);
-                    assert gridSettings != null : String.format("The specified execution type '%s' is not declared in the configuration", executionType);
-
-                    return initializeBrowserWrapperGridMode(gridSettings);
-                }
-            }
-            else return wrappedBrowser();
-        }
-
-        public void close() {
-            if (disposed) {
-                return;
-            }
-
-            if (playwright != null) {
-                DebugInformation.debugInfo("SHUTTING DOWN PLAYWRIGHT");
-
-                if (wrappedBrowser() != null) {
-                    wrappedBrowser().close();
-                }
-
-                playwright = null;
-
-                if (wrappedBrowser().getGridSessionId() != null) {
-                    RestAssured.baseURI = ConfigurationService.get(WebSettings.class).getGridSettings().stream().filter(g -> g.getProviderName().equals(Settings.web().getExecutionType().toLowerCase())).findFirst().orElse(null).getUrl();
-
-                    var response = RestAssured.given()
-                            .delete(String.format("/session/%s", wrappedBrowser().getGridSessionId()));
-                }
-            }
-
-            disposed = true;
-        }
-
-        public void restartBrowserContext() {
-            DebugInformation.debugInfo("RESTARTING CONTEXT");
-            wrappedBrowser().changeContext(intializeBrowserContext());
-        }
-
-        private WrappedBrowser initializeBrowserWrapperRegularMode() {
-            wrappedBrowser(new WrappedBrowser(playwright));
-
-            wrappedBrowser().setBrowser(initializeBrowserRegularMode());
-            wrappedBrowser().setCurrentContext(intializeBrowserContext());
-            wrappedBrowser().setCurrentPage(wrappedBrowser().getCurrentContext().newPage());
-
-            return wrappedBrowser();
-        }
-
-        private WrappedBrowser initializeBrowserWrapperGridMode(GridSettings gridSettings) {
-            wrappedBrowser(new WrappedBrowser(playwright));
-
-            wrappedBrowser().setBrowser(initializeBrowserGridMode(gridSettings));
-            wrappedBrowser().setCurrentContext(intializeBrowserContext());
-            wrappedBrowser().setCurrentPage(wrappedBrowser().getCurrentContext().newPage());
-
-            return wrappedBrowser();
-        }
-
-        private Browser initializeBrowserRegularMode() {
-            BrowserTypes browserTypes = browserConfiguration().getBrowserTypes();
-
-            switch (browserTypes) {
-                case CHROMIUM -> {
-                    var browserType = playwright.chromium();
-                    BrowserType.LaunchOptions launchOptions = new BrowserType.LaunchOptions();
-                    launchOptions.setHeadless(false);
-                    launchOptions.setArgs(List.of("--log-level=3", "--remote-allow-origins=*"));
-                    launchOptions.setTimeout(Settings.web().getArtificialDelayBeforeAction());
-                    // System.setProperty("webdriver.chrome.silentOutput", "true"); ?
-
-                    return browser(browserType.launch(launchOptions));
-                }
-                case CHROMIUM_HEADLESS -> {
-                    var browserType = playwright.chromium();
-                    BrowserType.LaunchOptions launchOptions = new BrowserType.LaunchOptions();
-                    launchOptions.setHeadless(true);
-                    launchOptions.setArgs(List.of("--log-level=3"));
-                    // System.setProperty("webdriver.chrome.silentOutput", "true"); ?
-
-                    return browser(browserType.launch(launchOptions));
-                }
-                case CHROME -> {
-                    var browserType = playwright.chromium();
-                    BrowserType.LaunchOptions launchOptions = new BrowserType.LaunchOptions();
-                    launchOptions.setChannel("chrome");
-                    launchOptions.setHeadless(false);
-                    launchOptions.setArgs(List.of("--log-level=3", "--remote-allow-origins=*"));
-                    launchOptions.setTimeout(Settings.web().getArtificialDelayBeforeAction());
-                    // System.setProperty("webdriver.chrome.silentOutput", "true"); ?
-
-                    return browser(browserType.launch(launchOptions));
-                }
-                case CHROME_HEADLESS -> {
-                    var browserType = playwright.chromium();
-                    BrowserType.LaunchOptions launchOptions = new BrowserType.LaunchOptions();
-                    launchOptions.setChannel("chrome");
-                    launchOptions.setHeadless(true);
-                    launchOptions.setArgs(List.of("--log-level=3"));
-                    // System.setProperty("webdriver.chrome.silentOutput", "true"); ?
-
-                    return browser(browserType.launch(launchOptions));
-                }
-                case FIREFOX -> {
-                    var browserType = playwright.firefox();
-                    BrowserType.LaunchOptions launchOptions = new BrowserType.LaunchOptions();
-                    launchOptions.setHeadless(false);
-                    launchOptions.setTimeout(Settings.web().getArtificialDelayBeforeAction());
-
-                    return browser(browserType.launch(launchOptions));
-                }
-                case FIREFOX_HEADLESS -> {
-                    var browserType = playwright.firefox();
-                    BrowserType.LaunchOptions launchOptions = new BrowserType.LaunchOptions();
-                    launchOptions.setHeadless(true);
-
-                    return browser(browserType.launch(launchOptions));
-                }
-                case EDGE -> {
-                    var browserType = playwright.chromium();
-                    BrowserType.LaunchOptions launchOptions = new BrowserType.LaunchOptions();
-                    launchOptions.setChannel("msedge");
-                    launchOptions.setHeadless(false);
-                    // launchOptions.setArgs(List.of("--log-level=3"));
-                    // System.setProperty("webdriver.chrome.silentOutput", "true"); ?
-
-                    return browser(browserType.launch(launchOptions));
-                }
-                case EDGE_HEADLESS -> {
-                    var browserType = playwright.chromium();
-                    BrowserType.LaunchOptions launchOptions = new BrowserType.LaunchOptions();
-                    launchOptions.setChannel("msedge");
-                    launchOptions.setHeadless(true);
-                    // launchOptions.setArgs(List.of("--log-level=3"));
-                    // System.setProperty("webdriver.chrome.silentOutput", "true"); ?
-
-                    return browser(browserType.launch(launchOptions));
-                }
-                case WEBKIT -> {
-                    var browserType = playwright.webkit();
-                    BrowserType.LaunchOptions launchOptions = new BrowserType.LaunchOptions();
-                    launchOptions.setHeadless(false);
-                    launchOptions.setTimeout(Settings.web().getArtificialDelayBeforeAction());
-
-                    return browser(browserType.launch(launchOptions));
-                }
-                case WEBKIT_HEADLESS -> {
-                    var browserType = playwright.webkit();
-                    BrowserType.LaunchOptions launchOptions = new BrowserType.LaunchOptions();
-                    launchOptions.setHeadless(true);
-
-                    return browser(browserType.launch(launchOptions));
-                }
-                default -> throw new IllegalArgumentException("Unsupported.");
-            }
-        }
-
-        private BrowserContext intializeBrowserContext() {
-            Browser.NewContextOptions options = getContextOptions();
-            var context = browser().newContext(options);
-
-            if (Settings.web().getShouldCaptureHttpTraffic()) {
-                startRecordingHttpTraffic(context);
-            }
-
-            return context;
-        }
-
-        // ToDo Browser Context options
-        private Browser.NewContextOptions getContextOptions() {
-            Browser.NewContextOptions options = new Browser.NewContextOptions();
+    // ToDo Browser Context options
+    private static Browser.NewContextOptions getContextOptions() {
+        Browser.NewContextOptions options = new Browser.NewContextOptions();
 
 //        if (Settings.context().isShouldSetContextSettings()) {
 //            options.setIgnoreHTTPSErrors(Settings.context().isIgnoreHTTPSErrors());
@@ -376,144 +253,152 @@ public class PlaywrightService {
 //            options.setUserAgent(Settings.context().getUserAgent());
 //        }
 
-            options.setIgnoreHTTPSErrors(true);
+        options.setIgnoreHTTPSErrors(true);
 
-            // ToDo setProxy
+        // ToDo setProxy
 
-            return options;
+        return options;
+    }
+
+    private static void startRecordingHttpTraffic(BrowserContext context) {
+        Traffic.getRequestContainers().add(new Requests(context));
+        context.onRequest(x -> Traffic.getContextSpecificRequests(context).add(x));
+
+        Traffic.getResponseContainers().add(new Responses(context));
+        context.onResponse(x -> Traffic.getContextSpecificResponses(context).add(x));
+    }
+
+    private static Browser initializeBrowserGridMode(GridSettings gridSettings) {
+        var timeout = Settings.timeout().inMilliseconds().getConnectToRemoteGridTimeout();
+
+        var gridUrl = gridSettings.getUrl();
+        if (gridUrl.startsWith("env_")) {
+            gridUrl = System.getProperty(gridSettings.getUrl()).replace("env_", "");
         }
 
-        private void startRecordingHttpTraffic(BrowserContext context) {
-            Traffic.getRequestContainers().add(new Requests(context));
-            context.onRequest(x -> Traffic.getContextSpecificRequests(context).add(x));
+        try {
+            Gson gson = new Gson();
+            String serializedSettings = URLEncoder.encode(gson.toJson(gridSettings.getArguments().get(0)), "UTF-8");
 
-            Traffic.getResponseContainers().add(new Responses(context));
-            context.onResponse(x -> Traffic.getContextSpecificResponses(context).add(x));
-        }
-
-        private Browser initializeBrowserGridMode(GridSettings gridSettings) {
-            var timeout = Settings.timeout().inMilliseconds().getConnectToRemoteGridTimeout();
-
-            var gridUrl = gridSettings.getUrl();
-            if (gridUrl.startsWith("env_")) {
-                gridUrl = System.getProperty(gridSettings.getUrl()).replace("env_", "");
-            }
-
-            try {
-                Gson gson = new Gson();
-                String serializedSettings = URLEncoder.encode(gson.toJson(gridSettings.getArguments().get(0)), "UTF-8");
-
-                if (gridSettings.getProviderName().equals("grid") || gridSettings.getProviderName().equals("selenoid")) {
-                    var browserType = browserConfiguration.getBrowserTypes();
-                    if (browserType == BrowserTypes.FIREFOX || browserType == BrowserTypes.FIREFOX_HEADLESS || browserType == BrowserTypes.WEBKIT || browserType == BrowserTypes.WEBKIT_HEADLESS) {
-                        throw new NotImplementedException("Playwright supports running in Selenium Grid only Chromium browsers.");
-                    }
-
-                    RestAssured.baseURI = gridUrl;
-                    Map<String, Object> capabilitiesMap = new HashMap<>();
-                    capabilitiesMap.put("alwaysMatch", gridSettings.getArguments().get(0));
-
-                    Map<String, Object> body = new HashMap<>();
-                    body.put("capabilities", capabilitiesMap);
-
-                    var serializedBody = gson.toJson(body);
-
-                    var response = RestAssured.given()
-                            .contentType(ContentType.JSON)
-                            .body(serializedBody)
-                            .post("/session");
-
-                    wrappedBrowser().setGridSessionId(response.body().jsonPath().get("value.sessionId"));
-
-                    var responseBody = response.body();
-                    var responseJson = response.jsonPath();
-
-                    var cdpUrl = new URI(response.jsonPath().get("value.capabilities['se:cdp']"));
-                    cdpUrl = new URI(cdpUrl.getScheme(), cdpUrl.getUserInfo(), new URI(gridUrl).getHost(), new URI(gridUrl).getPort(), cdpUrl.getPath(), cdpUrl.getQuery(), cdpUrl.getFragment());
-
-                    return playwright.chromium().connectOverCDP(cdpUrl.toString(), new BrowserType.ConnectOverCDPOptions().setTimeout(timeout));
-                } else if (gridSettings.getProviderName().equals("lambdatest")) {
-                    return playwright.chromium().connect(String.format("%s?capabilities=%s", gridUrl, serializedSettings), new BrowserType.ConnectOptions().setTimeout(timeout));
-                } else if (gridSettings.getProviderName().equals("browserstack")) {
-                    return playwright.chromium().connect(String.format("%s?caps=%s", gridUrl, serializedSettings), new BrowserType.ConnectOptions().setTimeout(timeout));
-                } else {
-                    throw new NotImplementedException("Unsupported grid provider. Supported are: selenium grid, selenoid, lambdatest, and browserstack.");
+            if (gridSettings.getProviderName().equals("grid") || gridSettings.getProviderName().equals("selenoid")) {
+                var browserType = BROWSER_CONFIGURATION_THREAD_LOCAL.get().getBrowserTypes();
+                if (browserType == BrowserTypes.FIREFOX || browserType == BrowserTypes.FIREFOX_HEADLESS || browserType == BrowserTypes.WEBKIT || browserType == BrowserTypes.WEBKIT_HEADLESS) {
+                    throw new NotImplementedException("Playwright supports running in Selenium Grid only Chromium browsers.");
                 }
-            } catch (Exception e) {
-                DebugInformation.printStackTrace(e);
+
+                RestAssured.baseURI = gridUrl;
+                Map<String, Object> capabilitiesMap = new HashMap<>();
+                capabilitiesMap.put("alwaysMatch", gridSettings.getArguments().get(0));
+
+                Map<String, Object> body = new HashMap<>();
+                body.put("capabilities", capabilitiesMap);
+
+                var serializedBody = gson.toJson(body);
+
+                var response = RestAssured.given()
+                        .contentType(ContentType.JSON)
+                        .body(serializedBody)
+                        .post("/session");
+
+                wrappedBrowser().setGridSessionId(response.body().jsonPath().get("value.sessionId"));
+
+                var responseBody = response.body();
+                var responseJson = response.jsonPath();
+
+                var cdpUrl = new URI(response.jsonPath().get("value.capabilities['se:cdp']"));
+                cdpUrl = new URI(cdpUrl.getScheme(), cdpUrl.getUserInfo(), new URI(gridUrl).getHost(), new URI(gridUrl).getPort(), cdpUrl.getPath(), cdpUrl.getQuery(), cdpUrl.getFragment());
+
+                return playwright().chromium().connectOverCDP(cdpUrl.toString(), new BrowserType.ConnectOverCDPOptions().setTimeout(timeout));
+            } else if (gridSettings.getProviderName().equals("lambdatest")) {
+                return playwright().chromium().connect(String.format("%s?capabilities=%s", gridUrl, serializedSettings), new BrowserType.ConnectOptions().setTimeout(timeout));
+            } else if (gridSettings.getProviderName().equals("browserstack")) {
+                return playwright().chromium().connect(String.format("%s?caps=%s", gridUrl, serializedSettings), new BrowserType.ConnectOptions().setTimeout(timeout));
+            } else {
+                throw new NotImplementedException("Unsupported grid provider. Supported are: selenium grid, selenoid, lambdatest, and browserstack.");
+            }
+        } catch (Exception e) {
+            DebugInformation.printStackTrace(e);
+            return null;
+        }
+    }
+
+    private static void changeWindowSize() {
+        try {
+            if (browserConfiguration().getHeight() != 0 && browserConfiguration().getWidth() != 0) {
+                wrappedBrowser().getCurrentPage().setViewportSize(browserConfiguration().getWidth(), browserConfiguration().getHeight());
+            }
+        } catch (Exception ignored) {}
+    }
+
+    private static String getBuildName() {
+        if (!isBuildNameSet) {
+            buildName = System.getProperty("buildName");
+        }
+
+        if (buildName == null) {
+            InputStream input = ConfigurationService.class.getResourceAsStream("/application.properties");
+            var p = new Properties();
+            try {
+                p.load(input);
+            } catch (IOException e) {
                 return null;
             }
-        }
 
-        private void changeWindowSize() {
-            try {
-                if (browserConfiguration().getHeight() != 0 && browserConfiguration().getWidth() != 0) {
-                    wrappedBrowser().getCurrentPage().setViewportSize(browserConfiguration().getWidth(), browserConfiguration().getHeight());
-                }
-            } catch (Exception ignored) {}
-        }
-
-        private String getBuildName() {
             if (!isBuildNameSet) {
-                buildName = System.getProperty("buildName");
+                buildName = p.getProperty("buildName");
             }
 
-            if (buildName == null) {
-                InputStream input = ConfigurationService.class.getResourceAsStream("/application.properties");
-                var p = new Properties();
-                try {
-                    p.load(input);
-                } catch (IOException e) {
-                    return null;
-                }
-
-                if (!isBuildNameSet) {
-                    buildName = p.getProperty("buildName");
-                }
-
-                if (buildName.equals("{randomNumber}") && !isBuildNameSet) {
-                    buildName = TimestampBuilder.buildUniqueTextByPrefix("LE_");
-                    isBuildNameSet = true;
-                }
+            if (buildName.equals("{randomNumber}") && !isBuildNameSet) {
+                buildName = TimestampBuilder.buildUniqueTextByPrefix("LE_");
+                isBuildNameSet = true;
             }
-
-            return buildName;
         }
 
-        public BrowserConfiguration browserConfiguration() {
-            return browserConfiguration;
-        }
+        return buildName;
+    }
 
-        public BrowserConfiguration browserConfiguration(BrowserConfiguration configuration) {
-            browserConfiguration = configuration;
-            return browserConfiguration();
-        }
+    public static BrowserConfiguration browserConfiguration() {
+        return BROWSER_CONFIGURATION_THREAD_LOCAL.get();
+    }
 
-        public WrappedBrowser wrappedBrowser() {
-            return wrappedBrowser;
-        }
+    public static BrowserConfiguration browserConfiguration(BrowserConfiguration configuration) {
+        BROWSER_CONFIGURATION_THREAD_LOCAL.set(configuration);
+        return browserConfiguration();
+    }
 
-        public WrappedBrowser wrappedBrowser(WrappedBrowser wrappedBrowser) {
-            this.wrappedBrowser = wrappedBrowser;
-            return this.wrappedBrowser;
-        }
+    private static Playwright playwright() {
+        return PLAYWRIGHT_THREAD_LOCAL.get();
+    }
 
-        private Browser browser() {
-            return wrappedBrowser().getBrowser();
-        }
+    private static Playwright playwright(Playwright playwright) {
+        PLAYWRIGHT_THREAD_LOCAL.set(playwright);
+        return playwright();
+    }
 
-        private Browser browser(Browser browser) {
-            wrappedBrowser().setBrowser(browser);
-            return browser();
-        }
+    public static WrappedBrowser wrappedBrowser() {
+        return BROWSER_WRAPPER_THREAD_LOCAL.get();
+    }
 
-        private BrowserContext context() {
-            return wrappedBrowser().getCurrentContext();
-        }
+    public static WrappedBrowser wrappedBrowser(WrappedBrowser wrappedBrowser) {
+        BROWSER_WRAPPER_THREAD_LOCAL.set(wrappedBrowser);
+        return BROWSER_WRAPPER_THREAD_LOCAL.get();
+    }
 
-        private BrowserContext context(BrowserContext browserContext) {
-            wrappedBrowser().setCurrentContext(browserContext);
-            return context();
-        }
+    private static Browser browser() {
+        return wrappedBrowser().getBrowser();
+    }
+
+    private static Browser browser(Browser browser) {
+        wrappedBrowser().setBrowser(browser);
+        return browser();
+    }
+
+    private static BrowserContext context() {
+        return wrappedBrowser().getCurrentContext();
+    }
+
+    private static BrowserContext context(BrowserContext browserContext) {
+        wrappedBrowser().setCurrentContext(browserContext);
+        return context();
     }
 }
