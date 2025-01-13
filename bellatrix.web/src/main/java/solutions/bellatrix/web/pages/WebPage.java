@@ -22,11 +22,14 @@ import solutions.bellatrix.web.services.NavigationService;
 import java.lang.reflect.ParameterizedType;
 
 public abstract class WebPage<MapT extends PageMap, AssertsT extends PageAsserts<MapT>> {
-    public ComponentCreateService create() {
-        return new ComponentCreateService();
-    }
+    @Deprecated
     public BrowserService browser() {
         return new BrowserService();
+    }
+
+    @Deprecated
+    public ComponentCreateService create() {
+        return new ComponentCreateService();
     }
 
     public App app() {
