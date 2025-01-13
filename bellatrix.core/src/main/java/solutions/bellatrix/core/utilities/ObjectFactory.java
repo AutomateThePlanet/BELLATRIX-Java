@@ -16,6 +16,7 @@ package solutions.bellatrix.core.utilities;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Parameter;
 import java.util.Arrays;
 
 public abstract class ObjectFactory {
@@ -59,26 +60,49 @@ public abstract class ObjectFactory {
     }
 
     private static <T> Constructor<T> findConstructorMatch(Class clazz, Class[] argumentTypes) throws NoSuchMethodException {
-        Constructor<T> constructor = null;
         try {
-            constructor = clazz.getDeclaredConstructor(argumentTypes);
+            return clazz.getDeclaredConstructor(argumentTypes);
         } catch (NoSuchMethodException e) {
-            constructor = findVarArgsConstructor(clazz, argumentTypes);
+            return findVarArgsConstructor(clazz, argumentTypes);
         }
-
-        return constructor;
     }
 
     private static <T> Constructor<T> findVarArgsConstructor(Class clazz, Class[] argumentTypes) throws NoSuchMethodException {
         try {
             var args = Arrays.copyOf(argumentTypes, argumentTypes.length + 1);
-            args[args.length - 1] = Object[].class;
+            args[args.length - 1] = getVarArgsType(clazz, argumentTypes);
 
             return clazz.getDeclaredConstructor(args);
         } catch (NoSuchMethodException ignored) {
         }
 
         throw new NoSuchMethodException("No matching constructor found for the provided argument types.");
+    }
+
+    private static Class<?> getVarArgsType(Class clazz, Class[] argumentTypes) {
+        var constructors = clazz.getDeclaredConstructors();
+
+        for (var constructor : constructors) {
+            var parameters = constructor.getParameters();
+            if (constructor.isVarArgs() && lengthMatches(parameters, argumentTypes) && parameterTypesMatch(parameters, argumentTypes)) {
+                return parameters[parameters.length - 1].getType();
+            }
+        }
+
+        return null;
+    }
+
+    private static boolean lengthMatches(Parameter[] parameters, Class[] argumentTypes) {
+        return parameters.length == argumentTypes.length + 1 && parameters[parameters.length - 1].isVarArgs();
+    }
+
+    private static boolean parameterTypesMatch(Parameter[] parameters, Class[] argumentTypes) {
+        for (int i = 0; i < argumentTypes.length; i ++) {
+            if (!parameters[i].getType().equals(argumentTypes[i]))
+                return false;
+        }
+
+        return true;
     }
 
     public static class ConstructorNotFoundException extends Exception {
