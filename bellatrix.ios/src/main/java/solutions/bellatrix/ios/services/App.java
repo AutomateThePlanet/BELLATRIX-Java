@@ -13,11 +13,10 @@
 
 package solutions.bellatrix.ios.services;
 
-import solutions.bellatrix.core.utilities.SingletonFactory;
+import solutions.bellatrix.core.infrastructure.BellatrixApp;
 import solutions.bellatrix.ios.infrastructure.DriverService;
-import solutions.bellatrix.ios.pages.IOSPage;
 
-public class App implements AutoCloseable {
+public class App implements BellatrixApp {
     private boolean disposed = false;
 
     public AppService appService() {
@@ -52,12 +51,9 @@ public class App implements AutoCloseable {
         return new WebServiceFacade();
     }
 
+    @Override
     public void addDriverOptions(String key, String value) {
         DriverService.addDriverOptions(key, value);
-    }
-
-    public <TPage extends IOSPage> TPage create(Class<TPage> pageOf, Object... args) {
-        return SingletonFactory.getInstance(pageOf, args);
     }
 
     @Override
@@ -67,7 +63,6 @@ public class App implements AutoCloseable {
         }
 
         DriverService.close();
-
         disposed = true;
     }
 }
