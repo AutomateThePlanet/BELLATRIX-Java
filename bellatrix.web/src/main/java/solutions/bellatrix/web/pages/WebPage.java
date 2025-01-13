@@ -17,6 +17,7 @@ import solutions.bellatrix.web.infrastructure.Browser;
 import solutions.bellatrix.web.services.App;
 import solutions.bellatrix.web.services.BrowserService;
 import solutions.bellatrix.web.services.ComponentCreateService;
+import solutions.bellatrix.web.services.JavaScriptService;
 import solutions.bellatrix.web.services.NavigationService;
 
 import java.lang.reflect.ParameterizedType;
@@ -28,6 +29,14 @@ public abstract class WebPage<MapT extends PageMap, AssertsT extends PageAsserts
 
     public ComponentCreateService create() {
         return app().create();
+    }
+
+    public JavaScriptService javaScript() {
+        return new JavaScriptService();
+    }
+
+    public ComponentCreateService create() {
+        return new ComponentCreateService();
     }
 
     public App app() {
@@ -66,5 +75,6 @@ public abstract class WebPage<MapT extends PageMap, AssertsT extends PageAsserts
     }
 
     protected void waitForPageLoad() {
+        browser().waitForAjax();
     }
 }

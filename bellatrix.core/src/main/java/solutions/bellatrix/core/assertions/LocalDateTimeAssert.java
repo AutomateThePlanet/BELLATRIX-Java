@@ -37,7 +37,8 @@ public class LocalDateTimeAssert {
         }
 
     }
-    public static void areEqual(LocalDateTime expectedDate, LocalDateTime actualDate, Duration expectedDelta, String exceptionMessage)  throws Exception {
+
+    public static void areEqual(LocalDateTime expectedDate, LocalDateTime actualDate, Duration expectedDelta, String exceptionMessage) {
         if (expectedDate == null && actualDate == null){
             return;
         }
@@ -54,7 +55,7 @@ public class LocalDateTimeAssert {
         {
             var message = exceptionMessage+"\nExpected Date: "+expectedDate+", Actual Date: "+actualDate+
                     " \nExpected Delta: "+expectedDelta+", Actual Delta: "+actualDelta;
-            throw new Exception(message);
+            throw new RuntimeException(message);
         }
     }
     private static Duration getTimeSpanDeltaByType(DateTimeDeltaType type, int count)  throws UnsupportedOperationException {

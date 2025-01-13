@@ -16,37 +16,45 @@ package solutions.bellatrix.web.components.contracts;
 import lombok.SneakyThrows;
 import solutions.bellatrix.core.utilities.SingletonFactory;
 import solutions.bellatrix.web.components.WebComponent;
+import solutions.bellatrix.web.components.enums.CssStyle;
+import solutions.bellatrix.web.services.JavaScriptService;
 import solutions.bellatrix.web.validations.ComponentValidator;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Objects;
 import java.util.function.Supplier;
 
 public interface ComponentStyle extends Component {
-    String getStyle();
+    default String getStyle() {
+        return getAttribute("style");
+    }
 
-    @SneakyThrows
+    default String getStyle(CssStyle style) {
+        return getWrappedElement().getCssValue(style.toString());
+    }
+
     default void validateStyleIs(String value) {
         ComponentValidator.defaultValidateAttributeIs((WebComponent)this, this::getStyle, value, "style");
     }
 
-    @SneakyThrows
     default void validateStyleIsSet() {
         ComponentValidator.defaultValidateAttributeIsSet((WebComponent)this, this::getStyle, "style");
     }
 
-    @SneakyThrows
     default void validateStyleNotSet() {
         ComponentValidator.defaultValidateAttributeNotSet((WebComponent)this, this::getStyle, "style");
     }
 
-    @SneakyThrows
     default void validateStyleContains(String value) {
         ComponentValidator.defaultValidateAttributeContains((WebComponent)this, this::getStyle, value, "style");
     }
 
-    @SneakyThrows
     default void validateStyleNotContains(String value) {
         ComponentValidator.defaultValidateAttributeNotContains((WebComponent)this, this::getStyle, value, "style");
+    }
+
+    default void validateStyle(CssStyle style, String expectedValue) {
+        ComponentValidator.defaultValidateAttributeIs((WebComponent)this, () -> this.getStyle(style), expectedValue, style.toString());
     }
 }

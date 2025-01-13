@@ -18,9 +18,11 @@ import lombok.Setter;
 import org.openqa.selenium.Platform;
 
 import java.util.HashMap;
+import java.util.Objects;
 
 public class BrowserConfiguration {
     @Setter @Getter private Browser browser;
+    @Setter @Getter private DeviceName deviceName;
     @Setter @Getter private Lifecycle lifecycle;
     @Setter @Getter private int height;
     @Setter @Getter private int width;
@@ -39,6 +41,21 @@ public class BrowserConfiguration {
         driverOptions = new HashMap<>();
     }
 
+    public BrowserConfiguration(Browser browser, DeviceName deviceName, Lifecycle browserBehavior) {
+        this.deviceName = deviceName;
+        this.browser = browser;
+        this.lifecycle = browserBehavior;
+        driverOptions = new HashMap<>();
+    }
+
+    public BrowserConfiguration(Browser browser, Lifecycle browserBehavior, Integer browserWidth, Integer browserHeight) {
+        this.browser = browser;
+        this.lifecycle = browserBehavior;
+        this.width = browserWidth;
+        this.height = browserHeight;
+        driverOptions = new HashMap<>();
+    }
+
     public BrowserConfiguration(Browser browser, Lifecycle browserBehavior, String testName) {
         this.browser = browser;
         this.lifecycle = browserBehavior;
@@ -46,25 +63,28 @@ public class BrowserConfiguration {
         driverOptions = new HashMap<>();
     }
 
+    public BrowserConfiguration(DeviceName deviceName, Lifecycle browserBehavior, String testName) {
+        this.browser = Browser.CHROME_MOBILE;
+        this.lifecycle = browserBehavior;
+        this.testName = testName;
+        this.deviceName = deviceName;
+        driverOptions = new HashMap<>();
+    }
+
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof BrowserConfiguration))
-            return false;
-        BrowserConfiguration that = (BrowserConfiguration)obj;
-        if (!(this.getBrowser() == null ? that.getBrowser() == null : this.getBrowser().equals(that.getBrowser())))
-            return false;
-        if (!(this.getLifecycle() == null ? that.getLifecycle() == null : this.getLifecycle().equals(that.getLifecycle())))
-            return false;
-        if (this.getHeight() != that.getHeight())
-            return false;
-        if (this.getWidth() != that.getWidth())
-            return false;
-        if (this.getVersion() != that.getVersion())
-            return false;
-        if (!(this.getPlatform() == null ? that.getPlatform() == null : this.getPlatform().equals(that.getPlatform())))
-            return false;
-        if (!(this.getDriverOptions() == null ? that.getDriverOptions() == null : this.getDriverOptions().equals(that.getDriverOptions())))
-            return false;
-        return true;
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+
+        BrowserConfiguration that = (BrowserConfiguration) obj;
+
+        if (!Objects.equals(this.getBrowser(), that.getBrowser())) return false;
+        if (!Objects.equals(this.deviceName, that.deviceName)) return false;
+        if (!Objects.equals(this.getLifecycle(), that.getLifecycle())) return false;
+        if (this.getHeight() != that.getHeight()) return false;
+        if (this.getWidth() != that.getWidth()) return false;
+        if (this.getVersion() != that.getVersion()) return false;
+        if (!Objects.equals(this.getPlatform(), that.getPlatform())) return false;
+        return Objects.equals(this.getDriverOptions(), that.getDriverOptions());
     }
 }

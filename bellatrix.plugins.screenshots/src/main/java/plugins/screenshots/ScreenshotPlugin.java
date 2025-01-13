@@ -29,19 +29,20 @@ public abstract class ScreenshotPlugin extends Plugin {
         this.isEnabled = isEnabled;
     }
 
-    protected abstract void takeScreenshot(String screenshotSaveDir, String filename);
+    public abstract String takeScreenshot(String fileName);
+    public abstract String takeScreenshot(String screenshotSaveDir, String filename);
     protected abstract String getOutputFolder();
     protected abstract String getUniqueFileName(String testName);
 
     @Override
     @SneakyThrows
-    public void preAfterTest(TestResult testResult, Method memberInfo) {
+    public void postAfterTest(TestResult testResult, Method memberInfo, Throwable failedTestException) {
         if (!isEnabled || testResult == TestResult.SUCCESS)
             return;
 
         var screenshotSaveDir = getOutputFolder();
         var screenshotFileName = getUniqueFileName(memberInfo.getName());
-        takeScreenshot(screenshotSaveDir, screenshotFileName);
-        SCREENSHOT_GENERATED.broadcast(new ScreenshotPluginEventArgs(Paths.get(screenshotSaveDir, screenshotFileName).toString()));
+        var image = takeScreenshot(screenshotSaveDir, screenshotFileName);
+        SCREENSHOT_GENERATED.broadcast(new ScreenshotPluginEventArgs(Paths.get(screenshotSaveDir, screenshotFileName).toString(), screenshotFileName, image));
     }
 }

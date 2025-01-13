@@ -14,29 +14,24 @@
 package solutions.bellatrix.web.components.contracts;
 
 import lombok.SneakyThrows;
-import solutions.bellatrix.core.utilities.SingletonFactory;
 import solutions.bellatrix.web.components.WebComponent;
 import solutions.bellatrix.web.validations.ComponentValidator;
-
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.function.Supplier;
 
 public interface ComponentValue extends Component {
     String getValue();
 
     @SneakyThrows
-    default void validateTargetIs(String value) {
+    default void validateValueIs(String value) {
         ComponentValidator.defaultValidateAttributeIs((WebComponent)this, this::getValue, value, "value");
     }
 
     @SneakyThrows
-    default void validateTargetIsContains(String value) {
+    default void validateValueContains(String value) {
         ComponentValidator.defaultValidateAttributeContains((WebComponent)this, this::getValue, value, "value");
     }
 
     @SneakyThrows
-    default void validateTargetNotContains(String value) {
+    default void validateValueNotContains(String value) {
         ComponentValidator.defaultValidateAttributeNotContains((WebComponent)this, this::getValue, value, "value");
     }
 }
