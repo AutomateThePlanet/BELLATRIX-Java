@@ -23,16 +23,13 @@ public abstract class ObjectFactory {
         Constructor<T> suitableConstructor = getSuitableConstructor(clazz, args);
 
         if (suitableConstructor.isVarArgs() && args.length < suitableConstructor.getParameterCount()) {
-            return (T)suitableConstructor.newInstance(addNullVarArgs(args));
+            return (T)suitableConstructor.newInstance(addNullVarArgsTo(args));
         } else
             return (T)suitableConstructor.newInstance(args);
     }
 
-    private static Object[] addNullVarArgs(Object... args) {
-        var newArgs = Arrays.copyOf(args, args.length + 1);
-        newArgs[newArgs.length - 1] = null;
-
-        return newArgs;
+    private static Object[] addNullVarArgsTo(Object... args) {
+        return Arrays.copyOf(args, args.length + 1);
     }
 
     private static <T> Constructor<T> getSuitableConstructor(Class<T> clazz, Object[] arguments) throws ConstructorNotFoundException {
