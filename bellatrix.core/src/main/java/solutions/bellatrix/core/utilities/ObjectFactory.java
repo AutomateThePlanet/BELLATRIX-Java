@@ -16,28 +16,30 @@ package solutions.bellatrix.core.utilities;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Parameter;
 import java.util.Arrays;
 
 public abstract class ObjectFactory {
-    protected static <T> T newInstance(Class<T> clazz, Object... initargs) throws InvocationTargetException, InstantiationException, IllegalAccessException, ConstructorNotFoundException {
-        var args = new Ref<Object[]>(initargs);
-
+    protected static <T> T newInstance(Class<T> clazz, Object... args) throws InvocationTargetException, InstantiationException, IllegalAccessException, ConstructorNotFoundException {
         Constructor<T> suitableConstructor = getSuitableConstructor(clazz, args);
 
-        return (T)suitableConstructor.newInstance(args.value);
+        if (suitableConstructor.isVarArgs() && args.length < suitableConstructor.getParameterCount()) {
+            return (T)suitableConstructor.newInstance(addNullVarArgs(args));
+        } else
+            return (T)suitableConstructor.newInstance(args);
     }
 
-    private static <T> Constructor<T> getSuitableConstructor(Class<T> clazz, Ref<Object[]> argumentsReference) throws ConstructorNotFoundException {
-        var argumentTypes = getArgumentTypes(argumentsReference.value);
+    private static Object[] addNullVarArgs(Object... args) {
+        var newArgs = Arrays.copyOf(args, args.length + 1);
+        newArgs[newArgs.length - 1] = null;
+
+        return newArgs;
+    }
+
+    private static <T> Constructor<T> getSuitableConstructor(Class<T> clazz, Object[] arguments) throws ConstructorNotFoundException {
+        var argumentTypes = getArgumentTypes(arguments);
 
         try {
-            var match = findMatch(clazz, argumentTypes);
-            if (match.isVarArgs() && match.getParameterCount() != argumentsReference.value.length) {
-                argumentsReference.value = Arrays.copyOf(argumentsReference.value, argumentsReference.value.length + 1);
-                argumentsReference.value[argumentsReference.value.length - 1] = null;
-            }
-            return (Constructor<T>)match;
+            return (Constructor<T>)findConstructorMatch(clazz, argumentTypes);
         } catch (NoSuchMethodException e) {
             var types = new StringBuilder();
             for (var type : argumentTypes) {
@@ -59,46 +61,27 @@ public abstract class ObjectFactory {
         return argumentTypes;
     }
 
-    private static <T> Constructor<T> findMatch(Class clazz, Class[] argumentTypes) throws NoSuchMethodException {
-        var constructors = clazz.getDeclaredConstructors();
+    private static <T> Constructor<T> findConstructorMatch(Class clazz, Class[] argumentTypes) throws NoSuchMethodException {
+        Constructor<T> constructor = null;
+        try {
+            constructor = clazz.getDeclaredConstructor(argumentTypes);
+        } catch (NoSuchMethodException e) {
+            constructor = findVarArgsConstructor(clazz, argumentTypes);
+        }
 
-        for (var constructor : constructors) {
-            var parameters = constructor.getParameters();
+        return constructor;
+    }
 
-            if (parametersMatch(parameters, argumentTypes)) {
-                return constructor;
-            }
+    private static <T> Constructor<T> findVarArgsConstructor(Class clazz, Class[] argumentTypes) throws NoSuchMethodException {
+        try {
+            var args = Arrays.copyOf(argumentTypes, argumentTypes.length + 1);
+            args[args.length - 1] = Object[].class;
+
+            return clazz.getDeclaredConstructor(args);
+        } catch (NoSuchMethodException ignored) {
         }
 
         throw new NoSuchMethodException("No matching constructor found for the provided argument types.");
-    }
-
-    private static boolean parametersMatch(Parameter[] parameters, Class[] argumentTypes) {
-        if (bothNullOrEmpty(parameters, argumentTypes)) {
-            return true;
-        } else if (lengthMismatch(parameters, argumentTypes)) {
-            return false;
-        }
-
-        for (int i = 0; i < parameters.length; i++) {
-            if (parameters[i].isVarArgs() && argumentTypes.length == i) {
-                return true;
-            }
-
-            if (argumentTypes.length - 1 < i || !argumentTypes[i].equals(parameters[i].getType())) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    private static boolean lengthMismatch(Parameter[] parameters, Class[] argumentTypes) {
-        return (argumentTypes == null) || (parameters.length < argumentTypes.length);
-    }
-
-    private static boolean bothNullOrEmpty(Parameter[] parameters, Class[] argumentTypes) {
-        return (argumentTypes == null || argumentTypes.length == 0) && (parameters == null || parameters.length == 0);
     }
 
     public static class ConstructorNotFoundException extends Exception {
@@ -106,7 +89,7 @@ public abstract class ObjectFactory {
             super(("""
                     No constructor with the specified parameters was found.
                     Given argument count: %d
-                    Given argument types: %s
+                    Given argument types:\n%s
                     """).formatted(numberOfTypes, types));
         }
         public ConstructorNotFoundException() {
