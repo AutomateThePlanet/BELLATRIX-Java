@@ -20,14 +20,12 @@ import solutions.bellatrix.web.services.ComponentCreateService;
 import java.lang.reflect.ParameterizedType;
 
 public abstract class WebSection<MapT extends PageMap, AssertionsT extends PageAsserts<MapT>> {
-    @Deprecated
     public BrowserService browser() {
-        return new BrowserService();
+        return app().browser();
     }
 
-    @Deprecated
     public ComponentCreateService create() {
-        return new ComponentCreateService();
+        return app().create();
     }
 
     public App app() {
