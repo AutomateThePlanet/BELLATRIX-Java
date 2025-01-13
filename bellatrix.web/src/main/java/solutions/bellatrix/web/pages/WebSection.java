@@ -16,6 +16,7 @@ package solutions.bellatrix.web.pages;
 import solutions.bellatrix.web.services.App;
 import solutions.bellatrix.web.services.BrowserService;
 import solutions.bellatrix.web.services.ComponentCreateService;
+import solutions.bellatrix.web.services.JavaScriptService;
 
 import java.lang.reflect.ParameterizedType;
 
@@ -26,6 +27,10 @@ public abstract class WebSection<MapT extends PageMap, AssertionsT extends PageA
 
     public ComponentCreateService create() {
         return app().create();
+    }
+
+    public JavaScriptService javaScript() {
+        return app().script();
     }
 
     public App app() {

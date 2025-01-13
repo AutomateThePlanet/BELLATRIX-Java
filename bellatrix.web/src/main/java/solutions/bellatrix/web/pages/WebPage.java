@@ -32,11 +32,7 @@ public abstract class WebPage<MapT extends PageMap, AssertsT extends PageAsserts
     }
 
     public JavaScriptService javaScript() {
-        return new JavaScriptService();
-    }
-
-    public ComponentCreateService create() {
-        return new ComponentCreateService();
+        return app().script();
     }
 
     public App app() {
