@@ -13,18 +13,28 @@
 
 package solutions.bellatrix.web.pages;
 
+import solutions.bellatrix.web.services.App;
 import solutions.bellatrix.web.services.BrowserService;
 import solutions.bellatrix.web.services.ComponentCreateService;
+import solutions.bellatrix.web.services.JavaScriptService;
 
 import java.lang.reflect.ParameterizedType;
 
 public abstract class WebSection<MapT extends PageMap, AssertionsT extends PageAsserts<MapT>> {
     public BrowserService browser() {
-        return new BrowserService();
+        return app().browser();
     }
 
     public ComponentCreateService create() {
-        return new ComponentCreateService();
+        return app().create();
+    }
+
+    public JavaScriptService javaScript() {
+        return app().script();
+    }
+
+    public App app() {
+        return new App();
     }
 
     public MapT map() {
