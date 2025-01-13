@@ -160,7 +160,6 @@ public class DriverService {
             var url = getUrl(gridSettings.getUrl());
             driver = new RemoteWebDriver(new URI(url).toURL(), caps);
         } catch (Exception e) {
-            ;
             DebugInformation.printStackTrace(e);
         }
 
@@ -240,7 +239,6 @@ public class DriverService {
 
         switch (BROWSER_CONFIGURATION.get().getBrowser()) {
             case CHROME -> {
-                //WebDriverManager.chromedriver().setup();
                 var chromeOptions = new ChromeOptions();
                 addDriverOptions(chromeOptions);
                 chromeOptions.addArguments("--log-level=3", "--remote-allow-origins=*");
