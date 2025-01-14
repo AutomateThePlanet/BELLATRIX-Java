@@ -16,15 +16,24 @@ package solutions.bellatrix.web.pages;
 import solutions.bellatrix.core.infrastructure.PageObjectModel;
 import solutions.bellatrix.web.services.BrowserService;
 import solutions.bellatrix.web.services.ComponentCreateService;
+import solutions.bellatrix.web.services.JavaScriptService;
 
 import java.lang.reflect.ParameterizedType;
 
 public abstract class WebSection<MapT extends PageMap, AssertionsT extends PageAsserts<MapT>> implements PageObjectModel<MapT, AssertionsT> {
     public BrowserService browser() {
-        return new BrowserService();
+        return app().browser();
     }
 
     public ComponentCreateService create() {
-        return new ComponentCreateService();
+        return app().create();
+    }
+
+    public JavaScriptService javaScript() {
+        return app().script();
+    }
+
+    public App app() {
+        return new App();
     }
 }
