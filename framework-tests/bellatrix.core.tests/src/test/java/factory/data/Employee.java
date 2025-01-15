@@ -1,13 +1,11 @@
 package factory.data;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter @Setter
+@Getter @Setter @NoArgsConstructor
 public class Employee {
-    public Employee() {
-    }
-
     public Employee(String order, String firstName, String lastName, String businessEmail, String personalEmail, Object... additionalData) {
         this.order = order;
         this.firstName = firstName;
