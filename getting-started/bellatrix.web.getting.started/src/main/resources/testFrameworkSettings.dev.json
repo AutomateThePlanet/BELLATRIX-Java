@@ -4,7 +4,7 @@
   },
   "webSettings": {
     "baseUrl": "http://demos.bellatrix.solutions/",
-    "executionType":"regular",
+   "executionType":"regular",
     "defaultBrowser": "chrome",
     "defaultLifeCycle": "restart everytime time",
     "artificialDelayBeforeAction": "0",
