@@ -13,14 +13,13 @@
 
 package solutions.bellatrix.web.pages;
 
+import solutions.bellatrix.core.infrastructure.PageObjectModel;
 import solutions.bellatrix.web.services.App;
 import solutions.bellatrix.web.services.BrowserService;
 import solutions.bellatrix.web.services.ComponentCreateService;
 import solutions.bellatrix.web.services.JavaScriptService;
 
-import java.lang.reflect.ParameterizedType;
-
-public abstract class WebSection<MapT extends PageMap, AssertionsT extends PageAsserts<MapT>> {
+public abstract class WebSection<MapT extends PageMap, AssertionsT extends PageAsserts<MapT>> implements PageObjectModel<MapT, AssertionsT> {
     public BrowserService browser() {
         return app().browser();
     }
@@ -35,23 +34,5 @@ public abstract class WebSection<MapT extends PageMap, AssertionsT extends PageA
 
     public App app() {
         return new App();
-    }
-
-    public MapT map() {
-        try {
-            var elementsClass = (Class<MapT>)((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[0];
-            return elementsClass.getDeclaredConstructor().newInstance();
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-    public AssertionsT asserts() {
-        try {
-            var assertionsClass = (Class<AssertionsT>)((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[1];
-            return assertionsClass.getDeclaredConstructor().newInstance();
-        } catch (Exception e) {
-            return null;
-        }
     }
 }
