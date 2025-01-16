@@ -74,21 +74,26 @@ public class ProductPurchaseTests extends WebTest {
         cartPage.asserts().totalPrice("114.00€");
         cartPage.clickProceedToCheckout();
 
-        var purchaseInfo = new PurchaseInfo();
-//        purchaseInfo.setEmail("info@berlinspaceflowers.com");
-//        purchaseInfo.setFirstName("Anton");
-//        purchaseInfo.setLastName("Angelov");
-//        purchaseInfo.setCompany("Space Flowers");
-//        purchaseInfo.setCountry("Germany");
-//        purchaseInfo.setAddress1("1 Willi Brandt Avenue Tiergarten");
-//        purchaseInfo.setAddress2("Lützowplatz 17");
-//        purchaseInfo.setCity("Berlin");
-//        purchaseInfo.setZip("10115");
-//        purchaseInfo.setPhone("+498888999281");
+        var purchaseInfo = getPurchaseInfo();
 
         var checkoutPage = app().createPage(CheckoutPage.class);
         checkoutPage.fillBillingInfo(purchaseInfo);
         checkoutPage.asserts().orderReceived();
+    }
+
+    private static PurchaseInfo getPurchaseInfo() {
+        var purchaseInfo = new PurchaseInfo();
+        purchaseInfo.setEmail("info@berlinspaceflowers.com");
+        purchaseInfo.setFirstName("Anton");
+        purchaseInfo.setLastName("Angelov");
+        purchaseInfo.setCompany("Space Flowers");
+        purchaseInfo.setCountry("Germany");
+        purchaseInfo.setAddress1("1 Willi Brandt Avenue Tiergarten");
+        purchaseInfo.setAddress2("Lützowplatz 17");
+        purchaseInfo.setCity("Berlin");
+        purchaseInfo.setZip("10115");
+        purchaseInfo.setPhone("+498888999281");
+        return purchaseInfo;
     }
 
     @Test
@@ -103,18 +108,7 @@ public class ProductPurchaseTests extends WebTest {
         cartPage.asserts().totalPrice("355.00€");
         cartPage.clickProceedToCheckout();
 
-        var purchaseInfo = new PurchaseInfo();
-//        purchaseInfo.setEmail("info@berlinspaceflowers.com");
-//        purchaseInfo.setFirstName("Anton");
-//        purchaseInfo.setLastName("Angelov");
-//        purchaseInfo.setCompany("Space Flowers");
-//        purchaseInfo.setCountry("Germany");
-//        purchaseInfo.setAddress1("1 Willi Brandt Avenue Tiergarten");
-//        purchaseInfo.setAddress2("Lützowplatz 17");
-//        purchaseInfo.setCity("Berlin");
-//        purchaseInfo.setZip("10115");
-//        purchaseInfo.setPhone("+498888999281");
-
+        var purchaseInfo = getPurchaseInfo();
         var checkoutPage = app().createPage(CheckoutPage.class);
         checkoutPage.fillBillingInfo(purchaseInfo);
         checkoutPage.asserts().orderReceived();
