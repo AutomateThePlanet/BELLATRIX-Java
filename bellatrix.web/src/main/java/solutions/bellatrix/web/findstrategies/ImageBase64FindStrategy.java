@@ -9,6 +9,7 @@ import solutions.bellatrix.core.utilities.SingletonFactory;
 import solutions.bellatrix.plugins.opencv.Base64Encodable;
 import solutions.bellatrix.plugins.opencv.OpenCvService;
 import solutions.bellatrix.web.services.App;
+import solutions.bellatrix.web.services.JavaScriptService;
 
 import java.util.List;
 import java.util.Objects;
@@ -47,7 +48,7 @@ public class ImageBase64FindStrategy extends FindStrategy {
         public List<WebElement> findElements(SearchContext context) {
             var location = OpenCvService.getLocation(base64EncodedImage, false);
             Log.info("Coordinates located: %s", location.toString());
-            return Objects.requireNonNull(SingletonFactory.getInstance(App.class)).script().<List<WebElement>>genericExecute("return document.elementsFromPoint(%s, %s);".formatted(location.x, location.y));
+            return SingletonFactory.getInstance(JavaScriptService.class).<List<WebElement>>genericExecute("return document.elementsFromPoint(%s, %s);".formatted(location.x, location.y));
         }
 
         public String toString() {
