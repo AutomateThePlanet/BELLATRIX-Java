@@ -43,11 +43,12 @@ import java.util.function.Function;
 import java.util.logging.Level;
 
 public class BrowserService extends WebService {
-    private final JavascriptExecutor javascriptExecutor;
-
     public BrowserService() {
         super();
-        javascriptExecutor = (JavascriptExecutor)getWrappedDriver();
+    }
+
+    public JavascriptExecutor getJavascriptExecutor() {
+        return (JavascriptExecutor)getWrappedDriver();
     }
 
     public String getPageSource() {
@@ -144,36 +145,36 @@ public class BrowserService extends WebService {
     }
 
     public void clearSessionStorage() {
-        ((JavascriptExecutor)getWrappedDriver()).executeScript("sessionStorage.clear()");
+        getJavascriptExecutor().executeScript("sessionStorage.clear()");
     }
 
     public void removeItemFromLocalStorage(String item) {
-        ((JavascriptExecutor)getWrappedDriver()).executeScript(String.format("window.localStorage.removeItem('%s');", item));
+        getJavascriptExecutor().executeScript(String.format("window.localStorage.removeItem('%s');", item));
     }
 
     public void scrollToBottom() {
-        ((JavascriptExecutor)getWrappedDriver()).executeScript("window.scrollTo(0, document.body.scrollHeight)");
+        getJavascriptExecutor().executeScript("window.scrollTo(0, document.body.scrollHeight)");
     }
 
     public void scrollToTop() {
-        ((JavascriptExecutor)getWrappedDriver()).executeScript("window.scrollTo(0, 0)");
+        getJavascriptExecutor().executeScript("window.scrollTo(0, 0)");
     }
 
     public boolean isItemPresentInLocalStorage(String item) {
-        return !(((JavascriptExecutor)getWrappedDriver()).executeScript(String.format("return window.localStorage.getItem('%s');", item)) == null);
+        return !(getJavascriptExecutor().executeScript(String.format("return window.localStorage.getItem('%s');", item)) == null);
     }
 
     public String getItemFromLocalStorage(String key) {
-        return (String)((JavascriptExecutor)getWrappedDriver()).executeScript(String.format("return window.localStorage.getItem('%s');", key));
+        return (String)getJavascriptExecutor().executeScript(String.format("return window.localStorage.getItem('%s');", key));
     }
 
 
     public void setItemInLocalStorage(String item, String value) {
-        ((JavascriptExecutor)getWrappedDriver()).executeScript(String.format("window.localStorage.setItem('%s','%s');", item, value));
+        getJavascriptExecutor().executeScript(String.format("window.localStorage.setItem('%s','%s');", item, value));
     }
 
     public void clearLocalStorage() {
-        ((JavascriptExecutor)getWrappedDriver()).executeScript("localStorage.clear()");
+        getJavascriptExecutor().executeScript("localStorage.clear()");
     }
 
     public List<LogEntry> getBrowserLogs() {
@@ -218,17 +219,16 @@ public class BrowserService extends WebService {
     }
 
     public List<String> getRequestEntries(String partialUrl) {
-        return (List<String>)((JavascriptExecutor)getWrappedDriver()).executeScript(String.format("return window.performance.getEntriesByType('resource').filter(x => x.name.indexOf('%s') >= 0).map(y => y.name);", partialUrl));
+        return (List<String>)getJavascriptExecutor().executeScript(String.format("return window.performance.getEntriesByType('resource').filter(x => x.name.indexOf('%s') >= 0).map(y => y.name);", partialUrl));
     }
 
     public void waitForAjax() {
         long ajaxTimeout = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getWaitForAjaxTimeout();
         long sleepInterval = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getSleepInterval();
-        var javascriptExecutor = (JavascriptExecutor)getWrappedDriver();
         AtomicInteger ajaxConnections = new AtomicInteger();
         try {
             Wait.retry(() -> {
-                        var numberOfAjaxConnections = javascriptExecutor.executeScript("return !isNaN(window.$openHTTPs) ? window.$openHTTPs : null");
+                        var numberOfAjaxConnections = getJavascriptExecutor().executeScript("return !isNaN(window.$openHTTPs) ? window.$openHTTPs : null");
                         if (Objects.nonNull(numberOfAjaxConnections)) {
                             ajaxConnections.set(Integer.parseInt(numberOfAjaxConnections.toString()));
                             if (ajaxConnections.get() > 0) {
@@ -254,7 +254,7 @@ public class BrowserService extends WebService {
     }
 
     private void monkeyPatchXMLHttpRequest() {
-        var numberOfAjaxConnections = javascriptExecutor.executeScript(("return !isNaN(window.$openHTTPs) ? window.$openHTTPs : null"));
+        var numberOfAjaxConnections = getJavascriptExecutor().executeScript(("return !isNaN(window.$openHTTPs) ? window.$openHTTPs : null"));
 
         if (Objects.isNull(numberOfAjaxConnections)) {
             var script = "(function() {" +
@@ -271,7 +271,7 @@ public class BrowserService extends WebService {
                             "}" +
                         "})();";
 
-            javascriptExecutor.executeScript(script);
+            getJavascriptExecutor().executeScript(script);
         }
     }
 
@@ -281,7 +281,7 @@ public class BrowserService extends WebService {
         var webDriverWait = new WebDriverWait(getWrappedDriver(), Duration.ofSeconds(ajaxTimeout + additionalTimeoutInSeconds), Duration.ofSeconds(sleepInterval));
         webDriverWait.until(d -> {
             String script = String.format("return performance.getEntriesByType('resource').filter(item => item.initiatorType == 'xmlhttprequest' && item.name.toLowerCase().includes('%s'))[0] !== undefined;", requestPartialUrl);
-            boolean result = (boolean)javascriptExecutor.executeScript(script);
+            boolean result = (boolean)getJavascriptExecutor().executeScript(script);
             return result;
         });
     }
@@ -383,8 +383,8 @@ public class BrowserService extends WebService {
         long waitUntilReadyTimeout = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getWaitUntilReadyTimeout();
         long sleepInterval = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getSleepInterval();
         var webDriverWait = new WebDriverWait(getWrappedDriver(), Duration.ofSeconds(waitUntilReadyTimeout), Duration.ofSeconds(sleepInterval));
-        webDriverWait.until(d -> javascriptExecutor.executeScript("return document.querySelector('[data-reactroot]') !== null"));
-        webDriverWait.until(d -> javascriptExecutor.executeScript("return window.performance.timing.loadEventEnd > 0"));
+        webDriverWait.until(d -> getJavascriptExecutor().executeScript("return document.querySelector('[data-reactroot]') !== null"));
+        webDriverWait.until(d -> getJavascriptExecutor().executeScript("return window.performance.timing.loadEventEnd > 0"));
     }
 
     // TODO Refactor the other methods to reuse this one
@@ -414,7 +414,7 @@ public class BrowserService extends WebService {
         long waitForJavaScriptAnimationsTimeout = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getWaitForJavaScriptAnimationsTimeout();
         long sleepInterval = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getSleepInterval();
         var webDriverWait = new WebDriverWait(getWrappedDriver(), Duration.ofSeconds(waitForJavaScriptAnimationsTimeout), Duration.ofSeconds(sleepInterval));
-        webDriverWait.until(d -> (boolean)javascriptExecutor.executeScript("return jQuery && jQuery(':animated').length === 0"));
+        webDriverWait.until(d -> (boolean)getJavascriptExecutor().executeScript("return jQuery && jQuery(':animated').length === 0"));
     }
 
     public void waitForPartialUrl(String partialUrl) {
@@ -432,11 +432,10 @@ public class BrowserService extends WebService {
     }
 
     public void waitForRequest(String partialUrl) {
-        var javascriptExecutor = (JavascriptExecutor)getWrappedDriver();
         String script = String.format("return performance.getEntriesByType('resource').filter(item => item.name.toLowerCase().includes('%s'))[0] !== undefined;", partialUrl);
 
         try {
-            waitUntil(e -> (boolean)javascriptExecutor.executeScript(script));
+            waitUntil(e -> (boolean)getJavascriptExecutor().executeScript(script));
         } catch (TimeoutException exception) {
             throw new TimeoutException(String.format("The expected request with URL '%s' is not loaded!", partialUrl));
         }
@@ -447,9 +446,8 @@ public class BrowserService extends WebService {
             if(ProxyServer.get() != null) {
                 ProxyServer.waitForResponse(getWrappedDriver(), partialUrl, HttpMethod.GET, 0);
             } else {
-                var javascriptExecutor = (JavascriptExecutor)getWrappedDriver();
                 String script = "return performance.getEntriesByType('resource').filter(item => item.name.toLowerCase().includes('" + partialUrl.toLowerCase() + "'))[0] !== undefined;";
-                waitUntil(e -> (boolean)javascriptExecutor.executeScript(script));
+                waitUntil(e -> (boolean)getJavascriptExecutor().executeScript(script));
             }
         } catch (Exception exception) {
             Log.error("The expected request with URL '%s' is not loaded!", partialUrl);
@@ -465,15 +463,15 @@ public class BrowserService extends WebService {
         long sleepInterval = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getSleepInterval();
         var webDriverWait = new WebDriverWait(getWrappedDriver(), Duration.ofSeconds(angularTimeout), Duration.ofSeconds(sleepInterval));
 
-        String isAngular5 = (String)javascriptExecutor.executeScript("return getAllAngularRootElements()[0].attributes['ng-version']");
+        String isAngular5 = (String)getJavascriptExecutor().executeScript("return getAllAngularRootElements()[0].attributes['ng-version']");
         if (StringUtils.isBlank(isAngular5)) {
-            webDriverWait.until(d -> (boolean)javascriptExecutor.executeScript("return window.getAllAngularTestabilities().findIndex(x=>!x.isStable()) === -1"));
+            webDriverWait.until(d -> (boolean)getJavascriptExecutor().executeScript("return window.getAllAngularTestabilities().findIndex(x=>!x.isStable()) === -1"));
         } else {
-            boolean isAngularDefined = (boolean)javascriptExecutor.executeScript("return window.angular === undefined");
+            boolean isAngularDefined = (boolean)getJavascriptExecutor().executeScript("return window.angular === undefined");
             if (!((boolean)isAngularDefined)) {
-                boolean isAngularInjectorUnDefined = (boolean)javascriptExecutor.executeScript("return angular.element(document).injector() === undefined");
+                boolean isAngularInjectorUnDefined = (boolean)getJavascriptExecutor().executeScript("return angular.element(document).injector() === undefined");
                 if (!isAngularInjectorUnDefined) {
-                    webDriverWait.until(d -> (boolean)javascriptExecutor.executeScript("return angular.element(document).injector().get('$http').pendingRequests.length === 0"));
+                    webDriverWait.until(d -> (boolean)getJavascriptExecutor().executeScript("return angular.element(document).injector().get('$http').pendingRequests.length === 0"));
                 }
             }
         }

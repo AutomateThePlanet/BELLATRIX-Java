@@ -18,16 +18,17 @@ import solutions.bellatrix.core.utilities.DebugInformation;
 import solutions.bellatrix.web.components.WebComponent;
 
 public class JavaScriptService extends WebService {
-    private final JavascriptExecutor javascriptExecutor;
-
     public JavaScriptService() {
         super();
-        javascriptExecutor = (JavascriptExecutor)getWrappedDriver();
+    }
+
+    public JavascriptExecutor getJavascriptExecutor() {
+        return (JavascriptExecutor)getWrappedDriver();
     }
 
     public <T> T genericExecute(String script, Object... args) {
         try {
-            T result = (T)javascriptExecutor.executeScript(script, args);
+            T result = (T)getJavascriptExecutor().executeScript(script, args);
             return result;
         } catch (Exception ex) {
             DebugInformation.printStackTrace(ex);
@@ -37,7 +38,7 @@ public class JavaScriptService extends WebService {
 
     public Object execute(String script) {
         try {
-            var result = javascriptExecutor.executeScript(script);
+            var result = getJavascriptExecutor().executeScript(script);
             return result;
         } catch (Exception ex) {
             DebugInformation.printStackTrace(ex);
@@ -54,7 +55,7 @@ public class JavaScriptService extends WebService {
 
     public String execute(String script, Object... args) {
         try {
-            var result = (String)javascriptExecutor.executeScript(script, args);
+            var result = (String)getJavascriptExecutor().executeScript(script, args);
             return result;
         } catch (Exception ex) {
             DebugInformation.printStackTrace(ex);
@@ -69,7 +70,7 @@ public class JavaScriptService extends WebService {
 
     public String execute(String script, WebElement nativeElement) {
         try {
-            var result = (String)javascriptExecutor.executeScript(script, nativeElement);
+            var result = (String)getJavascriptExecutor().executeScript(script, nativeElement);
             return result;
         } catch (NoSuchSessionException | NoSuchWindowException ex) {
             throw ex;
