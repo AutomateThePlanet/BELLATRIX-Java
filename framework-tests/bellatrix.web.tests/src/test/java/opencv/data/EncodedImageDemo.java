@@ -8,6 +8,14 @@ public enum EncodedImageDemo implements Base64Encodable {
      */
     FALCON_9("falcon9", ImageInBase64.falcon9, 50, 25),
     /**
+     * <img src={@value ImageInBase64#searchInput}/>
+     */
+    SEARCH_INPUT("searchInput", ImageInBase64.searchInput),
+    /**
+     * <img src={@value ImageInBase64#falconResults}/>
+     */
+    FALCON_RESULTS("falconResults", ImageInBase64.falconResults),
+    /**
      * <img src={@value ImageInBase64#falcon9BackButton}/>
      */
     FALCON_9_BACK_BUTTON("falcon9BackButton", ImageInBase64.falcon9BackButton),

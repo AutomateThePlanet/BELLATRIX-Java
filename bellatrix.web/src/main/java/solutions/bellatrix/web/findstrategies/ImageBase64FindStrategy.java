@@ -4,12 +4,14 @@ import lombok.Getter;
 import org.openqa.selenium.By;
 import org.openqa.selenium.SearchContext;
 import org.openqa.selenium.WebElement;
+import solutions.bellatrix.core.utilities.Log;
 import solutions.bellatrix.core.utilities.SingletonFactory;
 import solutions.bellatrix.plugins.opencv.Base64Encodable;
 import solutions.bellatrix.plugins.opencv.OpenCvService;
-import solutions.bellatrix.web.services.JavaScriptService;
+import solutions.bellatrix.web.services.App;
 
 import java.util.List;
+import java.util.Objects;
 
 @Getter
 public class ImageBase64FindStrategy extends FindStrategy {
@@ -44,8 +46,8 @@ public class ImageBase64FindStrategy extends FindStrategy {
         @Override
         public List<WebElement> findElements(SearchContext context) {
             var location = OpenCvService.getLocation(base64EncodedImage, false);
-
-            return SingletonFactory.getInstance(JavaScriptService.class).<List<WebElement>>genericExecute("return document.elementsFromPoint(%s, %s);".formatted(location.x, location.y));
+            Log.info("Coordinates located: %s", location.toString());
+            return Objects.requireNonNull(SingletonFactory.getInstance(App.class)).script().<List<WebElement>>genericExecute("return document.elementsFromPoint(%s, %s);".formatted(location.x, location.y));
         }
 
         public String toString() {
