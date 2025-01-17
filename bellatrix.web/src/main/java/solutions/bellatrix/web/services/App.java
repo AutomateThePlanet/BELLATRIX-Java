@@ -22,31 +22,31 @@ public class App implements AutoCloseable {
     private boolean disposed = false;
 
     public NavigationService navigate() {
-        return new NavigationService();
+        return SingletonFactory.getInstance(NavigationService.class);
     }
 
     public BrowserService browser() {
-        return new BrowserService();
+        return SingletonFactory.getInstance(BrowserService.class);
     }
 
     public CookiesService cookies() {
-        return new CookiesService();
+        return SingletonFactory.getInstance(CookiesService.class);
     }
 
     public DialogService dialogs() {
-        return new DialogService();
+        return SingletonFactory.getInstance(DialogService.class);
     }
 
     public JavaScriptService script() {
-        return new JavaScriptService();
+        return SingletonFactory.getInstance(JavaScriptService.class);
     }
 
     public ComponentCreateService create() {
-        return new ComponentCreateService();
+        return SingletonFactory.getInstance(ComponentCreateService.class);
     }
 
     public ComponentWaitService waitFor() {
-        return new ComponentWaitService();
+        return SingletonFactory.getInstance(ComponentWaitService.class);
     }
 
     public void addDriverOptions(String key, String value) {
