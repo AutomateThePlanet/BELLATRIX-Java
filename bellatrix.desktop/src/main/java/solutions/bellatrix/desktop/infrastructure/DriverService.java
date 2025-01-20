@@ -89,6 +89,9 @@ public class DriverService {
         caps.setCapability("platform", Platform.WIN10);
         caps.setCapability("version", "latest");
 
+        if (ConfigurationService.get(DesktopSettings.class).getAllowImageFindStrategies())
+            caps.setCapability("use-plugins", "images");
+
         WindowsDriver driver = null;
         try {
             driver = new WindowsDriver(new URL(gridSettings.getUrl()), caps);
@@ -106,6 +109,10 @@ public class DriverService {
         caps.setCapability("deviceName", "WindowsPC");
         caps.setCapability("platformName", "Windows");
         caps.setCapability("appWorkingDir", new File(getAppConfiguration().getAppPath()).getParent());
+
+        if (ConfigurationService.get(DesktopSettings.class).getAllowImageFindStrategies())
+            caps.setCapability("use-plugins", "images");
+
         addDriverOptions(caps);
         var driver = new WindowsDriver(new URL(serviceUrl), caps);
 

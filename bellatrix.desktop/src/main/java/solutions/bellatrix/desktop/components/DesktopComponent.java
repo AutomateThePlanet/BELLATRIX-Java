@@ -34,6 +34,7 @@ import solutions.bellatrix.desktop.services.AppService;
 import solutions.bellatrix.desktop.services.ComponentCreateService;
 import solutions.bellatrix.desktop.services.ComponentWaitService;
 import solutions.bellatrix.desktop.waitstrategies.*;
+import solutions.bellatrix.plugins.opencv.Base64Encodable;
 
 import java.awt.Dimension;
 import java.util.ArrayList;
@@ -247,6 +248,11 @@ public class DesktopComponent extends LayoutComponentValidationsBuilder implemen
         return create(componentClass, new AutomationIdFindStrategy(automationId));
     }
 
+    public <TComponent extends DesktopComponent> TComponent createByImage(Class<TComponent> componentClass, Base64Encodable encodedImage) {
+        return create(componentClass, new ImageBase64FindStrategy(encodedImage));
+    }
+
+
     public <TComponent extends DesktopComponent> List<TComponent> createAllByAccessibilityId(Class<TComponent> componentClass, String accessibilityId) {
         return createAll(componentClass, new AccessibilityIdFindStrategy(accessibilityId));
     }
@@ -273,6 +279,10 @@ public class DesktopComponent extends LayoutComponentValidationsBuilder implemen
 
     public <TComponent extends DesktopComponent> List<TComponent> createAllByIdContaining(Class<TComponent> componentClass, String idContaining) {
         return createAll(componentClass, new IdContainingFindStrategy(idContaining));
+    }
+
+    public <TComponent extends DesktopComponent> List<TComponent> createAllByImage(Class<TComponent> componentClass, Base64Encodable encodedImage) {
+        return createAll(componentClass, new ImageBase64FindStrategy(encodedImage));
     }
 
     protected <TComponent extends DesktopComponent, TFindStrategy extends FindStrategy> TComponent create(Class<TComponent> componentClass, TFindStrategy findStrategy) {
