@@ -107,6 +107,9 @@ public class DriverService {
         addGridOptions(options, gridSettings);
         caps.setCapability(gridSettings.getOptionsName(), options);
 
+        if (ConfigurationService.get(AndroidSettings.class).getAllowImageFindStrategies())
+            caps.setCapability("use-plugins", "images");
+
         AndroidDriver driver = null;
         try {
             driver = new AndroidDriver(new URL(gridSettings.getUrl()), caps);
@@ -132,6 +135,9 @@ public class DriverService {
             caps.setCapability(AndroidMobileCapabilityType.APP_PACKAGE, getAppConfiguration().getAppPackage());
             caps.setCapability(AndroidMobileCapabilityType.APP_ACTIVITY, getAppConfiguration().getAppActivity());
         }
+
+        if (ConfigurationService.get(AndroidSettings.class).getAllowImageFindStrategies())
+            caps.setCapability("use-plugins", "images");
 
         addDriverConfigOptions(caps);
         addCustomDriverOptions(caps);

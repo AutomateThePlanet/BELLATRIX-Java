@@ -41,4 +41,6 @@ public class AndroidSettings {
 
     @Getter @Setter private Boolean videosOnFailEnabled;
     @Getter @Setter private String videosSaveLocation;
+
+    @Getter @Setter private Boolean allowImageFindStrategies;
 }
