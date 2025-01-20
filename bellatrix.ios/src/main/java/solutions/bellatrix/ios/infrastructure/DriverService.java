@@ -88,6 +88,9 @@ public class DriverService {
         caps.setCapability("platform", Platform.WIN10);
         caps.setCapability("version", "latest");
 
+        if (ConfigurationService.get(IOSSettings.class).getAllowImageFindStrategies())
+            caps.setCapability("use-plugins", "images");
+
         IOSDriver driver = null;
         try {
             driver = new IOSDriver(new URL(gridSettings.getUrl()), caps);
@@ -111,6 +114,9 @@ public class DriverService {
         } else {
             caps.setCapability(MobileCapabilityType.APP, getAppConfiguration().getAppPath());
         }
+
+        if (ConfigurationService.get(IOSSettings.class).getAllowImageFindStrategies())
+            caps.setCapability("use-plugins", "images");
 
         addDriverOptions(caps);
         var driver = new IOSDriver(new URL(serviceUrl), caps);

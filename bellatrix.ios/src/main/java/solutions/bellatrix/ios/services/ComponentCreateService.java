@@ -17,6 +17,7 @@ import solutions.bellatrix.core.utilities.InstanceFactory;
 import solutions.bellatrix.ios.components.IOSComponent;
 import solutions.bellatrix.ios.findstrategies.*;
 import solutions.bellatrix.ios.infrastructure.DriverService;
+import solutions.bellatrix.plugins.opencv.Base64Encodable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,6 +69,10 @@ public class ComponentCreateService extends MobileService {
         return by(componentClass, new AccessibilityIdFindStrategy(accessibilityId));
     }
 
+    public <TComponent extends IOSComponent> TComponent byImage(Class<TComponent> componentClass, Base64Encodable encodedImage) {
+        return by(componentClass, new ImageBase64FindStrategy(encodedImage));
+    }
+
     public <TComponent extends IOSComponent> List<TComponent> allById(Class<TComponent> componentClass, String id) {
         return allBy(componentClass, new IdFindStrategy(id));
     }
@@ -102,6 +107,10 @@ public class ComponentCreateService extends MobileService {
 
     public <TComponent extends IOSComponent> List<TComponent> allByAccessibilityId(Class<TComponent> componentClass, String accessibilityId) {
         return allBy(componentClass, new AccessibilityIdFindStrategy(accessibilityId));
+    }
+
+    public <TComponent extends IOSComponent> List<TComponent> allByImage(Class<TComponent> componentClass, Base64Encodable encodedImage) {
+        return allBy(componentClass, new ImageBase64FindStrategy(encodedImage));
     }
 
     public <TComponent extends IOSComponent, TFindStrategy extends FindStrategy> TComponent by(Class<TComponent> componentClass, TFindStrategy findStrategy) {
