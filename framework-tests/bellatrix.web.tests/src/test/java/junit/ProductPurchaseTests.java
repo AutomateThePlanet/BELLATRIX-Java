@@ -99,7 +99,6 @@ public class ProductPurchaseTests extends WebTest {
         checkoutPage.asserts().orderReceived();
     }
 
-
     private static PurchaseInfo getPurchaseInfo() {
         var purchaseInfo = new PurchaseInfo();
         purchaseInfo.setEmail("info@berlinspaceflowers.com");
