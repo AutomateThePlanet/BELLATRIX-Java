@@ -57,21 +57,27 @@ public class PlaywrightService {
     public static WrappedBrowser start(BrowserConfiguration configuration) {
         return PLAYWRIGHT_MANAGER.get().start(configuration);
     }
+    
     public static void restartBrowserContext() {
         PLAYWRIGHT_MANAGER.get().restartBrowserContext();
     }
+
     public static void close() {
         PLAYWRIGHT_MANAGER.get().close();
     }
+
     public static WrappedBrowser wrappedBrowser() {
         return PLAYWRIGHT_MANAGER.get().wrappedBrowser;
     }
+
     public static void wrappedBrowser(WrappedBrowser driver) {
         PLAYWRIGHT_MANAGER.get().wrappedBrowser = driver;
     }
+
     public static BrowserConfiguration browserConfiguration() {
         return PLAYWRIGHT_MANAGER.get().browserConfiguration;
     }
+
     private static class PlaywrightManager {
         private PlaywrightManager() {
         }
@@ -81,6 +87,7 @@ public class PlaywrightService {
         private WrappedBrowser wrappedBrowser;
         private boolean isBuildNameSet = false;
         private String buildName;
+
         public WrappedBrowser start(BrowserConfiguration configuration) {
             if (disposed) {
                 browserConfiguration(configuration);
@@ -97,6 +104,7 @@ public class PlaywrightService {
             }
             else return wrappedBrowser();
         }
+
         public void close() {
             if (disposed) {
                 return;
@@ -115,10 +123,12 @@ public class PlaywrightService {
             }
             disposed = true;
         }
+
         public void restartBrowserContext() {
             DebugInformation.debugInfo("RESTARTING CONTEXT");
             wrappedBrowser().changeContext(intializeBrowserContext());
         }
+
         private WrappedBrowser initializeBrowserWrapperRegularMode() {
             wrappedBrowser(new WrappedBrowser(playwright));
             wrappedBrowser().setBrowser(initializeBrowserRegularMode());
@@ -126,6 +136,7 @@ public class PlaywrightService {
             wrappedBrowser().setCurrentPage(wrappedBrowser().getCurrentContext().newPage());
             return wrappedBrowser();
         }
+
         private WrappedBrowser initializeBrowserWrapperGridMode(GridSettings gridSettings) {
             wrappedBrowser(new WrappedBrowser(playwright));
             wrappedBrowser().setBrowser(initializeBrowserGridMode(gridSettings));
@@ -133,6 +144,7 @@ public class PlaywrightService {
             wrappedBrowser().setCurrentPage(wrappedBrowser().getCurrentContext().newPage());
             return wrappedBrowser();
         }
+
         private Browser initializeBrowserRegularMode() {
             BrowserTypes browserTypes = browserConfiguration().getBrowserTypes();
             switch (browserTypes) {
@@ -219,6 +231,7 @@ public class PlaywrightService {
                 default -> throw new IllegalArgumentException("Unsupported.");
             }
         }
+
         private BrowserContext intializeBrowserContext() {
             Browser.NewContextOptions options = getContextOptions();
             var context = browser().newContext(options);
@@ -227,6 +240,7 @@ public class PlaywrightService {
             }
             return context;
         }
+
         // ToDo Browser Context options
         private Browser.NewContextOptions getContextOptions() {
             Browser.NewContextOptions options = new Browser.NewContextOptions();
@@ -246,12 +260,14 @@ public class PlaywrightService {
             // ToDo setProxy
             return options;
         }
+
         private void startRecordingHttpTraffic(BrowserContext context) {
             Traffic.getRequestContainers().add(new Requests(context));
             context.onRequest(x -> Traffic.getContextSpecificRequests(context).add(x));
             Traffic.getResponseContainers().add(new Responses(context));
             context.onResponse(x -> Traffic.getContextSpecificResponses(context).add(x));
         }
+
         private Browser initializeBrowserGridMode(GridSettings gridSettings) {
             var timeout = Settings.timeout().inMilliseconds().getConnectToRemoteGridTimeout();
             var gridUrl = gridSettings.getUrl();
@@ -294,6 +310,7 @@ public class PlaywrightService {
                 return null;
             }
         }
+
         private void changeWindowSize() {
             try {
                 if (browserConfiguration().getHeight() != 0 && browserConfiguration().getWidth() != 0) {
@@ -301,6 +318,7 @@ public class PlaywrightService {
                 }
             } catch (Exception ignored) {}
         }
+
         private String getBuildName() {
             if (!isBuildNameSet) {
                 buildName = System.getProperty("buildName");
@@ -323,30 +341,38 @@ public class PlaywrightService {
             }
             return buildName;
         }
+
         public BrowserConfiguration browserConfiguration() {
             return browserConfiguration;
         }
+
         public BrowserConfiguration browserConfiguration(BrowserConfiguration configuration) {
             browserConfiguration = configuration;
             return browserConfiguration();
         }
+
         public WrappedBrowser wrappedBrowser() {
             return wrappedBrowser;
         }
+
         public WrappedBrowser wrappedBrowser(WrappedBrowser wrappedBrowser) {
             this.wrappedBrowser = wrappedBrowser;
             return this.wrappedBrowser;
         }
+
         private Browser browser() {
             return wrappedBrowser().getBrowser();
         }
+
         private Browser browser(Browser browser) {
             wrappedBrowser().setBrowser(browser);
             return browser();
         }
+
         private BrowserContext context() {
             return wrappedBrowser().getCurrentContext();
         }
+
         private BrowserContext context(BrowserContext browserContext) {
             wrappedBrowser().setCurrentContext(browserContext);
             return context();
