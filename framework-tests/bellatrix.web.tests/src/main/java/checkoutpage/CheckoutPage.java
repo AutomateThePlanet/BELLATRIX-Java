@@ -25,15 +25,18 @@ public class CheckoutPage extends WebPage<Map, Asserts> {
         map().billingFirstName().setText(purchaseInfo.getFirstName());
         map().billingLastName().setText(purchaseInfo.getLastName());
         map().billingCompany().setText(purchaseInfo.getCompany());
-        map().billingCountryWrapper().click();
-        map().billingCountryFilter().setText(purchaseInfo.getCountry());
-        map().getCountryOptionByName(purchaseInfo.getCountry()).click();
+
         map().billingAddress1().setText(purchaseInfo.getAddress1());
         map().billingAddress2().setText(purchaseInfo.getAddress2());
         map().billingCity().setText(purchaseInfo.getCity());
         map().billingZip().setText(purchaseInfo.getZip());
         map().billingPhone().setText(purchaseInfo.getPhone());
         map().billingEmail().setText(purchaseInfo.getEmail());
+
+        map().billingCountryWrapper().click();
+        map().billingCountryFilter().setText(purchaseInfo.getCountry());
+        map().getCountryOptionByName(purchaseInfo.getCountry()).click();
+
         if (purchaseInfo.getShouldCreateAccount()) {
             map().createAccountCheckBox().check();
         }
