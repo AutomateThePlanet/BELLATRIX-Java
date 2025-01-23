@@ -18,7 +18,7 @@ import io.visual_regression_tracker.sdk_java.TestRunStatus;
 import lombok.experimental.UtilityClass;
 import org.junit.jupiter.api.Assertions;
 import solutions.bellatrix.core.configuration.ConfigurationService;
-import solutions.bellatrix.core.utilities.PageObjectModel;
+import solutions.bellatrix.core.infrastructure.PageObjectModel;
 
 @UtilityClass
 public class VisualRegressionAssertions {
