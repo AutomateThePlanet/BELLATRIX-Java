@@ -13,7 +13,7 @@
 
 package solutions.bellatrix.web.pages;
 
-import solutions.bellatrix.core.utilities.PageObjectModel;
+import solutions.bellatrix.core.infrastructure.PageObjectModel;
 import solutions.bellatrix.web.infrastructure.Browser;
 import solutions.bellatrix.web.services.App;
 import solutions.bellatrix.web.services.BrowserService;
@@ -25,15 +25,15 @@ import java.lang.reflect.ParameterizedType;
 
 public abstract class WebPage<MapT extends PageMap, AssertsT extends PageAsserts<MapT>> implements PageObjectModel<MapT, AssertsT> {
     public BrowserService browser() {
-        return new BrowserService();
-    }
-
-    public JavaScriptService javaScript() {
-        return new JavaScriptService();
+        return app().browser();
     }
 
     public ComponentCreateService create() {
-        return new ComponentCreateService();
+        return app().create();
+    }
+
+    public JavaScriptService javaScript() {
+        return app().script();
     }
 
     public App app() {

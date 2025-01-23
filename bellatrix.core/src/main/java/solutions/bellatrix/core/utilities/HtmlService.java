@@ -93,6 +93,7 @@ public class HtmlService {
         }
     }
 
+    @Deprecated
     public static String convertAbsoluteXpathToCss(String xpath) {
         String cssSelector = xpath.replace(NODE, CHILD_COMBINATOR);
 
@@ -115,6 +116,7 @@ public class HtmlService {
         return semiFinalLocator;
     }
 
+    @Deprecated
     public static String removeDanglingChildCombinatorsFromCss(String css) {
         // convert to array by splitting the css by the child combinator
         // and remove from that array empty steps

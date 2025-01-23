@@ -37,7 +37,7 @@ public class ShadowRootCreateService extends RelativeCreateService {
 
         wrappedBrowser().getCurrentPage().waitForLoadState();
 
-        TComponent newComponent = ShadowDomService.createFromShadowRoot((ShadowRoot)baseComponent, componentClass, findStrategy);
+        TComponent newComponent = ShadowDomService.createFromShadowRoot(componentClass, (ShadowRoot)baseComponent, findStrategy);
 
         CREATED.broadcast(new ComponentActionEventArgs((WebComponent)baseComponent));
 
@@ -50,7 +50,7 @@ public class ShadowRootCreateService extends RelativeCreateService {
 
         wrappedBrowser().getCurrentPage().waitForLoadState();
 
-        List<TComponent> componentList = ShadowDomService.createAllFromShadowRoot((ShadowRoot)baseComponent, componentClass, findStrategy);
+        List<TComponent> componentList = ShadowDomService.createAllFromShadowRoot(componentClass, (ShadowRoot)baseComponent, findStrategy);
 
         CREATED.broadcast(new ComponentActionEventArgs((WebComponent)baseComponent));
 

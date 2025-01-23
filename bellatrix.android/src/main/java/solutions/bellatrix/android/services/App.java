@@ -14,10 +14,9 @@
 package solutions.bellatrix.android.services;
 
 import solutions.bellatrix.android.infrastructure.DriverService;
-import solutions.bellatrix.android.pages.AndroidPage;
-import solutions.bellatrix.core.utilities.SingletonFactory;
+import solutions.bellatrix.core.infrastructure.BellatrixApp;
 
-public class App implements AutoCloseable {
+public class App implements BellatrixApp {
     private boolean disposed = false;
 
     public AppService appService() {
@@ -52,12 +51,9 @@ public class App implements AutoCloseable {
         return new WebServiceFacade();
     }
 
+    @Override
     public void addDriverOptions(String key, String value) {
         DriverService.addDriverConfigOptions(key, value);
-    }
-
-    public <TPage extends AndroidPage> TPage create(Class<TPage> pageOf, Object... args) {
-        return SingletonFactory.getInstance(pageOf, args);
     }
 
     @Override

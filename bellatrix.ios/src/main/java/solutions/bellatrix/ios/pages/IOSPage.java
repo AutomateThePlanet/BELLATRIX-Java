@@ -13,7 +13,7 @@
 
 package solutions.bellatrix.ios.pages;
 
-import solutions.bellatrix.core.utilities.PageObjectModel;
+import solutions.bellatrix.core.infrastructure.PageObjectModel;
 import solutions.bellatrix.ios.services.AppService;
 import solutions.bellatrix.ios.services.ComponentCreateService;
 

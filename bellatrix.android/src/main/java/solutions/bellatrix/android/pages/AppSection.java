@@ -14,7 +14,7 @@
 package solutions.bellatrix.android.pages;
 
 import solutions.bellatrix.android.services.App;
-import solutions.bellatrix.core.utilities.PageObjectModel;
+import solutions.bellatrix.core.infrastructure.PageObjectModel;
 
 import java.lang.reflect.ParameterizedType;
 

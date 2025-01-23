@@ -13,12 +13,12 @@
 
 package solutions.bellatrix.web.services;
 
+import solutions.bellatrix.core.infrastructure.BellatrixApp;
 import solutions.bellatrix.core.utilities.SingletonFactory;
 import solutions.bellatrix.web.infrastructure.DriverService;
 import solutions.bellatrix.web.pages.WebPage;
-import solutions.bellatrix.web.pages.WebSection;
 
-public class App implements AutoCloseable {
+public class App implements BellatrixApp {
     private boolean disposed = false;
 
     public NavigationService navigate() {
@@ -49,6 +49,7 @@ public class App implements AutoCloseable {
         return new ComponentWaitService();
     }
 
+    @Override
     public void addDriverOptions(String key, String value) {
         DriverService.addDriverOptions(key, value);
     }
@@ -59,24 +60,6 @@ public class App implements AutoCloseable {
         page.open();
 
         return page;
-    }
-
-    public <TPage extends WebPage> TPage createPage(Class<TPage> pageOf, Object... args) {
-        return SingletonFactory.getInstance(pageOf, args);
-    }
-
-    public <TSection extends WebSection> TSection createSection(Class<TSection> pageOf, Object... args) {
-        return SingletonFactory.getInstance(pageOf, args);
-    }
-
-    /**
-     * @deprecated
-     * This method is obsolete, use createPage or createSection instead.
-     * <p> Use {@link App#createPage(Class, Object...)} instead.
-     */
-    @Deprecated
-    public <TPage extends WebPage> TPage create(Class<TPage> pageOf, Object... args) {
-        return SingletonFactory.getInstance(pageOf, args);
     }
 
     @Override

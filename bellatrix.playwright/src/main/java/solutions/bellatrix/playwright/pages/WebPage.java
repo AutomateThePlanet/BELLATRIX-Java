@@ -13,6 +13,7 @@
 
 package solutions.bellatrix.playwright.pages;
 
+import solutions.bellatrix.core.infrastructure.PageObjectModel;
 import solutions.bellatrix.core.utilities.InstanceFactory;
 import solutions.bellatrix.core.utilities.PageObjectModel;
 import solutions.bellatrix.core.utilities.SingletonFactory;

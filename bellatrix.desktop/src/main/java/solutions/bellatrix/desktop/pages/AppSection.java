@@ -13,7 +13,7 @@
 
 package solutions.bellatrix.desktop.pages;
 
-import solutions.bellatrix.core.utilities.PageObjectModel;
+import solutions.bellatrix.core.infrastructure.PageObjectModel;
 import solutions.bellatrix.desktop.services.AppService;
 import solutions.bellatrix.desktop.services.ComponentCreateService;
 
