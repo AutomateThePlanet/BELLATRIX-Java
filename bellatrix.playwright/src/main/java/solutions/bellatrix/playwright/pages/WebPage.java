@@ -14,7 +14,6 @@
 package solutions.bellatrix.playwright.pages;
 
 import solutions.bellatrix.core.infrastructure.PageObjectModel;
-import solutions.bellatrix.core.utilities.InstanceFactory;
 import solutions.bellatrix.core.utilities.SingletonFactory;
 import solutions.bellatrix.playwright.services.App;
 import solutions.bellatrix.playwright.services.BrowserService;
