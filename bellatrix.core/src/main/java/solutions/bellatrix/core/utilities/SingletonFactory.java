@@ -55,6 +55,14 @@ public class SingletonFactory extends ObjectFactory {
             mapHolder.get().put(classKey, instance);
     }
 
+    public static boolean containsKey(Class<?> classOf) {
+        return mapHolder.get().containsKey(classOf);
+    }
+
+    public static boolean containsValue(Object object) {
+        return mapHolder.get().containsValue(object);
+    }
+    
     public static void clear() {
         mapHolder.get().clear();
     }
