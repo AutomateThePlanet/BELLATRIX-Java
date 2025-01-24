@@ -32,7 +32,7 @@ public class AppConfiguration {
     @Getter private String androidVersion;
     @Setter @Getter private String testName;
     @Getter private final Boolean isMobileWebExecution;
-    @Getter HashMap<String, String> appiumOptions;
+    @Getter HashMap<String, Object> appiumOptions;
 
     @Override
     public boolean equals(Object o) {

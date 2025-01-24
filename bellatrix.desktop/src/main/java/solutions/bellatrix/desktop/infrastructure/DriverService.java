@@ -14,12 +14,11 @@
 package solutions.bellatrix.desktop.infrastructure;
 
 import io.appium.java_client.windows.WindowsDriver;
+import io.appium.java_client.windows.options.WindowsOptions;
 import lombok.SneakyThrows;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.MutableCapabilities;
-import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.remote.DesiredCapabilities;
 import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.core.utilities.DebugInformation;
 import solutions.bellatrix.desktop.configuration.DesktopSettings;
@@ -34,7 +33,7 @@ import java.util.HashMap;
 public class DriverService {
     private static final ThreadLocal<Boolean> DISPOSED;
     private static final ThreadLocal<AppConfiguration> APP_CONFIGURATION;
-    private static final ThreadLocal<HashMap<String, String>> CUSTOM_DRIVER_OPTIONS;
+    private static final ThreadLocal<HashMap<String, Object>> CUSTOM_DRIVER_OPTIONS;
     private static final ThreadLocal<WindowsDriver> WRAPPED_DRIVER;
 
     static {
@@ -46,7 +45,7 @@ public class DriverService {
         DISPOSED.set(false);
     }
 
-    public static HashMap<String, String> getCustomDriverOptions() {
+    public static HashMap<String, Object> getCustomDriverOptions() {
         return CUSTOM_DRIVER_OPTIONS.get();
     }
 
@@ -85,9 +84,9 @@ public class DriverService {
     }
 
     private static WindowsDriver initializeDriverGridMode(GridSettings gridSettings) {
-        var caps = new DesiredCapabilities();
-        caps.setCapability("platform", Platform.WIN10);
-        caps.setCapability("version", "latest");
+        var caps = new WindowsOptions();
+        caps.setApp(getAppConfiguration().getAppPath().replace("\\", "/"));
+        caps.setAppWorkingDir(new File(getAppConfiguration().getAppPath()).getParent());
 
         WindowsDriver driver = null;
         try {
@@ -101,11 +100,9 @@ public class DriverService {
 
     @SneakyThrows
     private static WindowsDriver initializeDriverRegularMode(String serviceUrl) {
-        var caps = new DesiredCapabilities();
-        caps.setCapability("app", getAppConfiguration().getAppPath());
-        caps.setCapability("deviceName", "WindowsPC");
-        caps.setCapability("platformName", "Windows");
-        caps.setCapability("appWorkingDir", new File(getAppConfiguration().getAppPath()).getParent());
+        var caps = new WindowsOptions();
+        caps.setApp(getAppConfiguration().getAppPath().replace("\\", "/"));
+        caps.setAppWorkingDir(new File(getAppConfiguration().getAppPath()).getParent());
         addDriverOptions(caps);
         var driver = new WindowsDriver(new URL(serviceUrl), caps);
 

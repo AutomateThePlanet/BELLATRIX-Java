@@ -13,7 +13,7 @@
 
 package solutions.bellatrix.android.services;
 
-import io.appium.java_client.android.Activity;
+import com.google.common.collect.ImmutableMap;
 import lombok.SneakyThrows;
 import org.openqa.selenium.ContextAware;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -23,7 +23,7 @@ import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.core.utilities.RuntimeInformation;
 
 import java.time.Duration;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.BooleanSupplier;
 
@@ -35,38 +35,60 @@ public class AppService extends MobileService {
     public void startActivity(
             String appPackage,
             String appActivity,
-            String appWaitPackage,
-            String appWaitActivity,
-            boolean stopApp) {
+            boolean shouldWait,
+            boolean stopApp
+    ) {
         try {
             getWrappedAndroidDriver().hideKeyboard();
         } catch (Exception ignore) {}
-        var activity = new Activity(appPackage, appActivity);
-        activity.setAppWaitActivity(appWaitActivity);
-        activity.setAppWaitPackage(appWaitPackage);
-        activity.setStopApp(stopApp);
-        getWrappedAndroidDriver().startActivity(activity);
+        var activity = ImmutableMap.of(
+                "package", appPackage,
+                "component", appActivity,
+                "wait", shouldWait,
+                "stop", stopApp
+        );
+
+        getWrappedAndroidDriver().execute("mobile: startActivity", activity);
     }
 
     public void startActivity(
             String appPackage,
-            String appActivity) {
-        var activity = new Activity(appPackage, appActivity);
-        getWrappedAndroidDriver().startActivity(activity);
+            String appActivity
+    ) {
+        var activity = ImmutableMap.of(
+                "package", appPackage,
+                "component", appActivity
+        );
+
+        getWrappedAndroidDriver().execute("mobile: startActivity", activity);
     }
 
-    public void startActivityWithIntent(String appPackage, String appActivity, String intentAction, String appWaitPackage, String appWaitActivity, String intentCategory, String intentFlags, String intentOptionalArgs, boolean stopApp) {
+    public void startActivityWithIntent(
+            String appPackage,
+            String appActivity,
+            String intentAction,
+            boolean shouldWait,
+            String intentCategory,
+            String intentFlags,
+            List<List<String>> intentOptionalArgs,
+            boolean stopApp
+    ) {
         try {
             getWrappedAndroidDriver().hideKeyboard();
         } catch (Exception ignore) {}
-        var activity = new Activity(appPackage, appActivity);
-        activity.setAppWaitActivity(appWaitActivity);
-        activity.setAppWaitPackage(appWaitPackage);
-        activity.setStopApp(stopApp);
-        activity.setIntentCategory(intentCategory);
-        activity.setIntentFlags(intentFlags);
-        activity.setOptionalIntentArguments(intentOptionalArgs);
-        getWrappedAndroidDriver().startActivity(activity);
+
+        var activity = ImmutableMap.of(
+                "package", appPackage,
+                "component", appActivity,
+                "action", intentAction,
+                "wait", shouldWait,
+                "categories", intentCategory,
+                "flags", intentFlags,
+                "extras", intentOptionalArgs,
+                "stop", stopApp
+        );
+
+        getWrappedAndroidDriver().execute("mobile: startActivity", activity);
     }
 
     public String getContext() {
@@ -157,7 +179,7 @@ public class AppService extends MobileService {
         var timeoutInterval = ConfigurationService.get(AndroidSettings.class).getTimeoutSettings().getImplicitWaitTimeout();
         var sleepInterval = ConfigurationService.get(AndroidSettings.class).getTimeoutSettings().getSleepInterval();
         var webDriverWait = new WebDriverWait(DriverService.getWrappedAndroidDriver(), Duration.ofSeconds(timeoutInterval), Duration.ofSeconds(sleepInterval));
-        webDriverWait.until(d ->{
+        webDriverWait.until(d -> {
             var contexts = ((ContextAware)getWrappedAndroidDriver()).getContextHandles();
             contexts.stream().forEach(c -> {
                 try {
