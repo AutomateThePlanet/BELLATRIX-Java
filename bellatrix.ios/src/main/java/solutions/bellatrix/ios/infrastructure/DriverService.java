@@ -29,7 +29,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Duration;
 import java.util.HashMap;
-import java.util.concurrent.TimeUnit;
 
 public class DriverService {
     private static final ThreadLocal<Boolean> DISPOSED;
@@ -143,8 +142,7 @@ public class DriverService {
         }
 
         if (WRAPPED_IOS_DRIVER.get() != null) {
-            WRAPPED_IOS_DRIVER.get().close();
-            CUSTOM_DRIVER_OPTIONS.get().clear();
+            WRAPPED_IOS_DRIVER.get().quit();
         }
 
         DISPOSED.set(true);

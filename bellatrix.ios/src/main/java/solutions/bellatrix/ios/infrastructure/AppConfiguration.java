@@ -52,6 +52,7 @@ public class AppConfiguration {
         }
 
         this.lifecycle = lifecycle;
+        this.isMobileWebExecution = false;
 
         appiumOptions = new HashMap<>();
     }
