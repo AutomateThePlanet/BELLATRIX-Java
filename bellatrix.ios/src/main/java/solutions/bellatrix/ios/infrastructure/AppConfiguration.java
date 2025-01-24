@@ -26,7 +26,7 @@ public class AppConfiguration {
     @Getter private String deviceName;
     @Getter private String iosVersion;
     @Getter private Boolean isMobileWebExecution;
-    @Getter HashMap<String, String> appiumOptions;
+    @Getter HashMap<String, Object> appiumOptions;
 
     public AppConfiguration(boolean isMobileWebExecution) {
         this.isMobileWebExecution = isMobileWebExecution;

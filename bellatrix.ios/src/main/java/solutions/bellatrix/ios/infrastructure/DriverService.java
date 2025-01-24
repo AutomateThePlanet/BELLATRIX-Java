@@ -33,7 +33,7 @@ import java.util.HashMap;
 public class DriverService {
     private static final ThreadLocal<Boolean> DISPOSED;
     private static final ThreadLocal<AppConfiguration> APP_CONFIGURATION;
-    private static final ThreadLocal<HashMap<String, String>> CUSTOM_DRIVER_OPTIONS;
+    private static final ThreadLocal<HashMap<String, Object>> CUSTOM_DRIVER_OPTIONS;
     private static final ThreadLocal<IOSDriver> WRAPPED_IOS_DRIVER;
 
     static {
@@ -45,7 +45,7 @@ public class DriverService {
         DISPOSED.set(false);
     }
 
-    public static HashMap<String, String> getCustomDriverOptions() {
+    public static HashMap<String, Object> getCustomDriverOptions() {
         return CUSTOM_DRIVER_OPTIONS.get();
     }
 
