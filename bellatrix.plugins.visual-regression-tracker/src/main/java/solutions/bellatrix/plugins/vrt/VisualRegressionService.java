@@ -77,8 +77,11 @@ public class VisualRegressionService {
     public static String takeSnapshot(String name) {
         var screenshotPlugin = SingletonFactory.getInstance(ScreenshotPlugin.class);
         if (screenshotPlugin == null) {
-            throw new IllegalArgumentException("It seems that the screenshot plugin isn't registered by the 'ScreenshotPlugin.class' key inside SingletonFactory's map or isn't registered at all!");
+            throw new IllegalArgumentException("It seems that the screenshot plugin isn't registered by the 'ScreenshotPlugin.class' key inside SingletonFactory's map or isn't registered at all!\n" +
+                    "Check the BaseTest class of your project where the plugins are registered. Register the specific screenshot plugin implementation as the base ScreenshotPlugin.class.\n" +
+                    "for example: addPluginAs(ScreenshotPlugin.class, WebScreenshotPlugin.class);");
         }
+
 
         return screenshotPlugin.takeScreenshot(name);
     }
