@@ -2,15 +2,25 @@ package O25_openCv_image_actions;
 
 import O25_openCv_image_actions.data.enums.EncodedImageDemo;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.Dimension;
+import plugins.screenshots.ScreenshotPlugin;
 import solutions.bellatrix.web.components.ActionImage;
 import solutions.bellatrix.web.components.Button;
 import solutions.bellatrix.web.components.Span;
 import solutions.bellatrix.web.components.TextArea;
-import solutions.bellatrix.web.findstrategies.ImageBase64FindStrategy;
+import solutions.bellatrix.web.infrastructure.*;
 import solutions.bellatrix.web.infrastructure.junit.WebTest;
 
+
+@ExecutionBrowser(browser = Browser.CHROME, lifecycle = Lifecycle.RESTART_EVERY_TIME)
 public class OpenCvDemoTests extends WebTest {
+
+    @Override
+    protected void configure() {
+        addPlugin(BrowserLifecyclePlugin.class);
+        // Adding the screenshot plugin as a WebScreenshot plugin is required for the feature to work correctly
+        addPluginAs(ScreenshotPlugin.class, WebScreenshotPlugin.class);
+    }
+
     @Override
     public void beforeEach() throws Exception {
         super.beforeEach();
