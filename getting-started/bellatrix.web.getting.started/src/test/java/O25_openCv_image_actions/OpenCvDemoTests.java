@@ -10,7 +10,14 @@ import solutions.bellatrix.web.components.TextArea;
 import solutions.bellatrix.web.infrastructure.*;
 import solutions.bellatrix.web.infrastructure.junit.WebTest;
 
-
+/**
+ * Image locators are generated from real images using the tool: <a href="https://automatetheplanet.github.io/OpenCV-Image-Match-Finder/">OpenCV Image Match Finder</a>
+ * Where you can supply either:
+ *  - Image from disc
+ *  - Paste image from clipboard
+ *  - Drag and drop image
+ *  In addition it helps in troubleshooting where you want to check the confidence level of a match in a context image.
+ */
 @ExecutionBrowser(browser = Browser.CHROME, lifecycle = Lifecycle.RESTART_EVERY_TIME)
 public class OpenCvDemoTests extends WebTest {
 

@@ -1,5 +1,13 @@
 package O25_openCv_image_actions.data;
 
+/**
+ * Base64 data is generated from real images using the tool: <a href="https://automatetheplanet.github.io/OpenCV-Image-Match-Finder/">OpenCV Image Match Finder</a>
+ * Where you can supply either:
+ *  - Image from disc
+ *  - Paste image from clipboard
+ *  - Drag and drop image
+ *  In addition it helps in troubleshooting where you want to check the confidence level of a match in a context image.
+ */
 public class ImageInBase64 {
     /**
      * <img src={@value #falcon9BackButton}/>
