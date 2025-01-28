@@ -26,7 +26,7 @@ public class BrowserConfiguration {
     private int width;
     private int version;
     private String testName;
-    private final HashMap<String, String> playwrightOptions;
+    private final HashMap<String, Object> playwrightOptions;
 
     public BrowserConfiguration(BrowserTypes browserTypes, Lifecycle browserBehavior) {
         this.browserTypes = browserTypes;

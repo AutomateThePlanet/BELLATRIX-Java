@@ -18,10 +18,10 @@ import lombok.Setter;
 
 import java.util.HashMap;
 import java.util.List;
-
+@Getter @Setter
 public class GridSettings {
-    @Getter @Setter private String providerName;
-    @Getter @Setter private String optionsName;
-    @Getter @Setter private String url;
-    @Getter @Setter private List<HashMap<String, Object>> arguments;
+    private String providerName;
+    private String optionsName;
+    private String url;
+    private List<HashMap<String, Object>> arguments;
 }

@@ -13,8 +13,6 @@
 
 package solutions.bellatrix.desktop.findstrategies;
 
-import io.appium.java_client.AppiumBy;
-import io.appium.java_client.pagefactory.WindowsBy;
 import io.appium.java_client.windows.WindowsDriver;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;

@@ -13,14 +13,14 @@
 
 package solutions.bellatrix.playwright.pages;
 
-import solutions.bellatrix.core.utilities.InstanceFactory;
+import solutions.bellatrix.core.infrastructure.PageObjectModel;
 import solutions.bellatrix.core.utilities.SingletonFactory;
 import solutions.bellatrix.playwright.services.App;
 import solutions.bellatrix.playwright.services.BrowserService;
 import solutions.bellatrix.playwright.services.ComponentCreateService;
 import solutions.bellatrix.playwright.services.NavigationService;
 
-public abstract class WebPage<MapT extends PageMap, AssertionsT extends PageAsserts<MapT>> {
+public abstract class WebPage<MapT extends PageMap, AssertionsT extends PageAsserts<MapT>> implements PageObjectModel<MapT, AssertionsT> {
     public ComponentCreateService create() {
         return SingletonFactory.getInstance(ComponentCreateService.class);
     }
@@ -30,14 +30,6 @@ public abstract class WebPage<MapT extends PageMap, AssertionsT extends PageAsse
 
     public App app() {
         return SingletonFactory.getInstance(App.class);
-    }
-
-    public MapT map() {
-        return InstanceFactory.createByTypeParameter(this.getClass(), 0);
-    }
-
-    public AssertionsT asserts() {
-        return InstanceFactory.createByTypeParameter(this.getClass(), 1);
     }
 
     public NavigationService navigate() {

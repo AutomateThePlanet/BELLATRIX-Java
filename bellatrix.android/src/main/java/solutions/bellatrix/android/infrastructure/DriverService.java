@@ -13,13 +13,12 @@
 
 package solutions.bellatrix.android.infrastructure;
 
-
 import io.appium.java_client.android.AndroidDriver;
-import io.appium.java_client.remote.AndroidMobileCapabilityType;
-import io.appium.java_client.remote.MobileCapabilityType;
+import io.appium.java_client.android.options.UiAutomator2Options;
+import io.appium.java_client.remote.AutomationName;
+import io.appium.java_client.remote.MobilePlatform;
 import lombok.SneakyThrows;
 import org.openqa.selenium.MutableCapabilities;
-import org.openqa.selenium.remote.DesiredCapabilities;
 import solutions.bellatrix.android.configuration.AndroidSettings;
 import solutions.bellatrix.android.configuration.GridSettings;
 import solutions.bellatrix.core.configuration.ConfigurationService;
@@ -37,7 +36,7 @@ import java.util.Properties;
 public class DriverService {
     private static final ThreadLocal<Boolean> DISPOSED;
     private static final ThreadLocal<AppConfiguration> APP_CONFIGURATION;
-    private static final ThreadLocal<HashMap<String, String>> CUSTOM_DRIVER_OPTIONS;
+    private static final ThreadLocal<HashMap<String, Object>> CUSTOM_DRIVER_OPTIONS;
     private static final ThreadLocal<AndroidDriver> WRAPPED_ANDROID_DRIVER;
     private static boolean isBuildNameSet = false;
     private  static String buildName;
@@ -51,7 +50,7 @@ public class DriverService {
         DISPOSED.set(false);
     }
 
-    public static HashMap<String, String> getCustomDriverOptions() {
+    public static HashMap<String, Object> getCustomDriverOptions() {
         return CUSTOM_DRIVER_OPTIONS.get();
     }
 
@@ -89,22 +88,23 @@ public class DriverService {
     }
 
     private static AndroidDriver initializeDriverGridMode(GridSettings gridSettings, String testName) {
-        var caps = new DesiredCapabilities();
-        HashMap<String, Object> options = new HashMap<String, Object>();
-        options.put(MobileCapabilityType.PLATFORM_NAME, "Android");
-        options.put(MobileCapabilityType.PLATFORM_VERSION, getAppConfiguration().getAndroidVersion());
-        options.put(MobileCapabilityType.DEVICE_NAME, getAppConfiguration().getDeviceName());
+        var caps = new UiAutomator2Options();
+        caps.setPlatformName(MobilePlatform.ANDROID);
+        caps.setAutomationName(AutomationName.ANDROID_UIAUTOMATOR2);
+        caps.setPlatformVersion(getAppConfiguration().getAndroidVersion());
+        caps.setDeviceName(getAppConfiguration().getDeviceName());
 
         if (getAppConfiguration().getIsMobileWebExecution()) {
-            options.put(MobileCapabilityType.BROWSER_NAME, ConfigurationService.get(AndroidSettings.class).getDefaultBrowser());
+            caps.withBrowserName(ConfigurationService.get(AndroidSettings.class).getDefaultBrowser());
         } else {
-            options.put(MobileCapabilityType.APP, getAppConfiguration().getAppPath().replace("\\", "/"));
-            options.put(AndroidMobileCapabilityType.APP_PACKAGE, getAppConfiguration().getAppPackage());
-            options.put(AndroidMobileCapabilityType.APP_ACTIVITY, getAppConfiguration().getAppActivity());
+            caps.setApp(getAppConfiguration().getAppPath().replace("\\", "/"));
+            caps.setAppPackage(getAppConfiguration().getAppPackage());
+            caps.setAppActivity(getAppConfiguration().getAppActivity());
         }
 
-        options.put("name", testName);
+        var options = new HashMap<String, Object>();
         addGridOptions(options, gridSettings);
+        options.put("name", testName);
         caps.setCapability(gridSettings.getOptionsName(), options);
 
         if (ConfigurationService.get(AndroidSettings.class).getAllowImageFindStrategies())
@@ -123,17 +123,18 @@ public class DriverService {
 
     @SneakyThrows
     private static AndroidDriver initializeDriverRegularMode(String serviceUrl) {
-        var caps = new DesiredCapabilities();
-        caps.setCapability(MobileCapabilityType.PLATFORM_NAME, "Android");
-        caps.setCapability(MobileCapabilityType.PLATFORM_VERSION, getAppConfiguration().getAndroidVersion());
-        caps.setCapability(MobileCapabilityType.DEVICE_NAME, getAppConfiguration().getDeviceName());
+        var caps = new UiAutomator2Options();
+        caps.setPlatformName(MobilePlatform.ANDROID);
+        caps.setAutomationName(AutomationName.ANDROID_UIAUTOMATOR2);
+        caps.setPlatformVersion(getAppConfiguration().getAndroidVersion());
+        caps.setDeviceName(getAppConfiguration().getDeviceName());
 
         if (getAppConfiguration().getIsMobileWebExecution()) {
-            caps.setCapability(MobileCapabilityType.BROWSER_NAME, ConfigurationService.get(AndroidSettings.class).getDefaultBrowser());
+            caps.withBrowserName(ConfigurationService.get(AndroidSettings.class).getDefaultBrowser());
         } else {
-            caps.setCapability(MobileCapabilityType.APP, getAppConfiguration().getAppPath());
-            caps.setCapability(AndroidMobileCapabilityType.APP_PACKAGE, getAppConfiguration().getAppPackage());
-            caps.setCapability(AndroidMobileCapabilityType.APP_ACTIVITY, getAppConfiguration().getAppActivity());
+            caps.setApp(getAppConfiguration().getAppPath().replace("\\", "/"));
+            caps.setAppPackage(getAppConfiguration().getAppPackage());
+            caps.setAppActivity(getAppConfiguration().getAppActivity());
         }
 
         if (ConfigurationService.get(AndroidSettings.class).getAllowImageFindStrategies())
