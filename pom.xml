@@ -24,6 +24,7 @@
         <module>bellatrix.ios</module>
         <module>bellatrix.api</module>
         <!-- Framework Tests -->
+        <module>framework-tests/bellatrix.core.tests</module>
         <module>framework-tests/bellatrix.web.tests</module>
         <module>framework-tests/bellatrix.desktop.tests</module>
         <module>framework-tests/bellatrix.android.tests</module>

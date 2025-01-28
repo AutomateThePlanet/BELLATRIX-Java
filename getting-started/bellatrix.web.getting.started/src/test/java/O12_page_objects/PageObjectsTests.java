@@ -13,7 +13,7 @@ public class PageObjectsTests extends WebTest {
         var homePage = app().goTo(MainPage.class);
         homePage.addRocketToShoppingCart("Falcon 9");
 
-        var cartPage = app().create(CartPage.class);
+        var cartPage = app().createPage(CartPage.class);
 
         cartPage.applyCoupon("happybirthday");
         cartPage.increaseProductQuantity(1, 2);
@@ -33,7 +33,7 @@ public class PageObjectsTests extends WebTest {
         purchaseInfo.setEmail("info@bellatrix.solutions");
         purchaseInfo.setShouldCreateAccount(true);
 
-        var checkoutPage = app().create(CheckoutPage.class);
+        var checkoutPage = app().createPage(CheckoutPage.class);
         checkoutPage.fillBillingInfo(purchaseInfo);
         checkoutPage.map().checkPaymentsRadioButton().click();
     }

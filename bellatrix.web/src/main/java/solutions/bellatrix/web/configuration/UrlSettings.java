@@ -15,8 +15,8 @@ package solutions.bellatrix.web.configuration;
 
 import lombok.Getter;
 import lombok.Setter;
-
+@Getter @Setter
 public class UrlSettings {
-    @Getter @Setter private String shopUrl;
-    @Getter @Setter private String accountUrl;
+    private String shopUrl;
+    private String accountUrl;
 }

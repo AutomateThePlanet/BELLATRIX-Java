@@ -15,11 +15,11 @@ package solutions.bellatrix.ios.infrastructure;
 
 
 import io.appium.java_client.ios.IOSDriver;
-import io.appium.java_client.remote.MobileCapabilityType;
+import io.appium.java_client.ios.options.XCUITestOptions;
+import io.appium.java_client.remote.AutomationName;
+import io.appium.java_client.remote.MobilePlatform;
 import lombok.SneakyThrows;
 import org.openqa.selenium.MutableCapabilities;
-import org.openqa.selenium.Platform;
-import org.openqa.selenium.remote.DesiredCapabilities;
 import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.core.utilities.DebugInformation;
 import solutions.bellatrix.ios.configuration.GridSettings;
@@ -29,12 +29,11 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Duration;
 import java.util.HashMap;
-import java.util.concurrent.TimeUnit;
 
 public class DriverService {
     private static final ThreadLocal<Boolean> DISPOSED;
     private static final ThreadLocal<AppConfiguration> APP_CONFIGURATION;
-    private static final ThreadLocal<HashMap<String, String>> CUSTOM_DRIVER_OPTIONS;
+    private static final ThreadLocal<HashMap<String, Object>> CUSTOM_DRIVER_OPTIONS;
     private static final ThreadLocal<IOSDriver> WRAPPED_IOS_DRIVER;
 
     static {
@@ -46,7 +45,7 @@ public class DriverService {
         DISPOSED.set(false);
     }
 
-    public static HashMap<String, String> getCustomDriverOptions() {
+    public static HashMap<String, Object> getCustomDriverOptions() {
         return CUSTOM_DRIVER_OPTIONS.get();
     }
 
@@ -84,35 +83,34 @@ public class DriverService {
     }
 
     private static IOSDriver initializeDriverGridMode(GridSettings gridSettings) {
-        var caps = new DesiredCapabilities();
-        caps.setCapability("platform", Platform.WIN10);
-        caps.setCapability("version", "latest");
+        var caps = new XCUITestOptions();
+        caps.setPlatformName(MobilePlatform.IOS);
+        caps.setAutomationName(AutomationName.IOS_XCUI_TEST);
+        caps.setPlatformVersion(getAppConfiguration().getIosVersion());
+        caps.setDeviceName(getAppConfiguration().getDeviceName());
 
-        if (ConfigurationService.get(IOSSettings.class).getAllowImageFindStrategies())
-            caps.setCapability("use-plugins", "images");
-
-        IOSDriver driver = null;
         try {
-            driver = new IOSDriver(new URL(gridSettings.getUrl()), caps);
+            var driver = new IOSDriver(new URL(gridSettings.getUrl()), caps);
             solutions.bellatrix.web.infrastructure.DriverService.setWrappedDriver(driver);
+            return driver;
         } catch (MalformedURLException e) {
             DebugInformation.printStackTrace(e);
+            return null;
         }
-
-        return driver;
     }
 
     @SneakyThrows
     private static IOSDriver initializeDriverRegularMode(String serviceUrl) {
-        var caps = new DesiredCapabilities();
-        caps.setCapability(MobileCapabilityType.PLATFORM_NAME, "IOS");
-        caps.setCapability(MobileCapabilityType.PLATFORM_VERSION, getAppConfiguration().getIosVersion());
-        caps.setCapability(MobileCapabilityType.DEVICE_NAME, getAppConfiguration().getDeviceName());
+        var caps = new XCUITestOptions();
+        caps.setPlatformName(MobilePlatform.IOS);
+        caps.setAutomationName(AutomationName.IOS_XCUI_TEST);
+        caps.setPlatformVersion(getAppConfiguration().getIosVersion());
+        caps.setDeviceName(getAppConfiguration().getDeviceName());
 
         if (getAppConfiguration().getIsMobileWebExecution()) {
-            caps.setCapability(MobileCapabilityType.BROWSER_NAME, ConfigurationService.get(IOSSettings.class).getDefaultBrowser());
+            caps.withBrowserName(ConfigurationService.get(IOSSettings.class).getDefaultBrowser());
         } else {
-            caps.setCapability(MobileCapabilityType.APP, getAppConfiguration().getAppPath());
+            caps.setApp(getAppConfiguration().getAppPath().replace("\\", "/"));
         }
 
         if (ConfigurationService.get(IOSSettings.class).getAllowImageFindStrategies())
@@ -149,8 +147,7 @@ public class DriverService {
         }
 
         if (WRAPPED_IOS_DRIVER.get() != null) {
-            WRAPPED_IOS_DRIVER.get().close();
-            CUSTOM_DRIVER_OPTIONS.get().clear();
+            WRAPPED_IOS_DRIVER.get().quit();
         }
 
         DISPOSED.set(true);

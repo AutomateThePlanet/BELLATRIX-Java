@@ -169,7 +169,7 @@ public class ComponentCreateService extends WebService {
     }
 
     public <TComponent extends WebComponent, TFindStrategy extends FindStrategy> List<TComponent> allBy(Class<TComponent> componentClass, TFindStrategy findStrategy) {
-        var nativeElements = DriverService.getWrappedDriver().findElements(findStrategy.convert());
+        var nativeElements = getWrappedDriver().findElements(findStrategy.convert());
         List<TComponent> componentList = new ArrayList<>();
         for (int i = 0; i < nativeElements.size(); i++) {
             var component = InstanceFactory.create(componentClass);

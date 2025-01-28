@@ -29,9 +29,9 @@ public class BrowserConfiguration {
     @Setter @Getter private int version;
     @Setter @Getter private Platform platform;
     @Setter @Getter private String testName;
-    final HashMap<String, String> driverOptions;
+    final HashMap<String, Object> driverOptions;
 
-    public HashMap<String, String> getDriverOptions() {
+    public HashMap<String, Object> getDriverOptions() {
         return driverOptions;
     }
 

@@ -110,26 +110,7 @@ public class ShadowDomService {
                             shadowRoot.findElement(), locator, null).toArray(String[]::new);
         };
 
-        if (Wait.retry(() -> {
-            String[] foundElements;
-            try {
-                foundElements = js.call();
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-
-            if (foundElements == null || foundElements.length == 0) {
-                throw new IllegalArgumentException();
-            }
-        }, Duration.ofSeconds(ConfigurationService.get(WebSettings.class).getTimeoutSettings().getElementWaitTimeout()), Duration.ofSeconds(1), false)) {
-            try {
-                return js.call();
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        } else {
-            throw new IllegalArgumentException("No elements inside the shadow DOM were found with the locator: " + locator);
-        }
+        return getCss(js, locator);
     }
 
     private static String[] getRelativeCss(ShadowRoot shadowRoot, String locator, String parentLocator) {
@@ -139,10 +120,14 @@ public class ShadowDomService {
                             shadowRoot.findElement(), locator, parentLocator).toArray(String[]::new);
         };
 
+        return getCss(js, locator);
+    }
+
+    private static String[] getCss(Callable<String[]> callable, String locator) {
         if (Wait.retry(() -> {
             String[] foundElements;
             try {
-                foundElements = js.call();
+                foundElements = callable.call();
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
@@ -152,7 +137,7 @@ public class ShadowDomService {
             }
         }, Duration.ofSeconds(ConfigurationService.get(WebSettings.class).getTimeoutSettings().getElementWaitTimeout()), Duration.ofSeconds(1), false)) {
             try {
-                return js.call();
+                return callable.call();
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
