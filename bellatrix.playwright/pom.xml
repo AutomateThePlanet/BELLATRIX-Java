@@ -85,6 +85,12 @@
             <version>5.4.0</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>solutions.bellatrix</groupId>
+            <artifactId>bellatrix.layout</artifactId>
+            <version>1.0</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
 </project>
