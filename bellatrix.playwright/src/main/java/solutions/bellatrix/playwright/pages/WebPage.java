@@ -36,7 +36,7 @@ public abstract class WebPage<MapT extends PageMap, AssertionsT extends PageAsse
         return SingletonFactory.getInstance(NavigationService.class);
     }
 
-    public String getUrl() {
+    protected String getUrl() {
         return "";
     }
 

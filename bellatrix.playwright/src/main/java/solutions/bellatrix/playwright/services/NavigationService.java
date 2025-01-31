@@ -14,9 +14,11 @@
 package solutions.bellatrix.playwright.services;
 
 import com.google.common.base.Strings;
+import lombok.SneakyThrows;
 import solutions.bellatrix.core.utilities.SingletonFactory;
 import solutions.bellatrix.playwright.pages.WebPage;
 
+import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLDecoder;
@@ -29,8 +31,11 @@ import static java.util.stream.Collectors.toList;
 
 @SuppressWarnings("ALL")
 public class NavigationService extends WebService {
+    @SneakyThrows
     public void to(WebPage page) {
-        wrappedBrowser().getCurrentPage().navigate(page.getUrl());
+        Method method = page.getClass().getDeclaredMethod("getUrl");
+        method.setAccessible(true);
+        wrappedBrowser().getCurrentPage().navigate((String)method.invoke(page));
     }
 
     public void to(String url) {

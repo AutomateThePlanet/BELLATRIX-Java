@@ -14,12 +14,14 @@
 package solutions.bellatrix.web.services;
 
 import com.google.common.base.Strings;
+import lombok.SneakyThrows;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.web.configuration.WebSettings;
 import solutions.bellatrix.web.pages.WebPage;
 
+import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLDecoder;
@@ -38,8 +40,12 @@ public class NavigationService extends WebService {
         getWrappedDriver().navigate().to(url);
     }
 
+    @SneakyThrows
     public void to(WebPage page) {
-        getWrappedDriver().navigate().to(page.getUrl());
+        Method method = page.getClass().getDeclaredMethod("getUrl");
+        method.setAccessible(true);
+        
+        getWrappedDriver().navigate().to((String)method.invoke(page));
     }
 
     public void toLocalPage(String filePath) {
