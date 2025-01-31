@@ -2,6 +2,16 @@
   "troubleshootingSettings": {
     "debugInformationEnabled": "true"
   },
+  "visualRegressionSettings": {
+    "apiUrl": "http://localhost:4200",
+    "apiKey": "DEFAULTUSERAPIKEYTOBECHANGED",
+    "project": "vrt",
+    "branch": "bellatrix-tests",
+    "enableSoftAssert": "true",
+    "ciBuildId": "local-automation-run",
+    "httpTimeout": "15",
+    "defaultDiffTolerance": "0.1"
+  },
   "webSettings": {
     "baseUrl": "http://demos.bellatrix.solutions/",
    "executionType":"regular",
@@ -17,6 +27,7 @@
     "screenshotsSaveLocation": "${user.home}/BELLATRIX/Screenshots",
     "videosOnFailEnabled": "false",
     "videosSaveLocation": "${user.home}/BELLATRIX/Videos",
+    "toastNotificationBddLogging": "false",
     "timeoutSettings": {
       "elementWaitTimeout": "30",
       "pageLoadTimeout": "30",
