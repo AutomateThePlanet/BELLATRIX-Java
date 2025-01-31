@@ -1,4 +1,4 @@
-package O25_openCv_image_actions.data;
+package O26_openCv_image_actions.data;
 
 public class ImageInBase64 {
     /**

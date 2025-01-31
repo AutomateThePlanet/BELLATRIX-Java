@@ -1,4 +1,4 @@
-package O25_openCv_image_actions.data;
+package O26_openCv_image_actions.data;
 
 /**
  * Base64 data is generated from real images using the tool: <a href="https://automatetheplanet.github.io/OpenCV-Image-Match-Finder/">OpenCV Image Match Finder</a>

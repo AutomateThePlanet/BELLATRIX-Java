@@ -1,6 +1,6 @@
-package O25_openCv_image_actions;
+package O26_openCv_image_actions;
 
-import O25_openCv_image_actions.data.enums.EncodedImageDemo;
+import O26_openCv_image_actions.data.enums.EncodedImageDemo;
 import org.junit.jupiter.api.Test;
 import solutions.bellatrix.playwright.components.ActionImage;
 import solutions.bellatrix.playwright.components.Span;
