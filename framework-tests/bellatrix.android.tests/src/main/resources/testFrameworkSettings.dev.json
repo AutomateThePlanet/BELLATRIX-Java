@@ -19,6 +19,7 @@
     "screenshotsSaveLocation": "${user.home}/BELLATRIX/videos",
     "videosOnFailEnabled": "false",
     "videosSaveLocation": "u${user.home}/BELLATRIX/videos",
+    "allowImageFindStrategies": "true",
     "timeoutSettings": {
       "implicitWaitTimeout": "5",
       "elementWaitTimeout": "30",

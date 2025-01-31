@@ -13,8 +13,6 @@
 
 package solutions.bellatrix.desktop.infrastructure;
 
-import lombok.SneakyThrows;
-import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import plugins.screenshots.ScreenshotPlugin;
@@ -35,7 +33,11 @@ public class DesktopScreenshotPlugin extends ScreenshotPlugin {
     }
 
     @Override
-    @SneakyThrows
+    public byte[] takeScreenshot() {
+        return ((TakesScreenshot)DriverService.getWrappedDriver()).getScreenshotAs(OutputType.BYTES);
+    }
+
+    @Override
     public String takeScreenshot(String name) {
         var screenshotSaveDir = getOutputFolder();
         var filename = getUniqueFileName(name);
@@ -56,7 +58,6 @@ public class DesktopScreenshotPlugin extends ScreenshotPlugin {
     }
 
     @Override
-    @SneakyThrows
     public String takeScreenshot(String screenshotSaveDir, String filename) {
         var screenshot = ((TakesScreenshot)DriverService.getWrappedDriver()).getScreenshotAs(OutputType.BASE64);
         Path path = Paths.get(screenshotSaveDir, filename);

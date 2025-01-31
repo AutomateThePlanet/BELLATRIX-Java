@@ -28,6 +28,7 @@ import solutions.bellatrix.core.plugins.EventListener;
 import solutions.bellatrix.core.utilities.DebugInformation;
 import solutions.bellatrix.core.utilities.InstanceFactory;
 import solutions.bellatrix.core.utilities.Log;
+import solutions.bellatrix.plugins.opencv.Base64Encodable;
 import solutions.bellatrix.web.components.contracts.Component;
 import solutions.bellatrix.web.components.contracts.ComponentStyle;
 import solutions.bellatrix.web.components.contracts.ComponentVisible;
@@ -343,6 +344,10 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
         return create(componentClass, new IdFindStrategy(id));
     }
 
+    public <TComponent extends WebComponent> TComponent createByImage(Class<TComponent> componentClass, Base64Encodable encodedImage) {
+        return create(componentClass, new ImageBase64FindStrategy(encodedImage));
+    }
+
     public <TComponent extends WebComponent> TComponent createByAttributeContaining(Class<TComponent> componentClass, String attributeName, String value) {
         return create(componentClass, new AttributeContainingWithFindStrategy(attributeName, value));
     }
@@ -401,6 +406,10 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
 
     public <TComponent extends WebComponent> List<TComponent> createAllById(Class<TComponent> componentClass, String id) {
         return createAll(componentClass, new IdFindStrategy(id));
+    }
+
+    public <TComponent extends WebComponent> List<TComponent> createAllByImage(Class<TComponent> componentClass, Base64Encodable encodedImage) {
+        return createAll(componentClass, new ImageBase64FindStrategy(encodedImage));
     }
 
     public <TComponent extends WebComponent> List<TComponent> createAllByAttributeContaining(Class<TComponent> componentClass, String attributeName, String value) {

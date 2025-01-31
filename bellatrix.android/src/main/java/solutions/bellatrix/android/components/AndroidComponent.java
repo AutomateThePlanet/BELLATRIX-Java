@@ -22,10 +22,7 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import solutions.bellatrix.android.components.contracts.Component;
 import solutions.bellatrix.android.configuration.AndroidSettings;
-import solutions.bellatrix.android.findstrategies.FindStrategy;
-import solutions.bellatrix.android.findstrategies.NameFindStrategy;
-import solutions.bellatrix.android.findstrategies.TagFindStrategy;
-import solutions.bellatrix.android.findstrategies.XPathFindStrategy;
+import solutions.bellatrix.android.findstrategies.*;
 import solutions.bellatrix.android.infrastructure.DriverService;
 import solutions.bellatrix.android.services.AppService;
 import solutions.bellatrix.android.services.ComponentCreateService;
@@ -36,6 +33,7 @@ import solutions.bellatrix.core.plugins.EventListener;
 import solutions.bellatrix.core.utilities.DebugInformation;
 import solutions.bellatrix.core.utilities.InstanceFactory;
 import solutions.bellatrix.core.utilities.Log;
+import solutions.bellatrix.plugins.opencv.Base64Encodable;
 
 import java.awt.Dimension;
 import java.util.ArrayList;
@@ -221,6 +219,10 @@ public class AndroidComponent extends LayoutComponentValidationsBuilder implemen
         return createAll(componentClass, findStrategy);
     }
 
+    public <TComponent extends AndroidComponent> TComponent createByImage(Class<TComponent> componentClass, Base64Encodable encodedImage) {
+        return create(componentClass, new ImageBase64FindStrategy(encodedImage));
+    }
+
     public <TComponent extends AndroidComponent> TComponent createByXPath(Class<TComponent> componentClass, String xpath) {
         return create(componentClass, new XPathFindStrategy(xpath));
     }
@@ -236,6 +238,11 @@ public class AndroidComponent extends LayoutComponentValidationsBuilder implemen
     public <TComponent extends AndroidComponent> List<TComponent> createAllByName(Class<TComponent> componentClass, String name) {
         return createAll(componentClass, new NameFindStrategy(name));
     }
+
+    public <TComponent extends AndroidComponent> List<TComponent> createAllByImage(Class<TComponent> componentClass, Base64Encodable encodedImage) {
+        return createAll(componentClass, new ImageBase64FindStrategy(encodedImage));
+    }
+
 
     public <TComponent extends AndroidComponent> List<TComponent> createAllByXPath(Class<TComponent> componentClass, String xpath) {
         return createAll(componentClass, new XPathFindStrategy(xpath));

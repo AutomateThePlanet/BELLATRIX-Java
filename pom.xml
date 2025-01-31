@@ -15,6 +15,8 @@
         <module>bellatrix.plugins.video</module>
         <module>bellatrix.plugins.jira.zephyr</module>
         <module>bellatrix.plugins.visual-regression-tracker</module>
+        <module>bellatrix.plugins.opencv</module>
+        <module>bellatrix.sms</module>
         <module>bellatrix.web</module>
         <module>bellatrix.playwright</module>
         <module>bellatrix.desktop</module>
@@ -31,7 +33,8 @@
         <!-- Getting Started -->
         <module>getting-started/bellatrix.web.getting.started</module>
         <module>getting-started/bellatrix.playwright.getting.started</module>
-        <module>bellatrix.sms</module>
+
+
     </modules>
 
     <properties>

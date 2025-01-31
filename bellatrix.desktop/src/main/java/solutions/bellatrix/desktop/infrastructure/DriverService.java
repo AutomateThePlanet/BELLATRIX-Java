@@ -88,6 +88,9 @@ public class DriverService {
         caps.setApp(getAppConfiguration().getAppPath().replace("\\", "/"));
         caps.setAppWorkingDir(new File(getAppConfiguration().getAppPath()).getParent());
 
+        if (ConfigurationService.get(DesktopSettings.class).getAllowImageFindStrategies())
+            caps.setCapability("use-plugins", "images");
+
         WindowsDriver driver = null;
         try {
             driver = new WindowsDriver(new URL(gridSettings.getUrl()), caps);

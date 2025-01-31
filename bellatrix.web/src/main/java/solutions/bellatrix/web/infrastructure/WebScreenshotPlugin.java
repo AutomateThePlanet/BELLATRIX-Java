@@ -13,6 +13,9 @@
 
 package solutions.bellatrix.web.infrastructure;
 
+import nu.pattern.OpenCV;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import plugins.screenshots.ScreenshotPlugin;
 import plugins.screenshots.ScreenshotPluginEventArgs;
 import ru.yandex.qatools.ashot.AShot;
@@ -20,7 +23,10 @@ import ru.yandex.qatools.ashot.shooting.ShootingStrategies;
 import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.core.utilities.Log;
 import solutions.bellatrix.core.utilities.PathNormalizer;
+import solutions.bellatrix.core.utilities.SingletonFactory;
 import solutions.bellatrix.web.configuration.WebSettings;
+import solutions.bellatrix.web.services.BrowserService;
+import solutions.bellatrix.web.services.WebService;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -34,6 +40,11 @@ import java.util.UUID;
 public class WebScreenshotPlugin extends ScreenshotPlugin {
     public WebScreenshotPlugin() {
         super(ConfigurationService.get(WebSettings.class).getScreenshotsOnFailEnabled());
+    }
+
+    @Override
+    public byte[] takeScreenshot() {
+        return ((TakesScreenshot)DriverService.getWrappedDriver()).getScreenshotAs(OutputType.BYTES);
     }
 
     @Override

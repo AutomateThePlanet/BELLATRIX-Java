@@ -25,7 +25,8 @@
       "elementToNotExistTimeout": "30",
       "elementToBeClickableTimeout": "30",
       "elementNotToBeVisibleTimeout": "30",
-      "elementToHaveContentTimeout": "15"
+      "elementToHaveContentTimeout": "15",
+      "allowImageFindStrategies": "true"
     },
     "gridSettings": [
       {

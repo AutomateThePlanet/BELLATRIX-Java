@@ -33,6 +33,7 @@ import solutions.bellatrix.ios.services.AppService;
 import solutions.bellatrix.ios.services.ComponentCreateService;
 import solutions.bellatrix.ios.services.ComponentWaitService;
 import solutions.bellatrix.ios.waitstrategies.*;
+import solutions.bellatrix.plugins.opencv.Base64Encodable;
 
 import java.awt.Dimension;
 import java.util.ArrayList;
@@ -249,6 +250,10 @@ public class IOSComponent extends LayoutComponentValidationsBuilder implements C
         return create(componentClass, new IOSClassChainFindStrategy(iosClassChain));
     }
 
+    public <TComponent extends IOSComponent> TComponent createByImage(Class<TComponent> componentClass, Base64Encodable encodedImage) {
+        return create(componentClass, new ImageBase64FindStrategy(encodedImage));
+    }
+
     public <TComponent extends IOSComponent> List<TComponent> createAllByName(Class<TComponent> componentClass, String name) {
         return createAll(componentClass, new NameFindStrategy(name));
     }
@@ -279,6 +284,10 @@ public class IOSComponent extends LayoutComponentValidationsBuilder implements C
 
     public <TComponent extends IOSComponent> List<TComponent> createAllByIOSClassChain(Class<TComponent> componentClass, String iosClassChain) {
         return createAll(componentClass, new IOSClassChainFindStrategy(iosClassChain));
+    }
+
+    public <TComponent extends IOSComponent> List<TComponent> createAllByImage(Class<TComponent> componentClass, Base64Encodable encodedImage) {
+        return createAll(componentClass, new ImageBase64FindStrategy(encodedImage));
     }
 
     protected <TComponent extends IOSComponent, TFindStrategy extends FindStrategy> TComponent create(Class<TComponent> componentClass, TFindStrategy findStrategy) {

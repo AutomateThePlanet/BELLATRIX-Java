@@ -113,6 +113,9 @@ public class DriverService {
             caps.setApp(getAppConfiguration().getAppPath().replace("\\", "/"));
         }
 
+        if (ConfigurationService.get(IOSSettings.class).getAllowImageFindStrategies())
+            caps.setCapability("use-plugins", "images");
+
         addDriverOptions(caps);
         var driver = new IOSDriver(new URL(serviceUrl), caps);
         solutions.bellatrix.web.infrastructure.DriverService.setWrappedDriver(driver);

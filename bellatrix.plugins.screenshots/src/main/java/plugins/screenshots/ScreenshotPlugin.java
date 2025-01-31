@@ -29,6 +29,7 @@ public abstract class ScreenshotPlugin extends Plugin {
         this.isEnabled = isEnabled;
     }
 
+    public abstract byte[] takeScreenshot();
     public abstract String takeScreenshot(String fileName);
     public abstract String takeScreenshot(String screenshotSaveDir, String filename);
     protected abstract String getOutputFolder();

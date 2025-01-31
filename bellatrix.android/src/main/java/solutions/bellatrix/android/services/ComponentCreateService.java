@@ -17,6 +17,7 @@ import solutions.bellatrix.android.components.AndroidComponent;
 import solutions.bellatrix.android.findstrategies.*;
 import solutions.bellatrix.android.infrastructure.DriverService;
 import solutions.bellatrix.core.utilities.InstanceFactory;
+import solutions.bellatrix.plugins.opencv.Base64Encodable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +31,10 @@ public class ComponentCreateService extends MobileService {
     public <TComponent extends AndroidComponent, TFindStrategy extends FindStrategy> List<TComponent> allBy(Class<TFindStrategy> findStrategyClass, Class<TComponent> componentClass, Object... args) {
         var findStrategy = InstanceFactory.create(findStrategyClass, args);
         return allBy(componentClass, findStrategy);
+    }
+
+    public <TComponent extends AndroidComponent> TComponent byImage(Class<TComponent> componentClass, Base64Encodable encodedImage) {
+        return by(componentClass, new ImageBase64FindStrategy(encodedImage));
     }
 
     public <TComponent extends AndroidComponent> TComponent byId(Class<TComponent> componentClass, String id) {
@@ -74,6 +79,10 @@ public class ComponentCreateService extends MobileService {
 
     public <TComponent extends AndroidComponent> TComponent byIdContaining(Class<TComponent> componentClass, String idContaining) {
         return by(componentClass, new IdContainingFindStrategy(idContaining));
+    }
+
+    public <TComponent extends AndroidComponent> List<TComponent> allByImage(Class<TComponent> componentClass, Base64Encodable encodedImage) {
+        return allBy(componentClass, new ImageBase64FindStrategy(encodedImage));
     }
 
     public <TComponent extends AndroidComponent> List<TComponent> allById(Class<TComponent> componentClass, String automationId) {

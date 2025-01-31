@@ -17,6 +17,7 @@ import solutions.bellatrix.core.utilities.InstanceFactory;
 import solutions.bellatrix.desktop.components.DesktopComponent;
 import solutions.bellatrix.desktop.findstrategies.*;
 import solutions.bellatrix.desktop.infrastructure.DriverService;
+import solutions.bellatrix.plugins.opencv.Base64Encodable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,6 +61,10 @@ public class ComponentCreateService extends DesktopService {
         return by(componentClass, new IdContainingFindStrategy(idContaining));
     }
 
+    public <TComponent extends DesktopComponent> TComponent byImage(Class<TComponent> componentClass, Base64Encodable encodedImage) {
+        return by(componentClass, new ImageBase64FindStrategy(encodedImage));
+    }
+
     public <TComponent extends DesktopComponent> List<TComponent> allByAutomationId(Class<TComponent> componentClass, String automationId) {
         return allBy(componentClass, new AutomationIdFindStrategy(automationId));
     }
@@ -86,6 +91,10 @@ public class ComponentCreateService extends DesktopService {
 
     public <TComponent extends DesktopComponent> List<TComponent> allByIdContaining(Class<TComponent> componentClass, String idContaining) {
         return allBy(componentClass, new IdContainingFindStrategy(idContaining));
+    }
+
+    public <TComponent extends DesktopComponent> List<TComponent> allByImage(Class<TComponent> componentClass, Base64Encodable encodedImage) {
+        return allBy(componentClass, new ImageBase64FindStrategy(encodedImage));
     }
 
     public <TComponent extends DesktopComponent, TFindStrategy extends FindStrategy> TComponent by(Class<TComponent> componentClass, TFindStrategy findStrategy) {

@@ -40,6 +40,12 @@
             <version>1.0</version>
         </dependency>
         <dependency>
+            <groupId>solutions.bellatrix</groupId>
+            <artifactId>bellatrix.plugins.opencv</artifactId>
+            <version>1.0</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
             <groupId>ru.yandex.qatools.ashot</groupId>
             <artifactId>ashot</artifactId>
             <version>1.5.4</version>
