@@ -44,7 +44,7 @@ public abstract class WebPage<MapT extends PageMap, AssertsT extends PageAsserts
         return new NavigationService();
     }
 
-    protected String getUrl() {
+    public String getUrl() {
         return "";
     }
 

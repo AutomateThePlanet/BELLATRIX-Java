@@ -18,6 +18,7 @@ import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.web.configuration.WebSettings;
+import solutions.bellatrix.web.pages.WebPage;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -35,6 +36,10 @@ public class NavigationService extends WebService {
 
     public void to(String url) {
         getWrappedDriver().navigate().to(url);
+    }
+
+    public void to(WebPage page) {
+        getWrappedDriver().navigate().to(page.getUrl());
     }
 
     public void toLocalPage(String filePath) {

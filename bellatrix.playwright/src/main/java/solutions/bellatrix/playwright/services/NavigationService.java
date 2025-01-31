@@ -15,6 +15,7 @@ package solutions.bellatrix.playwright.services;
 
 import com.google.common.base.Strings;
 import solutions.bellatrix.core.utilities.SingletonFactory;
+import solutions.bellatrix.playwright.pages.WebPage;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -28,6 +29,10 @@ import static java.util.stream.Collectors.toList;
 
 @SuppressWarnings("ALL")
 public class NavigationService extends WebService {
+    public void to(WebPage page) {
+        wrappedBrowser().getCurrentPage().navigate(page.getUrl());
+    }
+
     public void to(String url) {
         wrappedBrowser().getCurrentPage().navigate(url);
     }
