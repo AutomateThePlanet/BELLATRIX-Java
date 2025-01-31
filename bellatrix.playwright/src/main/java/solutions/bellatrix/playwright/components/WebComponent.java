@@ -32,7 +32,6 @@ import solutions.bellatrix.core.utilities.InstanceFactory;
 import solutions.bellatrix.playwright.components.common.ComponentActionEventArgs;
 import solutions.bellatrix.playwright.components.common.create.RelativeCreateService;
 import solutions.bellatrix.playwright.components.common.validate.Validator;
-import solutions.bellatrix.playwright.components.common.webelement.FrameElement;
 import solutions.bellatrix.playwright.components.common.webelement.WebElement;
 import solutions.bellatrix.playwright.components.contracts.Component;
 import solutions.bellatrix.playwright.components.contracts.ComponentStyle;

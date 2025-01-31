@@ -168,21 +168,11 @@ public class ComponentCreateService extends WebService {
     }
 
     public <TComponent extends WebComponent> TComponent byImage(Class<TComponent> componentClass, Base64Encodable encodedImage) {
-        wrappedBrowser().getCurrentPage().waitForLoadState();
-
-        var component = InstanceFactory.create(componentClass);
-        component.setFindStrategy(new ImageBase64FindStrategy(encodedImage));
-
-        return component;
+        return by(componentClass, new ImageBase64FindStrategy(encodedImage));
     }
 
     public <TComponent extends WebComponent> List<TComponent> allByImage(Class<TComponent> componentClass, Base64Encodable encodedImage) {
-        wrappedBrowser().getCurrentPage().waitForLoadState();
-
-        var component = InstanceFactory.create(componentClass);
-        component.setFindStrategy(new ImageBase64FindStrategy(encodedImage));
-
-        return List.of(component);
+        return allBy(componentClass, new ImageBase64FindStrategy(encodedImage));
     }
 
     public <TComponent extends WebComponent> TComponent byClass(Class<TComponent> componentClass, String value) {

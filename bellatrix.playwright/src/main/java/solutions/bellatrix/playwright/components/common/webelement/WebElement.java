@@ -31,11 +31,18 @@ import java.util.regex.Pattern;
  */
 @Getter
 public class WebElement {
+    public WebElement(List<Locator> locators) {
+        wrappedLocators = locators;
+        wrappedLocator = wrappedLocators.get(0);
+    }
+
     public WebElement(Locator locator) {
         wrappedLocator = locator;
+        wrappedLocators = wrappedLocator.all();
     }
 
     private final Locator wrappedLocator;
+    private final List<Locator> wrappedLocators;
 
     public WebElement getByAltText(String text, GetByAltTextOptions options) {
         return new WebElement(wrappedLocator.getByAltText(text, options.convertTo(Locator.GetByAltTextOptions.class)));
@@ -143,8 +150,7 @@ public class WebElement {
 
     public List<WebElement> all() {
         List<WebElement> elements = new ArrayList<>();
-        List<Locator> locators = wrappedLocator.all();
-        for (Locator locator : locators) {
+        for (Locator locator : wrappedLocators) {
             elements.add(new WebElement(locator));
         }
 
@@ -294,7 +300,7 @@ public class WebElement {
     }
 
     public WebElement first() {
-        return new WebElement(wrappedLocator.first());
+        return new WebElement(wrappedLocators.get(0));
     }
 
     public void focus(Locator.FocusOptions options) {
@@ -399,11 +405,11 @@ public class WebElement {
     }
 
     public WebElement last() {
-        return new WebElement(wrappedLocator.last());
+        return new WebElement(wrappedLocators.get(wrappedLocator.count() - 1));
     }
 
     public WebElement nth(int index) {
-        return new WebElement(wrappedLocator.nth(index));
+        return new WebElement(wrappedLocators.get(index));
     }
 
     public WebElement or(WebElement webElement) {

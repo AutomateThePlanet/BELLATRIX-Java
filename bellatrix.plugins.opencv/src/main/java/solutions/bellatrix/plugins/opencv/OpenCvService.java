@@ -53,7 +53,6 @@ public class OpenCvService {
 
         var screenshot = screenshotPlugin.takeScreenshot();
 
-
         OpenCV.loadLocally();
 
         Mat result = loadImages(encodedImage, screenshot, shouldGrayScale);
