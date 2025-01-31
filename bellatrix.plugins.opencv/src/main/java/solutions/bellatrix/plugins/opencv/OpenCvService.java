@@ -1,13 +1,12 @@
 package solutions.bellatrix.plugins.opencv;
 
 import nu.pattern.OpenCV;
-import org.opencv.core.Core;
-import org.opencv.core.CvType;
-import org.opencv.core.Mat;
+import org.opencv.core.*;
 import org.opencv.core.Point;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 import plugins.screenshots.ScreenshotPlugin;
+import solutions.bellatrix.core.utilities.DebugInformation;
 import solutions.bellatrix.core.utilities.SingletonFactory;
 
 import javax.imageio.ImageIO;
@@ -101,11 +100,34 @@ public class OpenCvService {
             changeToGrayscale(source);
         }
 
-        Mat result = createResultMatrix(source, template);
+        return findBestMatchInDifferentScalings(template, source);
+    }
 
-        Imgproc.matchTemplate(source, template, result, Imgproc.TM_CCOEFF_NORMED);
+    private static Mat findBestMatchInDifferentScalings(Mat template, Mat source) {
+        double bestMatch = 0;
+        Mat result;
+        Mat bestResultMatch = new Mat();
 
-        return result;
+        for (var scale = 0.5; scale <= 2.0; scale += 0.25) {
+            Mat resizedTemplate = new Mat();
+            Size newSize = new Size(template.width() * scale, template.height() * scale);
+            Imgproc.resize(template, resizedTemplate, newSize);
+
+            if (resizedTemplate.cols() > source.cols() || resizedTemplate.rows() > source.rows()) {
+                continue;
+            }
+
+            result = new Mat();
+            Imgproc.matchTemplate(source, resizedTemplate, result, Imgproc.TM_CCOEFF_NORMED);
+            Core.MinMaxLocResult mmr = Core.minMaxLoc(result);
+
+            if (mmr.maxVal > bestMatch) {
+                bestMatch = mmr.maxVal;
+                bestResultMatch = result;
+            }
+        }
+
+        return bestResultMatch;
     }
 
     private static Mat changeToGrayscale(Mat template) {
@@ -133,14 +155,5 @@ public class OpenCvService {
         mat.put(0, 0, decodedBytes);
 
         return Imgcodecs.imdecode(mat, Imgcodecs.IMREAD_COLOR);
-    }
-
-    private static Mat createResultMatrix(Mat source, Mat template) {
-        Mat result = new Mat();
-        int result_cols = source.cols() - template.cols() + 1;
-        int result_rows = source.rows() - template.rows() + 1;
-        result.create(result_rows, result_cols, CvType.CV_32FC1);
-
-        return result;
     }
 }
