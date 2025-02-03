@@ -138,7 +138,7 @@ public class DriverService {
             caps.setAppActivity(getAppConfiguration().getAppActivity());
         }
 
-        if (ConfigurationService.get(AndroidSettings.class).getAllowImageFindStrategies())
+        if (Objects.requireNonNullElse(ConfigurationService.get(AndroidSettings.class).getAllowImageFindStrategies(), false))
             caps.setCapability("use-plugins", "images");
 
         addDriverConfigOptions(caps);
