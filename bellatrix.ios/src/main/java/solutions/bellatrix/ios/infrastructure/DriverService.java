@@ -29,6 +29,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Duration;
 import java.util.HashMap;
+import java.util.Objects;
 
 public class DriverService {
     private static final ThreadLocal<Boolean> DISPOSED;
@@ -113,7 +114,7 @@ public class DriverService {
             caps.setApp(getAppConfiguration().getAppPath().replace("\\", "/"));
         }
 
-        if (ConfigurationService.get(IOSSettings.class).getAllowImageFindStrategies())
+        if (Objects.requireNonNullElse(ConfigurationService.get(IOSSettings.class).getAllowImageFindStrategies(), false))
             caps.setCapability("use-plugins", "images");
 
         addDriverOptions(caps);

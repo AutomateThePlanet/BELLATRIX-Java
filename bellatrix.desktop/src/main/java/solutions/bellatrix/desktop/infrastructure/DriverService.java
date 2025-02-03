@@ -29,6 +29,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Duration;
 import java.util.HashMap;
+import java.util.Objects;
 
 public class DriverService {
     private static final ThreadLocal<Boolean> DISPOSED;
@@ -88,7 +89,7 @@ public class DriverService {
         caps.setApp(getAppConfiguration().getAppPath().replace("\\", "/"));
         caps.setAppWorkingDir(new File(getAppConfiguration().getAppPath()).getParent());
 
-        if (ConfigurationService.get(DesktopSettings.class).getAllowImageFindStrategies())
+        if (Objects.requireNonNullElse(ConfigurationService.get(DesktopSettings.class).getAllowImageFindStrategies(), false))
             caps.setCapability("use-plugins", "images");
 
         WindowsDriver driver = null;

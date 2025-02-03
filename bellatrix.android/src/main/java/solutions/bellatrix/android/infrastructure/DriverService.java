@@ -31,6 +31,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.time.Duration;
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.Properties;
 
 public class DriverService {
@@ -107,7 +108,7 @@ public class DriverService {
         options.put("name", testName);
         caps.setCapability(gridSettings.getOptionsName(), options);
 
-        if (ConfigurationService.get(AndroidSettings.class).getAllowImageFindStrategies())
+        if (Objects.requireNonNullElse(ConfigurationService.get(AndroidSettings.class).getAllowImageFindStrategies(), false))
             caps.setCapability("use-plugins", "images");
 
         AndroidDriver driver = null;
@@ -137,7 +138,7 @@ public class DriverService {
             caps.setAppActivity(getAppConfiguration().getAppActivity());
         }
 
-        if (ConfigurationService.get(AndroidSettings.class).getAllowImageFindStrategies())
+        if (Objects.requireNonNullElse(ConfigurationService.get(AndroidSettings.class).getAllowImageFindStrategies(), false))
             caps.setCapability("use-plugins", "images");
 
         addDriverConfigOptions(caps);
