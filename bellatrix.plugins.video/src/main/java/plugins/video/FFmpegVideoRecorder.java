@@ -48,7 +48,7 @@ public class FFmpegVideoRecorder implements AutoCloseable {
             } else if (RuntimeInformation.IS_MAC) {
                 var recorderFile = FileDownloader.downloadToUsersFolder("https://github.com/AutomateThePlanet/BELLATRIX/releases/download/1.3/ffmpeg");
                 var videoFilePathWithExtension = String.format("%s.mkv", FilenameUtils.removeExtension(videoFullPath));
-                args = new String[]{recorderFile, "-f", "avfoundation", "-framerate", "10", "-i", "\"0:0\"", videoFilePathWithExtension};
+                args = new String[]{recorderFile, "-f", "avfoundation", "-framerate", "10", "-i", "1", videoFilePathWithExtension};
             } else {
                 var recorderFile = FileDownloader.downloadToUsersFolder("https://github.com/AutomateThePlanet/BELLATRIX/releases/download/1.0/ffmpeg_linux");
                 var videoFilePathWithExtension = String.format("%s.mp4", FilenameUtils.removeExtension(videoFullPath));
