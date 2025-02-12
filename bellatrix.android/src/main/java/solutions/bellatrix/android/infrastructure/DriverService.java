@@ -129,9 +129,6 @@ public class DriverService {
         caps.setAutomationName(AutomationName.ANDROID_UIAUTOMATOR2);
         caps.setPlatformVersion(getAppConfiguration().getAndroidVersion());
         caps.setDeviceName(getAppConfiguration().getDeviceName());
-        caps.setAdbExecTimeout(Duration.ofSeconds(60));
-        caps.setUiautomator2ServerInstallTimeout(Duration.ofSeconds(60));
-        caps.setAndroidInstallTimeout(Duration.ofSeconds(90));
 
         if (getAppConfiguration().getIsMobileWebExecution()) {
             caps.withBrowserName(ConfigurationService.get(AndroidSettings.class).getDefaultBrowser());
