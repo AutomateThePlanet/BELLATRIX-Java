@@ -36,6 +36,11 @@ public class Wait {
     }
 
     public static boolean retry(Runnable action, Duration timeout, Duration sleepInterval, Boolean shouldThrowException, Class<? extends Throwable> ... exceptionsToIgnore) {
+
+        if(sleepInterval.toMillis() > timeout.toMillis()) {
+            throw new IllegalArgumentException("Sleep interval cannot be bigger than Total timeout.");
+        }
+
         long start = System.currentTimeMillis();
         long end = start + timeout.toMillis();
         boolean shouldThrow = false;
