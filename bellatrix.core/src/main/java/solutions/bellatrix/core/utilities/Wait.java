@@ -25,7 +25,7 @@ public class Wait {
         int repeat = 0;
         while(repeat <= timesToRetry) {
             repeat ++;
-            if (retry(action, Duration.ofMillis(50), Duration.ofSeconds(sleepInterval), shouldThrowException, exceptionsToIgnore)) {
+            if (retry(action, Duration.ofSeconds(sleepInterval), Duration.ofSeconds(sleepInterval), shouldThrowException, exceptionsToIgnore)) {
                 break;
             }
         }
