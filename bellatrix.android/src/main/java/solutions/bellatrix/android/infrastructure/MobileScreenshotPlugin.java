@@ -17,14 +17,20 @@ import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import plugins.screenshots.ScreenshotPlugin;
 import plugins.screenshots.ScreenshotPluginEventArgs;
+import ru.yandex.qatools.ashot.AShot;
+import ru.yandex.qatools.ashot.shooting.ShootingStrategies;
 import solutions.bellatrix.android.configuration.AndroidSettings;
 import solutions.bellatrix.core.configuration.ConfigurationService;
+import solutions.bellatrix.core.utilities.Log;
 import solutions.bellatrix.core.utilities.PathNormalizer;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.Base64;
 import java.util.UUID;
 
 public class MobileScreenshotPlugin extends ScreenshotPlugin {
@@ -42,38 +48,44 @@ public class MobileScreenshotPlugin extends ScreenshotPlugin {
         var screenshotSaveDir = getOutputFolder();
         var filename = getUniqueFileName(name);
 
-        var screenshot = ((TakesScreenshot)DriverService.getWrappedAndroidDriver()).getScreenshotAs(OutputType.BASE64);
+        var screenshot = new AShot()
+                .shootingStrategy(ShootingStrategies.simple())
+                .takeScreenshot(DriverService.getWrappedAndroidDriver());
 
-        var path = Paths.get(screenshotSaveDir, filename) + ".png";
-
-        var file = new File(path);
-
-        try (FileWriter writer = new FileWriter(file)) {
-            writer.write(screenshot);
+        var path = Paths.get(screenshotSaveDir, filename).toString();
+        var destFile = new File(path);
+        Log.info("Saving screenshot with path: " + destFile);
+        try {
+            ImageIO.write(screenshot.getImage(), "png", destFile);
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.error(e.toString());
         }
 
-        SCREENSHOT_GENERATED.broadcast(new ScreenshotPluginEventArgs(path.toString(), filename, screenshot));
-        return screenshot;
+        var base64image = bufferedImageToBase64(screenshot.getImage());
+
+        SCREENSHOT_GENERATED.broadcast(new ScreenshotPluginEventArgs(path.toString(), filename, base64image));
+        return base64image;
     }
 
     @Override
     public String takeScreenshot(String screenshotSaveDir, String filename) {
-        var screenshot = ((TakesScreenshot)DriverService.getWrappedAndroidDriver()).getScreenshotAs(OutputType.BASE64);
+        var screenshot = new AShot()
+                .shootingStrategy(ShootingStrategies.simple())
+                .takeScreenshot(DriverService.getWrappedAndroidDriver());
 
-        var path = Paths.get(screenshotSaveDir, filename) + ".png";
-
-        var file = new File(path);
-
-        try (FileWriter writer = new FileWriter(file)) {
-            writer.write(screenshot);
+        var path = Paths.get(screenshotSaveDir, filename).toString();
+        var destFile = new File(path);
+        Log.info("Saving screenshot with path: " + destFile);
+        try {
+            ImageIO.write(screenshot.getImage(), "png", destFile);
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.error(e.toString());
         }
 
-        SCREENSHOT_GENERATED.broadcast(new ScreenshotPluginEventArgs(path.toString(), filename, screenshot));
-        return screenshot;
+        var base64image = bufferedImageToBase64(screenshot.getImage());
+
+        SCREENSHOT_GENERATED.broadcast(new ScreenshotPluginEventArgs(path.toString(), filename, base64image));
+        return base64image;
     }
 
     @Override
@@ -92,5 +104,24 @@ public class MobileScreenshotPlugin extends ScreenshotPlugin {
     @Override
     protected String getUniqueFileName(String testName) {
         return testName.concat(UUID.randomUUID().toString()).concat(".png");
+    }
+
+    private static String bufferedImageToBase64(BufferedImage image) {
+        String base64String = null;
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        try {
+            ImageIO.write(image, "png", outputStream);
+            byte[] imageBytes = outputStream.toByteArray();
+            base64String = Base64.getEncoder().encodeToString(imageBytes);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                outputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return base64String;
     }
 }
