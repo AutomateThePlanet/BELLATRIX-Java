@@ -118,9 +118,13 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
 
     public WebElement getWrappedElement() {
         try {
-            wrappedElement.isDisplayed(); // checking if getting property throws exception
-            return wrappedElement;
-        } catch (StaleElementReferenceException | NoSuchElementException | NullPointerException | ScriptTimeoutException ex ) {
+            if(wrappedElement != null) {
+                wrappedElement.isDisplayed(); // checking if getting property throws exception
+                return wrappedElement;
+            } else {
+                return findElement();
+            }
+        } catch (Exception ex ) {
             return findElement();
         }
     }
