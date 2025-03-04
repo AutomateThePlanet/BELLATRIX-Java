@@ -13,9 +13,7 @@
 
 package solutions.bellatrix.web.waitstrategies;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.SearchContext;
+import org.openqa.selenium.*;
 import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.web.configuration.WebSettings;
 
@@ -42,7 +40,7 @@ public class ToExistWaitStrategy extends WaitStrategy {
         try {
             var element = findElement(searchContext, by);
             return element != null;
-        } catch (NoSuchElementException e) {
+        } catch (NoSuchElementException | StaleElementReferenceException | ElementNotInteractableException e) {
             return false;
         }
     }
