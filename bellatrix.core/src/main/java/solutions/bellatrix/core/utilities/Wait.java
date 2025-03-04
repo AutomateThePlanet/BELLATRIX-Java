@@ -25,7 +25,7 @@ public class Wait {
         int repeat = 0;
         while(repeat <= timesToRetry) {
             repeat ++;
-            if (retry(action, Duration.ofMillis(50), Duration.ofSeconds(sleepInterval), shouldThrowException, exceptionsToIgnore)) {
+            if (retry(action, Duration.ofSeconds(sleepInterval), Duration.ofSeconds(sleepInterval), shouldThrowException, exceptionsToIgnore)) {
                 break;
             }
         }
@@ -73,7 +73,7 @@ public class Wait {
         return false;
     }
 
-    public static void retry(Runnable action, Duration sleepInterval, Duration timeout, Class<? extends Throwable> ... exceptionsToIgnore) {
+    public static void retry(Runnable action, Duration timeout, Duration sleepInterval, Class<? extends Throwable> ... exceptionsToIgnore) {
         Wait.retry(action, timeout, sleepInterval, true, exceptionsToIgnore);
     }
 
