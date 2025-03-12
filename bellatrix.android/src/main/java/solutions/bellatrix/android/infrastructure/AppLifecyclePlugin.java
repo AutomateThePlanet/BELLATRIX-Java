@@ -17,6 +17,7 @@ import solutions.bellatrix.android.configuration.AndroidSettings;
 import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.core.plugins.Plugin;
 import solutions.bellatrix.core.plugins.TestResult;
+import solutions.bellatrix.core.plugins.TimeRecord;
 import solutions.bellatrix.core.utilities.DebugInformation;
 import solutions.bellatrix.core.utilities.PathNormalizer;
 import solutions.bellatrix.web.configuration.WebSettings;
@@ -45,8 +46,8 @@ public class AppLifecyclePlugin extends Plugin {
     public void preBeforeClass(Class type) {
         if (ConfigurationService.get(WebSettings.class).getExecutionType() == "regular") {
             CURRENT_APP_CONFIGURATION.set(getExecutionAppClassLevel(type));
-            if (shouldRestartApp()) {
-                restartApp();
+            if (shouldReinstallApp()) {
+                reinstallApp();
                 // TODO: maybe we can simplify and remove this parameter.
                 IS_APP_STARTED_DURING_PRE_BEFORE_CLASS.set(true);
             } else {
@@ -72,8 +73,8 @@ public class AppLifecyclePlugin extends Plugin {
         CURRENT_APP_CONFIGURATION.get().setTestName(testFullName);
 
         if (!IS_APP_STARTED_DURING_PRE_BEFORE_CLASS.get()) {
-            if (shouldRestartApp()) {
-                restartApp();
+            if (shouldReinstallApp()) {
+                reinstallApp();
             }
         }
 
@@ -81,16 +82,25 @@ public class AppLifecyclePlugin extends Plugin {
     }
 
     @Override
-    public void postAfterTest(TestResult testResult, Method memberInfo, Throwable failedTestException) {
+    public void postAfterTest(TestResult testResult, TimeRecord timeRecord, Method memberInfo, Throwable failedTestException) {
         if (CURRENT_APP_CONFIGURATION.get().getLifecycle() == Lifecycle.REUSE_IF_STARTED) {
             return;
         }
 
-        if (CURRENT_APP_CONFIGURATION.get().getLifecycle() == Lifecycle.RESTART_ON_FAIL && testResult != TestResult.FAILURE ) {
+        if (CURRENT_APP_CONFIGURATION.get().getLifecycle() == Lifecycle.RESTART_ON_FAIL && testResult == TestResult.SUCCESS ) {
+            DriverService.getWrappedAndroidDriver().terminateApp(CURRENT_APP_CONFIGURATION.get().getAppPackage());
+            DriverService.getWrappedAndroidDriver().activateApp(CURRENT_APP_CONFIGURATION.get().getAppPackage());
             return;
         }
 
         shutdownApp();
+    }
+
+    @Override
+    public void beforeTestFailed(Exception ex) {
+        if (CURRENT_APP_CONFIGURATION.get().getLifecycle() == Lifecycle.RESTART_ON_FAIL) {
+            shutdownApp();
+        }
     }
 
     private void shutdownApp() {
@@ -98,7 +108,7 @@ public class AppLifecyclePlugin extends Plugin {
         PREVIOUS_APP_CONFIGURATION.set(null);
     }
 
-    private void restartApp() {
+    private void reinstallApp() {
         shutdownApp();
         try {
             DriverService.start(CURRENT_APP_CONFIGURATION.get());
@@ -111,7 +121,7 @@ public class AppLifecyclePlugin extends Plugin {
         PREVIOUS_APP_CONFIGURATION.set(CURRENT_APP_CONFIGURATION.get());
     }
 
-    private boolean shouldRestartApp() {
+    private boolean shouldReinstallApp() {
         // TODO: IsAppStartedCorrectly getter?
         var previousConfiguration = PREVIOUS_APP_CONFIGURATION.get();
         var currentConfiguration = CURRENT_APP_CONFIGURATION.get();
