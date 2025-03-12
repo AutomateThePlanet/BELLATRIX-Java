@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.openqa.selenium.InvalidArgumentException;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import solutions.bellatrix.core.plugins.EventListener;
 import solutions.bellatrix.plugins.opencv.OpenCvService;
 import solutions.bellatrix.web.findstrategies.ImageBase64FindStrategy;
@@ -60,5 +61,10 @@ public class ActionImage extends WebComponent {
                 .moveToLocation(image.getLocation().x, image.getLocation().y)
                 .release()
                 .perform();
+    }
+
+    public void relocatePointer() {
+        // ((RemoteWebDriver)getWrappedDriver()).resetInputState();
+        actions.moveToLocation(0,0).perform();
     }
 }
