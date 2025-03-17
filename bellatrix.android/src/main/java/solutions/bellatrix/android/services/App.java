@@ -15,40 +15,41 @@ package solutions.bellatrix.android.services;
 
 import solutions.bellatrix.android.infrastructure.DriverService;
 import solutions.bellatrix.core.infrastructure.BellatrixApp;
+import solutions.bellatrix.core.utilities.SingletonFactory;
 
 public class App implements BellatrixApp {
     private boolean disposed = false;
 
     public AppService appService() {
-        return new AppService();
+        return SingletonFactory.getInstance(AppService.class);
     }
 
     public ComponentCreateService create() {
-        return new ComponentCreateService();
+        return SingletonFactory.getInstance(ComponentCreateService.class);
     }
 
     public ComponentWaitService waitFor() {
-        return new ComponentWaitService();
+        return SingletonFactory.getInstance(ComponentWaitService.class);
     }
 
     public DeviceService device() {
-        return new DeviceService();
+        return SingletonFactory.getInstance(DeviceService.class);
     }
 
     public FileSystemService fileSystem() {
-        return new FileSystemService();
+        return SingletonFactory.getInstance(FileSystemService.class);
     }
 
     public KeyboardService keyboard() {
-        return new KeyboardService();
+        return SingletonFactory.getInstance(KeyboardService.class);
     }
 
     public TouchActionsService touch() {
-        return new TouchActionsService();
+        return SingletonFactory.getInstance(TouchActionsService.class);
     }
 
     public WebServiceFacade web() {
-        return new WebServiceFacade();
+        return SingletonFactory.getInstance(WebServiceFacade.class);
     }
 
     @Override

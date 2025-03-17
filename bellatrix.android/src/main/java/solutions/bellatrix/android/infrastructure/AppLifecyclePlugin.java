@@ -20,6 +20,7 @@ import solutions.bellatrix.core.plugins.TestResult;
 import solutions.bellatrix.core.plugins.TimeRecord;
 import solutions.bellatrix.core.utilities.DebugInformation;
 import solutions.bellatrix.core.utilities.PathNormalizer;
+import solutions.bellatrix.core.utilities.SingletonFactory;
 import solutions.bellatrix.web.configuration.WebSettings;
 
 import java.lang.reflect.Method;
@@ -87,9 +88,13 @@ public class AppLifecyclePlugin extends Plugin {
             return;
         }
 
-        if (CURRENT_APP_CONFIGURATION.get().getLifecycle() == Lifecycle.RESTART_ON_FAIL && testResult == TestResult.SUCCESS ) {
-            DriverService.getWrappedAndroidDriver().terminateApp(CURRENT_APP_CONFIGURATION.get().getAppPackage());
-            DriverService.getWrappedAndroidDriver().activateApp(CURRENT_APP_CONFIGURATION.get().getAppPackage());
+        if (CURRENT_APP_CONFIGURATION.get().getLifecycle() == Lifecycle.RESTART_ON_FAIL && testResult == TestResult.SUCCESS) {
+            try {
+                DriverService.getWrappedAndroidDriver().executeScript("window.location");
+            } catch (Exception ex) {
+                shutdownApp();
+            }
+
             return;
         }
 
@@ -105,6 +110,7 @@ public class AppLifecyclePlugin extends Plugin {
 
     private void shutdownApp() {
         DriverService.close();
+        SingletonFactory.clear();
         PREVIOUS_APP_CONFIGURATION.set(null);
     }
 
