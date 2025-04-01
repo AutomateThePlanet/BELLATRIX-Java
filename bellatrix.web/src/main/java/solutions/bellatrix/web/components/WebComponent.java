@@ -893,7 +893,15 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
         try {
             wait.until(x -> tryClick());
         } catch (TimeoutException e) {
+            Log.info("Timeout Exception found - retrying... ");
             toBeVisible().toBeClickable().findElement().click();
+        }  catch (StaleElementReferenceException e) {
+            Log.info("StaleElementReference Exception found - retrying with scroll.. ");
+            browserService.scrollToTop();
+            tryClick();
+        } catch (Exception e) {
+            Log.info("Exception found - retrying with scroll.. ");
+            findElement().click();
         }
     }
 
@@ -902,6 +910,9 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
             toBeVisible().toBeClickable().findElement().click();
             return true;
         } catch (ElementNotInteractableException e) {
+            return false;
+        } catch (StaleElementReferenceException e) {
+            findElement();
             return false;
         } catch (WebDriverException e) {
             toBeVisible().toBeClickable().waitToBe();
