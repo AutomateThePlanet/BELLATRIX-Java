@@ -17,6 +17,7 @@ import lombok.SneakyThrows;
 import solutions.bellatrix.core.plugins.EventListener;
 import solutions.bellatrix.core.plugins.Plugin;
 import solutions.bellatrix.core.plugins.TestResult;
+import solutions.bellatrix.core.plugins.TimeRecord;
 
 import java.lang.reflect.Method;
 import java.nio.file.Paths;
@@ -37,7 +38,7 @@ public abstract class ScreenshotPlugin extends Plugin {
 
     @Override
     @SneakyThrows
-    public void postAfterTest(TestResult testResult, Method memberInfo, Throwable failedTestException) {
+    public void preAfterTest(TestResult testResult, TimeRecord timeRecord, Method memberInfo) {
         if (!isEnabled || testResult == TestResult.SUCCESS)
             return;
 

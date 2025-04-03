@@ -124,8 +124,14 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
             } else {
                 return findElement();
             }
-        } catch (Exception ex ) {
+        } catch (ElementNotInteractableException ex ) {
+            scrollToVisible();
             return findElement();
+        } catch (StaleElementReferenceException ex ) {
+            return findElement();
+        } catch (WebDriverException ex ) {
+            toExist().waitToBe();
+            return wrappedElement;
         }
     }
 
@@ -844,7 +850,7 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
     }
 
     public WebElement findElement() {
-        if (waitStrategies.size() == 0) {
+        if (waitStrategies.isEmpty()) {
             waitStrategies.add(Wait.to().exist(webSettings.getTimeoutSettings().getElementWaitTimeout(), webSettings.getTimeoutSettings().getSleepInterval()));
         }
 
@@ -893,15 +899,8 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
         try {
             wait.until(x -> tryClick());
         } catch (TimeoutException e) {
-            Log.info("Timeout Exception found - retrying... ");
-            toBeVisible().toBeClickable().findElement().click();
-        }  catch (StaleElementReferenceException e) {
-            Log.info("StaleElementReference Exception found - retrying with scroll.. ");
-            browserService.scrollToTop();
-            tryClick();
-        } catch (Exception e) {
-            Log.info("Exception found - retrying with scroll.. ");
-            findElement().click();
+            Log.info("Click has timed out.  Trying with JS click()...");
+            javaScriptService.execute("arguments[0].click()", findElement());
         }
     }
 
@@ -910,12 +909,15 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
             toBeVisible().toBeClickable().findElement().click();
             return true;
         } catch (ElementNotInteractableException e) {
+            Log.error("ElementNotInteractableException found - retrying with scroll.. ");
+            scrollToVisible();
             return false;
         } catch (StaleElementReferenceException e) {
+            Log.error("StaleElementReference Exception found - retrying with a new Find... ");
             findElement();
             return false;
         } catch (WebDriverException e) {
-            toBeVisible().toBeClickable().waitToBe();
+            Log.error("WebDriverException found - trying again... ");
             return false;
         }
     }
@@ -1302,6 +1304,9 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
     public boolean isVisible() {
         try {
             return getWrappedElement().isDisplayed();
+        } catch (StaleElementReferenceException e) {
+            wrappedElement = findElement();
+            return false;
         } catch (NotFoundException e) {
             return false;
         }
