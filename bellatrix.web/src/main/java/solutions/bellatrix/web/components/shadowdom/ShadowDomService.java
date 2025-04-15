@@ -13,14 +13,9 @@
 
 package solutions.bellatrix.web.components.shadowdom;
 
-import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 import org.openqa.selenium.By;
 import solutions.bellatrix.core.configuration.ConfigurationService;
-import solutions.bellatrix.core.utilities.HtmlService;
 import solutions.bellatrix.core.utilities.InstanceFactory;
 import solutions.bellatrix.core.utilities.Ref;
 import solutions.bellatrix.core.utilities.Wait;
@@ -32,11 +27,9 @@ import solutions.bellatrix.web.findstrategies.ShadowXPathFindStrategy;
 
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Stack;
 import java.util.concurrent.Callable;
-import java.util.stream.Collectors;
 
 @UtilityClass
 public class ShadowDomService {
@@ -198,18 +191,14 @@ public class ShadowDomService {
     }
 
     private static String retraceParentShadowRoots(WebComponent component) {
-        if (getNestedLevel(component) > 1) {
+        if (getNestedLevel(component) > 1 && component.inShadowContext()) {
             var parent = component.getParentComponent();
 
             Stack<String> findStrategies = new Stack<>();
 
-            checkIfCss(component.getFindStrategy());
-
             findStrategies.push(component.getFindStrategy().getValue());
 
-            while (parent instanceof ShadowRoot) {
-                checkIfCss(parent.getFindStrategy());
-
+            while (parent instanceof ShadowRoot && parent.inShadowContext()) {
                 findStrategies.push(CHILD_COMBINATOR + SHADOW_ROOT_TAG + CHILD_COMBINATOR);
                 findStrategies.push(parent.getFindStrategy().getValue());
 
@@ -227,12 +216,10 @@ public class ShadowDomService {
         }
     }
 
-    private static void checkIfCss(FindStrategy findStrategy) {
+    private static boolean checkIfCss(FindStrategy findStrategy) {
         var strategyType = findStrategy.convert();
 
-        if (strategyType instanceof By.ByLinkText || strategyType instanceof By.ByPartialLinkText) {
-            throw new IllegalArgumentException("Inside Shadow DOM, there cannot be anything different than CSS locator.");
-        }
+        return !(strategyType instanceof By.ByLinkText) && !(strategyType instanceof By.ByPartialLinkText) && !(strategyType instanceof By.ByXPath);
     }
 
     private static String convertToCssOrXpath(FindStrategy findStrategy) {

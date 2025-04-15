@@ -838,12 +838,12 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
         return componentList;
     }
 
-    private boolean inShadowContext() {
+    public boolean inShadowContext() {
         var component = this;
 
-        while (component != null) {
-            if (component instanceof ShadowRoot) return true;
+        while (component != null && component.getParentComponent() != null) {
             component = component.getParentComponent();
+            if (component instanceof ShadowRoot) return true;
         }
 
         return false;
