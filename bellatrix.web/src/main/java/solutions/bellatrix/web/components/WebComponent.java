@@ -816,7 +816,7 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
 
     protected <TComponent extends WebComponent, TFindStrategy extends FindStrategy> List<TComponent> createAll(Class<TComponent> componentClass, TFindStrategy findStrategy) {
         CREATING_ELEMENTS.broadcast(new ComponentActionEventArgs(this));
-        findElement();
+//        findElement();
 
         List<TComponent> componentList = new ArrayList<>();
 

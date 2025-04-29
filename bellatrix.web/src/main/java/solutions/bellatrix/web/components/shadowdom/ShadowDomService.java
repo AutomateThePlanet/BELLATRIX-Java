@@ -126,7 +126,7 @@ public class ShadowDomService {
             }
 
             if (foundElements == null || foundElements.length == 0) {
-                throw new IllegalArgumentException();
+                // continue
             }
         }, Duration.ofSeconds(ConfigurationService.get(WebSettings.class).getTimeoutSettings().getElementWaitTimeout()), Duration.ofSeconds(1), false)) {
             try {
