@@ -37,8 +37,12 @@ public abstract class ObjectFactory {
         var argumentTypes = getArgumentTypes(arguments);
 
         try {
-            return (Constructor<T>)findConstructorMatch(clazz, argumentTypes);
+            return findConstructorMatch(clazz, argumentTypes);
         } catch (NoSuchMethodException e) {
+            if (argumentTypes == null || argumentTypes.length == 0) {
+                throw new ConstructorNotFoundException();
+            }
+
             var types = new StringBuilder();
             for (var type : argumentTypes) {
                 types.append(type.getName() + System.lineSeparator());
@@ -73,7 +77,7 @@ public abstract class ObjectFactory {
             args[args.length - 1] = getVarArgsType(clazz, argumentTypes);
 
             return clazz.getDeclaredConstructor(args);
-        } catch (NoSuchMethodException ignored) {
+        } catch (NoSuchMethodException|NullPointerException ignored) {
         }
 
         throw new NoSuchMethodException("No matching constructor found for the provided argument types.");
@@ -113,7 +117,9 @@ public abstract class ObjectFactory {
                     Given argument types:\n%s
                     """).formatted(numberOfTypes, types));
         }
+
         public ConstructorNotFoundException() {
+            super("No default constructor was found." + System.lineSeparator());
         }
 
         public ConstructorNotFoundException(String message) {
