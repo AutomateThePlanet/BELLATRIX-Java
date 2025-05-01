@@ -107,5 +107,24 @@ public class ShadowDomTests extends WebTest {
         Assertions.assertEquals("edit", edit.getText());
     }
 
+    @Test
+    public void exceptionThrown_when_tryingToFindNonExistentElement() {
+        var shadowHost = app().create().byId(Div.class, "complexShadowHost");
+        var shadowRoot = shadowHost.getShadowRoot();
+
+        Assertions.assertThrows(IllegalArgumentException.class, () -> shadowRoot.createByXPath(Div.class, "//nonExistentElement"));
+    }
+
+    @Test
+    public void returnedEmptyList_when_tryingToFindNonExistentElements() {
+        var shadowHost = app().create().byId(Div.class, "complexShadowHost");
+        var shadowRoot = shadowHost.getShadowRoot();
+
+        Assertions.assertAll(
+                () -> Assertions.assertDoesNotThrow(() -> shadowRoot.createAllByXPath(Div.class, "//nonExistentElement")),
+                () -> Assertions.assertTrue(shadowRoot.createAllByXPath(Div.class, "//nonExistentElement").isEmpty())
+        );
+    }
+
     // TODO: Test Relative Finding of Elements
 }
