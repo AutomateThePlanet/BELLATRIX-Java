@@ -44,16 +44,7 @@ public class ShadowDomService {
     }
 
     public static <TComponent extends WebComponent, TFindStrategy extends FindStrategy> TComponent createFromShadowRoot(Class<TComponent> componentClass, ShadowRoot parentComponent, TFindStrategy findStrategy) {
-        if (Wait.retry(() -> {
-            List<TComponent> foundElements = createAllFromShadowRoot(componentClass, parentComponent, findStrategy);
-
-            if (foundElements.size() == 0) throw new IllegalArgumentException();
-
-        }, Duration.ofSeconds(ConfigurationService.get(WebSettings.class).getTimeoutSettings().getElementWaitTimeout()), Duration.ofSeconds(1), false)) {
-            return createAllFromShadowRoot(componentClass, parentComponent, findStrategy).get(0);
-        } else {
-            throw new IllegalArgumentException("No elements inside the shadow DOM were found with the findStrategy: " + findStrategy.toString());
-        }
+        return retryFindingSingleComponent(() -> createAllFromShadowRoot(componentClass, parentComponent, findStrategy), findStrategy);
     }
 
     public static <TComponent extends WebComponent, TFindStrategy extends FindStrategy> List<TComponent> createAllFromShadowRoot(Class<TComponent> componentClass, ShadowRoot parentComponent, TFindStrategy findStrategy) {
@@ -79,16 +70,7 @@ public class ShadowDomService {
     }
 
     public static <TComponent extends WebComponent, TFindStrategy extends FindStrategy> TComponent createInShadowContext(Class<TComponent> componentClass, WebComponent parentComponent, TFindStrategy findStrategy) {
-        if (Wait.retry(() -> {
-            List<TComponent> foundElements = createAllInShadowContext(componentClass, parentComponent, findStrategy);
-
-            if (foundElements.size() == 0) throw new IllegalArgumentException();
-
-        }, Duration.ofSeconds(ConfigurationService.get(WebSettings.class).getTimeoutSettings().getElementWaitTimeout()), Duration.ofSeconds(1), false)) {
-            return createAllInShadowContext(componentClass, parentComponent, findStrategy).get(0);
-        } else {
-            throw new IllegalArgumentException("No elements inside the shadow DOM were found with the findStrategy: " + findStrategy.toString());
-        }
+        return retryFindingSingleComponent(() -> createAllInShadowContext(componentClass, parentComponent, findStrategy), findStrategy);
     }
 
     public static <TComponent extends WebComponent, TFindStrategy extends FindStrategy> List<TComponent> createAllInShadowContext(Class<TComponent> componentClass, WebComponent parentComponent, TFindStrategy findStrategy) {
@@ -259,6 +241,28 @@ public class ShadowDomService {
         }
 
         return null;
+    }
+
+    private static <TComponent extends WebComponent> TComponent retryFindingSingleComponent(Callable<List<TComponent>> callable, FindStrategy findStrategy) {
+        if (Wait.retry(() -> {
+            List<TComponent> foundElements;
+            try {
+                foundElements = callable.call();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+
+            if (foundElements.size() == 0) throw new IllegalArgumentException();
+
+        }, Duration.ofSeconds(ConfigurationService.get(WebSettings.class).getTimeoutSettings().getElementWaitTimeout()), Duration.ofSeconds(1), false)) {
+            try {
+                return callable.call().get(0);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        } else {
+            throw new IllegalArgumentException("No element inside the shadow DOM was found with the findStrategy: " + findStrategy.toString());
+        }
     }
 
     private static final String javaScript = /* lang=js */ """
