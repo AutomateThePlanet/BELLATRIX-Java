@@ -15,6 +15,7 @@ package solutions.bellatrix.web.components.shadowdom;
 
 import lombok.experimental.UtilityClass;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.core.utilities.InstanceFactory;
 import solutions.bellatrix.core.utilities.Ref;
@@ -261,7 +262,7 @@ public class ShadowDomService {
                 throw new RuntimeException(e);
             }
         } else {
-            throw new IllegalArgumentException("No element inside the shadow DOM was found with the findStrategy: " + findStrategy.toString());
+            throw new NoSuchElementException("No element inside the shadow DOM was found with the findStrategy: " + findStrategy.toString());
         }
     }
 

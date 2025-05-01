@@ -4,6 +4,7 @@ import common.configuration.TestPagesSettings;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.NoSuchElementException;
 import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.web.components.Anchor;
 import solutions.bellatrix.web.components.Div;
@@ -112,7 +113,7 @@ public class ShadowDomTests extends WebTest {
         var shadowHost = app().create().byId(Div.class, "complexShadowHost");
         var shadowRoot = shadowHost.getShadowRoot();
 
-        Assertions.assertThrows(IllegalArgumentException.class, () -> shadowRoot.createByXPath(Div.class, "//nonExistentElement"));
+        Assertions.assertThrows(NoSuchElementException.class, () -> shadowRoot.createByXPath(Div.class, "//nonExistentElement"));
     }
 
     @Test
