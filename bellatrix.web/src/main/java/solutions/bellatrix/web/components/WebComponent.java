@@ -1081,17 +1081,15 @@ public class WebComponent extends LayoutComponentValidationsBuilder implements C
     }
 
     protected String defaultGetInnerHtmlAttribute() {
-        if (!this.inShadowContext()) {
+        if (this instanceof ShadowRoot) {
+            return ShadowDomService.getShadowHtml(this, true);
+        } else if (this.inShadowContext()) {
+            return ShadowDomService.getShadowHtml(this, false);
+        } else {
             try {
                 return Optional.ofNullable(getAttribute("innerHTML")).orElse("");
             } catch (StaleElementReferenceException e) {
                 return Optional.ofNullable(findElement().getAttribute("innerHTML")).orElse("");
-            }
-        } else {
-            if (this instanceof ShadowRoot) {
-                return ShadowDomService.getShadowHtml(this, true);
-            } else {
-                return ShadowDomService.getShadowHtml(this, false);
             }
         }
     }
