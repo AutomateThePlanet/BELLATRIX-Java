@@ -253,7 +253,7 @@ public class ShadowDomService {
                 throw new RuntimeException(e);
             }
 
-            if (foundElements.size() == 0) throw new IllegalArgumentException();
+            if (foundElements.isEmpty()) throw new IllegalArgumentException();
 
         }, Duration.ofSeconds(ConfigurationService.get(WebSettings.class).getTimeoutSettings().getElementWaitTimeout()), Duration.ofSeconds(1), false)) {
             try {
