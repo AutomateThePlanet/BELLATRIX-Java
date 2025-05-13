@@ -15,11 +15,13 @@ package solutions.bellatrix.web.components.shadowdom;
 
 import lombok.experimental.UtilityClass;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.core.utilities.InstanceFactory;
 import solutions.bellatrix.core.utilities.Ref;
 import solutions.bellatrix.core.utilities.Wait;
 import solutions.bellatrix.web.components.WebComponent;
+import solutions.bellatrix.web.components.contracts.Component;
 import solutions.bellatrix.web.configuration.WebSettings;
 import solutions.bellatrix.web.findstrategies.CssFindStrategy;
 import solutions.bellatrix.web.findstrategies.FindStrategy;
@@ -43,7 +45,7 @@ public class ShadowDomService {
     }
 
     public static <TComponent extends WebComponent, TFindStrategy extends FindStrategy> TComponent createFromShadowRoot(Class<TComponent> componentClass, ShadowRoot parentComponent, TFindStrategy findStrategy) {
-        return createAllFromShadowRoot(componentClass, parentComponent, findStrategy).get(0);
+        return retryFindingSingleComponent(() -> createAllFromShadowRoot(componentClass, parentComponent, findStrategy), findStrategy);
     }
 
     public static <TComponent extends WebComponent, TFindStrategy extends FindStrategy> List<TComponent> createAllFromShadowRoot(Class<TComponent> componentClass, ShadowRoot parentComponent, TFindStrategy findStrategy) {
@@ -69,7 +71,7 @@ public class ShadowDomService {
     }
 
     public static <TComponent extends WebComponent, TFindStrategy extends FindStrategy> TComponent createInShadowContext(Class<TComponent> componentClass, WebComponent parentComponent, TFindStrategy findStrategy) {
-        return createAllInShadowContext(componentClass, parentComponent, findStrategy).get(0);
+        return retryFindingSingleComponent(() -> createAllInShadowContext(componentClass, parentComponent, findStrategy), findStrategy);
     }
 
     public static <TComponent extends WebComponent, TFindStrategy extends FindStrategy> List<TComponent> createAllInShadowContext(Class<TComponent> componentClass, WebComponent parentComponent, TFindStrategy findStrategy) {
@@ -103,7 +105,7 @@ public class ShadowDomService {
                             shadowRoot.findElement(), locator, null).toArray(String[]::new);
         };
 
-        return getCss(js, locator);
+        return getCss(js);
     }
 
     private static String[] getRelativeCss(ShadowRoot shadowRoot, String locator, String parentLocator) {
@@ -113,30 +115,18 @@ public class ShadowDomService {
                             shadowRoot.findElement(), locator, parentLocator).toArray(String[]::new);
         };
 
-        return getCss(js, locator);
+        return getCss(js);
     }
 
-    private static String[] getCss(Callable<String[]> callable, String locator) {
-        if (Wait.retry(() -> {
-            String[] foundElements;
-            try {
-                foundElements = callable.call();
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-
-            if (foundElements == null || foundElements.length == 0) {
-                throw new IllegalArgumentException();
-            }
-        }, Duration.ofSeconds(ConfigurationService.get(WebSettings.class).getTimeoutSettings().getElementWaitTimeout()), Duration.ofSeconds(1), false)) {
-            try {
-                return callable.call();
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        } else {
-            throw new IllegalArgumentException("No elements inside the shadow DOM were found with the locator: " + locator);
+    private static String[] getCss(Callable<String[]> callable) {
+        String[] foundElements;
+        try {
+            foundElements = callable.call();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
+
+        return foundElements;
     }
 
     private static <TComponent extends WebComponent> TComponent buildMissingShadowRootsAndCreate(Class<TComponent> clazz, ShadowRoot parentComponent, Ref<String> fullCss) {
@@ -206,7 +196,7 @@ public class ShadowDomService {
             }
 
             StringBuilder finalCss = new StringBuilder();
-            while(!findStrategies.isEmpty()) {
+            while (!findStrategies.isEmpty()) {
                 finalCss.append(findStrategies.pop());
             }
 
@@ -252,6 +242,28 @@ public class ShadowDomService {
         }
 
         return null;
+    }
+
+    private static <TComponent extends WebComponent> TComponent retryFindingSingleComponent(Callable<List<TComponent>> callable, FindStrategy findStrategy) {
+        if (Wait.retry(() -> {
+            List<TComponent> foundElements;
+            try {
+                foundElements = callable.call();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+
+            if (foundElements.isEmpty()) throw new IllegalArgumentException();
+
+        }, Duration.ofSeconds(ConfigurationService.get(WebSettings.class).getTimeoutSettings().getElementWaitTimeout()), Duration.ofSeconds(1), false)) {
+            try {
+                return callable.call().get(0);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        } else {
+            throw new NoSuchElementException("No element inside the shadow DOM was found with the findStrategy: " + findStrategy.toString());
+        }
     }
 
     private static final String javaScript = /* lang=js */ """
@@ -338,11 +350,11 @@ public class ShadowDomService {
                 }
                 
                 let startPoint = temporaryDiv;
-    
+                
                 if (relativeElementCss) {
                     startPoint = temporaryDiv.querySelector(relativeElementCss);
                 }
-    
+                
                 let elements;
                 if (locator.startsWith("/") || locator.startsWith("./") || locator.startsWith("(")) {
                   let result = document.evaluate(locator, startPoint, null, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null);
@@ -354,12 +366,12 @@ public class ShadowDomService {
                 } else {
                   elements = Array.from(startPoint.querySelectorAll(locator));
                 }
-    
+                
                 let finalLocators = [];
                 elements.forEach((el) => {
                   finalLocators.push(getAbsoluteCss(getAbsoluteXpath(el)));
                 });
-    
+                
                 return finalLocators;
             }""";
 
@@ -367,7 +379,7 @@ public class ShadowDomService {
             function (element, isShadowRoot) {
                 const child_combinator = " > ";
                 const node = "/";
-            
+                        
                 function clone(element, tag) {
                   let cloneElement;
                   if (element instanceof ShadowRoot && !tag) {
@@ -381,20 +393,20 @@ public class ShadowDomService {
                       cloneElement.appendChild(element.firstChild.cloneNode());
                     }
                   }
-            
+                        
                   if (element.shadowRoot) {
                     cloneElement.appendChild(clone(element.shadowRoot, "shadow-root"));
                   }
-            
+                        
                   if (element.children) {
                     for (const child of element.children) {
                       cloneElement.appendChild(clone(child, undefined));
                     }
                   }
-            
+                        
                   return cloneElement;
                 }
-            
+                        
                 let temporaryDiv = document.createElement("temporary-div");
                 if (element.shadowRoot) {
                       temporaryDiv.appendChild(clone(element.shadowRoot, undefined));
@@ -404,7 +416,7 @@ public class ShadowDomService {
                     temporaryDiv.appendChild(clone(element, "redundant-el"));
                     temporaryDiv = temporaryDiv.querySelector("redundant-el");
                 }
-            
+                        
                 return temporaryDiv.innerHTML;
             }
             """;
