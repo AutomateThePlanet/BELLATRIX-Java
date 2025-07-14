@@ -76,7 +76,7 @@ public final class ConfigurationService {
         return sb.toString();
     }
 
-    @SneakyThrows
+  //  @SneakyThrows
     public static String getFileAsString(String fileName) {
         InputStream input = ConfigurationService.class.getResourceAsStream("/" + fileName);
         try {
