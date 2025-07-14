@@ -21,10 +21,12 @@ public class HttpSettings {
     @SerializedName("urlEncoderEnabled")
     private boolean urlEncoderEnabled;
 
-    private transient String resourcePath;
-
     public static HttpSettings getDefaultHttpSettings() {
         return ConfigurationService.get(DataSettings.class).getHttpSettings();
+    }
+
+    public static HttpSettings withBasePath(String basePath) {
+        return HttpSettings.createCustomHttpSettings(x -> x.setBasePath(basePath));
     }
 
     public static HttpSettings createCustomHttpSettings(Consumer<HttpSettings> httpSettings) {

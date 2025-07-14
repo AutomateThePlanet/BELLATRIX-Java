@@ -1,30 +1,28 @@
 package solutions.bellatrix.data.core;
 
 import io.restassured.RestAssured;
-import io.restassured.builder.RequestSpecBuilder;
-import io.restassured.filter.log.LogDetail;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
+import solutions.bellatrix.core.utilities.Log;
+import solutions.bellatrix.data.configuration.http.ClientSideException;
 import solutions.bellatrix.data.configuration.http.HTTPMethod;
 import solutions.bellatrix.data.configuration.http.HttpSettings;
-import solutions.bellatrix.data.configuration.http.auth.AuthSchemaFactory;
-import solutions.bellatrix.data.configuration.http.urlBuilder.UrlBuilder;
+import solutions.bellatrix.data.configuration.http.RequestConfiguration;
 import solutions.bellatrix.data.contracts.HttpEntity;
 import solutions.bellatrix.data.contracts.JsonSerializer;
 import solutions.bellatrix.data.contracts.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public abstract class HttpRepository<TEntity extends HttpEntity> implements Repository<TEntity>, AutoCloseable {
-    private final UrlBuilder urlBuilder;
     private final JsonSerializer serializer;
     private final Class<TEntity> entityType;
-    private final RequestSpecBuilder requestSpecBuilder;
-    private final HttpSettings httpSettings;
-    private List<TEntity> entities;
+    private final RequestConfiguration requestConfig;
+    private RequestSpecification requestSpecification;
 
     public HttpRepository(Class<TEntity> entityType, HttpSettings httpSettings) {
         this(entityType, new GsonSerializer(), httpSettings);
@@ -33,14 +31,24 @@ public abstract class HttpRepository<TEntity extends HttpEntity> implements Repo
     public HttpRepository(Class<TEntity> entityType, JsonSerializer serializer, HttpSettings httpSettings) {
         this.entityType = entityType;
         this.serializer = serializer;
-        this.httpSettings = httpSettings;
-        this.urlBuilder = createUrlBuilder();
-        this.requestSpecBuilder = createRequestSpecificationBuilder(httpSettings);
+        requestConfig = new RequestConfiguration(httpSettings);
     }
 
-    public ApiResponse<TEntity> get(HttpEntity entity) {
-        customizeUrl(url -> {
-            url.addPathSegments(List.of(entity.getIdentifier()));
+    protected void customizeRequestConfig(Consumer<RequestConfiguration> requestConfigConsumer) {
+        requestConfigConsumer.accept(requestConfig);
+    }
+
+    public ApiResponse<TEntity> getById(HttpEntity entity) {
+        if (Objects.isNull(entity)) {
+            throw new IllegalArgumentException("Entity cannot be null.");
+        }
+
+        if (Objects.isNull(entity.getIdentifier()) || entity.getIdentifier().isEmpty()) {
+            throw new IllegalArgumentException("Entity identifier cannot be null or empty.");
+        }
+
+        customizeRequestConfig(url -> {
+            url.addPathParameter(entity.getIdentifier());
         });
 
         Response response = executeRequest(HTTPMethod.GET);
@@ -48,79 +56,68 @@ public abstract class HttpRepository<TEntity extends HttpEntity> implements Repo
         return deserializeEntity(response);
     }
 
-    public List<ApiResponse<TEntity>> getAll(TEntity entity) {
-        customizeUrl(url -> {
-            url.addQueryParameters(entity.toQueryParams());
-        });
+    public ApiResponse<TEntity> createEntity(TEntity entity) {
+        if (Objects.isNull(entity)) {
+            throw new IllegalArgumentException("Entity cannot be null.");
+        }
 
-        Response response = executeRequest(HTTPMethod.GET);
-
-        return deserializeEntityList(response);
-    }
-
-    public ApiResponse<TEntity> create(TEntity entity) {
         Response response = executeRequest(HTTPMethod.POST);
 
-        return deserializeEntity(response);
-    }
-
-    public ApiResponse<TEntity> update(TEntity entity) {
-        customizeUrl(url -> {
-            url.addPathSegments(List.of(entity.getIdentifier()));
-        });
-
-        Response response = executeRequest(HTTPMethod.PUT);
+        if (response.statusCode() >= 400) {
+            throw new ClientSideException("Failed to create entity. Status code: " + response.statusCode());
+        }
 
         return deserializeEntity(response);
     }
 
-    public ApiResponse<TEntity> delete(TEntity entity) {
-        customizeUrl(url -> {
-            url.addPathSegments(List.of(entity.getIdentifier()));
+    public ApiResponse<TEntity> deleteEntity(TEntity entity) {
+        if (Objects.isNull(entity)) {
+            throw new IllegalArgumentException("Entity cannot be null.");
+        }
+
+        if (Objects.isNull(entity.getIdentifier()) || entity.getIdentifier().isEmpty()) {
+            throw new IllegalArgumentException("Entity identifier cannot be null or empty.");
+        }
+
+        customizeRequestConfig(requestConfiguration -> {
+            requestConfiguration.addPathParameter(entity.getIdentifier());
         });
 
         Response response = executeRequest(HTTPMethod.DELETE);
 
-        return deserializeEntity(response);
+        return new ApiResponse<>(response, null);
     }
 
-    protected void customizeUrl(Consumer<UrlBuilder> urlBuilderConsumer) {
-        urlBuilderConsumer.accept(urlBuilder);
-    }
-
-    protected void customizeRequest(Consumer<RequestSpecBuilder> specBuilderConsumer) {
-        specBuilderConsumer.accept(requestSpecBuilder);
-    }
+//    protected void customizeRequest(Consumer<RequestSpecBuilder> specBuilderConsumer) {
+//        specBuilderConsumer.accept(requestSpecBuilder);
+//    }
 
     protected Response executeRequest(HTTPMethod httpMethod) {
-        RequestSpecification spec = getRequestSpec();
-        String url = urlBuilder.build();
-        spec.baseUri(urlBuilder.getBasePath());
-        spec.queryParams(urlBuilder.getQueryParameters());
+        setRequestSpecification();
         return switch (httpMethod) {
-            case GET -> requestHandler(() -> spec.get());
-            case POST -> requestHandler(() -> spec.post(url));
-            case PUT -> requestHandler(() -> spec.put(url));
-            case DELETE -> requestHandler(() -> spec.delete(url));
-            case PATCH -> requestHandler(() -> spec.patch(url));
+            case GET -> requestSender(() -> getRequestSpec().get(requestConfig.getRequestPath()));
+            case POST -> requestSender(() -> getRequestSpec().post(requestConfig.getRequestPath()));
+            case PUT -> requestSender(() -> getRequestSpec().put(requestConfig.getRequestPath()));
+            case DELETE -> requestSender(() -> getRequestSpec().delete(requestConfig.getRequestPath()));
+            case PATCH -> requestSender(() -> getRequestSpec().patch(requestConfig.getRequestPath()));
             default -> throw new IllegalArgumentException("Unsupported HTTP method: " + httpMethod.getMethod());
         };
     }
 
-    private UrlBuilder createUrlBuilder() {
-        return new UrlBuilder(httpSettings);
-    }
-
     private RequestSpecification getRequestSpec() {
-        return RestAssured.given().spec(requestSpecBuilder.build());
+        return RestAssured.given().spec(requestSpecification);
     }
 
-    private RequestSpecBuilder createRequestSpecificationBuilder(HttpSettings httpSettings) {
-        var builder = new RequestSpecBuilder();
-        builder.log(LogDetail.ALL);
-        builder.setContentType(httpSettings.getContentType());
-        builder.setAuth(AuthSchemaFactory.getAuthenticationScheme(httpSettings.getAuthentication()));
-        return builder;
+    private void setRequestSpecification() {
+        var requestedSpecification = requestConfig.requestSpecification();
+
+        var queryParameters = requestConfig.getRequestQueryParameters();
+
+        if (queryParameters!=null && !queryParameters.isEmpty()) {
+            requestedSpecification.queryParams(queryParameters);
+        }
+
+        this.requestSpecification = requestedSpecification;
     }
 
     private ApiResponse<TEntity> deserializeEntity(Response response) {
@@ -146,21 +143,20 @@ public abstract class HttpRepository<TEntity extends HttpEntity> implements Repo
     }
 
 
-    private Response requestHandler(Supplier<Response> requestSupplier) {
+    private Response requestSender(Supplier<Response> requestSupplier) {
+        Response response = null;
         try {
-            Response response = requestSupplier.get();
-            if (response.statusCode() >= 400 || response.statusCode() < 500) {
-                System.out.println();
+            response = requestSupplier.get();
+            if (response.statusCode() >= 400 && response.statusCode() < 500) {
+                throw new ClientSideException("Client-side error occurred: " + response.getStatusCode());
             }
-            System.out.println();
+
             return response;
-
         } catch (Exception e) {
-            // Step 5: Handle any runtime exceptions during request execution
-            // throw new RequestExecutionException("Failed to execute HTTP request", e);
+            Log.error("Request failed with status code: " + response.statusCode());
+            Log.error("Response body: " + serializer.serialize(response.getBody().asString()));
         }
-
-        return null;
+        throw new ClientSideException("Client-side error occurred: " + response.getStatusCode());
     }
 
     @Override
