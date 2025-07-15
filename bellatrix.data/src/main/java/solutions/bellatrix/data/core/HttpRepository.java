@@ -13,7 +13,6 @@ import solutions.bellatrix.data.contracts.JsonSerializer;
 import solutions.bellatrix.data.contracts.Repository;
 import solutions.bellatrix.data.http.configuration.HttpSettings;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -53,7 +52,6 @@ public abstract class HttpRepository<TEntity extends HttpEntity> implements Repo
 
         customizeRequestConfig(url -> {
             url.addPathParameter(entity.getIdentifier());
-            url.addPathParameter("member");
         });
 
         Response response = executeRequest(HTTPMethod.GET);
@@ -66,19 +64,6 @@ public abstract class HttpRepository<TEntity extends HttpEntity> implements Repo
             throw new IllegalArgumentException("Entity cannot be null.");
         }
 
-        try {
-            var x = entityType.getDeclaredConstructor().newInstance();
-            System.out.println();
-
-        } catch (InvocationTargetException e) {
-            throw new RuntimeException(e);
-        } catch (InstantiationException e) {
-            throw new RuntimeException(e);
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
-        } catch (NoSuchMethodException e) {
-            throw new RuntimeException(e);
-        }
         //send
         ON_MAKING_REQUEST.broadcast(new RequestEventArgs());
         Response response = executeRequest(HTTPMethod.POST);

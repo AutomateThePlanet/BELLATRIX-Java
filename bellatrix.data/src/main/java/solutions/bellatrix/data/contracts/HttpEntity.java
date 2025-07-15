@@ -3,8 +3,10 @@ package solutions.bellatrix.data.contracts;
 import com.google.gson.annotations.SerializedName;
 import io.restassured.response.Response;
 import lombok.Data;
+import lombok.experimental.SuperBuilder;
 
 @Data
+@SuperBuilder
 public abstract class HttpEntity extends Entity implements Queryable {
     @SerializedName("id")
     private String id;
