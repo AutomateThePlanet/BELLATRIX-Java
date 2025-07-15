@@ -1,10 +1,10 @@
-package solutions.bellatrix.data.configuration.http;
+package solutions.bellatrix.data.http.configuration;
 
 import com.google.gson.annotations.SerializedName;
 import lombok.Data;
 import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.data.configuration.DataSettings;
-import solutions.bellatrix.data.configuration.http.auth.Authentication;
+import solutions.bellatrix.data.http.configuration.authentication.Authentication;
 
 import java.util.function.Consumer;
 

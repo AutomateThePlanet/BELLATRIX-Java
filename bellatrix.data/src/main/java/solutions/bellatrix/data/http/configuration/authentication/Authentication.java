@@ -1,4 +1,4 @@
-package solutions.bellatrix.data.configuration.http.auth;
+package solutions.bellatrix.data.http.configuration.authentication;
 
 import com.google.gson.annotations.SerializedName;
 import lombok.AccessLevel;

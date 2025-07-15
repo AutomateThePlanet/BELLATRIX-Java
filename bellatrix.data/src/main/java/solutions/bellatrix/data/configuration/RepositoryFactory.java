@@ -1,44 +1,25 @@
 package solutions.bellatrix.data.configuration;
 
+import solutions.bellatrix.data.contracts.Entity;
+import solutions.bellatrix.data.contracts.Repository;
+
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public enum RepositoryFactory implements AutoCloseable {
+public enum RepositoryFactory {
     INSTANCE;
-    private final Map<Class<?>, Object> repositoryMap = new ConcurrentHashMap<>();
 
-    @SuppressWarnings("unchecked")
-    public <T> T getRepository(Class<T> repositoryClass) {
-        T repository = (T)repositoryMap.get(repositoryClass);
+    private final Map<Class<?>, Repository<?>> repositories = new ConcurrentHashMap<>();
 
+    public <T extends Entity> void registerRepository(Class<?> entityClass, Repository<?> repository) {
+        repositories.put(entityClass, repository);
+    }
+
+    public  Repository<?> getRepository(Class<?> entityClass) {
+        Repository<?> repository =repositories.get(entityClass);
         if (repository==null) {
-            synchronized (this) {
-                repository = (T)repositoryMap.get(repositoryClass);
-                if (repository==null) {
-                    repository = createRepository(repositoryClass);
-                    repositoryMap.put(repositoryClass, repository);
-                }
-            }
+            throw new IllegalArgumentException("No repository registered for entity class: " + entityClass.getName());
         }
-
         return repository;
-    }
-
-    @SuppressWarnings("unchecked")
-    private <T> T createRepository(Class<T> repositoryClass) {
-        try {
-            return repositoryClass.getDeclaredConstructor().newInstance();
-        } catch (Exception e) {
-            throw new IllegalArgumentException("Failed to create repository instance for " + repositoryClass.getName() + ": " + e.getMessage(), e);
-        }
-    }
-
-    @Override
-    public void close() throws Exception {
-        for (Object repository : repositoryMap.values()) {
-            if (repository instanceof AutoCloseable) {
-                ((AutoCloseable)repository).close();
-            }
-        }
     }
 }

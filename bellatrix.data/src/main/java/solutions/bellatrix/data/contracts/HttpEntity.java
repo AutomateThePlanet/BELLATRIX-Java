@@ -1,4 +1,18 @@
 package solutions.bellatrix.data.contracts;
 
-public interface HttpEntity extends Entity, Querable {
+import com.google.gson.annotations.SerializedName;
+import io.restassured.response.Response;
+import lombok.Data;
+
+@Data
+public abstract class HttpEntity extends Entity implements Queryable {
+    @SerializedName("id")
+    private String id;
+
+    private transient Response response;
+
+    @Override
+    public String getIdentifier() {
+        return id;
+    }
 }

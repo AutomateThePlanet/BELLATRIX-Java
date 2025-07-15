@@ -3,12 +3,10 @@ package solutions.bellatrix.data.configuration.http;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.filter.log.LogDetail;
 import io.restassured.specification.RequestSpecification;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.Setter;
-import solutions.bellatrix.data.configuration.http.auth.AuthSchemaFactory;
-import solutions.bellatrix.data.configuration.http.auth.AuthenticationMethods;
 import solutions.bellatrix.data.configuration.http.urlBuilder.QueryParameter;
+import solutions.bellatrix.data.http.configuration.HttpSettings;
+import solutions.bellatrix.data.http.configuration.authentication.AuthSchemaFactory;
+import solutions.bellatrix.data.http.configuration.authentication.AuthenticationMethods;
 
 import java.util.Collection;
 import java.util.LinkedHashMap;
@@ -18,14 +16,8 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 public class RequestConfiguration {
-    @Setter(AccessLevel.PRIVATE)
-    @Getter(AccessLevel.PRIVATE)
     private final HttpSettings httpSettings;
-    @Setter(AccessLevel.PRIVATE)
-    @Getter(AccessLevel.PRIVATE)
     private final LinkedList<String> pathParameters;
-    @Setter(AccessLevel.PRIVATE)
-    @Getter(AccessLevel.PRIVATE)
     private final LinkedList<QueryParameter> queryParameters;
     private final RequestSpecBuilder requestSpecBuilder;
 

@@ -1,5 +1,6 @@
 package solutions.bellatrix.data.contracts;
 
-public interface Entity {
-    String getIdentifier();
+public abstract class Entity {
+
+    abstract String getIdentifier();
 }

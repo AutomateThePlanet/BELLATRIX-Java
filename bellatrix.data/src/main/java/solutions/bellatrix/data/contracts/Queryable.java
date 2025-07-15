@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Objects;
 
-public interface Querable {
+public interface Queryable {
     default LinkedList<QueryParameter> toQueryParams() {
         try {
             var queryParameters = new LinkedList<QueryParameter>();
