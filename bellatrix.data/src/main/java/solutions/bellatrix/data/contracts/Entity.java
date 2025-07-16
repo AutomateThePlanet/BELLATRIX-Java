@@ -7,7 +7,7 @@ import solutions.bellatrix.data.configuration.RepositoryFactory;
 public abstract class Entity {
     public Entity create() {
         var repository = (Repository<Entity>)RepositoryFactory.INSTANCE.getRepository(this.getClass());
-        return repository.createEntity(this);
+        return repository.create(this);
     }
 
     public Entity getById() {
