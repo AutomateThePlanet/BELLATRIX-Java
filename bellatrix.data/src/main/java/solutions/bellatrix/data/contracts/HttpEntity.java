@@ -5,6 +5,8 @@ import io.restassured.response.Response;
 import lombok.Data;
 import lombok.experimental.SuperBuilder;
 
+import java.util.Objects;
+
 @Data
 @SuperBuilder
 public abstract class HttpEntity extends Entity implements Queryable {
@@ -16,5 +18,9 @@ public abstract class HttpEntity extends Entity implements Queryable {
     @Override
     public String getIdentifier() {
         return id;
+    }
+
+    public boolean hasInvalidIdentifier() {
+        return Objects.isNull(this.getIdentifier()) || this.getIdentifier().isEmpty();
     }
 }

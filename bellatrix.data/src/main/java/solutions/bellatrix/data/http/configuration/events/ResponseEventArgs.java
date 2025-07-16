@@ -1,0 +1,12 @@
+package solutions.bellatrix.data.http.configuration.events;
+
+import io.restassured.response.Response;
+import lombok.Getter;
+
+public class ResponseEventArgs {
+    @Getter private final Response response;
+
+    public ResponseEventArgs(Response response) {
+        this.response = response;
+    }
+}

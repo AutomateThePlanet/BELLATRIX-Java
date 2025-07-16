@@ -22,7 +22,6 @@ public enum RepositoryFactory {
         if (Objects.isNull(repositoryClass)) {
             throw new IllegalArgumentException("No repository registered for entity class: " + entityClass.getName());
         }
-
         return (Repository<T>)SingletonFactory.getInstance(repositoryClass);
     }
 }
