@@ -1,7 +1,6 @@
-package solutions.bellatrix.data.http.configuration.events;
+package solutions.bellatrix.data.http.infrastructure;
 
 import lombok.Getter;
-import solutions.bellatrix.data.configuration.http.RequestConfiguration;
 
 public class RequestEventArgs {
     @Getter public RequestConfiguration component;

@@ -1,5 +1,7 @@
 package solutions.bellatrix.data.contracts;
 
+import solutions.bellatrix.data.http.infrastructure.Entity;
+
 import java.util.List;
 
 public interface Repository<T extends Entity> {

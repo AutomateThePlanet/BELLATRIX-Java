@@ -1,4 +1,4 @@
-package solutions.bellatrix.data.contracts;
+package solutions.bellatrix.data.http.contracts;
 
 import java.util.List;
 

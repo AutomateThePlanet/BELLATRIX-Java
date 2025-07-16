@@ -1,7 +1,7 @@
 package solutions.bellatrix.data.configuration;
 
 import solutions.bellatrix.core.utilities.SingletonFactory;
-import solutions.bellatrix.data.contracts.Entity;
+import solutions.bellatrix.data.http.infrastructure.Entity;
 import solutions.bellatrix.data.contracts.Repository;
 
 import java.util.Map;

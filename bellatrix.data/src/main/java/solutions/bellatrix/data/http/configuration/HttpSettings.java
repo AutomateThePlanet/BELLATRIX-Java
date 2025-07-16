@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 import lombok.Data;
 import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.data.configuration.DataSettings;
-import solutions.bellatrix.data.http.configuration.authentication.Authentication;
+import solutions.bellatrix.data.http.authentication.Authentication;
 
 import java.util.function.Consumer;
 
@@ -25,7 +25,7 @@ public class HttpSettings {
         return ConfigurationService.get(DataSettings.class).getHttpSettings();
     }
 
-    public static HttpSettings withBasePath(String basePath) {
+    public static HttpSettings extendBasePath(String basePath) {
         return HttpSettings.createCustomHttpSettings(x -> x.setBasePath(basePath));
     }
 

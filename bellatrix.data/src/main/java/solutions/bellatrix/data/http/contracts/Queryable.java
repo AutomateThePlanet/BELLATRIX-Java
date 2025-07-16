@@ -1,4 +1,4 @@
-package solutions.bellatrix.data.contracts;
+package solutions.bellatrix.data.http.contracts;
 
 import com.google.gson.annotations.SerializedName;
 import solutions.bellatrix.data.http.infrastructure.QueryParameter;

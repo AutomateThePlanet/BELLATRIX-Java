@@ -1,19 +1,28 @@
-package solutions.bellatrix.data.contracts;
+package solutions.bellatrix.data.http.infrastructure;
 
-import lombok.experimental.SuperBuilder;
 import solutions.bellatrix.data.configuration.RepositoryFactory;
+import solutions.bellatrix.data.contracts.Repository;
 
-@SuperBuilder
-public abstract class Entity {
-    public Entity create() {
-        var repository = (Repository<Entity>)RepositoryFactory.INSTANCE.getRepository(this.getClass());
-        return repository.create(this);
-    }
-
-    public Entity getById() {
+public interface Entity<Т> {
+    default Entity get() {
         var repository = (Repository<Entity>)RepositoryFactory.INSTANCE.getRepository(this.getClass());
         return repository.getById(this);
     }
 
-    abstract String getIdentifier();
+    default Entity create() {
+        var repository = (Repository<Entity>)RepositoryFactory.INSTANCE.getRepository(this.getClass());
+        return repository.create(this);
+    }
+
+    default Entity update() {
+        var repository = (Repository<Entity>)RepositoryFactory.INSTANCE.getRepository(this.getClass());
+        return repository.update(this);
+    }
+
+    default void delete() {
+        var repository = (Repository<Entity>)RepositoryFactory.INSTANCE.getRepository(this.getClass());
+        repository.delete(this);
+    }
+
+    Т getIdentifier();
 }

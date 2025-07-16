@@ -1,4 +1,4 @@
-package solutions.bellatrix.data.http.configuration.events;
+package solutions.bellatrix.data.http.infrastructure;
 
 import io.restassured.response.Response;
 import lombok.Getter;

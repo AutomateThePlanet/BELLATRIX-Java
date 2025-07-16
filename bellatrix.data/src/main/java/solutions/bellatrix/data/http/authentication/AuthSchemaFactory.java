@@ -1,4 +1,4 @@
-package solutions.bellatrix.data.http.configuration.authentication;
+package solutions.bellatrix.data.http.authentication;
 
 import io.restassured.authentication.AuthenticationScheme;
 import io.restassured.authentication.BasicAuthScheme;

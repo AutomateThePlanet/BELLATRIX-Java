@@ -1,19 +1,20 @@
-package solutions.bellatrix.data.contracts;
+package solutions.bellatrix.data.http.infrastructure;
 
 import com.google.gson.annotations.SerializedName;
 import io.restassured.response.Response;
 import lombok.Data;
 import lombok.experimental.SuperBuilder;
+import solutions.bellatrix.data.http.contracts.Queryable;
 
 import java.util.Objects;
 
 @Data
 @SuperBuilder
-public abstract class HttpEntity extends Entity implements Queryable {
+public abstract class HttpEntity implements Entity<String>, Queryable {
+    private transient Response response;
+
     @SerializedName("id")
     private String id;
-
-    private transient Response response;
 
     @Override
     public String getIdentifier() {

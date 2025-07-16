@@ -1,17 +1,12 @@
-package solutions.bellatrix.data.core;
+package solutions.bellatrix.data.http.infrastructure;
 
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import solutions.bellatrix.core.plugins.EventListener;
-import solutions.bellatrix.data.http.infrastructure.HTTPMethod;
-import solutions.bellatrix.data.http.infrastructure.RequestConfiguration;
-import solutions.bellatrix.data.http.infrastructure.HttpEntity;
 import solutions.bellatrix.data.http.contracts.JsonSerializer;
 import solutions.bellatrix.data.contracts.Repository;
 import solutions.bellatrix.data.http.configuration.HttpSettings;
-import solutions.bellatrix.data.http.infrastructure.RequestEventArgs;
-import solutions.bellatrix.data.http.infrastructure.ResponseEventArgs;
 
 import java.util.List;
 import java.util.Objects;

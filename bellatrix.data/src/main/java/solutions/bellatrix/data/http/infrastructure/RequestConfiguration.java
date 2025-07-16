@@ -1,12 +1,11 @@
-package solutions.bellatrix.data.configuration.http;
+package solutions.bellatrix.data.http.infrastructure;
 
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.filter.log.LogDetail;
 import io.restassured.specification.RequestSpecification;
-import solutions.bellatrix.data.configuration.http.urlBuilder.QueryParameter;
 import solutions.bellatrix.data.http.configuration.HttpSettings;
-import solutions.bellatrix.data.http.configuration.authentication.AuthSchemaFactory;
-import solutions.bellatrix.data.http.configuration.authentication.AuthenticationMethods;
+import solutions.bellatrix.data.http.authentication.AuthSchemaFactory;
+import solutions.bellatrix.data.http.authentication.AuthenticationMethods;
 
 import java.util.Collection;
 import java.util.LinkedHashMap;

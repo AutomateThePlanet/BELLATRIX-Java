@@ -1,4 +1,4 @@
-package solutions.bellatrix.data.configuration.http.urlBuilder;
+package solutions.bellatrix.data.http.infrastructure;
 
 import lombok.Getter;
 

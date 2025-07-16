@@ -1,4 +1,4 @@
-package solutions.bellatrix.data.core;
+package solutions.bellatrix.data.http.infrastructure;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
