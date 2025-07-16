@@ -1,7 +1,7 @@
 package solutions.bellatrix.data.contracts;
 
 import com.google.gson.annotations.SerializedName;
-import solutions.bellatrix.data.configuration.http.urlBuilder.QueryParameter;
+import solutions.bellatrix.data.http.infrastructure.QueryParameter;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;

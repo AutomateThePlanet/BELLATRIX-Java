@@ -3,7 +3,7 @@ package solutions.bellatrix.data.core;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import solutions.bellatrix.data.contracts.JsonSerializer;
+import solutions.bellatrix.data.http.contracts.JsonSerializer;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
