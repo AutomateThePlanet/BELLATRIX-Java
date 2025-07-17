@@ -3,24 +3,21 @@ package solutions.bellatrix.data.http.infrastructure;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.filter.log.LogDetail;
 import io.restassured.specification.RequestSpecification;
-import solutions.bellatrix.data.http.configuration.HttpSettings;
 import solutions.bellatrix.data.http.authentication.AuthSchemaFactory;
 import solutions.bellatrix.data.http.authentication.AuthenticationMethods;
+import solutions.bellatrix.data.http.configuration.HttpSettings;
 
-import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
-public class RequestConfiguration {
+public class HttpContext {
     private final HttpSettings httpSettings;
     private final LinkedList<String> pathParameters;
     private final LinkedList<QueryParameter> queryParameters;
     private final RequestSpecBuilder requestSpecBuilder;
 
-    public RequestConfiguration(HttpSettings settings) {
+    public HttpContext(HttpSettings settings) {
         this.httpSettings = settings;
         this.pathParameters = new LinkedList<>();
         this.queryParameters = new LinkedList<>();
@@ -67,25 +64,24 @@ public class RequestConfiguration {
                 }
                 for (var key : option.keySet()) {
                     if (!key.equals("type") && !key.equals("insertionOrder")) {
-                        //   queryParams.put(key, QueryParameter.of(key, option.get(key).toString()));
+                        queryParams.put(key, option.get(key).toString());
                     }
                 }
 
             }
             return queryParams;
 
-            // return queryParams;
         }
 
-//        for (QueryParameter queryParameter : queryParameters) {
-//            queryParams.put(queryParameter.getKey(), queryParameter.getValue());
-//        }
+        for (QueryParameter queryParameter : queryParameters) {
+            queryParams.put(queryParameter.getKey(), queryParameter.getValue().toString());
+        }
 
-        return null;
+        return queryParams;
     }
 
     public String getRequestPath() {
-        return "/" + pathParameters.stream()
+        return pathParameters.stream()
                 .filter(p -> p!=null && !p.isEmpty())
                 .collect(Collectors.joining("/"));
     }

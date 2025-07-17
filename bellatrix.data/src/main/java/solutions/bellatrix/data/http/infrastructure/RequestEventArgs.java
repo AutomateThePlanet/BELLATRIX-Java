@@ -3,9 +3,11 @@ package solutions.bellatrix.data.http.infrastructure;
 import lombok.Getter;
 
 public class RequestEventArgs {
-    @Getter public RequestConfiguration component;
+    @Getter public final HttpContext requestConfiguration;
+    @Getter public final Entity entity;
 
-    public RequestEventArgs(RequestConfiguration component) {
-        this.component = component;
+    public RequestEventArgs(HttpContext requestConfiguration, Entity entity) {
+        this.requestConfiguration = requestConfiguration;
+        this.entity = entity;
     }
 }
