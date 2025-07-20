@@ -9,7 +9,7 @@ public class QueryParameter {
     private final String key;
     private final Object value;
 
-    private QueryParameter(String key, Object value) {
+    public QueryParameter(String key, Object value) {
         if ((Objects.isNull(key)) || key.isBlank()) {
             throw new IllegalArgumentException("QueryParameter key cannot be null or blank");
         }
@@ -20,9 +20,5 @@ public class QueryParameter {
 
         this.key = key;
         this.value = value;
-    }
-
-    public static QueryParameter of(String key, Object value) {
-        return new QueryParameter(key, value);
     }
 }

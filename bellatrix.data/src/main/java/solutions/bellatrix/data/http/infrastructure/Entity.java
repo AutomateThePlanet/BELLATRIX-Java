@@ -4,21 +4,28 @@ import lombok.experimental.SuperBuilder;
 import solutions.bellatrix.data.configuration.RepositoryFactory;
 import solutions.bellatrix.data.contracts.Repository;
 
+/**
+ * The Entity class represents a base entity that can be persisted in a repository.
+ * It provides methods to get, create, update, and delete the entity.
+ *
+ * @param <TIdentifier> the type of the identifier for the entity
+ * @param <TEntity>     the type of the entity itself
+ */
 @SuperBuilder
-public abstract class Entity<Т> {
-    public Entity get() {
+public abstract class Entity<TIdentifier, TEntity> {
+    public TEntity get() {
         var repository = (Repository<Entity>)RepositoryFactory.INSTANCE.getRepository(this.getClass());
-        return repository.getById(this);
+        return (TEntity)repository.getById(this);
     }
 
-    public Entity create() {
+    public TEntity create() {
         var repository = (Repository<Entity>)RepositoryFactory.INSTANCE.getRepository(this.getClass());
-        return repository.create(this);
+        return (TEntity)repository.create(this);
     }
 
-    public Entity update() {
+    public TEntity update() {
         var repository = (Repository<Entity>)RepositoryFactory.INSTANCE.getRepository(this.getClass());
-        return repository.update(this);
+        return (TEntity)repository.update(this);
     }
 
     public void delete() {
@@ -26,5 +33,5 @@ public abstract class Entity<Т> {
         repository.delete(this);
     }
 
-    public abstract Т getIdentifier();
+    public abstract TIdentifier getIdentifier();
 }

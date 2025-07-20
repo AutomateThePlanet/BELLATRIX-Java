@@ -1,8 +1,8 @@
 package solutions.bellatrix.data.configuration;
 
 import solutions.bellatrix.core.utilities.SingletonFactory;
-import solutions.bellatrix.data.http.infrastructure.Entity;
 import solutions.bellatrix.data.contracts.Repository;
+import solutions.bellatrix.data.http.infrastructure.Entity;
 
 import java.util.Map;
 import java.util.Objects;
@@ -18,10 +18,12 @@ public enum RepositoryFactory {
     }
 
     public <T extends Entity> Repository<T> getRepository(Class<T> entityClass) {
-        Class<? extends Repository> repositoryClass = repositories.get(entityClass);
-        if (Objects.isNull(repositoryClass)) {
+        var repositoryClassType = repositories.get(entityClass);
+
+        if (Objects.isNull(repositoryClassType)) {
             throw new IllegalArgumentException("No repository registered for entity class: " + entityClass.getName());
         }
-        return (Repository<T>)SingletonFactory.getInstance(repositoryClass);
+
+        return (Repository<T>)SingletonFactory.getInstance(repositoryClassType);
     }
 }

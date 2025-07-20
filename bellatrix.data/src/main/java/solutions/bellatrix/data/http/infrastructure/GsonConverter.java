@@ -3,7 +3,7 @@ package solutions.bellatrix.data.http.infrastructure;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import solutions.bellatrix.data.http.contracts.JsonSerializer;
+import solutions.bellatrix.data.http.contracts.ObjectConverter;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -11,20 +11,20 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
 
-public class GsonSerializer implements JsonSerializer {
+public class GsonConverter implements ObjectConverter {
     protected final Gson gson;
 
-    public GsonSerializer() {
+    public GsonConverter() {
         this(builder -> {
         });
     }
 
-    public GsonSerializer(Consumer<GsonBuilder> consumer) {
+    public GsonConverter(Consumer<GsonBuilder> consumer) {
         this.gson = getInstance(consumer);
     }
 
     @Override
-    public <T> String serialize(T object) {
+    public <T> String toString(T object) {
         if (Objects.isNull(object)) {
             return "";
         }
@@ -32,8 +32,7 @@ public class GsonSerializer implements JsonSerializer {
         return gson.toJson(object);
     }
 
-    @Override
-    public <T> String serialize(T object, Class<?> type) {
+    public <T> String toString(T object, Class<?> type) {
         if (Objects.isNull(object)) {
             return "";
         }
@@ -50,8 +49,8 @@ public class GsonSerializer implements JsonSerializer {
     }
 
     @Override
-    public <T> T deserialize(String json, Class<T> type) {
-        if (Objects.isNull(json) || json.trim().isEmpty()) {
+    public <T> T fromString(String data, Class<T> type) {
+        if (Objects.isNull(data) || data.trim().isEmpty()) {
             return null;
         }
 
@@ -60,14 +59,14 @@ public class GsonSerializer implements JsonSerializer {
         }
 
         try {
-            return gson.fromJson(json, type);
+            return gson.fromJson(data, type);
         } catch (Exception e) {
             throw new RuntimeException("Failed to deserialize JSON to type: " + type.getName(), e);
         }
     }
 
     @Override
-    public <T> List<T> deserializeList(String json, Class<T> type) {
+    public <T> List<T> fromStringToList(String json, Class<T> type) {
         if (Objects.isNull(json) || json.trim().isEmpty()) {
             return new ArrayList<>();
         }

@@ -4,11 +4,11 @@ import io.restassured.response.Response;
 import lombok.Getter;
 
 @Getter
-public class HandledResponse {
+public class HttpResponse {
     private final String body;
     private final Response response;
 
-    public HandledResponse(String body, Response response) {
+    public HttpResponse(String body, Response response) {
         this.body = body;
         this.response = response;
     }

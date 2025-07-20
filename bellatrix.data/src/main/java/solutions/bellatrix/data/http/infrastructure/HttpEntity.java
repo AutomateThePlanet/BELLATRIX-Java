@@ -11,7 +11,7 @@ import java.util.Objects;
 @Data
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
-public abstract class HttpEntity<T> extends Entity<T> implements Queryable {
+public abstract class HttpEntity<TIdentifier, TEntity> extends Entity<TIdentifier, TEntity> implements Queryable {
     private transient Response response;
 
     public boolean hasInvalidIdentifier() {

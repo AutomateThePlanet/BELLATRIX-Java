@@ -8,6 +8,9 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Objects;
 
+/**
+ * The Queryable interface provides a method to convert an object into a list of query parameters.
+ */
 public interface Queryable {
     default LinkedList<QueryParameter> toQueryParams() {
         try {
@@ -22,7 +25,7 @@ public interface Queryable {
                         var queryParameterName = field.getAnnotation(SerializedName.class).value();
                         var value = field.get(this);
                         if (Objects.nonNull(value)) {
-                            queryParameters.add(QueryParameter.of(queryParameterName, value));
+                            queryParameters.add(new QueryParameter(queryParameterName, value));
                         }
                     }
                 }

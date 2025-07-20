@@ -5,6 +5,11 @@ import io.restassured.authentication.BasicAuthScheme;
 import io.restassured.authentication.NoAuthScheme;
 import io.restassured.authentication.PreemptiveOAuth2HeaderScheme;
 
+/**
+ * Factory class to create authentication schemes based on the provided Authentication object.
+ * It supports Basic, Bearer, and Query Parameter authentication methods.
+ * This class is tightly coupled with res assured library for handling HTTP authentication schemes.
+ */
 public class AuthSchemaFactory {
     public static AuthenticationScheme getAuthenticationScheme(Authentication authentication) {
         var authType = authentication.getAuthenticationMethod();
@@ -33,9 +38,7 @@ public class AuthSchemaFactory {
             case QUERY_PARAMETER -> {
                 return new NoAuthScheme();
             }
-            default -> {
-                throw new IllegalArgumentException("Unsupported authentication type: %s".formatted(authType));
-            }
+            default -> throw new IllegalArgumentException("Unsupported authentication type: %s".formatted(authType));
         }
     }
 }
