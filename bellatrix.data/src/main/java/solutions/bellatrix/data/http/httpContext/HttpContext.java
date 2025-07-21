@@ -8,6 +8,7 @@ import lombok.Setter;
 import solutions.bellatrix.data.http.authentication.AuthSchemaFactory;
 import solutions.bellatrix.data.http.authentication.AuthenticationMethod;
 import solutions.bellatrix.data.http.configuration.HttpSettings;
+import solutions.bellatrix.data.http.infrastructure.Entity;
 import solutions.bellatrix.data.http.infrastructure.HTTPMethod;
 import solutions.bellatrix.data.http.infrastructure.QueryParameter;
 

@@ -7,6 +7,7 @@ import solutions.bellatrix.core.plugins.EventListener;
 import solutions.bellatrix.data.contracts.Repository;
 import solutions.bellatrix.data.http.contracts.ObjectConverter;
 import solutions.bellatrix.data.http.httpContext.HttpContext;
+import solutions.bellatrix.data.http.infrastructure.events.*;
 import solutions.bellatrix.data.http.infrastructure.internal.DeserializationMode;
 
 import java.util.List;
@@ -16,8 +17,16 @@ import java.util.function.Supplier;
 import static solutions.bellatrix.data.http.infrastructure.HTTPMethod.*;
 
 public abstract class HttpRepository<THttpEntity extends HttpEntity> implements Repository<THttpEntity> {
-    public static final EventListener<RequestEventArgs> SENDING_REQUEST = new EventListener<>();
-    public static final EventListener<ResponseEventArgs> REQUEST_SEND = new EventListener<>();
+    public static final EventListener<HttpRequestEventArgs> SENDING_REQUEST = new EventListener<>();
+    public static final EventListener<ResponseProcessingEventArgs> REQUEST_SEND = new EventListener<>();
+    public static final EventListener<EntityCreatedEventArgs> CREATING_ENTITY = new EventListener<>();
+    public static final EventListener<EntityCreatedEventArgs> ENTITY_CREATED = new EventListener<>();
+    public static final EventListener<EntityUpdatedEventArgs> UPDATING_ENTITY = new EventListener<>();
+    public static final EventListener<EntityUpdatedEventArgs> ENTITY_UPDATED = new EventListener<>();
+    public static final EventListener<EntityDeletedEventArgs> DELETING_ENTITY = new EventListener<>();
+    public static final EventListener<EntityDeletedEventArgs> ENTITY_DELETED = new EventListener<>();
+
+
     protected final HttpContext repositoryContext;
     private final Class<THttpEntity> entityType;
     private final ObjectConverter objectConverter;
@@ -55,9 +64,12 @@ public abstract class HttpRepository<THttpEntity extends HttpEntity> implements 
             requestContext.addRequestMethod(POST);
         });
 
+        CREATING_ENTITY.broadcast(new EntityCreatedEventArgs(entity));
         var response = handleResponse(() -> sendRequest(requestContext));
 
         var record = (THttpEntity)deserializeInternal(response, DeserializationMode.SINGLE);
+
+        ENTITY_CREATED.broadcast(new EntityCreatedEventArgs(record));
 
         return record;
     }
@@ -86,7 +98,11 @@ public abstract class HttpRepository<THttpEntity extends HttpEntity> implements 
             requestContext.addRequestMethod(DELETE);
         });
 
+        DELETING_ENTITY.broadcast(new EntityDeletedEventArgs(entity));
+
         sendRequest(requestContext);
+
+        ENTITY_DELETED.broadcast(new EntityDeletedEventArgs(entity));
     }
 
     @Override
@@ -103,10 +119,12 @@ public abstract class HttpRepository<THttpEntity extends HttpEntity> implements 
             });
         });
 
+        UPDATING_ENTITY.broadcast(new EntityUpdatedEventArgs(entity));
         var response = handleResponse(() -> sendRequest(requestContext));
 
         var record = (THttpEntity)deserializeInternal(response, DeserializationMode.SINGLE);
 
+        ENTITY_UPDATED.broadcast(new EntityUpdatedEventArgs(entity));
         return record;
     }
 
@@ -120,40 +138,18 @@ public abstract class HttpRepository<THttpEntity extends HttpEntity> implements 
         };
     }
 
-    /**
-     * Gets the serializer used by this repository.
-     *
-     * @return the  ObjectConverter instance used for type conversion
-     */
     protected ObjectConverter getObjectConverter() {
         return objectConverter;
     }
 
-    /**
-     * Handles the response from the executed request.
-     * This method can be overridden to customize the response handling.
-     *
-     * @param response the response from the executed request
-     * @return a HandledResponse containing the response body and original response
-     */
     protected HttpResponse handleResponse(Supplier<Response> response) {
         return new HttpResponse(response.get().getBody().asString(), response.get());
     }
 
-    /**
-     * Updates the request context with the provided configuration.
-     * This context is used for the next request made by this repository.
-     *
-     * @param requestConfigConsumer a consumer that accepts the HttpContext to modify it
-     */
     protected void updateRequestContext(Consumer<HttpContext> requestConfigConsumer) {
         requestConfigConsumer.accept(requestContext);
     }
 
-    /**
-     * Restores the request context to the original repository context.
-     * Allowing reuse of the repository context for subsequent requests without the context from the previous request.
-     */
     private void restoreRequestContext() {
         requestContext = new HttpContext(repositoryContext);
     }
@@ -178,12 +174,11 @@ public abstract class HttpRepository<THttpEntity extends HttpEntity> implements 
         }
     }
 
-
     private Response broadcastRequest(Supplier<Response> responseSupplier) {
         try {
-            SENDING_REQUEST.broadcast(new RequestEventArgs(requestContext));
+            SENDING_REQUEST.broadcast(new HttpRequestEventArgs(requestContext));
             Response response = responseSupplier.get();
-            REQUEST_SEND.broadcast(new ResponseEventArgs(response));
+            REQUEST_SEND.broadcast(new ResponseProcessingEventArgs(response));
             return response;
         } finally {
             restoreRequestContext();

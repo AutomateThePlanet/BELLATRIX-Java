@@ -11,15 +11,15 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
 
-public class GsonConverter implements ObjectConverter {
+public class JsonConverter implements ObjectConverter {
     protected final Gson gson;
 
-    public GsonConverter() {
+    public JsonConverter() {
         this(builder -> {
         });
     }
 
-    public GsonConverter(Consumer<GsonBuilder> consumer) {
+    public JsonConverter(Consumer<GsonBuilder> consumer) {
         this.gson = getInstance(consumer);
     }
 

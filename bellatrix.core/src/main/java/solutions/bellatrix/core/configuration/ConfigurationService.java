@@ -36,9 +36,9 @@ public final class ConfigurationService {
 
     public static <T> T get(Class<T> configSection) {
         T mappedObject = (T)new Object();
-        if (environment == null) {
+        if (environment==null) {
             String environmentOverride = System.getProperty("environment");
-            if (environmentOverride == null) {
+            if (environmentOverride==null) {
                 InputStream input = ConfigurationService.class.getResourceAsStream("/application.properties");
                 var p = new Properties();
                 try {
@@ -76,7 +76,7 @@ public final class ConfigurationService {
         return sb.toString();
     }
 
-  //  @SneakyThrows
+    @SneakyThrows
     public static String getFileAsString(String fileName) {
         InputStream input = ConfigurationService.class.getResourceAsStream("/" + fileName);
         try {

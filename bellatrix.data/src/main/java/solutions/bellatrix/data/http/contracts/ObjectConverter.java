@@ -1,6 +1,6 @@
 package solutions.bellatrix.data.http.contracts;
 
-import solutions.bellatrix.data.http.infrastructure.GsonConverter;
+import solutions.bellatrix.data.http.infrastructure.JsonConverter;
 
 import java.util.List;
 
@@ -12,7 +12,7 @@ import java.util.List;
  * that implements this interface.
  * <p>
  * Example class:
- * {@link GsonConverter}
+ * {@link JsonConverter}
  */
 
 public interface ObjectConverter {
