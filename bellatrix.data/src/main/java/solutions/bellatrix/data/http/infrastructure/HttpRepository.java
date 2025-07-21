@@ -114,9 +114,9 @@ public abstract class HttpRepository<THttpEntity extends HttpEntity> implements 
         return switch (requestContext.getHttpMethod()) {
             case GET -> broadcastRequest(() -> client().get());
             case POST -> broadcastRequest(() -> client().post());
-            case PUT -> broadcastRequest(() -> client().put(requestContext.buildRequestPath()));
-            case DELETE -> broadcastRequest(() -> client().delete(requestContext.buildRequestPath()));
-            case PATCH -> broadcastRequest(() -> client().patch(requestContext.buildRequestPath()));
+            case PUT -> broadcastRequest(() -> client().put());
+            case DELETE -> broadcastRequest(() -> client().delete());
+            case PATCH -> broadcastRequest(() -> client().patch());
         };
     }
 
@@ -181,7 +181,7 @@ public abstract class HttpRepository<THttpEntity extends HttpEntity> implements 
 
     private Response broadcastRequest(Supplier<Response> responseSupplier) {
         try {
-            SENDING_REQUEST.broadcast(new RequestEventArgs(requestContext, null));
+            SENDING_REQUEST.broadcast(new RequestEventArgs(requestContext));
             Response response = responseSupplier.get();
             REQUEST_SEND.broadcast(new ResponseEventArgs(response));
             return response;

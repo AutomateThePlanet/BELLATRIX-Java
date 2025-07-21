@@ -5,10 +5,8 @@ import solutions.bellatrix.data.http.httpContext.HttpContext;
 
 public class RequestEventArgs {
     @Getter public final HttpContext requestConfiguration;
-    @Getter public final Entity entity;
 
-    public RequestEventArgs(HttpContext requestConfiguration, Entity entity) {
+    public RequestEventArgs(HttpContext requestConfiguration) {
         this.requestConfiguration = requestConfiguration;
-        this.entity = entity;
     }
 }

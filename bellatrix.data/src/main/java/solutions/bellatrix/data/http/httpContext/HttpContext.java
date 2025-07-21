@@ -19,7 +19,7 @@ public class HttpContext {
     private final LinkedList<Object> pathParameters;
     private final LinkedHashSet<QueryParameter> queryParameters;
     @Setter
-    private RequestSpecBuilder requestSpecBuilder;
+    private RequestSpecBuilder specBuilder;
     @Getter
     private String requestBody;
     @Getter private HTTPMethod httpMethod;
@@ -28,14 +28,14 @@ public class HttpContext {
         this.httpSettings = settings;
         this.pathParameters = new LinkedList<>();
         this.queryParameters = new LinkedHashSet<>();
-        this.requestSpecBuilder = createInitialSpecBuilder(httpSettings);
+        this.specBuilder = createInitialSpecBuilder(httpSettings);
     }
 
     public HttpContext(HttpContext httpContext) {
         this.httpSettings = httpContext.getHttpSettings();
         this.queryParameters = httpContext.getQueryParameters();
         this.pathParameters = httpContext.getPathParameters();
-        this.requestSpecBuilder = httpContext.getRequestSpecBuilder();
+        this.specBuilder = httpContext.getRequestBuilder();
     }
 
     public HttpSettings getHttpSettings() {
@@ -43,7 +43,7 @@ public class HttpContext {
     }
 
     public void updateRequestSpecification(Consumer<RequestSpecBuilder> specBuilderConsumer) {
-        specBuilderConsumer.accept(requestSpecBuilder);
+        specBuilderConsumer.accept(specBuilder);
     }
 
     public void addRequestBody(String body) {
@@ -62,29 +62,22 @@ public class HttpContext {
         return new LinkedHashSet<>(queryParameters);
     }
 
-    private RequestSpecBuilder getRequestSpecBuilder() {
-        RequestSpecBuilder copy = new RequestSpecBuilder();
-        copy.addRequestSpecification(requestSpecBuilder.build());
-        if (requestBody!=null) {
-            copy.setBody(requestBody);
-        }
-        copy.setBasePath(buildRequestPath());
-
-        return copy;
+    private RequestSpecBuilder getRequestBuilder() {
+        return new RequestSpecBuilder().addRequestSpecification(specBuilder.build());
     }
 
     public RequestSpecification requestSpecification() {
         if (requestBody!=null) {
-            requestSpecBuilder.setBody(requestBody);
+            specBuilder.setBody(requestBody);
         }
+
         if (!queryParameters.isEmpty()) {
-            requestSpecBuilder.addQueryParams(getRequestQueryParameters());
+            specBuilder.addQueryParams(getRequestQueryParameters());
         }
-        requestSpecBuilder.setBasePath(buildRequestPath());
 
-        var requestSpecification = requestSpecBuilder.build();
+        specBuilder.setBasePath(buildRequestPath());
 
-        return requestSpecification;
+        return specBuilder.build();
     }
 
     public void addPathParameter(Object param) {
