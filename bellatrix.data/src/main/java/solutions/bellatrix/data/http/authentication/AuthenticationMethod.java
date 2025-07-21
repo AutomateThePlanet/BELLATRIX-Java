@@ -3,18 +3,18 @@ package solutions.bellatrix.data.http.authentication;
 import lombok.Getter;
 
 @Getter
-public enum AuthenticationMethods {
+public enum AuthenticationMethod {
     BEARER("Bearer"),
     BASIC("Basic"),
     QUERY_PARAMETER("QueryParameters");
 
     private final String method;
 
-    AuthenticationMethods(String method) {
+    AuthenticationMethod(String method) {
         this.method = method;
     }
 
-    public static AuthenticationMethods parse(String y) {
+    public static AuthenticationMethod parse(String y) {
         for (var state : values()) {
             String enumDisplayValue = state.getMethod();
             if (enumDisplayValue!=null && enumDisplayValue.equalsIgnoreCase(y)) {

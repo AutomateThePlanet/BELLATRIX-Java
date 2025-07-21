@@ -7,7 +7,6 @@ import solutions.bellatrix.core.plugins.EventListener;
 import solutions.bellatrix.data.contracts.Repository;
 import solutions.bellatrix.data.http.contracts.ObjectConverter;
 import solutions.bellatrix.data.http.httpContext.HttpContext;
-import solutions.bellatrix.data.http.httpContext.HttpContextFactory;
 import solutions.bellatrix.data.http.infrastructure.internal.DeserializationMode;
 
 import java.util.List;
@@ -23,13 +22,12 @@ public abstract class HttpRepository<THttpEntity extends HttpEntity> implements 
     private final Class<THttpEntity> entityType;
     private final ObjectConverter objectConverter;
     private HttpContext requestContext;
-    //  private RequestSpecification requestSpecification;
 
     protected HttpRepository(Class<THttpEntity> entityType, ObjectConverter objectConverter, Supplier<HttpContext> repositoryContext) {
         this.entityType = entityType;
         this.objectConverter = objectConverter;
         this.repositoryContext = repositoryContext.get();
-        this.requestContext = HttpContextFactory.copyOf(this.repositoryContext);
+        this.requestContext = new HttpContext(this.repositoryContext);
     }
 
     @Override
@@ -119,7 +117,6 @@ public abstract class HttpRepository<THttpEntity extends HttpEntity> implements 
             case PUT -> broadcastRequest(() -> client().put(requestContext.buildRequestPath()));
             case DELETE -> broadcastRequest(() -> client().delete(requestContext.buildRequestPath()));
             case PATCH -> broadcastRequest(() -> client().patch(requestContext.buildRequestPath()));
-            default -> throw new IllegalArgumentException("Unsupported HTTP method: " + requestContext.getHttpMethod());
         };
     }
 
@@ -154,26 +151,15 @@ public abstract class HttpRepository<THttpEntity extends HttpEntity> implements 
     }
 
     /**
-     * Updates the repository context with the provided configuration.
-     * This context is used as base for all requests made by this repository.
-     *
-     * @param requestConfigConsumer a consumer that accepts the HttpContext to modify it
-     */
-    protected void updateRepositoryContext(Consumer<HttpContext> requestConfigConsumer) {
-        requestConfigConsumer.accept(repositoryContext);
-    }
-
-    /**
      * Restores the request context to the original repository context.
      * Allowing reuse of the repository context for subsequent requests without the context from the previous request.
      */
     private void restoreRequestContext() {
-        requestContext = HttpContextFactory.copyOf(repositoryContext);
+        requestContext = new HttpContext(repositoryContext);
     }
 
     private RequestSpecification client() {
-        System.out.println();
-        return RestAssured.given().spec(requestContext.getRequestSpecBuilder().build());
+        return RestAssured.given().spec(requestContext.requestSpecification());
     }
 
     private <R> R deserializeInternal(HttpResponse response, DeserializationMode mode) {
@@ -192,29 +178,6 @@ public abstract class HttpRepository<THttpEntity extends HttpEntity> implements 
         }
     }
 
-//    private THttpEntity deserializeEntityFromResponse(HttpResponse response) {
-//        try {
-//            THttpEntity model = objectConverter.fromString(response.getBody(), entityType);
-//
-//            model.setResponse(response.getResponse());
-//
-//            return model;
-//        } catch (Exception e) {
-//            throw new RuntimeException("Failed to parse response: " + response.getBody(), e);
-//        }
-//    }
-//
-//    private List<THttpEntity> deserializeEntitiesFromResponse(Response response) {
-//        try {
-//            List<THttpEntity> result = objectConverter.fromStringToList(response.getBody().asString(), entityType);
-//
-//            result.forEach(entity -> entity.setResponse(response));
-//
-//            return result;
-//        } catch (Exception e) {
-//            throw new RuntimeException("Failed to parse response: " + response.getBody(), e);
-//        }
-//    }
 
     private Response broadcastRequest(Supplier<Response> responseSupplier) {
         try {

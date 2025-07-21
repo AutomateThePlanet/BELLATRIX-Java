@@ -1,12 +1,18 @@
 package solutions.bellatrix.data.http.configuration;
 
 import com.google.gson.annotations.SerializedName;
-import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
+import solutions.bellatrix.core.configuration.ConfigurationService;
+import solutions.bellatrix.data.configuration.DataSettings;
 import solutions.bellatrix.data.http.authentication.Authentication;
+import solutions.bellatrix.data.http.authentication.AuthenticationMethod;
+
+import java.util.function.Consumer;
 
 @Data
 public class HttpSettings {
+    @Getter transient AuthenticationMethod authenticationMethod;
     @SerializedName("baseUrl")
     private String baseUrl;
     @SerializedName("basePath")
@@ -17,4 +23,22 @@ public class HttpSettings {
     private Authentication authentication;
     @SerializedName("urlEncoderEnabled")
     private boolean urlEncoderEnabled;
+    
+    public HttpSettings(HttpSettings httpSettings) {
+        setBaseUrl(httpSettings.getBaseUrl());
+        setBasePath(httpSettings.getBasePath());
+        setContentType(httpSettings.getContentType());
+        setUrlEncoderEnabled(httpSettings.isUrlEncoderEnabled());
+        setAuthentication(httpSettings.getAuthentication());
+    }
+
+    public static HttpSettings custom(Consumer<HttpSettings> httpSettings) {
+        var settings = ConfigurationService.get(DataSettings.class).getHttpSettings();
+        httpSettings.accept(settings);
+        return settings;
+    }
+
+    public AuthenticationMethod getAuthenticationMethod() {
+        return authentication.getAuthenticationMethod();
+    }
 }

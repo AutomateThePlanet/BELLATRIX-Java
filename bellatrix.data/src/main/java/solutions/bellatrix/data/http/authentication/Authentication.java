@@ -15,10 +15,10 @@ public class Authentication {
     @Getter private LinkedList<LinkedHashMap<String, Object>> authenticationOptions;
 
     @Setter(AccessLevel.PRIVATE)
-    private transient AuthenticationMethods authenticationMethod;
+    private transient AuthenticationMethod authenticationMethod;
 
-    public AuthenticationMethods getAuthenticationMethod() {
-        setAuthenticationMethod(AuthenticationMethods.parse(method));
+    public AuthenticationMethod getAuthenticationMethod() {
+        setAuthenticationMethod(AuthenticationMethod.parse(method));
         return authenticationMethod;
     }
 }

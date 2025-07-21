@@ -6,20 +6,18 @@ import io.restassured.specification.RequestSpecification;
 import lombok.Getter;
 import lombok.Setter;
 import solutions.bellatrix.data.http.authentication.AuthSchemaFactory;
-import solutions.bellatrix.data.http.authentication.AuthenticationMethods;
+import solutions.bellatrix.data.http.authentication.AuthenticationMethod;
 import solutions.bellatrix.data.http.configuration.HttpSettings;
-import solutions.bellatrix.data.http.configuration.HttpSettingsFactory;
 import solutions.bellatrix.data.http.infrastructure.HTTPMethod;
 import solutions.bellatrix.data.http.infrastructure.QueryParameter;
 
 import java.util.*;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 
 public class HttpContext {
     private final HttpSettings httpSettings;
-    private final LinkedList<String> pathParameters;
-    private final LinkedHashMap<String, Object> queryParameters;
+    private final LinkedList<Object> pathParameters;
+    private final LinkedHashSet<QueryParameter> queryParameters;
     @Setter
     private RequestSpecBuilder requestSpecBuilder;
     @Getter
@@ -29,12 +27,31 @@ public class HttpContext {
     public HttpContext(HttpSettings settings) {
         this.httpSettings = settings;
         this.pathParameters = new LinkedList<>();
-        this.queryParameters = new LinkedHashMap<>();
+        this.queryParameters = new LinkedHashSet<>();
         this.requestSpecBuilder = createInitialSpecBuilder(httpSettings);
     }
 
+    public HttpContext(HttpContext httpContext) {
+        this.httpSettings = httpContext.getHttpSettings();
+        this.queryParameters = httpContext.getQueryParameters();
+        this.pathParameters = httpContext.getPathParameters();
+        this.requestSpecBuilder = httpContext.getRequestSpecBuilder();
+    }
+
     public HttpSettings getHttpSettings() {
-        return HttpSettingsFactory.createCopyOf(httpSettings);
+        return new HttpSettings(httpSettings);
+    }
+
+    public void updateRequestSpecification(Consumer<RequestSpecBuilder> specBuilderConsumer) {
+        specBuilderConsumer.accept(requestSpecBuilder);
+    }
+
+    public void addRequestBody(String body) {
+        this.requestBody = body;
+    }
+
+    public void addRequestMethod(HTTPMethod httpMethod) {
+        this.httpMethod = httpMethod;
     }
 
     public LinkedList<Object> getPathParameters() {
@@ -45,26 +62,27 @@ public class HttpContext {
         return new LinkedHashSet<>(queryParameters);
     }
 
-    public RequestSpecBuilder getRequestSpecBuilder() {
+    private RequestSpecBuilder getRequestSpecBuilder() {
         RequestSpecBuilder copy = new RequestSpecBuilder();
         copy.addRequestSpecification(requestSpecBuilder.build());
-        copy.addQueryParams(getRequestQueryParameters());
         if (requestBody!=null) {
             copy.setBody(requestBody);
         }
-
         copy.setBasePath(buildRequestPath());
 
         return copy;
     }
 
-
     public RequestSpecification requestSpecification() {
-        var requestSpecification = requestSpecBuilder.build();
-
-        if (queryParameters!=null && !queryParameters.isEmpty()) {
-            requestSpecification.queryParams(getRequestQueryParameters());
+        if (requestBody!=null) {
+            requestSpecBuilder.setBody(requestBody);
         }
+        if (!queryParameters.isEmpty()) {
+            requestSpecBuilder.addQueryParams(getRequestQueryParameters());
+        }
+        requestSpecBuilder.setBasePath(buildRequestPath());
+
+        var requestSpecification = requestSpecBuilder.build();
 
         return requestSpecification;
     }
@@ -84,7 +102,7 @@ public class HttpContext {
     }
 
     public void addQueryParameters(Collection<QueryParameter> parameters) {
-        queryParameters.addAll(parameters);
+        parameters.forEach(this::addQueryParameter);
     }
 
     public void addQueryParameter(QueryParameter parameter) {
@@ -92,8 +110,9 @@ public class HttpContext {
     }
 
     private Map<String, String> getRequestQueryParameters() {
+        //todo: this logic should be extracted because create tightly coupling with settings
         LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
-        if (httpSettings.getAuthentication().getAuthenticationMethod().equals(AuthenticationMethods.QUERY_PARAMETER)) {
+        if (httpSettings.getAuthenticationMethod()==AuthenticationMethod.QUERY_PARAMETER) {
             var option = httpSettings.getAuthentication().getAuthenticationOptions().stream().filter(x -> x.get("type").equals("QueryParameters")).findFirst().get();
             String insertionOrder = (String)option.get("insertionOrder");
             if (insertionOrder.equals("start")) {
@@ -130,23 +149,12 @@ public class HttpContext {
 
     public String buildRequestPath() {
         if (!pathParameters.isEmpty()) {
-            var x = pathParameters.stream().filter(p -> p!=null && !p.isEmpty()).collect(Collectors.joining("/"));
-            return httpSettings.getBasePath() + "/%s".formatted(x);
+            String[] pathList = pathParameters.stream().filter(path -> !String.valueOf(path).isEmpty()).map(String::valueOf).toArray(String[]::new);
+            String formattedPath = String.join("/", pathList);
+            return httpSettings.getBasePath() + "/%s".formatted(formattedPath);
         }
 
         return httpSettings.getBasePath();
-    }
-
-    public void updateRequestSpecification(Consumer<RequestSpecBuilder> specBuilderConsumer) {
-        specBuilderConsumer.accept(requestSpecBuilder);
-    }
-
-    public void addRequestBody(String body) {
-        this.requestBody = requestBody;
-    }
-
-    public void addRequestMethod(HTTPMethod httpMethod) {
-        this.httpMethod = httpMethod;
     }
 
     private RequestSpecBuilder createInitialSpecBuilder(HttpSettings httpSettings) {
