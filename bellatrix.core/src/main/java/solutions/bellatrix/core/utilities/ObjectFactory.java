@@ -22,11 +22,15 @@ import java.util.Arrays;
 public abstract class ObjectFactory {
     protected static <T> T newInstance(Class<T> clazz, Object... args) throws InvocationTargetException, InstantiationException, IllegalAccessException, ConstructorNotFoundException {
         Constructor<T> suitableConstructor = getSuitableConstructor(clazz, args);
-
-        if (suitableConstructor.isVarArgs() && args.length < suitableConstructor.getParameterCount()) {
-            return (T)suitableConstructor.newInstance(addNullVarArgsTo(args));
-        } else
-            return (T)suitableConstructor.newInstance(args);
+        try {
+            if (suitableConstructor.isVarArgs() && args.length < suitableConstructor.getParameterCount()) {
+                return (T)suitableConstructor.newInstance(addNullVarArgsTo(args));
+            } else
+                return (T)suitableConstructor.newInstance(args);
+        } catch (Exception e) {
+            var exception = (InvocationTargetException)e;
+            throw new InvocationTargetException(exception.getTargetException());
+        }
     }
 
     private static Object[] addNullVarArgsTo(Object... args) {
@@ -77,7 +81,7 @@ public abstract class ObjectFactory {
             args[args.length - 1] = getVarArgsType(clazz, argumentTypes);
 
             return clazz.getDeclaredConstructor(args);
-        } catch (NoSuchMethodException|NullPointerException ignored) {
+        } catch (NoSuchMethodException | NullPointerException ignored) {
         }
 
         throw new NoSuchMethodException("No matching constructor found for the provided argument types.");
@@ -101,7 +105,7 @@ public abstract class ObjectFactory {
     }
 
     private static boolean parameterTypesMatch(Parameter[] parameters, Class[] argumentTypes) {
-        for (int i = 0; i < argumentTypes.length; i ++) {
+        for (int i = 0; i < argumentTypes.length; i++) {
             if (!parameters[i].getType().equals(argumentTypes[i]))
                 return false;
         }

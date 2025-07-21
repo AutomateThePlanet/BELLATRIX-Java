@@ -38,9 +38,12 @@ public class SingletonFactory extends ObjectFactory {
     private static <T> T tryGetInstance(Class<T> classOf, Object... initargs) {
         try {
             return newInstance(classOf, initargs);
-        } catch (InvocationTargetException | InstantiationException | IllegalAccessException |
+        } catch (InvocationTargetException e) {
+            Log.error(e.getTargetException().getMessage(), e);
+            return null;
+        } catch (InstantiationException | IllegalAccessException |
                  ConstructorNotFoundException e) {
-            Log.error("Failed to create instance of the class %s.\nException was:\n%s".formatted(classOf.getName(), e));
+            Log.error("Failed to create instance of the class %s.\nException was:\n%s".formatted(classOf.getName(), e.getMessage()));
             return null;
         }
     }
@@ -62,7 +65,7 @@ public class SingletonFactory extends ObjectFactory {
     public static boolean containsValue(Object object) {
         return mapHolder.get().containsValue(object);
     }
-    
+
     public static void clear() {
         mapHolder.get().clear();
     }

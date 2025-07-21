@@ -8,7 +8,6 @@ import lombok.Setter;
 import solutions.bellatrix.data.http.authentication.AuthSchemaFactory;
 import solutions.bellatrix.data.http.authentication.AuthenticationMethod;
 import solutions.bellatrix.data.http.configuration.HttpSettings;
-import solutions.bellatrix.data.http.infrastructure.Entity;
 import solutions.bellatrix.data.http.infrastructure.HTTPMethod;
 import solutions.bellatrix.data.http.infrastructure.QueryParameter;
 
@@ -68,7 +67,7 @@ public class HttpContext {
     }
 
     public RequestSpecification requestSpecification() {
-        if (requestBody!=null) {
+        if (requestBody != null) {
             specBuilder.setBody(requestBody);
         }
 
@@ -106,7 +105,7 @@ public class HttpContext {
     private Map<String, String> getRequestQueryParameters() {
         //todo: this logic should be extracted because create tightly coupling with settings
         LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
-        if (httpSettings.getAuthenticationMethod()==AuthenticationMethod.QUERY_PARAMETER) {
+        if (httpSettings.getAuthenticationMethod() == AuthenticationMethod.QUERY_PARAMETER) {
             var option = httpSettings.getAuthentication().getAuthenticationOptions().stream().filter(x -> x.get("type").equals("QueryParameters")).findFirst().get();
             String insertionOrder = (String)option.get("insertionOrder");
             if (insertionOrder.equals("start")) {

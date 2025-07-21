@@ -18,7 +18,7 @@ public abstract class Entity<TIdentifier, TEntity> {
 
     public TEntity update() {
         var repository = (Repository<Entity>)RepositoryFactory.INSTANCE.getRepository(this.getClass());
-        return (TEntity)repository.update(this);`
+        return (TEntity)repository.update(this);
     }
 
     public void delete() {

@@ -18,7 +18,7 @@ import static solutions.bellatrix.data.http.infrastructure.HTTPMethod.*;
 
 public abstract class HttpRepository<THttpEntity extends HttpEntity> implements Repository<THttpEntity> {
     public static final EventListener<HttpRequestEventArgs> SENDING_REQUEST = new EventListener<>();
-    public static final EventListener<ResponseProcessingEventArgs> REQUEST_SEND = new EventListener<>();
+    public static final EventListener<ResponseProcessingEventArgs> REQUEST_SENT = new EventListener<>();
     public static final EventListener<EntityCreatedEventArgs> CREATING_ENTITY = new EventListener<>();
     public static final EventListener<EntityCreatedEventArgs> ENTITY_CREATED = new EventListener<>();
     public static final EventListener<EntityUpdatedEventArgs> UPDATING_ENTITY = new EventListener<>();
@@ -44,7 +44,6 @@ public abstract class HttpRepository<THttpEntity extends HttpEntity> implements 
         if (entity.hasInvalidIdentifier()) {
             throw new IllegalArgumentException("Entity identifier cannot be null.");
         }
-
         updateRequestContext(requestContext -> {
             requestContext.addPathParameter(entity.getIdentifier());
             requestContext.addRequestMethod(GET);
@@ -160,7 +159,7 @@ public abstract class HttpRepository<THttpEntity extends HttpEntity> implements 
 
     private <R> R deserializeInternal(HttpResponse response, DeserializationMode mode) {
         try {
-            if (mode==DeserializationMode.LIST) {
+            if (mode == DeserializationMode.LIST) {
                 List<THttpEntity> entities = objectConverter.fromStringToList(response.getBody(), entityType);
                 entities.forEach(entity -> entity.setResponse(response.getResponse()));
                 return (R)entities;
@@ -178,7 +177,7 @@ public abstract class HttpRepository<THttpEntity extends HttpEntity> implements 
         try {
             SENDING_REQUEST.broadcast(new HttpRequestEventArgs(requestContext));
             Response response = responseSupplier.get();
-            REQUEST_SEND.broadcast(new ResponseProcessingEventArgs(response));
+            REQUEST_SENT.broadcast(new ResponseProcessingEventArgs(response));
             return response;
         } finally {
             restoreRequestContext();

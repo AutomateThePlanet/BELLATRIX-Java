@@ -17,7 +17,7 @@ public enum AuthenticationMethod {
     public static AuthenticationMethod parse(String y) {
         for (var state : values()) {
             String enumDisplayValue = state.getMethod();
-            if (enumDisplayValue!=null && enumDisplayValue.equalsIgnoreCase(y)) {
+            if (enumDisplayValue != null && enumDisplayValue.equalsIgnoreCase(y)) {
                 return state;
             }
         }

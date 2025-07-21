@@ -32,6 +32,10 @@ public class HttpSettings {
 
     public static HttpSettings custom(Consumer<HttpSettings> httpSettings) {
         var settings = ConfigurationService.get(DataSettings.class).getHttpSettings();
+        if (settings == null) {
+            throw new IllegalStateException("Include the httpSettings section in your config file");
+
+        }
         httpSettings.accept(settings);
         return settings;
     }
