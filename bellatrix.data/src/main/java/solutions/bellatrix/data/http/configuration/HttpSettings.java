@@ -11,7 +11,6 @@ import java.util.function.Consumer;
 
 @Data
 public class HttpSettings {
-    private transient AuthenticationMethod authenticationMethod;
     @SerializedName("baseUrl")
     private String baseUrl;
     @SerializedName("basePath")

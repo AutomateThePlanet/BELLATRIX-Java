@@ -8,9 +8,6 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Objects;
 
-/**
- * The Queryable interface provides a method to convert an object into a list of query parameters.
- */
 public interface Queryable {
     default LinkedList<QueryParameter> toQueryParams() {
         try {
