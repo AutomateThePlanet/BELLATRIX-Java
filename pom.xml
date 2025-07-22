@@ -24,6 +24,7 @@
         <module>bellatrix.ios</module>
         <module>bellatrix.api</module>
         <module>bellatrix.data</module>
+        <module>bellatrix.servicenow</module>
         <!-- Framework Tests -->
         <module>framework-tests/bellatrix.core.tests</module>
         <module>framework-tests/bellatrix.web.tests</module>
@@ -34,6 +35,7 @@
         <!-- Getting Started -->
         <module>getting-started/bellatrix.web.getting.started</module>
         <module>getting-started/bellatrix.playwright.getting.started</module>
+
 
 
     </modules>
