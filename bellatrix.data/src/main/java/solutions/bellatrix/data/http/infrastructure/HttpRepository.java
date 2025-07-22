@@ -26,7 +26,6 @@ public abstract class HttpRepository<THttpEntity extends HttpEntity> implements 
     public static final EventListener<EntityDeletedEventArgs> DELETING_ENTITY = new EventListener<>();
     public static final EventListener<EntityDeletedEventArgs> ENTITY_DELETED = new EventListener<>();
 
-
     protected final HttpContext repositoryContext;
     private final Class<THttpEntity> entityType;
     private final ObjectConverter objectConverter;
@@ -141,8 +140,9 @@ public abstract class HttpRepository<THttpEntity extends HttpEntity> implements 
         return objectConverter;
     }
 
-    protected HttpResponse handleResponse(Supplier<Response> response) {
-        return new HttpResponse(response.get().getBody().asString(), response.get());
+    protected HttpResponse handleResponse(Supplier<Response> responseSupplier) {
+        Response response = responseSupplier.get();
+        return new HttpResponse(response.getBody().asString(),response);
     }
 
     protected void updateRequestContext(Consumer<HttpContext> requestConfigConsumer) {
@@ -159,7 +159,7 @@ public abstract class HttpRepository<THttpEntity extends HttpEntity> implements 
 
     private <R> R deserializeInternal(HttpResponse response, DeserializationMode mode) {
         try {
-            if (mode == DeserializationMode.LIST) {
+            if (mode==DeserializationMode.LIST) {
                 List<THttpEntity> entities = objectConverter.fromStringToList(response.getBody(), entityType);
                 entities.forEach(entity -> entity.setResponse(response.getResponse()));
                 return (R)entities;
