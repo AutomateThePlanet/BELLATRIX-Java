@@ -142,7 +142,7 @@ public abstract class HttpRepository<THttpEntity extends HttpEntity> implements 
 
     protected HttpResponse handleResponse(Supplier<Response> responseSupplier) {
         Response response = responseSupplier.get();
-        return new HttpResponse(response.getBody().asString(),response);
+        return new HttpResponse(response.getBody().asString(), response);
     }
 
     protected void updateRequestContext(Consumer<HttpContext> requestConfigConsumer) {
@@ -159,7 +159,7 @@ public abstract class HttpRepository<THttpEntity extends HttpEntity> implements 
 
     private <R> R deserializeInternal(HttpResponse response, DeserializationMode mode) {
         try {
-            if (mode==DeserializationMode.LIST) {
+            if (mode == DeserializationMode.LIST) {
                 List<THttpEntity> entities = objectConverter.fromStringToList(response.getBody(), entityType);
                 entities.forEach(entity -> entity.setResponse(response.getResponse()));
                 return (R)entities;
