@@ -9,6 +9,7 @@ import solutions.bellatrix.data.http.authentication.AuthSchemaFactory;
 import solutions.bellatrix.data.http.authentication.AuthenticationMethod;
 import solutions.bellatrix.data.http.configuration.HttpSettings;
 import solutions.bellatrix.data.http.infrastructure.HTTPMethod;
+import solutions.bellatrix.data.http.infrastructure.HttpHeader;
 import solutions.bellatrix.data.http.infrastructure.QueryParameter;
 
 import java.util.*;
@@ -18,16 +19,16 @@ public class HttpContext {
     private final HttpSettings httpSettings;
     private final LinkedList<Object> pathParameters;
     private final LinkedHashSet<QueryParameter> queryParameters;
-    @Setter
-    private RequestSpecBuilder specBuilder;
-    @Getter
-    private String requestBody;
+    private final LinkedHashSet<HttpHeader> httpHeaders;
+    @Setter private RequestSpecBuilder specBuilder;
+    @Getter private String requestBody;
     @Getter private HTTPMethod httpMethod;
 
     public HttpContext(HttpSettings settings) {
         this.httpSettings = settings;
         this.pathParameters = new LinkedList<>();
         this.queryParameters = new LinkedHashSet<>();
+        this.httpHeaders = httpSettings.getHeaders();
         this.specBuilder = createInitialSpecBuilder(httpSettings);
     }
 
@@ -36,6 +37,7 @@ public class HttpContext {
         this.queryParameters = httpContext.getQueryParameters();
         this.pathParameters = httpContext.getPathParameters();
         this.specBuilder = httpContext.getRequestBuilder();
+        this.httpHeaders = httpContext.getHeaders();
     }
 
     public HttpSettings getHttpSettings() {
@@ -58,6 +60,10 @@ public class HttpContext {
         return new LinkedList<>(pathParameters);
     }
 
+    public LinkedHashSet<HttpHeader> getHeaders() {
+        return new LinkedHashSet<>(httpHeaders);
+    }
+
     public LinkedHashSet<QueryParameter> getQueryParameters() {
         return new LinkedHashSet<>(queryParameters);
     }
@@ -67,13 +73,15 @@ public class HttpContext {
     }
 
     public RequestSpecification requestSpecification() {
-        if (requestBody != null) {
+        if (Objects.nonNull(requestBody)) {
             specBuilder.setBody(requestBody);
         }
 
         if (!queryParameters.isEmpty()) {
             specBuilder.addQueryParams(getRequestQueryParameters());
         }
+
+        specBuilder.addHeaders(getRequestHeaders());
 
         specBuilder.setBasePath(buildRequestPath());
 
@@ -98,8 +106,25 @@ public class HttpContext {
         parameters.forEach(this::addQueryParameter);
     }
 
+    public void addHeader(HttpHeader httpHeader) {
+        httpHeaders.add(httpHeader);
+    }
+
+    public void addHeaders(Collection<HttpHeader> headers) {
+        headers.forEach(this::addHeader);
+    }
+
     public void addQueryParameter(QueryParameter parameter) {
         queryParameters.add(parameter);
+    }
+
+    private Map<String, String> getRequestHeaders() {
+        LinkedHashMap<String, String> requestHeaders = new LinkedHashMap<>();
+        httpHeaders.forEach(x -> {
+            requestHeaders.put(x.getName(), x.getValue());
+        });
+
+        return requestHeaders;
     }
 
     private Map<String, String> getRequestQueryParameters() {
@@ -139,7 +164,6 @@ public class HttpContext {
         return queryParams;
     }
 
-
     public String buildRequestPath() {
         if (!pathParameters.isEmpty()) {
             String[] pathList = pathParameters.stream().filter(path -> !String.valueOf(path).isEmpty()).map(String::valueOf).toArray(String[]::new);
@@ -151,9 +175,16 @@ public class HttpContext {
     }
 
     private RequestSpecBuilder createInitialSpecBuilder(HttpSettings httpSettings) {
+        LinkedHashMap<String, String> initialHeaders = new LinkedHashMap<>();
+        httpHeaders.forEach(x -> {
+            initialHeaders.put(x.getName(), x.getValue());
+        });
+
         return new RequestSpecBuilder()
                 .setBaseUri(httpSettings.getBaseUrl())
-                .setBasePath(httpSettings.getBasePath()).setContentType(httpSettings.getContentType())
+                .addHeaders(initialHeaders)
+                .setBasePath(httpSettings.getBasePath())
+                .setContentType(httpSettings.getContentType())
                 .setAuth(AuthSchemaFactory.getAuthenticationScheme(httpSettings.getAuthentication()))
                 .setUrlEncodingEnabled(httpSettings.isUrlEncoderEnabled())
                 .log(LogDetail.ALL);

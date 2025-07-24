@@ -16,6 +16,7 @@ import java.util.function.Supplier;
 
 import static solutions.bellatrix.data.http.infrastructure.HTTPMethod.*;
 
+@SuppressWarnings("unchecked")
 public abstract class HttpRepository<THttpEntity extends HttpEntity> implements Repository<THttpEntity> {
     public static final EventListener<HttpRequestEventArgs> SENDING_REQUEST = new EventListener<>();
     public static final EventListener<ResponseProcessingEventArgs> REQUEST_SENT = new EventListener<>();
@@ -161,11 +162,11 @@ public abstract class HttpRepository<THttpEntity extends HttpEntity> implements 
         try {
             if (mode == DeserializationMode.LIST) {
                 List<THttpEntity> entities = objectConverter.fromStringToList(response.getBody(), entityType);
-                entities.forEach(entity -> entity.setResponse(response.getResponse()));
+                entities.forEach(entity -> entity.setResponse(response));
                 return (R)entities;
             } else {
                 THttpEntity entity = objectConverter.fromString(response.getBody(), entityType);
-                entity.setResponse(response.getResponse());
+                entity.setResponse(response);
                 return (R)entity;
             }
         } catch (Exception e) {
