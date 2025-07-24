@@ -7,52 +7,34 @@
         <groupId>solutions.bellatrix</groupId>
         <artifactId>bellatrix</artifactId>
         <version>1.0-SNAPSHOT</version>
+        <relativePath>../../pom.xml</relativePath>
     </parent>
 
-    <artifactId>bellatrix.servicenow</artifactId>
+    <artifactId>bellatrix.servicenow.getting.started</artifactId>
 
     <properties>
         <maven.compiler.source>19</maven.compiler.source>
         <maven.compiler.target>19</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <bellatrix.framework.version>1.0</bellatrix.framework.version>
     </properties>
 
     <dependencies>
         <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <version>RELEASE</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>solutions.bellatrix</groupId>
-            <artifactId>bellatrix.core</artifactId>
-            <version>1.0</version>
-            <scope>compile</scope>
+            <artifactId>bellatrix.servicenow</artifactId>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>solutions.bellatrix</groupId>
             <artifactId>bellatrix.web</artifactId>
             <version>1.0</version>
-            <scope>compile</scope>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>solutions.bellatrix</groupId>
             <artifactId>bellatrix.api</artifactId>
-            <version>${bellatrix.framework.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.github.javafaker</groupId>
-            <artifactId>javafaker</artifactId>
-            <version>1.0.2</version>
+            <version>1.0</version>
             <scope>compile</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>solutions.bellatrix</groupId>
-            <artifactId>bellatrix.data</artifactId>
-            <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
 </project>
