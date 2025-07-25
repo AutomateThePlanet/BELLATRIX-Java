@@ -35,7 +35,7 @@
         <!-- Getting Started -->
         <module>getting-started/bellatrix.web.getting.started</module>
         <module>getting-started/bellatrix.playwright.getting.started</module>
-
+        <module>getting-started/bellatrix.servicenow.getting.started</module>
 
 
     </modules>
