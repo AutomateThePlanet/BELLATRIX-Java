@@ -177,9 +177,6 @@ public class Asserts<MapT extends Map> extends PageAsserts<MapT> {
     public void assertInnerTableColumns(String tabText, List<String> expectedValues) {
         var actualValues = map().getSecondTableColumns(tabText).stream().map(x -> {
             String rawText = x.getText();
-//to be deleted
-//            int index = rawText.indexOf('\n');
-//            return rawText.substring(0, index);
             return rawText;
         }).collect(Collectors.toList());
 
