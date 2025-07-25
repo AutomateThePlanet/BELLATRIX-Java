@@ -70,7 +70,7 @@
     "isPolarisEnabled": "true",
     "instance": "dev329858",
     "platformRelease": "yokohama",
-    "userName": "automationUser",
-    "password": "ath1.Conf@"
+    "userName": "user",
+    "password": "pass"
   }
 }
