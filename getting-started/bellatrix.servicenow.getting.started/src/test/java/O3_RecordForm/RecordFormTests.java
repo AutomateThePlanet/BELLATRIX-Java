@@ -1,6 +1,6 @@
 package O3_RecordForm;
 
-import O3_RecordForm.data.IncidentForm;
+import O3_RecordForm.data.NewIncidentForm;
 import O3_RecordForm.data.ProjectTables;
 import O3_RecordForm.data.recordPage.IncidentRecordPage;
 import org.junit.jupiter.api.Test;
@@ -31,13 +31,13 @@ public class RecordFormTests extends ServiceNowBaseTest {
     }
 
     @Test
-    public void openFirstRecord_and_validateTheForm () {
+    public void newRecordFormOpen_when_clickNewButton () {
         serviceNowPage.loginSection().login();
         serviceNowTableViewPage.open(ProjectTables.INCIDENT_TABLE);
-        serviceNowTableViewPage.openRecordInfoFromMainTable(1);
+        serviceNowTableViewPage.clickOnNewButton();
 
-        var recordPage = new IncidentRecordPage();
-        var mainFormModel = IncidentForm.builder().build();
-        recordPage.asserts().validateFormState(mainFormModel, recordPage.map().mainForm());
+        var newRecordPage = new IncidentRecordPage();
+        var mainFormModel = NewIncidentForm.builder().build();
+        newRecordPage.asserts().validateFormState(mainFormModel, newRecordPage.map().mainForm(), false);
     }
 }

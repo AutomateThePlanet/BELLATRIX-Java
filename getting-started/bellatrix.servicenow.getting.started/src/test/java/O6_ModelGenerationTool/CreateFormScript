@@ -198,5 +198,4 @@ function generateFormClass(formXPath, className) {
 }
 
 // Example usage:
-// generateFormClass("//div[@aria-label='Reservation form section']", "ReservationForm");
-// generateFormClass("//form[@id='myForm']", "MyFormClass");
+generateFormClass("//div[@aria-label='Incident form section']", "ReservationForm");
