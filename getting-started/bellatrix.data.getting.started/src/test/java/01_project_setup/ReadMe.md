@@ -23,16 +23,12 @@ Create `testFrameworkSettings.{env}.json` inside the `src/main/resources` or `sr
 The configuration file contains several key sections:
 
 - **dataSettings**: HTTP data source configuration for API interactions
-- **webSettings**: Web automation settings (if using web testing features)
-- **urlSettings**: Custom URL definitions for your application
+- **httpSettings**: Nested configuration for HTTP-specific settings
 
 ### Example Configuration File
 
 ```json
 {
-  "troubleshootingSettings": {
-    "debugInformationEnabled": "true"
-  },
   "dataSettings": {
     "dataSourceType": "HTTP",
     "httpSettings": {
@@ -67,112 +63,6 @@ The configuration file contains several key sections:
         ]
       }
     }
-  },
-  "webSettings": {
-    "baseUrl": "https://ecommerce-playground.lambdatest.io",
-    "executionType": "regular",
-    "defaultBrowser": "chrome",
-    "defaultLifeCycle": "restart everytime time",
-    "artificialDelayBeforeAction": "0",
-    "automaticallyScrollToVisible": "false",
-    "waitUntilReadyOnElementFound": "false",
-    "waitForAngular": "false",
-    "shouldHighlightElements": "true",
-    "shouldCaptureHttpTraffic": "false",
-    "screenshotsOnFailEnabled": "false",
-    "screenshotsSaveLocation": "${user.home}/BELLATRIX/Screenshots",
-    "videosOnFailEnabled": "false",
-    "videosSaveLocation": "${user.home}/BELLATRIX/Videos",
-    "timeoutSettings": {
-      "elementWaitTimeout": "30",
-      "pageLoadTimeout": "30",
-      "scriptTimeout": "1",
-      "waitForAjaxTimeout": "30",
-      "sleepInterval": "1",
-      "waitUntilReadyTimeout": "30",
-      "waitForJavaScriptAnimationsTimeout": "30",
-      "waitForAngularTimeout": "30",
-      "waitForPartialUrl": "30",
-      "validationsTimeout": "30",
-      "elementToBeVisibleTimeout": "30",
-      "elementToExistTimeout": "30",
-      "elementToNotExistTimeout": "30",
-      "elementToBeClickableTimeout": "30",
-      "elementNotToBeVisibleTimeout": "30",
-      "elementToHaveContentTimeout": "15"
-    },
-    "gridSettings": [
-      {
-        "providerName": "saucelabs",
-        "url": "http://ondemand.saucelabs.com:80/wd/hub",
-        "arguments": [
-          {
-            "screenResolution": "1280x800",
-            "recordVideo": "true",
-            "recordScreenshots": "true",
-            "username": "myUserName",
-            "accessKey": "myPass",
-            "name": "bellatrix_run"
-          }
-        ]
-      },
-      {
-        "providerName": "browserstack",
-        "url": "http://hub-cloud.browserstack.com/wd/hub/",
-        "arguments": [
-          {
-            "resolution": "1280x800",
-            "browserstack.video": "true",
-            "browserstack.networkLogs": "true",
-            "browserstack.debug": "true",
-            "browserstack.console": "errors",
-            "browserstack.user": "myUserName",
-            "browserstack.key": "myPass",
-            "build": "bellatrix_run"
-          }
-        ]
-      },
-      {
-        "providerName": "crossbrowsertesting",
-        "url": "http://hub.crossbrowsertesting.com:80/wd/hub",
-        "arguments": [
-          {
-            "screen_resolution": "1280x800",
-            "record_video": "true",
-            "record_network": "true",
-            "username": "myUserName",
-            "password": "myPass",
-            "name": "bellatrix_run"
-          }
-        ]
-      },
-      {
-        "providerName": "selenoid",
-        "url": "http://127.0.0.1:4444/wd/hub",
-        "arguments": [
-          {
-            "screenResolution": "1280x800",
-            "enableVNC": "true",
-            "enableVideo": "true",
-            "enableLog": "true",
-            "name": "bellatrix_run"
-          }
-        ]
-      },
-      {
-        "providerName": "grid",
-        "url": "http://127.0.0.1:4444/wd/hub",
-        "arguments": [
-          {
-            "name": "bellatrix_run"
-          }
-        ]
-      }
-    ]
-  },
-  "urlSettings": {
-    "shopUrl": "http://demos.bellatrix.solutions/cart/",
-    "accountUrl": "http://demos.bellatrix.solutions/account/"
   }
 }
 ```
@@ -194,10 +84,6 @@ Use `{env_variable_name}` syntax for sensitive data:
 - `{env_http_bearer_token}` - Your API bearer token
 - `{env_http_username}` - Basic auth username
 - `{env_http_password}` - Basic auth password
-
-### Web Settings (Optional)
-
-Configure web automation if you're using Bellatrix for both API and UI testing.
 
 ## Environment-Specific Configuration
 
