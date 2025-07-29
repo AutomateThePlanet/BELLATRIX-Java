@@ -23,6 +23,7 @@
         <module>bellatrix.android</module>
         <module>bellatrix.ios</module>
         <module>bellatrix.api</module>
+        <module>bellatrix.data</module>
         <!-- Framework Tests -->
         <module>framework-tests/bellatrix.core.tests</module>
         <module>framework-tests/bellatrix.web.tests</module>

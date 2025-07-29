@@ -4,6 +4,8 @@ import common.configuration.TestPagesSettings;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.NoSuchElementException;
+import org.testng.asserts.Assertion;
 import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.web.components.Anchor;
 import solutions.bellatrix.web.components.Div;
@@ -11,6 +13,7 @@ import solutions.bellatrix.web.components.Select;
 import solutions.bellatrix.web.components.advanced.grid.Grid;
 import solutions.bellatrix.web.components.advanced.grid.GridCell;
 import solutions.bellatrix.web.components.shadowdom.ShadowRoot;
+import solutions.bellatrix.web.configuration.WebSettings;
 import solutions.bellatrix.web.infrastructure.Browser;
 import solutions.bellatrix.web.infrastructure.ExecutionBrowser;
 import solutions.bellatrix.web.infrastructure.Lifecycle;
@@ -105,6 +108,57 @@ public class ShadowDomTests extends WebTest {
 
         var edit = table.getColumn("Action").get(row.getIndex()).createByCss(Anchor.class, "[href='#edit']");
         Assertions.assertEquals("edit", edit.getText());
+    }
+
+    @Test
+    public void exceptionThrown_when_tryingToFindNonExistentElement() {
+        var shadowHost = app().create().byId(Div.class, "complexShadowHost");
+        var shadowRoot = shadowHost.getShadowRoot();
+
+        Assertions.assertThrows(NoSuchElementException.class, () -> shadowRoot.createByXPath(Div.class, "//nonExistentElement"));
+    }
+
+    @Test
+    public void returnedEmptyList_when_tryingToFindNonExistentElements() {
+        var shadowHost = app().create().byId(Div.class, "complexShadowHost");
+        var shadowRoot = shadowHost.getShadowRoot();
+
+        Assertions.assertAll(
+                () -> Assertions.assertDoesNotThrow(() -> shadowRoot.createAllByXPath(Div.class, "//nonExistentElement")),
+                () -> Assertions.assertTrue(shadowRoot.createAllByXPath(Div.class, "//nonExistentElement").isEmpty())
+        );
+    }
+
+    @Test
+    public void waitedTimeout_when_tryingToFindNonExistentElement() {
+        var shadowHost = app().create().byId(Div.class, "complexShadowHost");
+        var shadowRoot = shadowHost.getShadowRoot();
+
+        long startTime = System.currentTimeMillis();
+        try {
+            shadowRoot.createByXPath(Div.class, "//nonExistentElement");
+        } catch (NoSuchElementException ignored) {
+            var elapsedTime = System.currentTimeMillis() - startTime;
+
+            Assertions.assertTrue(elapsedTime > ConfigurationService.get(WebSettings.class).getTimeoutSettings().getElementWaitTimeout()*1000);
+        }
+    }
+
+    @Test
+    public void returnedEmptyListWithoutWaiting_when_tryingToFindNonExistentElements() {
+        var shadowHost = app().create().byId(Div.class, "complexShadowHost");
+        var shadowRoot = shadowHost.getShadowRoot();
+
+        long startTime = System.currentTimeMillis();
+
+        var isEmpty = shadowRoot.createAllByXPath(Div.class, "//nonExistentElement").isEmpty();
+
+        var elapsedTime = System.currentTimeMillis() - startTime;
+
+        Assertions.assertAll(
+                () -> Assertions.assertTrue(isEmpty),
+                () -> Assertions.assertTrue(elapsedTime < ConfigurationService.get(WebSettings.class).getTimeoutSettings().getElementWaitTimeout()*1000)
+        );
     }
 
     // TODO: Test Relative Finding of Elements

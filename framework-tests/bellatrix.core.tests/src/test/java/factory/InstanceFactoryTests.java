@@ -1,10 +1,12 @@
 package factory;
 
+import factory.data.Boss;
 import factory.data.Employee;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import solutions.bellatrix.core.plugins.junit.BaseTest;
 import solutions.bellatrix.core.utilities.InstanceFactory;
+import solutions.bellatrix.core.utilities.ObjectFactory;
 
 public class InstanceFactoryTests extends BaseTest {
     @Test
@@ -28,7 +30,12 @@ public class InstanceFactoryTests extends BaseTest {
     }
 
     @Test
-    public void objectNotReturned_When_UsedNonExistentConstructor() {
+    public void returnedNull_When_TriedUsingNonExistentConstructor() {
         Assertions.assertNull(InstanceFactory.create(Employee.class, "John Doe"));
+    }
+
+    @Test
+    public void returnedNull_When_TriedUsingNonExistentNoArgsConstructor() {
+        Assertions.assertNull(InstanceFactory.create(Boss.class));
     }
 }
