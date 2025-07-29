@@ -90,11 +90,8 @@ To use Basic authentication, simply change the method property to "Basic":
     ]
   }
 ```
+>[!CAUTION]
+>Ensure you have set the environment variables `http_username` and `http_password` on your machine. While you can hardcode these values directly in the configuration, using environment variables is the recommended approach for security reasons.
 
-**Important**:
-
-Ensure you have set the environment variables `http_username` and `http_password` on your machine. While you can hardcode these values directly in the configuration, using environment variables is the recommended approach for security reasons.
-
-**Current Support:**
-
-The current version supports these three authentication methods. Future releases will include additional authentication types and the ability to create custom, project-specific authentication methods.
+> [!NOTE]
+> The current version supports these three authentication methods. Future releases will include additional authentication types and the ability to create custom, project-specific authentication methods.
