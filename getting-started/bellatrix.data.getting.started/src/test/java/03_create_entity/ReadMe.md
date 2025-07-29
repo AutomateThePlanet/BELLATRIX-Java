@@ -1,4 +1,4 @@
-# HttpEntity<TIdentifier, TEntity>
+# Entity Classes
 
 `HttpEntity<TIdentifier, TEntity>` is the base class for all data entity classes in your application.
 
@@ -38,7 +38,7 @@ public class Artist extends HttpEntity<String, Artist> {
 - The `getIdentifier()` method returns the unique identifier used for CRUD operations
 
 
-# Entity<TIdentifier, TEntity> Class
+# Base Entity<TIdentifier, TEntity> Class
 
 `HttpEntity` extends the `Entity<TIdentifier, TEntity>` class, which provides the core interface for all data entities regardless of their data source.
 
@@ -55,7 +55,7 @@ This architecture streamlines data management by reducing the lines of code need
 
 There are three main approaches to working with entities and repositories:
 
-### Option 1: Explicit Repository Usage (Verbose but Clear)
+#### Option 1: Explicit Repository Usage (Verbose but Clear)
 
 Create a repository instance and use it explicitly for operations:
 
@@ -82,9 +82,14 @@ Artist artist = new ArtistRepository().create(Artist.builder().name("J.K.Rowling
 Register repositories once and perform operations directly on entities:
 
 ```java
-RepositoryFactory.INSTANCE.registerRepository(Artist.class, ArtistRepository.class);
-
 Artist artist = Artist.builder().name("James Clavell").build().create();
+
+// Direct operations on the entity
+artist.setName("Updated Name");
+artist.update(); // Updates via HTTP call
+
+// Access response information
+artist.getResponse().getNativeResponse();
 ```
 
 **Benefits:** Most concise, entity-focused design, automatic repository management

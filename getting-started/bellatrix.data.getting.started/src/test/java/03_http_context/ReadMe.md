@@ -4,7 +4,6 @@
 
 This guide explains how to  use HttpContext for dynamic configuration, and customize requests for your specific API endpoints.
 
-
 ## HttpContext Class
 
 The `HttpContext` class acts as a bridge between your base configuration and actual HTTP requests. It encapsulates HTTP operation settings and provides dynamic request configuration capabilities.
@@ -65,10 +64,3 @@ httpContext.addPathParameter("/123"); // Results in: /api/artists/123
 httpContext.addQueryParameter("limit", "10");
 httpContext.addQueryParameter("offset", "0"); // Results in: /api/artists?limit=10&offset=0
 ```
-
-## Best Practices
-
-- **Environment Variables**: Always use environment variables for sensitive authentication data
-- **Path Structure**: Keep path parameters organized and RESTful (`/resource/{id}`)
-- **Error Handling**: Configure appropriate timeout and retry settings for production use
-- **Security**: Use HTTPS URLs in production environments

@@ -9,5 +9,6 @@ public class BaseTest {
         var artistRepository = new ArtistRepository();
 
         Artist artist = Artist.builder().name("James Clavell").build().create();
+        artist.getResponse().getNativeResponse();
     }
 }
