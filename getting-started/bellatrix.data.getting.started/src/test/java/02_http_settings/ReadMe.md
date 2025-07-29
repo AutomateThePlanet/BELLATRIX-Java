@@ -93,7 +93,7 @@ To use Basic authentication, simply change the method property to "Basic":
 
 **Important**:
 
-Ensure you have set the environment variables http_username and http_password on your machine. While you can hardcode these values directly in the configuration, using environment variables is the recommended approach for security reasons.
+Ensure you have set the environment variables `http_username` and `http_password` on your machine. While you can hardcode these values directly in the configuration, using environment variables is the recommended approach for security reasons.
 
 **Current Support:**
 
