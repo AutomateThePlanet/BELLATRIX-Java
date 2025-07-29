@@ -12,21 +12,37 @@ Test Automation Project prerequisites:
            Request a Personal Developer Instance (PDI)
            You'll receive an email with your instance URL and credentials
            The instance will be available for 10 days of inactivity before hibernating
+      3/ create user with admin rights
+            1. Login in with your Developer account
+            2. Click All In case Navigation menu is not open
+            3. In filter input "sys_user.list" and press Enter
+            4. Click New button and fill and submit the New Record form
+            5. In the Table with users find the newly created user and open the record
+            6. On the bottom table Click "Role" Tab
+            7. Click "Edit" Button,
+               type "admin" in the Collections,
+               add "admin" to "Role List" and "Save"
 
-2. create customized testFrameworkSettings file and save it in the src/main/resources
-    1/ use the sample config file:
-            O1_Login/sectionData/testFrameworkSettings.instanceName.json
+2. Update the config file
+    src/main/resources/testFrameworkSettings.dev.json
 
-    2/ edit "serviceNowProjectSettings" section parameters
-    with the respective parameters of the instance
+     Update "serviceNowProjectSettings" section parameters:
+        1/ change the value for the instance with the actual instance name
+             "instance": "dev329858"
 
-    3/ use actual username and password data
+        2/  change  "platformRelease" to correspond to the instance
+             "platformRelease": "yokohama"
+
+        3/ check if on the instance isPolarisEnabled and set properly
+            "isPolarisEnabled": "true",
+
+        4/ use actual username and password data
         Options:
-        3.1/ change "user" and "pass" with actual data in the config file
+        4.1/ change "user" and "pass" with actual data in the config file
               "userName": "user",
               "password": "pass"
         or
-        3.2/ use environment variables in the config fle
+        4.2/ use environment variables in the config fle
             "userName": "{env_servicenow-username-instance}",
             "password": "{env_servicenow-password-instance}"
 
@@ -34,12 +50,8 @@ Test Automation Project prerequisites:
                 servicenow-username-instance
                 servicenow-password-instance
 
-    4/ rename it using the respective instanceName
-
-    5/ check if on the instance isPolarisEnabled and set properly
-
-4. set environment in file src/main/resources/application.properties
-        with the actual instance name
+3. set environment in file src/main/resources/application.properties to dev
+     environment=dev
 
 Login Tests
     1. Base url set up
@@ -55,6 +67,13 @@ Login Tests
 
     3. For the test loadInitialServiceNowPageWithConfigCredentials()
      the credentials are read from the config file
-     testFrameworkSettings.instanceName.json.
+     testFrameworkSettings.dev.json.
 
+*Note
+The example is for the update of "dev" instance
+and the changes are applied to the config file: testFrameworkSettings.dev.json.
+
+In case "qa" instance will be used, the above-mentioned changes need to be applied
+to the config file testFrameworkSettings.qa.json and the update environment=qa
+needed in the file application.properties.
 

@@ -10,7 +10,7 @@ import solutions.bellatrix.servicenow.snSetupData.annotations.snFieldAnnotations
 @Data
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
-public class ReservationForm extends ServiceNowForm {
+public class ReservationFormModel extends ServiceNowForm {
     @Required
     @FieldLabel("Title")
     @Component(SnString.class)

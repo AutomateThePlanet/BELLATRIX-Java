@@ -5,12 +5,14 @@ import O5_LeftNavigation.data.ProjectLeftNavigationItem;
 import O5_LeftNavigation.data.leftNavigationSection.LeftNavigationSection;
 import org.junit.jupiter.api.Test;
 import solutions.bellatrix.servicenow.baseTest.ServiceNowBaseTest;
+import solutions.bellatrix.servicenow.snSetupData.enums.ServiceNowMenuItems;
 
 public class LeftNavigationTests extends ServiceNowBaseTest {
     @Test
-    public void functionalityOptionNotVisible_when_userWithNoPermissionsTryToNavigateToFunctionalityFromLeftNavigationMenu() {
+    public void optionNotVisible_when_nonAuthorizedUserSearchInLeftNavigation() {
         serviceNowPage.loginSection().login();
         serviceNowPage.impersonateUser("User Impersonate");
+        serviceNowPage.clickMenuItem(ServiceNowMenuItems.All);
 
         serviceNowPage.filterDataInLeftNavigationPane(ProjectLeftNavigationItem.INCIDENTS);
 
@@ -19,7 +21,7 @@ public class LeftNavigationTests extends ServiceNowBaseTest {
     }
 
     @Test
-    public void functionalityOptionVisible_when_userWithPermissionsSearchToNavigateToFunctionalityFromLeftNavigationMenu() {
+    public void optionVisible_when_authorizedUserSearchInLeftNavigation() {
         serviceNowPage.loginSection().login();
 
         serviceNowPage.filterDataInLeftNavigationPane(ProjectLeftNavigationItem.INCIDENTS);

@@ -2,17 +2,27 @@ Left Navigation Tests prerequisites:
 
 1. In
     O5_LeftNavigation/data/ProjectLeftNavigationItem.java
-    Add an enum with the actual left menu items
-2. In the tests
-    Change ProjectTables.INCIDENT_TABLE with the actual table
-3. In the tests with the specific record from the actual table
-    Change the target sysId with the actual sysId of the record
-4. In
-   O3_RecordForm/data/recordPage/Map.java
-   Change the value of xpathLocator for the mainForm() to correspond to the locator of the form element on the target page.
-5. For RecordFormSubTabsTests
-   Change ProjectTables.INCIDENT_TABLE with the actual table
-   Change "expectedTabs" values with the actual for the actual table
-   Change tabByLabel("Child Incidents") with the actual tab to be tested
-   Change the "expectedTabColumns" with the actual data columns for the selected tab
+    Add 3 enums that represent actual menu items in the left navigation tree.
 
+    Follow the example:
+    In the left menu hierarchy SERVICE_DESK has child INCIDENTS and SELF_SERVICE has child INCIDENTS.
+    Three enums are added:
+        SELF_SERVICE("Self-Service"),
+        INCIDENTS("Incidents"),
+        SERVICE_DESK("Service Desk");
+
+2. Two users are expected for the tests
+    2.1 User One has "admin" role and has access to both functionalities:
+    SERVICE_DESK - INCIDENTS and
+    SELF_SERVICE - INCIDENTS.
+
+    This user's credentials will be read from the config file testFrameworkSettings.dev.json.
+    Change "user" and "pass" in testFrameworkSettings.dev.json
+    section "serviceNowProjectSettings" with the actual data for User One:
+          "userName": "user",
+          "password": "pass"
+
+    2.2 User Two has no access to SERVICE_DESK - INCIDENTS.
+    Replace "User Impersonate" with User Two in the method:
+         serviceNowPage.impersonateUser("User Impersonate")
+         in test optionNotVisible_when_nonAuthorizedUserSearchInLeftNavigation ().

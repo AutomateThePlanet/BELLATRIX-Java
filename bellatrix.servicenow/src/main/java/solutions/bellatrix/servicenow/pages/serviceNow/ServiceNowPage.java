@@ -80,10 +80,12 @@ public class ServiceNowPage extends WebPage<Map, Asserts> {
     }
 
     public void clickMenuItem(ServiceNowMenuItems item) {
-        var menuItems = map().polarisHeader().shadowRootCreateAllByCss(Button.class, "div.sn-polaris-tab.can-animate.polaris-enabled".formatted(item.getValue()));
-        var menuItem = menuItems.stream().filter(x -> x.getText().contains(item.getValue())).findFirst().get();
-        menuItem.click();
-        browser().waitForAjax();
+        if (!validateMenuItemPinned(item)) {
+            var menuItems = map().polarisHeader().shadowRootCreateAllByCss(Button.class, "div.sn-polaris-tab.can-animate.polaris-enabled".formatted(item.getValue()));
+            var menuItem = menuItems.stream().filter(x -> x.getText().contains(item.getValue())).findFirst().get();
+            menuItem.click();
+            browser().waitForAjax();
+        }
     }
 
     public void dismissNewUserModal() {
@@ -594,5 +596,13 @@ public class ServiceNowPage extends WebPage<Map, Asserts> {
             }
             return false;
         });
+    }
+
+    public Boolean validateMenuItemPinned(ServiceNowMenuItems item) {
+        var isPinned = false;
+        var pinnedItems = map().polarisHeader().shadowRootCreateAllByCss(Button.class, "div.tab.name.shown");
+        var itemList = pinnedItems.stream().filter(x -> x.getText().contains(item.getValue())).toList();
+        browser().waitForAjax();
+        return itemList.isEmpty();
     }
 }
