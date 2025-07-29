@@ -2,7 +2,14 @@
 
 ## Overview
 
-This guide explains how to  use HttpContext for dynamic configuration, and customize requests for your specific API endpoints.
+This guide explains how to use `HttpContext` for dynamic configuration and customize requests for your specific API endpoints.
+
+## Prerequisites
+
+Before using HttpContext, ensure you have:
+- Configured your `testFrameworksSettings.json` file
+- Set up your HTTP data source settings
+- Created your entity and repository classes
 
 ## HttpContext Class
 
@@ -61,6 +68,6 @@ httpContext.addPathParameter("/artists");
 httpContext.addPathParameter("/123"); // Results in: /api/artists/123
 
 // Add query parameters
-httpContext.addQueryParameter("limit", "10");
-httpContext.addQueryParameter("offset", "0"); // Results in: /api/artists?limit=10&offset=0
+httpContext.addQueryParameter(new QueryParameter("username", "testUser"));
+ // Results in: /api/artists?username=testUser
 ```

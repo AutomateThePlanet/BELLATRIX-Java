@@ -52,17 +52,86 @@ HttpRequest request = HttpRequest.newBuilder()
 HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 ```
 
-**With Bellatrix:Traditional Approach:**
-Just define your HTTP entity and create a repository instance - no-boilerplate required.
+**With Bellatrix Approach:**
+Just define your HTTP entity and create a repository instance - no boilerplate required.
 
+## Core Components
 
-HttpEntity
-Represents the data objects your API works with. Each entity corresponds to a resource (such as Artist, Album, etc.) and defines the structure and fields of that resource in your application.
+### HttpEntity
 
-HttpRepository
-Acts as the client for performing CRUD (Create, Read, Update, Delete) operations on your entities. It manages sending requests to the API and handling responses, providing a simple interface for interacting with your data source.
+HttpEntity represents the data objects your API works with. Each entity corresponds to a resource (such as Artist, Album, etc.) and defines the structure and fields of that resource.
+
+**Key Features:**
+- **Type Safety**: Generic type parameters ensure compile-time type checking
+- **JSON Serialization**: Built-in support for JSON field mapping with `@SerializedName`
+- **Builder Pattern**: Lombok's `@SuperBuilder` enables fluent object creation
 
 ```java
- ArtistRepository artistRepository = new ArtistRepository();
- List<Artist> artists = artistRepository.getAll();
+@Data
+@SuperBuilder
+@EqualsAndHashCode(callSuper = true)
+public class Artist extends HttpEntity<String, Artist> {
+    @SerializedName("ArtistId")
+    private String id;
+
+    @SerializedName("Name")
+    private String name;
+
+    @Override
+    public String getIdentifier() {
+        return id;
+    }
+}
 ```
+
+### HttpRepository
+
+HttpRepository acts as the client for performing CRUD operations on your entities. It manages HTTP requests and responses, providing a clean interface for data interactions.
+
+**Key Features:**
+- **Generic CRUD Operations**: Built-in methods for Create, Read, Update, Delete
+- **Configurable Conversion**: Custom JSON converters for different API formats
+- **HTTP Context Management**: Flexible configuration for different endpoints
+
+```java
+public class ArtistRepository extends HttpRepository<String, Artist> {
+    public ArtistRepository() {
+        super(Artist.class, new JsonConverter(builder -> {
+            builder.setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE);
+        }), () -> {
+            var httpSettings = ConfigurationService.get(DataSettings.class).getHttpSettings();
+            var httpContext = new HttpContext(httpSettings);
+            httpContext.addPathParameter("/artists");
+            return httpContext;
+        });
+    }
+}
+```
+
+### Usage Example
+
+Once you've defined your entity and repository, you can start performing operations immediately:
+
+```java
+// Create repository instance
+ArtistRepository artistRepository = new ArtistRepository();
+
+// Perform CRUD operations
+List<Artist> artists = artistRepository.getAll();
+Artist newArtist = Artist.builder().name("New Artist").build();
+Artist created = artistRepository.create(newArtist);
+```
+
+## Extensibility in mind
+
+The Bellatrix Data Module is designed with extensibility in mind. Explore these guides to learn more:
+
+### Core Concepts
+- **[Create Repository](src/test/java/04_create_repository/ReadMe.md)** - Learn how to create custom repositories for your data entities
+- **[HTTP Context Configuration](src/test/java/05_http_context/ReadMe.md)** - Configure HTTP settings and customize requests for your API endpoints
+- **[Object Converter](src/test/java/06_object_converter/ReadMe.md)** - Implement custom converters for different data formats (JSON, XML, etc.)
+
+### Additional Resources
+- **[Project Setup](src/test/java/01_project_setup/)** - Initial project configuration
+- **[HTTP Settings](src/test/java/02_http_settings/)** - Configure HTTP client settings
+- **[Create Entity](src/test/java/03_create_entity/)** - Define your data entities
