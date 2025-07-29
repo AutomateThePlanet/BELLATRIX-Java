@@ -21,6 +21,7 @@ public class TimeoutSettings {
     @Getter @Setter private long elementWaitTimeout;
     @Getter @Setter private long sleepInterval;
     @Getter @Setter private long validationsTimeout;
+    @Getter @Setter private long webviewConnectTimeout;
     @Getter @Setter private long elementToBeVisibleTimeout;
     @Getter @Setter private long elementToExistTimeout;
     @Getter @Setter private long elementToNotExistTimeout;
