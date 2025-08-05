@@ -17,7 +17,7 @@ Let's create an entity class that represents an artist in our music shop applica
 @Data
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
-public class Artist extends HttpEntity<String, Artist> {
+public class Artist extends HttpEntity<Artist> {
     @SerializedName("ArtistId")
     private String id;
 
@@ -33,7 +33,7 @@ public class Artist extends HttpEntity<String, Artist> {
 
 **Key Points:**
 
-- The class extends `HttpEntity<String, Artist>` where `String` is the identifier type
+- The class extends `HttpEntity<Artist>`
 - `@SerializedName` annotations map JSON fields to Java properties for proper serialization
 - The `getIdentifier()` method returns the unique identifier used for CRUD operations
 

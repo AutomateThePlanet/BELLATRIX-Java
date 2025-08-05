@@ -37,7 +37,7 @@ To demonstrate how to use the `HttpRepository`, let's create a complete example 
 @Data
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
-public class Artist extends HttpEntity<String, Artist> {
+public class Artist extends HttpEntity<Artist> {
     @SerializedName("ArtistId")
     private String id;
 
@@ -56,7 +56,7 @@ public class Artist extends HttpEntity<String, Artist> {
 Next, create a repository that extends `HttpRepository`:
 
 ```java
-public class ArtistRepository extends HttpRepository<String, Artist> {
+public class ArtistRepository extends HttpRepository<Artist> {
     public ArtistRepository() {
         super(Artist.class, new JsonConverter(builder -> {
             builder.setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE);
