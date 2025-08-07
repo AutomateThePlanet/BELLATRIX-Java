@@ -1,0 +1,37 @@
+{
+  "dataSettings": {
+    "dataSourceType": "HTTP",
+    "httpSettings": {
+      "baseUrl": "http://localhost:3001/",
+      "basePath": "/api",
+      "urlEncoderEnabled": "false",
+      "contentType": "application/json",
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "method": "Bearer",
+        "options": [
+          {
+            "type": "Bearer",
+            "token": "{env_http_bearer_token}"
+          },
+          {
+            "type": "Basic",
+            "username": "{env_http_username}",
+            "password": "{env_http_password}"
+          },
+          {
+            "insertionOrder": "start",
+            "type": "QueryParameters",
+            "key": "{env_http_query_key}",
+            "token": "{env_http_query_token}"
+          }
+        ]
+      }
+    }
+  }
+}
