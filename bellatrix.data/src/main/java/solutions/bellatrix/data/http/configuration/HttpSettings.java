@@ -6,7 +6,9 @@ import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.data.configuration.DataSettings;
 import solutions.bellatrix.data.http.authentication.Authentication;
 import solutions.bellatrix.data.http.authentication.AuthenticationMethod;
+import solutions.bellatrix.data.http.infrastructure.HttpHeader;
 
+import java.util.LinkedHashSet;
 import java.util.function.Consumer;
 
 @Data
@@ -21,6 +23,8 @@ public class HttpSettings {
     private Authentication authentication;
     @SerializedName("urlEncoderEnabled")
     private boolean urlEncoderEnabled;
+    @SerializedName("headers")
+    private LinkedHashSet<HttpHeader> headers;
 
     public HttpSettings(HttpSettings httpSettings) {
         setBaseUrl(httpSettings.getBaseUrl());
@@ -28,6 +32,7 @@ public class HttpSettings {
         setContentType(httpSettings.getContentType());
         setUrlEncoderEnabled(httpSettings.isUrlEncoderEnabled());
         setAuthentication(httpSettings.getAuthentication());
+        setHeaders(httpSettings.getHeaders());
     }
 
     public static HttpSettings custom(Consumer<HttpSettings> httpSettings) {
