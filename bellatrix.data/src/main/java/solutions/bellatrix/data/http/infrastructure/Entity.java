@@ -5,6 +5,7 @@ import solutions.bellatrix.data.configuration.RepositoryFactory;
 import solutions.bellatrix.data.contracts.Repository;
 
 @SuperBuilder
+@SuppressWarnings("unchecked")
 public abstract class Entity<TIdentifier, TEntity> {
     public TEntity get() {
         var repository = (Repository<Entity>)RepositoryFactory.INSTANCE.getRepository(this.getClass());

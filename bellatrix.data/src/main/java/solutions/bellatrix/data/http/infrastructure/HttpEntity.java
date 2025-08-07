@@ -1,6 +1,5 @@
 package solutions.bellatrix.data.http.infrastructure;
 
-import io.restassured.response.Response;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
@@ -12,7 +11,7 @@ import java.util.Objects;
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
 public abstract class HttpEntity<TIdentifier, TEntity> extends Entity<TIdentifier, TEntity> implements Queryable {
-    private transient Response response;
+    private transient HttpResponse response;
 
     public boolean hasInvalidIdentifier() {
         return Objects.isNull(this.getIdentifier());
