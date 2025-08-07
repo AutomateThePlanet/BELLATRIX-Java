@@ -56,7 +56,7 @@ public class Artist extends HttpEntity<Artist> {
 Next, create a repository that extends `HttpRepository`:
 
 ```java
-public class ArtistRepository extends HttpRepository<Artist> {
+public class ArtistRepository extends HttpRepository<¡Artist> {
     public ArtistRepository() {
         super(Artist.class, new JsonConverter(builder -> {
             builder.setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE);
