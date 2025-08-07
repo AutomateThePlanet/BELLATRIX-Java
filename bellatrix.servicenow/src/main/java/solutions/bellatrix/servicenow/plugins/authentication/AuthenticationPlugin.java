@@ -6,8 +6,8 @@ import solutions.bellatrix.core.plugins.Plugin;
 import solutions.bellatrix.core.plugins.TestResult;
 import solutions.bellatrix.core.utilities.Log;
 import solutions.bellatrix.core.utilities.Wait;
-import solutions.bellatrix.servicenow.data.configuration.ServiceNowProjectSettings;
-import solutions.bellatrix.servicenow.pages.serviceNow.ServiceNowPage;
+import solutions.bellatrix.servicenow.infrastructure.configuration.ServiceNowProjectSettings;
+import solutions.bellatrix.servicenow.pages.serviceNowPage.ServiceNowPage;
 import solutions.bellatrix.web.components.Div;
 import solutions.bellatrix.web.services.App;
 

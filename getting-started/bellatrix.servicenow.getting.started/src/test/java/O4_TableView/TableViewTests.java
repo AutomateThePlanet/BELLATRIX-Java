@@ -3,7 +3,7 @@ package O4_TableView;
 import O4_TableView.data.ProjectTables;
 import org.junit.jupiter.api.Test;
 import solutions.bellatrix.servicenow.baseTest.ServiceNowBaseTest;
-import solutions.bellatrix.servicenow.pages.serviceNowTableView.ServiceNowTableViewPage;
+import solutions.bellatrix.servicenow.pages.serviceNowTableViewPage.ServiceNowTableViewPage;
 
 import java.util.*;
 

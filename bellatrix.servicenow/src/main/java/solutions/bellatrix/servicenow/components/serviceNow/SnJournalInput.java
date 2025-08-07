@@ -1,6 +1,6 @@
 package solutions.bellatrix.servicenow.components.serviceNow;
 
-import solutions.bellatrix.servicenow.components.data.enums.SnComponentType;
+import solutions.bellatrix.servicenow.components.enums.SnComponentType;
 import solutions.bellatrix.web.components.Span;
 
 public class SnJournalInput extends SnDefaultComponent {

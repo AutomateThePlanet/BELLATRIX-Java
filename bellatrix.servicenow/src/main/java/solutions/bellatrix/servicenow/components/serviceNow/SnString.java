@@ -1,6 +1,6 @@
 package solutions.bellatrix.servicenow.components.serviceNow;
 
-import solutions.bellatrix.servicenow.components.data.enums.SnComponentType;
+import solutions.bellatrix.servicenow.components.enums.SnComponentType;
 
 public class SnString extends SnDefaultComponent {
     @Override

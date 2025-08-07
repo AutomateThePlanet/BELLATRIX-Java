@@ -5,7 +5,7 @@ import O5_LeftNavigation.data.ProjectLeftNavigationItem;
 import O5_LeftNavigation.data.leftNavigationSection.LeftNavigationSection;
 import org.junit.jupiter.api.Test;
 import solutions.bellatrix.servicenow.baseTest.ServiceNowBaseTest;
-import solutions.bellatrix.servicenow.snSetupData.enums.ServiceNowMenuItems;
+import solutions.bellatrix.servicenow.infrastructure.enums.ServiceNowMenuItems;
 
 public class LeftNavigationTests extends ServiceNowBaseTest {
     @Test

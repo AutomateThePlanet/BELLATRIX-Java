@@ -1,10 +1,10 @@
 package solutions.bellatrix.servicenow.pages.baseUiBuilderPage;
 
 import solutions.bellatrix.servicenow.contracts.Entity;
-import solutions.bellatrix.servicenow.contracts.ServiceNowProjectTable;
-import solutions.bellatrix.servicenow.pages.serviceNow.ServiceNowPage;
+import solutions.bellatrix.servicenow.contracts.ServiceNowTable;
+import solutions.bellatrix.servicenow.pages.serviceNowPage.ServiceNowPage;
 import solutions.bellatrix.web.pages.WebPage;
-import solutions.bellatrix.servicenow.utilities.BaseInstancesUrlGeneration;
+import solutions.bellatrix.servicenow.utilities.generators.BaseInstancesUrlGeneration;
 
 public abstract class BaseUiBuilderPage<MapT extends Map, AssertsT extends Asserts<MapT>> extends WebPage<MapT, AssertsT> {
     private String url;
@@ -17,22 +17,12 @@ public abstract class BaseUiBuilderPage<MapT extends Map, AssertsT extends Asser
         this.url = url;
     }
 
-    protected ServiceNowProjectTable getServiceNowProjectTable() {
+    protected ServiceNowTable getServiceNowProjectTable() {
         return null;
     }
 
     protected ServiceNowPage serviceNowPage() {
         return app().createPage(ServiceNowPage.class);
-    }
-
-    public void open(Entity entity) {
-        url = BaseInstancesUrlGeneration.getUibRecordBaseUrl(getServiceNowProjectTable(), entity);
-        super.open();
-    }
-
-    public void openNew() {
-        url = BaseInstancesUrlGeneration.getUibNewRecordBaseUrl(getServiceNowProjectTable());
-        super.open();
     }
 
     @Override

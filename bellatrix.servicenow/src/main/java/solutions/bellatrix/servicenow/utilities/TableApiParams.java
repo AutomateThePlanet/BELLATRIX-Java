@@ -1,14 +1,14 @@
 package solutions.bellatrix.servicenow.utilities;
 
 
-import static solutions.bellatrix.servicenow.snSetupData.enums.TableApiParameter.SYSPARM_DISPLAY_VALUE;
-import static solutions.bellatrix.servicenow.snSetupData.enums.TableApiParameter.SYSPARM_EXCLUDE_REFERENCE_LINK;
-import static solutions.bellatrix.servicenow.snSetupData.enums.TableApiParameter.SYSPARM_FIELDS;
-import static solutions.bellatrix.servicenow.snSetupData.enums.TableApiParameter.SYSPARM_LIMIT;
-import static solutions.bellatrix.servicenow.snSetupData.enums.TableApiParameter.SYSPARM_QUERY;
+import static solutions.bellatrix.servicenow.infrastructure.enums.TableApiParameter.SYSPARM_DISPLAY_VALUE;
+import static solutions.bellatrix.servicenow.infrastructure.enums.TableApiParameter.SYSPARM_EXCLUDE_REFERENCE_LINK;
+import static solutions.bellatrix.servicenow.infrastructure.enums.TableApiParameter.SYSPARM_FIELDS;
+import static solutions.bellatrix.servicenow.infrastructure.enums.TableApiParameter.SYSPARM_LIMIT;
+import static solutions.bellatrix.servicenow.infrastructure.enums.TableApiParameter.SYSPARM_QUERY;
 
 import com.google.gson.annotations.SerializedName;
-import solutions.bellatrix.servicenow.snSetupData.enums.TableApiParameter;
+import solutions.bellatrix.servicenow.infrastructure.enums.TableApiParameter;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -151,12 +151,6 @@ public class TableApiParams {
 
     public TableApiParams queueEquals(String number) {
         addSysparmQuery("queue=" + number);
-
-        return this;
-    }
-
-    public TableApiParams multiMatchEquals(String number) {
-        addSysparmQuery("x_nuvo_cs_multiple_match=" + number);
 
         return this;
     }

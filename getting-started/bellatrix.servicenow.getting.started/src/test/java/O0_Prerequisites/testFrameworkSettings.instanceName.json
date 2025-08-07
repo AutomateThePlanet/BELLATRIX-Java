@@ -1,0 +1,76 @@
+{
+  "troubleshootingSettings": {
+    "debugInformationEnabled": "true"
+  },
+  "webSettings": {
+    "baseUrl": "http://demos.bellatrix.solutions/",
+    "executionType": "regular",
+    "defaultBrowser": "chrome",
+    "defaultLifeCycle": "restart everytime time",
+    "artificialDelayBeforeAction": "0",
+    "automaticallyScrollToVisible": "true",
+    "waitUntilReadyOnElementFound": "false",
+    "waitForAngular": "false",
+    "shouldHighlightElements": "false",
+    "toastNotificationBddLogging": "false",
+    "shouldCaptureHttpTraffic": "false",
+    "screenshotsOnFailEnabled": "false",
+    "screenshotsSaveLocation": "${user.home}/BELLATRIX/Screenshots",
+    "videosOnFailEnabled": "false",
+    "videosSaveLocation": "${user.home}/BELLATRIX/Videos",
+    "notificationToastTimeout": "1500",
+    "timeoutSettings": {
+      "elementWaitTimeout": "30",
+      "pageLoadTimeout": "30",
+      "scriptTimeout": "2",
+      "waitForAjaxTimeout": "60",
+      "sleepInterval": "1",
+      "waitUntilReadyTimeout": "30",
+      "waitForJavaScriptAnimationsTimeout": "30",
+      "waitForAngularTimeout": "30",
+      "waitForPartialUrl": "30",
+      "validationsTimeout": "30",
+      "elementToBeVisibleTimeout": "30",
+      "elementToExistTimeout": "30",
+      "elementToNotExistTimeout": "5",
+      "elementToBeClickableTimeout": "30",
+      "elementNotToBeVisibleTimeout": "30",
+      "elementToHaveContentTimeout": "15"
+    },
+    "gridSettings": [
+      {
+        "providerName": "lambdatest",
+        "optionsName": "LT:Options",
+        "url": "https://{env_atp-lt-username}:{env_atp-lt-access-key}@hub.lambdatest.com/wd/hub",
+        "arguments": [
+          {
+            "resolution": "1920x1080",
+            "platform": "Windows 10",
+            "browser": "chrome",
+            "browserVersion": "latest",
+            "visual": "true",
+            "video": "true",
+            "timezone": "Sofia",
+            "geoLocation": "BG",
+            "build": "1.0",
+            "console": "true",
+            "network": "true",
+            "terminal": "true",
+            "verboseWebDriverLogging": "true",
+            "project": "Nuvolo_Reservation",
+            "username": "{env_atp-lt-username}",
+            "accessKey": "{env_atp-lt-access-key}",
+            "idleTimeout": "120"
+          }
+        ]
+      }
+    ]
+  },
+  "serviceNowProjectSettings": {
+    "isPolarisEnabled": "true",
+    "instance": "dev329858",
+    "platformRelease": "yokohama",
+    "userName": "user",
+    "password": "pass"
+  }
+}

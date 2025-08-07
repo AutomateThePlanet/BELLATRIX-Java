@@ -5,18 +5,16 @@ import static solutions.bellatrix.web.infrastructure.DriverService.getWrappedDri
 import java.time.Duration;
 import java.util.Objects;
 import java.util.function.Function;
+
 import lombok.SneakyThrows;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.ElementNotInteractableException;
 import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import solutions.bellatrix.api.HttpErrorException;
 import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.core.utilities.Wait;
-import solutions.bellatrix.servicenow.contracts.Entity;
-import solutions.bellatrix.servicenow.data.exceptions.ElementStillExistException;
-import solutions.bellatrix.servicenow.infrastructure.repositories.core.TableApiRepository;
+import solutions.bellatrix.servicenow.infrastructure.exceptions.ElementStillExistException;
 import solutions.bellatrix.web.components.Div;
 import solutions.bellatrix.web.components.FileInput;
 import solutions.bellatrix.web.components.Select;
@@ -127,7 +125,7 @@ public class UserInteraction {
 
     public static void waitUntilStateIsComplete() throws InterruptedException {
         var app = new App();
-        var xpathLocator = "//div[@data-type='label' and .//span[text()='State']]/following-sibling::div/select";
+        var xpathLocator = "//div[@models-type='label' and .//span[text()='State']]/following-sibling::div/select";
         Wait.retry(() -> {
             if (!Objects.equals(app.create().byXPath(Select.class, xpathLocator).getSelected().getText(), "Completed")) {
                 throw new ElementStillExistException();
@@ -255,16 +253,16 @@ public class UserInteraction {
         return null;
     }
 
-    @SneakyThrows
-    public static void waitUntilEntityDeleted(TableApiRepository repository, Entity entity) {
-        Wait.retry(() -> {
-            try {
-                repository.getById(entity.getEntityId());
-            } catch (Exception e) {
-                throw new NullPointerException();
-            }
-        }, Duration.ofSeconds(20), Duration.ofSeconds(5), NullPointerException.class);
-    }
+//    @SneakyThrows
+//    public static void waitUntilEntityDeleted(TableApiRepository repository, Entity entity) {
+//        Wait.retry(() -> {
+//            try {
+//                repository.getById(entity.getEntityId());
+//            } catch (Exception e) {
+//                throw new NullPointerException();
+//            }
+//        }, Duration.ofSeconds(20), Duration.ofSeconds(5), NullPointerException.class);
+//    }
 
     private static void userInteractionWait(Integer millis) {
         try {

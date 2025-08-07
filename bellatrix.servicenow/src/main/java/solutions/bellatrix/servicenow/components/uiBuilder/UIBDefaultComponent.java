@@ -1,6 +1,6 @@
 package solutions.bellatrix.servicenow.components.uiBuilder;
 
-import solutions.bellatrix.servicenow.components.data.enums.UibComponentType;
+import solutions.bellatrix.servicenow.components.enums.UibComponentType;
 import solutions.bellatrix.servicenow.components.serviceNow.SnComponent;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -24,7 +24,6 @@ public abstract class UIBDefaultComponent extends SnComponent implements Compone
     public final static EventListener<ComponentActionEventArgs> VALUE_SET = new EventListener<>();
 
     protected String formControlXpathLocator() {
-        // TODO: adjust locator
         return ".//*[contains(concat(' ',normalize-space(@class),' '),' form-control ')]";
     }
 
@@ -39,10 +38,6 @@ public abstract class UIBDefaultComponent extends SnComponent implements Compone
     protected void invokeValueSetEvent(String text) {
         VALUE_SET.broadcast(new ComponentActionEventArgs(this, text));
     }
-
-    // This method is used to get the type of the parameter of the setText method.
-    // This is needed when we want to dynamically invoke setTextMethod();
-    //If you use it with formModel. FormModel field type should equals this type in order dynamic logic to work properly.
 
     protected Class<?> getSetTextParamClass() {
         return String.class;
@@ -97,12 +92,10 @@ public abstract class UIBDefaultComponent extends SnComponent implements Compone
     }
 
     public Boolean checkFormControlContainsClassDisabled() {
-        // TODO: adjust locator
         return formControl().getHtmlClass().contains("disabled");
     }
 
     public Boolean checkFormControlContainsAttributeReadonly() {
-        // TODO: adjust locator
         var readonlyAttribute = formControl().getAttribute("readonly");
 
         return readonlyAttribute != null;
@@ -125,8 +118,7 @@ public abstract class UIBDefaultComponent extends SnComponent implements Compone
     }
 
     public String getType() {
-        // TODO: adjust locator
-        var xpathLocator = ".//div[@data-type='label']";
+        var xpathLocator = ".//div[@models-type='label']";
         return this.createByXPath(Span.class, xpathLocator).getWrappedElement().getAttribute("type");
     }
 

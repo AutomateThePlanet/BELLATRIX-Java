@@ -3,9 +3,9 @@ package O3_RecordForm.data;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
-import solutions.bellatrix.servicenow.components.data.ServiceNowForm;
+import solutions.bellatrix.servicenow.components.models.ServiceNowForm;
 import solutions.bellatrix.servicenow.components.serviceNow.*;
-import solutions.bellatrix.servicenow.snSetupData.annotations.snFieldAnnotations.*;
+import solutions.bellatrix.servicenow.models.annotations.snFieldAnnotations.*;
 
 @Data
 @SuperBuilder

@@ -1,7 +1,7 @@
 package solutions.bellatrix.servicenow.components.serviceNow;
 
 
-import solutions.bellatrix.servicenow.components.data.enums.SnComponentType;
+import solutions.bellatrix.servicenow.components.enums.SnComponentType;
 import solutions.bellatrix.core.plugins.EventListener;
 import solutions.bellatrix.web.components.Button;
 import solutions.bellatrix.web.components.CheckBox;

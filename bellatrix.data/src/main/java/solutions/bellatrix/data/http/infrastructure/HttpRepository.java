@@ -30,7 +30,7 @@ public abstract class HttpRepository<THttpEntity extends HttpEntity> implements 
     protected final HttpContext repositoryContext;
     private final Class<THttpEntity> entityType;
     private final ObjectConverter objectConverter;
-    private HttpContext requestContext;
+    protected HttpContext requestContext;
 
     protected HttpRepository(Class<THttpEntity> entityType, ObjectConverter objectConverter, Supplier<HttpContext> repositoryContext) {
         this.entityType = entityType;
@@ -158,7 +158,7 @@ public abstract class HttpRepository<THttpEntity extends HttpEntity> implements 
         return RestAssured.given().spec(requestContext.requestSpecification());
     }
 
-    private <R> R deserializeInternal(HttpResponse response, DeserializationMode mode) {
+    protected  <R> R deserializeInternal(HttpResponse response, DeserializationMode mode) {
         try {
             if (mode == DeserializationMode.LIST) {
                 List<THttpEntity> entities = objectConverter.fromStringToList(response.getBody(), entityType);
@@ -174,7 +174,7 @@ public abstract class HttpRepository<THttpEntity extends HttpEntity> implements 
         }
     }
 
-    private Response broadcastRequest(Supplier<Response> responseSupplier) {
+    protected Response broadcastRequest(Supplier<Response> responseSupplier) {
         try {
             SENDING_REQUEST.broadcast(new HttpRequestEventArgs(requestContext));
             Response response = responseSupplier.get();

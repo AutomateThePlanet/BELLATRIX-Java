@@ -1,7 +1,7 @@
 package solutions.bellatrix.servicenow.components.serviceNow;
 
 import org.openqa.selenium.Keys;
-import solutions.bellatrix.servicenow.components.data.enums.SnComponentType;
+import solutions.bellatrix.servicenow.components.enums.SnComponentType;
 import solutions.bellatrix.web.components.Button;
 import solutions.bellatrix.web.components.Span;
 import solutions.bellatrix.web.components.TextInput;

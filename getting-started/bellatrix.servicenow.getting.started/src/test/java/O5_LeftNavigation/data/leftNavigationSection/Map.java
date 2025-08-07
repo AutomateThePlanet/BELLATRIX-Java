@@ -1,7 +1,7 @@
 package O5_LeftNavigation.data.leftNavigationSection;
 
 import solutions.bellatrix.core.configuration.ConfigurationService;
-import solutions.bellatrix.servicenow.data.configuration.ServiceNowProjectSettings;
+import solutions.bellatrix.servicenow.infrastructure.configuration.ServiceNowProjectSettings;
 import solutions.bellatrix.web.components.Div;
 import solutions.bellatrix.web.components.WebComponent;
 import solutions.bellatrix.web.components.shadowdom.ShadowRoot;

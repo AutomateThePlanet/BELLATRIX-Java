@@ -37,7 +37,7 @@ public class FileWriterService {
             Response fileUploadResponse = RestAssured
                 .given()
                 .header("Authorization", getAuthorizationHeaderValue())
-                .contentType("multipart/form-data")
+                .contentType("multipart/form-models")
                 .multiPart("files", fileInfo.getFile())
                 .when()
                 .post(apiUrl);

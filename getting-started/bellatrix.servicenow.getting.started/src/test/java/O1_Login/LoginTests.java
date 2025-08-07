@@ -1,10 +1,9 @@
 package O1_Login;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import solutions.bellatrix.servicenow.baseTest.ServiceNowBaseTest;
-import solutions.bellatrix.servicenow.pages.serviceNow.ServiceNowPage;
-import solutions.bellatrix.servicenow.utilities.BaseInstancesUrlGeneration;
+import solutions.bellatrix.servicenow.pages.serviceNowPage.ServiceNowPage;
+import solutions.bellatrix.servicenow.utilities.generators.BaseInstancesUrlGeneration;
 
 public class LoginTests extends ServiceNowBaseTest {
     @Test

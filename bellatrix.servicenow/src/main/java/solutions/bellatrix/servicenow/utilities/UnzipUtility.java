@@ -10,7 +10,7 @@ import java.util.zip.ZipInputStream;
 
 public class UnzipUtility {
     /**
-     * Size of the buffer to read/write data
+     * Size of the buffer to read/write models
      */
     private static final int BUFFER_SIZE = 4096;
     /**

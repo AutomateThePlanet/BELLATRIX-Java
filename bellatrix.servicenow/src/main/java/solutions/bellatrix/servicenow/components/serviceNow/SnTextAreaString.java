@@ -1,7 +1,7 @@
 package solutions.bellatrix.servicenow.components.serviceNow;
 
 import lombok.SneakyThrows;
-import solutions.bellatrix.servicenow.components.data.enums.SnComponentType;
+import solutions.bellatrix.servicenow.components.enums.SnComponentType;
 
 public class SnTextAreaString extends SnDefaultComponent {
     @Override

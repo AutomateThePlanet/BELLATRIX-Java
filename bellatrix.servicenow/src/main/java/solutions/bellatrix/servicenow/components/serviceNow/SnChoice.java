@@ -1,7 +1,7 @@
 package solutions.bellatrix.servicenow.components.serviceNow;
 
 import lombok.SneakyThrows;
-import solutions.bellatrix.servicenow.components.data.enums.SnComponentType;
+import solutions.bellatrix.servicenow.components.enums.SnComponentType;
 import solutions.bellatrix.core.utilities.SingletonFactory;
 import solutions.bellatrix.web.components.Option;
 import solutions.bellatrix.web.components.Select;

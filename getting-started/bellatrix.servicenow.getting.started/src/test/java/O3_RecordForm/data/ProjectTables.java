@@ -1,17 +1,17 @@
 package O3_RecordForm.data;
 
-import solutions.bellatrix.servicenow.contracts.ServiceNowProjectTable;
+import solutions.bellatrix.servicenow.contracts.ServiceNowTable;
 
-public enum ProjectTables implements ServiceNowProjectTable {
+public enum ProjectTables implements ServiceNowTable {
     INCIDENT_TABLE("incident");
-
-    private final String table;
+    private final String value;
 
     ProjectTables(String table) {
-        this.table = table;
+        this.value = table;
     }
+
     @Override
-    public String getTable() {
-        return table;
+    public String getTableName() {
+        return value;
     }
 }

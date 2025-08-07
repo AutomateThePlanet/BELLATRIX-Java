@@ -16,12 +16,10 @@ public class UiBuilderGrid extends WebComponent implements ComponentDisabled, Co
         return customUiNowDateInputByLabel().shadowRootCreateByCss(TextInput.class, "input");
     }
 
-    //calendar button
     protected Button customUiNowDateInputCalendarButton() {
         return this.shadowRootCreateByCss(Button.class, "*[icon='calendar-outline']");
     }
 
-    //calendar pop up
     protected WebComponent customUiDropDownSeismicHoist() {
         return create().byCss(WebComponent.class, "seismic-hoist").toShadowRootToBeAttached();
     }
@@ -38,7 +36,6 @@ public class UiBuilderGrid extends WebComponent implements ComponentDisabled, Co
         return customUiDropDownSeismicHoist().shadowRootCreateByCss(Button.class, String.format("div[aria-label*='%s']", ariaLabel));
     }
 
-    //TODO(I.D.) check disabled state
     @Override
     public boolean isDisabled() {
         return false;

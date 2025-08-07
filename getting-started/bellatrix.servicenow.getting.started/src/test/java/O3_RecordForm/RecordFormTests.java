@@ -5,7 +5,7 @@ import O3_RecordForm.data.ProjectTables;
 import O3_RecordForm.data.recordPage.IncidentRecordPage;
 import org.junit.jupiter.api.Test;
 import solutions.bellatrix.servicenow.baseTest.ServiceNowBaseTest;
-import solutions.bellatrix.servicenow.utilities.BaseInstancesUrlGeneration;
+import solutions.bellatrix.servicenow.utilities.generators.BaseInstancesUrlGeneration;
 
 public class RecordFormTests extends ServiceNowBaseTest {
     @Test

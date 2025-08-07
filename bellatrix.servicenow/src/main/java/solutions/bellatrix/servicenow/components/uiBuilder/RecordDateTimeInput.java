@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import java.time.format.TextStyle;
 import java.util.Locale;
 import org.apache.commons.lang3.NotImplementedException;
-import solutions.bellatrix.servicenow.components.data.enums.UibComponentType;
+import solutions.bellatrix.servicenow.components.enums.UibComponentType;
 import solutions.bellatrix.web.components.Button;
 import solutions.bellatrix.web.components.TextInput;
 import solutions.bellatrix.web.components.contracts.ComponentDisabled;
@@ -15,7 +15,6 @@ import solutions.bellatrix.web.services.ComponentCreateService;
 
 public class RecordDateTimeInput extends UIBDefaultComponent implements ComponentDisabled, ComponentText {
 
-    //calendar button
     protected ShadowRoot customUiDropDownSeismicHoist() {
         return create().byCss(ShadowRoot.class, "seismic-hoist").toShadowRootToBeAttached();
     }
@@ -75,7 +74,6 @@ public class RecordDateTimeInput extends UIBDefaultComponent implements Componen
         return UibComponentType.DATE_TIME;
     }
 
-    // date pattern "date" , month="camel case June"
     public boolean isDateDisabled(String date, String targetedMonth) {
         var currentMonth = String.valueOf(LocalDate.now().getMonth());
         openCalendarPopUp();

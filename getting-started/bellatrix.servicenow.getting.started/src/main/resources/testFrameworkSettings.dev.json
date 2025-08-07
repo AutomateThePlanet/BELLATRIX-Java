@@ -72,5 +72,40 @@
     "platformRelease": "yokohama",
     "userName": "user",
     "password": "pass"
+  },
+  "dataSettings": {
+    "dataSourceType": "HTTP",
+    "httpSettings": {
+      "baseUrl": "https://dev329858.service-now.com",
+      "basePath": "/api/now/table",
+      "urlEncoderEnabled": "false",
+      "contentType": "application/json",
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "method": "Basic",
+        "options": [
+          {
+            "type": "Bearer",
+            "token": "{env_http_bearer_token}"
+          },
+          {
+            "type": "Basic",
+            "username": "{env_http_username}",
+            "password": "{env_http_password}"
+          },
+          {
+            "insertionOrder": "start",
+            "type": "QueryParameters",
+            "key": "{env_http_query_key}",
+            "token": "{env_http_query_token}"
+          }
+        ]
+      }
+    }
   }
 }

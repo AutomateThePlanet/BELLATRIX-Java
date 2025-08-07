@@ -1,6 +1,6 @@
 package solutions.bellatrix.servicenow.plugins.authentication;
 
-import solutions.bellatrix.servicenow.snSetupData.enums.ServiceNowUser;
+import solutions.bellatrix.servicenow.infrastructure.enums.ServiceNowUser;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

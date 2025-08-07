@@ -5,12 +5,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import solutions.bellatrix.servicenow.components.data.ServiceNowForm;
+import solutions.bellatrix.servicenow.components.models.ServiceNowForm;
 import solutions.bellatrix.servicenow.components.serviceNow.SnChoice;
 import solutions.bellatrix.servicenow.components.serviceNow.SnDefaultComponent;
 import solutions.bellatrix.servicenow.contracts.FieldReadonly;
 import solutions.bellatrix.servicenow.contracts.SnFormField;
-import solutions.bellatrix.servicenow.snSetupData.annotations.snFieldAnnotations.*;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
@@ -18,7 +17,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.SneakyThrows;
-import solutions.bellatrix.servicenow.models.enums.serviceNowFormFieldsDescription.InputType;
+import solutions.bellatrix.servicenow.models.enums.InputType;
+import solutions.bellatrix.servicenow.models.annotations.snFieldAnnotations.Component;
+import solutions.bellatrix.servicenow.models.annotations.snFieldAnnotations.FieldLabel;
+import solutions.bellatrix.servicenow.models.annotations.snFieldAnnotations.Id;
+import solutions.bellatrix.servicenow.models.annotations.snFieldAnnotations.Required;
+import solutions.bellatrix.servicenow.models.annotations.snFieldAnnotations.SelectOptions;
+import solutions.bellatrix.servicenow.models.annotations.snFieldAnnotations.SelectedOption;
 import solutions.bellatrix.web.components.Label;
 import solutions.bellatrix.web.components.WebComponent;
 import solutions.bellatrix.web.components.contracts.ComponentReadonly;

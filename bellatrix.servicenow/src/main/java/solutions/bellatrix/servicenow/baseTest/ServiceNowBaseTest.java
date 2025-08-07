@@ -2,8 +2,8 @@ package solutions.bellatrix.servicenow.baseTest;
 
 
 import solutions.bellatrix.servicenow.listeners.AutoWaitListener;
-import solutions.bellatrix.servicenow.pages.serviceNow.ServiceNowPage;
-import solutions.bellatrix.servicenow.pages.serviceNowTableView.ServiceNowTableViewPage;
+import solutions.bellatrix.servicenow.pages.serviceNowPage.ServiceNowPage;
+import solutions.bellatrix.servicenow.pages.serviceNowTableViewPage.ServiceNowTableViewPage;
 import solutions.bellatrix.servicenow.plugins.authentication.AuthenticationPlugin;
 import solutions.bellatrix.servicenow.plugins.fileuploads.FileUploadPlugin;
 import solutions.bellatrix.core.plugins.junit.BaseTest;
@@ -38,6 +38,5 @@ public class ServiceNowBaseTest extends BaseTest {
     @Override
     protected void afterEach() {
         super.afterEach();
-//        clearObjectsContainer();
     }
 }

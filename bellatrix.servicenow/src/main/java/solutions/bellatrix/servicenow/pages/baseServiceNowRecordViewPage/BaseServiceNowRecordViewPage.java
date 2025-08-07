@@ -1,32 +1,29 @@
 package solutions.bellatrix.servicenow.pages.baseServiceNowRecordViewPage;
 
-import solutions.bellatrix.servicenow.components.data.ServiceNowForm;
-import solutions.bellatrix.servicenow.components.data.enums.AdditionalView;
+import solutions.bellatrix.servicenow.components.models.ServiceNowForm;
 import solutions.bellatrix.servicenow.components.serviceNow.SnDefaultComponent;
 import solutions.bellatrix.servicenow.contracts.Entity;
 import solutions.bellatrix.servicenow.contracts.FieldLabel;
-import solutions.bellatrix.servicenow.contracts.ServiceNowProjectTable;
-import solutions.bellatrix.servicenow.data.configuration.ServiceNowProjectSettings;
-import solutions.bellatrix.servicenow.infrastructure.repositories.core.ApiEntity;
-import solutions.bellatrix.servicenow.pages.serviceNow.ServiceNowPage;
-import solutions.bellatrix.servicenow.snSetupData.annotations.snFieldAnnotations.Component;
+import solutions.bellatrix.servicenow.contracts.ServiceNowTable;
+import solutions.bellatrix.servicenow.infrastructure.configuration.ServiceNowProjectSettings;
+import solutions.bellatrix.servicenow.pages.serviceNowPage.ServiceNowPage;
+import solutions.bellatrix.servicenow.models.annotations.snFieldAnnotations.Component;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import lombok.SneakyThrows;
 import org.openqa.selenium.interactions.Actions;
 import solutions.bellatrix.core.configuration.ConfigurationService;
-import solutions.bellatrix.servicenow.snSetupData.annotations.snFieldAnnotations.Id;
+import solutions.bellatrix.servicenow.models.annotations.snFieldAnnotations.Id;
 import solutions.bellatrix.web.components.CheckBox;
 import solutions.bellatrix.web.components.Div;
 import solutions.bellatrix.web.components.WebComponent;
 import solutions.bellatrix.web.pages.WebPage;
-import solutions.bellatrix.servicenow.utilities.BaseInstancesUrlGeneration;
+import solutions.bellatrix.servicenow.utilities.generators.BaseInstancesUrlGeneration;
 import solutions.bellatrix.servicenow.utilities.UserInteraction;
 
 public abstract class BaseServiceNowRecordViewPage<MapT extends Map, AssertsT extends Asserts<MapT>> extends WebPage<MapT, AssertsT> {
@@ -84,7 +81,7 @@ public abstract class BaseServiceNowRecordViewPage<MapT extends Map, AssertsT ex
         this.url = url;
     }
 
-    protected ServiceNowProjectTable getServiceNowProjectTable() {
+    protected ServiceNowTable getServiceNowProjectTable() {
         return null;
     }
 
@@ -98,7 +95,7 @@ public abstract class BaseServiceNowRecordViewPage<MapT extends Map, AssertsT ex
         serviceNowPage().switchToInnerFrame();
     }
 
-    public void open(ServiceNowProjectTable serviceNowProjectTable) {
+    public void open(ServiceNowTable serviceNowProjectTable) {
         url = BaseInstancesUrlGeneration.getSnNewRecordBaseUrl(serviceNowProjectTable);
         super.open();
         serviceNowPage().switchToInnerFrame();
@@ -120,48 +117,9 @@ public abstract class BaseServiceNowRecordViewPage<MapT extends Map, AssertsT ex
         map().bottomTablesLabelsButton(tabText).click();
     }
 
-    @Deprecated
-    public void open(ApiEntity entity) {
-        url = BaseInstancesUrlGeneration.getSnRecordBaseUrl(getServiceNowProjectTable(), entity.getSysId());
-        super.open();
-        serviceNowPage().switchToInnerFrame();
-    }
-
-    //todo: preferable way
     public void open(Entity entity) {
         var url = BaseInstancesUrlGeneration.getSnRecordBaseUrl(getServiceNowProjectTable(), entity);
         setUrl(url);
-        super.open();
-        serviceNowPage().switchToInnerFrame();
-    }
-
-    @Deprecated(since = "Due to poor design decision", forRemoval = true)
-    public void open(ApiEntity entity, boolean isPolaris) {
-        url = BaseInstancesUrlGeneration.getSnRecordBaseUrl(getServiceNowProjectTable(), entity.getSysId());
-        super.open();
-        if (!isPolaris) {
-            browser().switchToFrame(map().innerFrame());
-        }
-    }
-
-    public void open(Entity entity, AdditionalView additionalViews) {
-        var params = new HashMap<String, String>();
-        params.put("sysparm_view", additionalViews.toString());
-        open(entity.getEntityId(), params);
-    }
-
-    //for deprication to poor design
-    //PlancTests
-    @Deprecated(since = "Due to poor design decision", forRemoval = true)
-    public void openByTable(ServiceNowProjectTable table, ApiEntity entity) {
-        url = BaseInstancesUrlGeneration.getSnRecordBaseUrl(table, entity.getSysId());
-        super.open();
-        serviceNowPage().switchToInnerFrame();
-    }
-
-    @Deprecated(since = "Due to poor design decision", forRemoval = true)
-    public void open(ServiceNowProjectTable table, Entity entity) {
-        url = BaseInstancesUrlGeneration.getSnRecordBaseUrl(table, entity.getEntityId());
         super.open();
         serviceNowPage().switchToInnerFrame();
     }

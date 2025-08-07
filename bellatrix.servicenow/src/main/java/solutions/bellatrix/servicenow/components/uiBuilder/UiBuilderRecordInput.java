@@ -61,7 +61,6 @@ public class UiBuilderRecordInput extends WebComponent implements ComponentDisab
         pickOptionByNumber(1);
     }
 
-    //TODO(I.D.) check disabled state
     @Override
     public boolean isDisabled() {
         return false;
@@ -71,7 +70,6 @@ public class UiBuilderRecordInput extends WebComponent implements ComponentDisab
         return new ComponentCreateService();
     }
 
-    //todo add validations -> validateTextIs()
     public void assertTextIs(String text) {
         recordTextInputDopDownByLabel().validateTextIs(text);
     }

@@ -1,7 +1,7 @@
 package solutions.bellatrix.servicenow.components.serviceNow;
 
 import lombok.SneakyThrows;
-import solutions.bellatrix.servicenow.components.data.enums.SnComponentType;
+import solutions.bellatrix.servicenow.components.enums.SnComponentType;
 import solutions.bellatrix.core.plugins.EventListener;
 import solutions.bellatrix.core.utilities.SingletonFactory;
 import solutions.bellatrix.web.components.ComponentActionEventArgs;
@@ -28,10 +28,6 @@ public abstract class SnDefaultComponent extends SnComponent implements Componen
     protected void invokeValueSetEvent(String text) {
         VALUE_SET.broadcast(new ComponentActionEventArgs(this, text));
     }
-
-    // This method is used to get the type of the parameter of the setText method.
-    // This is needed when we want to dynamically invoke setTextMethod();
-    //If you use it with formModel. FormModel field type should equals this type in order dynamic logic to work properly.
 
     protected Class<?> getSetTextParamClass() {
         return String.class;
@@ -114,7 +110,7 @@ public abstract class SnDefaultComponent extends SnComponent implements Componen
     }
 
     public String getType() {
-        var xpathLocator = ".//div[@data-type='label']";
+        var xpathLocator = ".//div[@models-type='label']";
         return this.createByXPath(Span.class, xpathLocator).getWrappedElement().getAttribute("type");
     }
 

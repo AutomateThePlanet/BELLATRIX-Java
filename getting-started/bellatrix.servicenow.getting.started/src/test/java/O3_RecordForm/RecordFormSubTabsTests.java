@@ -2,10 +2,8 @@ package O3_RecordForm;
 
 import O3_RecordForm.data.ProjectTables;
 import O3_RecordForm.data.recordPage.IncidentRecordPage;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import solutions.bellatrix.servicenow.baseTest.ServiceNowBaseTest;
-import solutions.bellatrix.servicenow.utilities.BaseInstancesUrlGeneration;
 
 import java.util.ArrayList;
 import java.util.List;

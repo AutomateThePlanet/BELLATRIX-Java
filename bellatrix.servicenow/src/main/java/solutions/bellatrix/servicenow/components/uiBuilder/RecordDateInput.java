@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import java.time.format.TextStyle;
 import java.util.Locale;
 import org.apache.commons.lang3.NotImplementedException;
-import solutions.bellatrix.servicenow.components.data.enums.UibComponentType;
+import solutions.bellatrix.servicenow.components.enums.UibComponentType;
 import solutions.bellatrix.web.components.Button;
 import solutions.bellatrix.web.components.TextInput;
 import solutions.bellatrix.web.components.contracts.ComponentDisabled;
@@ -63,7 +63,6 @@ public class RecordDateInput extends UIBDefaultComponent implements ComponentDis
         return UibComponentType.DATE;
     }
 
-    // date pattern "date" , month="camel case June"
     public boolean isDateDisabled(String date, String targetedMonth) {
         var currentMonth = String.valueOf(LocalDate.now().getMonth());
         openCalendarPopUp();

@@ -2,7 +2,7 @@ package solutions.bellatrix.servicenow.components.uiBuilder;
 
 import java.util.List;
 import org.openqa.selenium.ElementNotInteractableException;
-import solutions.bellatrix.servicenow.components.data.enums.UibComponentType;
+import solutions.bellatrix.servicenow.components.enums.UibComponentType;
 import solutions.bellatrix.web.components.Button;
 import solutions.bellatrix.web.components.WebComponent;
 import solutions.bellatrix.web.components.contracts.ComponentDisabled;

@@ -1,6 +1,6 @@
 package solutions.bellatrix.servicenow.components.serviceNow;
 
-import solutions.bellatrix.servicenow.components.data.enums.SnComponentType;
+import solutions.bellatrix.servicenow.components.enums.SnComponentType;
 import solutions.bellatrix.web.components.Button;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -28,7 +28,7 @@ public class SnGlideTime extends SnDefaultComponent{
     }
 
     public void setText(LocalDateTime localDateTime) {
-        var dateTimeFormat = calendarButton().getAttribute("data-date_time_format");
+        var dateTimeFormat = calendarButton().getAttribute("models-date_time_format");
         var dateAsString = DateTimeFormatter.ofPattern(dateTimeFormat).format(localDateTime);
 
         setText(dateAsString);

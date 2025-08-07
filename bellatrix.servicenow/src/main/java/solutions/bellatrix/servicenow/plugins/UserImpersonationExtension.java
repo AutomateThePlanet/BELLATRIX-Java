@@ -1,8 +1,8 @@
 package solutions.bellatrix.servicenow.plugins;
 
 import solutions.bellatrix.servicenow.contracts.TestUser;
-import solutions.bellatrix.servicenow.pages.serviceNow.ServiceNowPage;
-import solutions.bellatrix.servicenow.snSetupData.enums.ServiceNowUser;
+import solutions.bellatrix.servicenow.pages.serviceNowPage.ServiceNowPage;
+import solutions.bellatrix.servicenow.infrastructure.enums.ServiceNowUser;
 import java.lang.reflect.Method;
 import java.util.Optional;
 import org.junit.jupiter.api.extension.Extension;
@@ -13,7 +13,7 @@ import solutions.bellatrix.web.services.App;
 import solutions.bellatrix.servicenow.utilities.UserInteraction;
 
 /**
- * This class is an extension for JUnit 5 that allows user impersonation during test execution. It intercepts the test method invocation and performs user impersonation if the test instance implements the TestUser interface. It uses the ServiceNowPage class to perform the login and impersonation actions.
+ * This class is an extension for JUnit 5 that allows user impersonation during test execution. It intercepts the test method invocation and performs user impersonation if the test instance implements the TestUser interface. It uses the ServiceNowPage class to perform the loginSection and impersonation actions.
  */
 public class UserImpersonationExtension implements InvocationInterceptor, Extension {
     @Override
@@ -45,6 +45,4 @@ public class UserImpersonationExtension implements InvocationInterceptor, Extens
 
         invocation.proceed();
     }
-
-
 }
