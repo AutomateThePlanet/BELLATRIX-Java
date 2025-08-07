@@ -89,6 +89,8 @@ public class DriverService {
         caps.setAutomationName(AutomationName.IOS_XCUI_TEST);
         caps.setPlatformVersion(getAppConfiguration().getIosVersion());
         caps.setDeviceName(getAppConfiguration().getDeviceName());
+        caps.setUdid(ConfigurationService.get(IOSSettings.class).getDeviceIdentifier());
+        caps.setWebviewConnectTimeout(Duration.ofSeconds(ConfigurationService.get(IOSSettings.class).getTimeoutSettings().getWebviewConnectTimeout()));
 
         try {
             var driver = new IOSDriver(new URL(gridSettings.getUrl()), caps);
@@ -107,6 +109,8 @@ public class DriverService {
         caps.setAutomationName(AutomationName.IOS_XCUI_TEST);
         caps.setPlatformVersion(getAppConfiguration().getIosVersion());
         caps.setDeviceName(getAppConfiguration().getDeviceName());
+        caps.setUdid(ConfigurationService.get(IOSSettings.class).getDeviceIdentifier());
+        caps.setWebviewConnectTimeout(Duration.ofSeconds(ConfigurationService.get(IOSSettings.class).getTimeoutSettings().getWebviewConnectTimeout()));
 
         if (getAppConfiguration().getIsMobileWebExecution()) {
             caps.withBrowserName(ConfigurationService.get(IOSSettings.class).getDefaultBrowser());
