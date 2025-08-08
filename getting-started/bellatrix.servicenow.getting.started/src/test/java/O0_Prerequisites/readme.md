@@ -39,30 +39,32 @@
 #### Modify the following in `serviceNowProjectSettings`:
 
 - **Instance:**
-    ```json
+    ```jsonlines
+  {
     "instance": "instance"
+  }
     ```
 
 - **Platform Release:**
-    ```json
+    ```jsonlines
     "platformRelease": "release"
     ```
 
 - **Polaris Enabled Flag:**
-    ```json
+    ```jsonlines
     "isPolarisEnabled": "true"
     ```
 
 - **Credentials Options:**
 
   **Option 4.1: Hardcoded Credentials**
-    ```json
+    ```jjsonlines
     "userName": "user",
     "password": "pass"
     ```
 
   **Option 4.2: Use Environment Variables**
-    ```json
+    ```jsonlines
     "userName": "{env_servicenow-username-instance}",
     "password": "{env_servicenow-password-instance}"
     ```
