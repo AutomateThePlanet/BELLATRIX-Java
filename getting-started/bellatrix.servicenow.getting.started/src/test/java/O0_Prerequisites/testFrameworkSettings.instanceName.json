@@ -68,8 +68,8 @@
   },
   "serviceNowProjectSettings": {
     "isPolarisEnabled": "true",
-    "instance": "dev329858",
-    "platformRelease": "yokohama",
+    "instance": "instance",
+    "platformRelease": "release",
     "userName": "user",
     "password": "pass"
   }

@@ -40,12 +40,12 @@
 
 - **Instance:**
     ```json
-    "instance": "dev329858"
+    "instance": "instance"
     ```
 
 - **Platform Release:**
     ```json
-    "platformRelease": "yokohama"
+    "platformRelease": "release"
     ```
 
 - **Polaris Enabled Flag:**

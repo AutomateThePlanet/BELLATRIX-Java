@@ -68,15 +68,15 @@
   },
   "serviceNowProjectSettings": {
     "isPolarisEnabled": "true",
-    "instance": "dev329858",
-    "platformRelease": "yokohama",
+    "instance": "instance",
+    "platformRelease": "release",
     "userName": "user",
     "password": "pass"
   },
   "dataSettings": {
     "dataSourceType": "HTTP",
     "httpSettings": {
-      "baseUrl": "https://dev329858.service-now.com",
+      "baseUrl": "baseUrl",
       "basePath": "/api/now/table",
       "urlEncoderEnabled": "false",
       "contentType": "application/json",

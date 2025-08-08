@@ -46,7 +46,7 @@ Note: Another option is to use the table name from ProjectTable enum.
   "dataSettings": {
     "dataSourceType": "HTTP",
     "httpSettings": {
-      "baseUrl": "https://dev329858.service-now.com",
+      "baseUrl": "baseUrl",
       "basePath": "/api/now/table",
       "urlEncoderEnabled": "false",
       "contentType": "application/json",
