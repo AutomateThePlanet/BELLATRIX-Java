@@ -576,6 +576,6 @@ public class ServiceNowPage extends WebPage<Map, Asserts> {
         var pinnedItems = map().polarisHeader().shadowRootCreateAllByCss(Button.class, "div.tab.name.shown");
         var itemList = pinnedItems.stream().filter(x -> x.getText().contains(item.getValue())).toList();
         browser().waitForAjax();
-        return itemList.isEmpty();
+        return !itemList.isEmpty();
     }
 }
