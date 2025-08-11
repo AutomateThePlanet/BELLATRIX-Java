@@ -40,7 +40,7 @@ public class ReactComponentsScriptsFactory {
     }
 
     public static String generateGridAllVisibleDataScript(String instance) {
-        var command = String.format("let visibleRows = window.findReactComponent(arguments[0]).%s.getVisibleRows().filter(x => x.rowType == 'models');" +
+        var command = String.format("let visibleRows = window.findReactComponent(arguments[0]).%s.getVisibleRows().filter(x => x.rowType == 'data');" +
                 "let keys = visibleRows.map(x => x.cells.map(y => y.column.dataField))[0];" +
                 "let values = visibleRows.map(x => x.cells.map(y => y.column.dataType=='date' && y.text!==''?y.text:y.value));" +
                 "return JSON.stringify(result = values.map(v => {" +

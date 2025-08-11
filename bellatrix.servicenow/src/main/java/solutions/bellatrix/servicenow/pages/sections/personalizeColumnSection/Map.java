@@ -22,11 +22,11 @@ public class Map extends PageMap {
     }
 
     public Anchor addArrowAnchor() {
-        return create().byXPath(Anchor.class, "//a[@models-original-title='Add']");
+        return create().byXPath(Anchor.class, "//a[@data-original-title='Add']");
     }
 
     public Anchor removeArrowAnchor() {
-        return create().byXPath(Anchor.class, "//a[@models-original-title='Remove']");
+        return create().byXPath(Anchor.class, "//a[@data-original-title='Remove']");
     }
 
     public Button okButton() {

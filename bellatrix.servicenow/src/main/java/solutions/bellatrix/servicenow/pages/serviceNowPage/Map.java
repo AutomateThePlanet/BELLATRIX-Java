@@ -61,7 +61,7 @@ public class Map extends PageMap {
     }
 
     public Button leftNavigatorSubCategory(String section, String subCategory) {
-        String xpathLocator = String.format("//li[./a/span[text()='%s']]/ul//a//span[@models-tooltip-overflow-only-text and text()='%s']", section, subCategory);
+        String xpathLocator = String.format("//li[./a/span[text()='%s']]/ul//a//span[@data-tooltip-overflow-only-text and text()='%s']", section, subCategory);
         return create().byXPath(Button.class, xpathLocator);
     }
 
@@ -93,7 +93,7 @@ public class Map extends PageMap {
     }
 
     public Button gearIcon() {
-        return create().byXPath(Button.class, "(//i[@models-title='Personalize List Columns'])[1]");
+        return create().byXPath(Button.class, "(//i[@data-title='Personalize List Columns'])[1]");
     }
 
     public Anchor polarisAllElementButton() {
@@ -144,11 +144,11 @@ public class Map extends PageMap {
     }
 
     public Button polarisImpersonateUserAnchor() {
-        return polarisHeader().shadowRootCreateByCss(Button.class, "button[models-id='impersonateUser']");
+        return polarisHeader().shadowRootCreateByCss(Button.class, "button[data-id='impersonateUser']");
     }
 
     public Anchor polarisUnimpersonateUserAnchor() {
-        return polarisHeader().shadowRootCreateByCss(Anchor.class, "button[models-id='unimpersonate']");
+        return polarisHeader().shadowRootCreateByCss(Anchor.class, "button[data-id='unimpersonate']");
     }
 
     public Anchor polarisImpersonateButton() {
@@ -387,7 +387,7 @@ public class Map extends PageMap {
     }
 
     public Anchor polarisEndImpersonateUserAnchor() {
-        return polarisHeader().shadowRootCreateByCss(Anchor.class, "button[models-id='unimpersonate']>div[class='user-menu-label polaris-enabled']");
+        return polarisHeader().shadowRootCreateByCss(Anchor.class, "button[data-id='unimpersonate']>div[class='user-menu-label polaris-enabled']");
     }
 
     public Anchor polarisMenuItemChoice(String label) {

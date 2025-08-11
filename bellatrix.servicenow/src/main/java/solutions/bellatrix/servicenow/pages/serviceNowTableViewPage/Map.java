@@ -11,7 +11,7 @@ public class Map extends PageMap {
     }
 
     public Anchor contextManu() {
-        return create().byXPath(Anchor.class, "//a[@models-original-title='Properties Context Menu']");
+        return create().byXPath(Anchor.class, "//a[@data-original-title='Properties Context Menu']");
     }
 
     public Anchor recordNumberByRowCount(int rowCount) {
@@ -305,7 +305,7 @@ public class Map extends PageMap {
     }
 
     public Button viewOption() {
-        var xpathLocator = "//div[@models-context-menu-label='View']";
+        var xpathLocator = "//div[@data-context-menu-label='View']";
         return create().byXPath(Button.class, xpathLocator);
     }
 
@@ -340,7 +340,7 @@ public class Map extends PageMap {
     }
 
     public Button viewAllAttachments() {
-        var xpathLocator = "//a[@models-original-title='View All Attachments']";
+        var xpathLocator = "//a[@data-original-title='View All Attachments']";
         return create().byXPath(Button.class, xpathLocator);
     }
 
@@ -359,7 +359,7 @@ public class Map extends PageMap {
         return create().allByXPath(CheckBox.class, xpathLocator);
     }
     public List<Div> tableHeadersByTabLabel(String tabLabel) {
-        var xpathLocator = String.format("//table[contains(@id,'REL') and ./caption[contains(@models-edit-label,'%s')]]//th[@name and not(@name='search')]", tabLabel);
+        var xpathLocator = String.format("//table[contains(@id,'REL') and ./caption[contains(@data-edit-label,'%s')]]//th[@name and not(@name='search')]", tabLabel);
         return create().allByXPath(Div.class, xpathLocator);
     }
 

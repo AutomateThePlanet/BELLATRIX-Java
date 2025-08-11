@@ -39,17 +39,17 @@ public class Map extends PageMap {
     }
 
     public Select selectFormInput(String label) {
-        var locator = String.format("//div[@models-type='label' and .//span[text()='%s']]/following-sibling::div/select", label);
+        var locator = String.format("//div[@data-type='label' and .//span[text()='%s']]/following-sibling::div/select", label);
         return create().byXPath(Select.class, locator);
     }
 
     public Anchor cellByTableAndText(String tableName, String cellText) {
-        var locator = String.format("//caption[contains(@models-read-label,'%s')]//following-sibling::tbody[contains(@class,'list2_body')]//td/descendant-or-self::*[text()='%s']", tableName, cellText);
+        var locator = String.format("//caption[contains(@data-read-label,'%s')]//following-sibling::tbody[contains(@class,'list2_body')]//td/descendant-or-self::*[text()='%s']", tableName, cellText);
         return create().byXPath(Anchor.class, locator);
     }
 
     public Button buttonByTitle(String title) {
-        var xpath = String.format("//button[@models-original-title='%s']", title);
+        var xpath = String.format("//button[@data-original-title='%s']", title);
         return create().byXPath(Button.class, xpath);
     }
 

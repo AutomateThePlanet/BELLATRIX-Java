@@ -125,7 +125,7 @@ public class UserInteraction {
 
     public static void waitUntilStateIsComplete() throws InterruptedException {
         var app = new App();
-        var xpathLocator = "//div[@models-type='label' and .//span[text()='State']]/following-sibling::div/select";
+        var xpathLocator = "//div[@data-type='label' and .//span[text()='State']]/following-sibling::div/select";
         Wait.retry(() -> {
             if (!Objects.equals(app.create().byXPath(Select.class, xpathLocator).getSelected().getText(), "Completed")) {
                 throw new ElementStillExistException();

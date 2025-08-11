@@ -37,7 +37,7 @@ public class CurlLoggingFilter implements Filter {
             curlParts.add("--header '%s: %s' \\".formatted(header.getName(), header.getValue()));
         }
         if (body != null && !body.isEmpty()) {
-            curlParts.add("--models '" + body.replace("'", "'\"'\"'") + "'");
+            curlParts.add("--data '" + body.replace("'", "'\"'\"'") + "'");
         }
         return curlParts;
     }

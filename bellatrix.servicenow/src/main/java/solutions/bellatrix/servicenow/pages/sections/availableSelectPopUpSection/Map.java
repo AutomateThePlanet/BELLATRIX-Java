@@ -16,6 +16,6 @@ public class Map extends PageMap {
     }
 
     public Button arrowAddButton() {
-        return create().byXPath(Button.class, "//a[@models-original-title='Add']");
+        return create().byXPath(Button.class, "//a[@data-original-title='Add']");
     }
 }

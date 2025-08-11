@@ -7,8 +7,8 @@ import solutions.bellatrix.web.components.contracts.ComponentReadonly;
 
 public enum SnFormFieldType {
     INPUT("input", TextInput.class, "(//div[contains(@class,'form-group') and .//span[text()='%s']]//input[not(@type='hidden')])[1]"),
-    TEXTAREA("textarea", TextArea.class, "//div[@models-type='label' and .//span[text()='%s']]/following-sibling::div/textarea"),
-    SELECT("select", Select.class, "//div[@models-type='label' and .//span[text()='%s']]/following-sibling::div/select");
+    TEXTAREA("textarea", TextArea.class, "//div[@data-type='label' and .//span[text()='%s']]/following-sibling::div/textarea"),
+    SELECT("select", Select.class, "//div[@data-type='label' and .//span[text()='%s']]/following-sibling::div/select");
 
     private final String value;
     private final Class componentClass;

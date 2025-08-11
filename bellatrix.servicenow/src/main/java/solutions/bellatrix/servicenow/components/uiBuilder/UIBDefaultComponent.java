@@ -118,7 +118,7 @@ public abstract class UIBDefaultComponent extends SnComponent implements Compone
     }
 
     public String getType() {
-        var xpathLocator = ".//div[@models-type='label']";
+        var xpathLocator = ".//div[@data-type='label']";
         return this.createByXPath(Span.class, xpathLocator).getWrappedElement().getAttribute("type");
     }
 

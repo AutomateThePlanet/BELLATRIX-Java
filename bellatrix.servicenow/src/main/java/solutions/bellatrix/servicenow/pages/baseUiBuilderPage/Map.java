@@ -67,7 +67,7 @@ public class Map extends PageMap {
     }
 
     public Button recordSaveButton() {
-        var xpathLocator = "(//div[./now-record-common-record-presence]//button[@models-ariadescribedby='Save'])[1]";
+        var xpathLocator = "(//div[./now-record-common-record-presence]//button[@data-ariadescribedby='Save'])[1]";
         return customUiMainMacroponent().createByXPath(Button.class, xpathLocator);
     }
 

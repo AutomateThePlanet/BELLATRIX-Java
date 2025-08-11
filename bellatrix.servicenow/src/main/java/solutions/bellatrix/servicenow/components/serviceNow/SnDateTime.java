@@ -28,7 +28,7 @@ public class SnDateTime extends SnDefaultComponent {
     }
 
     public void setText(LocalDateTime localDateTime) {
-        var dateTimeFormat = calendarButton().getAttribute("models-date_time_format");
+        var dateTimeFormat = calendarButton().getAttribute("data-date_time_format");
         var dateAsString = DateTimeFormatter.ofPattern(dateTimeFormat).format(localDateTime);
 
         setText(dateAsString);
