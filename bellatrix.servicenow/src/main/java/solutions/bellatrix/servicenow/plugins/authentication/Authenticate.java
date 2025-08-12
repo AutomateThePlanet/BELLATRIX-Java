@@ -1,0 +1,13 @@
+package solutions.bellatrix.servicenow.plugins.authentication;
+
+import solutions.bellatrix.servicenow.infrastructure.enums.ServiceNowUser;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+@Target({ElementType.TYPE, ElementType.METHOD})
+@Retention(RetentionPolicy.RUNTIME)
+public @interface Authenticate {
+    ServiceNowUser user();
+}

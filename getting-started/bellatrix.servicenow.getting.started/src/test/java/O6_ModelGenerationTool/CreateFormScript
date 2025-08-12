@@ -1,0 +1,201 @@
+
+function generateFormClass(formXPath, className) {
+    // Helper functions for XPath queries
+    window.querySelectorByXpath = function (xpath) {
+        var iterator = document.evaluate(xpath, document, null, XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null);
+
+	  return iterator.iterateNext();
+    };
+    window.querySelectorAllByXpath = function (xpath) {
+        var iterator = document.evaluate(xpath, document, null, XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null);
+        const items = [];
+        let item = iterator.iterateNext();
+        while (item) {
+            items.push(item);
+            item = iterator.iterateNext();
+        }
+        return items;
+    };
+    // Get the main form element using the provided XPath
+    const mainForm = querySelectorByXpath(formXPath);
+    if (!mainForm) {
+        console.error(`Form not found with XPath: ${formXPath}`);
+        return;
+    }
+    // Find all form groups within the specified form element
+    const allFields = querySelectorAllByXpath(formXPath + "//div[contains(concat(' ',normalize-space(@class),' '),' form-group ') and not(contains(@style,'display: none')) and not(contains(@class,'custom-form-group'))]");
+    // Helper functions to extract field information
+    function getLabel(formGroup) {
+        const labelElement = formGroup.querySelector("label span.label-text");
+        return labelElement ? labelElement.textContent.trim() : "Unknown";
+    }
+
+ function isRequired(formGroup) {
+        const requiredSymbol = formGroup.querySelector("label span.required-marker");
+        return requiredSymbol !== null;
+    }
+    function isReadOnly(formGroup) {
+        // Check for readonly attribute
+        const readOnlyInput = formGroup.querySelector("[readonly='readonly']");
+        if (readOnlyInput) return true;
+        // Check for disabled class
+        const disabledInput = formGroup.querySelector(".disabled");
+        if (disabledInput) return true;
+        // Check for form-control disabled
+        const disabledFormControl = formGroup.querySelector("[class*='form-control disabled']");
+        if (disabledFormControl) return true;
+        // Check for checkbox disabled
+        const checkboxDisabled = formGroup.querySelector(".checkbox.disabled");
+        if (checkboxDisabled) return true;
+        // Check for readonly paragraph
+        const readOnlyParagraph = formGroup.querySelector("p[id*='sys_readonly']");
+        if (readOnlyParagraph) return true;
+        // Check for static form control
+        const staticFormControl = formGroup.querySelector("p[class='form-control-static']");
+        if (staticFormControl) return true;
+        // Check for read_only class in status span
+        const statusSpan = formGroup.querySelector("span[class*='read_only']");
+        if (statusSpan) return true;
+        return false;
+    }
+    function getFieldType(formGroup) {
+        // Try to get type from div[type] attribute (ServiceNow specific)
+        const typeElement = formGroup.querySelector("div[type]");
+        if (typeElement) {
+            const dataType = typeElement.getAttribute("type");
+            if (dataType) return dataType;
+        }
+        // Try to get type from data-type attribute
+        const dataTypeElement = formGroup.querySelector("[data-type]");
+        if (dataTypeElement) {
+            const dataType = dataTypeElement.getAttribute("data-type");
+            if (dataType) return dataType;
+        }
+        // Try to get type from input type
+        const inputElement = formGroup.querySelector("input[type]");
+        if (inputElement) {
+            return inputElement.getAttribute("type");
+        }
+        // Check for textarea
+        if (formGroup.querySelector("textarea[aria-label]")) {
+            return "string";
+        }
+        // Check for checkbox
+        if (formGroup.querySelector("input[type='checkbox']")) {
+            return "boolean";
+        }
+        // Check for select elements
+        if (formGroup.querySelector("select")) {
+            return "choice";
+        }
+        // Default to string
+        return "string";
+    }
+    function getSelectOptions(formGroup) {
+        const selectElement = formGroup.querySelector("select[class*='form-control']");
+        if (!selectElement) return [];
+        const options = Array.from(selectElement.querySelectorAll("option"));
+        return options.map(option => option.textContent.trim());
+    }
+    function getSelectedOption(formGroup) {
+        const fieldType = getFieldType(formGroup);
+        if (fieldType === 'choice' || fieldType === 'table_name') {
+            const selectedOption = formGroup.querySelector("select[class*='form-control'] > option[selected]");
+            return selectedOption ? selectedOption.textContent.trim() : null;
+        }
+        return null;
+    }
+    function getFieldId(formGroup) {
+        return formGroup.id || "unknown";
+    }
+    function getExternalButtons(formGroup) {
+        const buttons = [];
+
+        // Check for various button types (based on original function)
+        if (formGroup.querySelector("a[class*='icon-book']")) {
+            buttons.push("Knowledge");
+        }
+        if (formGroup.querySelector("button[class*='icon-info']")) {
+            buttons.push("Info");
+        }
+        if (formGroup.querySelector("span[class*='icon-lightbulb']")) {
+            buttons.push("LightBulb");
+        }
+        if (formGroup.querySelector("span[class*='icon-edit']")) {
+            buttons.push("Edit");
+        }
+        if (formGroup.querySelector("span[class*='icon-cross']")) {
+            buttons.push("Cross");
+        }
+        if (formGroup.querySelector("span[class*='icon-locked']")) {
+            buttons.push("Locked");
+        }
+        if (formGroup.querySelector("span[class*='icon-user-add']")) {
+            buttons.push("Add");
+        }
+        return buttons;
+    }
+
+ function convertToCamelCase(str) {
+        return str.replace(/(?:^.|[A-Z]|\b.)/g, function (letter, index) {
+            return index === 0 ? letter.toLowerCase() : letter.toUpperCase();
+        }).replace(/[^a-zA-Z0-9]/g, '');
+    }
+
+  function getComponentType(fieldType) {
+        // Convert field type to component type (matching original logic)
+        const type = fieldType.split("_").reduce((previous, current) =>
+            previous + current.charAt(0).toUpperCase() + current.slice(1), ""
+        );
+        return "Sn" + type;
+    }
+
+    // Generate the Java class
+    function generateJavaClass(fields, className) {
+        let classString = `@Data\n@SuperBuilder\n@EqualsAndHashCode(callSuper = true)\npublic class ${className} extends ServiceNowForm {\n`;
+        fields.forEach(field => {
+            const fieldType = getFieldType(field);
+            const fieldLabel = getLabel(field);
+            const fieldId = getFieldId(field);
+            const camelCaseFieldName = convertToCamelCase(fieldLabel);
+            const componentType = getComponentType(fieldType);
+            const isFieldReadOnly = isReadOnly(field);
+            const isFieldRequired = isRequired(field);
+            const selectOptions = getSelectOptions(field);
+            const selectedOption = getSelectedOption(field);
+            const externalButtons = getExternalButtons(field);
+
+        // Add annotations
+            if (isFieldReadOnly) {
+                classString += "\t@Disabled\n";
+            }
+            if (isFieldRequired) {
+                classString += "\t@Required\n";
+            }
+            if (externalButtons.length > 0) {
+                const buttonsString = externalButtons.map(btn => `"${btn}"`).join(", ");
+                classString += `\t@ExternalButtons({${buttonsString}})\n`;
+            }
+            if (selectOptions.length > 0) {
+                const optionsString = selectOptions.map(opt => `"${opt}"`).join(", ");
+                classString += `\t@SelectOptions({${optionsString}})\n`;
+            }
+            if (selectedOption) {
+                classString += `\t@SelectedOption("${selectedOption}")\n`;
+            }
+            classString += `\t@FieldLabel("${fieldLabel}")\n`;
+            classString += `\t@Component(${componentType}.class)\n`;
+            classString += `\t@Id("${fieldId}")\n`;
+            classString += `\tprivate String ${camelCaseFieldName};\n\n`;
+        });
+        classString += "}";
+        return classString;
+    }
+
+   // Generate and output only the formatted class
+    const javaClass = generateJavaClass(allFields, className);
+    console.log(javaClass);
+}
+
+// Example usage:
+generateFormClass("//div[@aria-label='Incident form section']", "ReservationForm");
