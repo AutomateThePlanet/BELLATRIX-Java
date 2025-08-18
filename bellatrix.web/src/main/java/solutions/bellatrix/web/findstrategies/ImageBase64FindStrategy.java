@@ -4,22 +4,38 @@ import lombok.Getter;
 import org.openqa.selenium.By;
 import org.openqa.selenium.SearchContext;
 import org.openqa.selenium.WebElement;
+import solutions.bellatrix.core.configuration.ConfigurationService;
 import solutions.bellatrix.core.utilities.Log;
 import solutions.bellatrix.core.utilities.SingletonFactory;
 import solutions.bellatrix.plugins.opencv.Base64Encodable;
 import solutions.bellatrix.plugins.opencv.OpenCvService;
-import solutions.bellatrix.web.services.App;
+import solutions.bellatrix.plugins.opencv.OpenCvServiceSettings;
 import solutions.bellatrix.web.services.JavaScriptService;
 
 import java.util.List;
-import java.util.Objects;
 
 @Getter
 public class ImageBase64FindStrategy extends FindStrategy {
     private final Base64Encodable encodedImage;
+    private final boolean shouldGrayScale;
+    private final double precisionThreshold;
 
     public ImageBase64FindStrategy(Base64Encodable encodedImage) {
         super(encodedImage.getBase64Image());
+        this.encodedImage = encodedImage;
+        var serviceSettings = ConfigurationService.get(OpenCvServiceSettings.class);
+        if (serviceSettings == null) {
+            serviceSettings = new OpenCvServiceSettings();
+        }
+
+        this.shouldGrayScale = serviceSettings.isShouldGrayscale();
+        this.precisionThreshold = serviceSettings.getDefaultMatchThreshold();
+    }
+
+    public ImageBase64FindStrategy(Base64Encodable encodedImage, boolean shouldGrayScale, double precisionThreshold) {
+        super(encodedImage.getBase64Image());
+        this.shouldGrayScale = shouldGrayScale;
+        this.precisionThreshold = precisionThreshold;
         this.encodedImage = encodedImage;
     }
 
@@ -46,7 +62,7 @@ public class ImageBase64FindStrategy extends FindStrategy {
 
         @Override
         public List<WebElement> findElements(SearchContext context) {
-            var location = OpenCvService.getLocation(base64EncodedImage, false);
+            var location = OpenCvService.getLocation(base64EncodedImage);
             Log.info("Coordinates located: %s", location.toString());
             return SingletonFactory.getInstance(JavaScriptService.class).<List<WebElement>>genericExecute("return document.elementsFromPoint(%s, %s);".formatted(location.x, location.y));
         }

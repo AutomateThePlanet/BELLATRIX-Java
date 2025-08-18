@@ -22,7 +22,7 @@ public class OpenCvTests extends WebTest {
 
     @Test
     public void actionPerformed_when_convertBase64ToImage_and_clickImage() {
-        var falcon9Image = app().create().byImage(Anchor.class, EncodedImageDemo.FALCON_9);
+        var falcon9Image = app().create().byImage(Anchor.class, EncodedImageDemo.FALCON_9, false, 0.99);
 
         app().navigate().to("http://demos.bellatrix.solutions/");
         falcon9Image.click();

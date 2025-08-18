@@ -15,10 +15,8 @@ package solutions.bellatrix.web.services;
 
 import solutions.bellatrix.core.utilities.InstanceFactory;
 import solutions.bellatrix.plugins.opencv.Base64Encodable;
-import solutions.bellatrix.web.components.ActionImage;
 import solutions.bellatrix.web.components.WebComponent;
 import solutions.bellatrix.web.findstrategies.*;
-import solutions.bellatrix.web.infrastructure.DriverService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +38,10 @@ public class ComponentCreateService extends WebService {
 
     public <TComponent extends WebComponent> TComponent byImage(Class<TComponent> componentClass, Base64Encodable encodedImage) {
         return by(componentClass, new ImageBase64FindStrategy(encodedImage));
+    }
+
+    public <TComponent extends WebComponent> TComponent byImage(Class<TComponent> componentClass, Base64Encodable encodedImage, boolean shouldGrayscale, double matchPrecision) {
+        return by(componentClass, new ImageBase64FindStrategy(encodedImage, shouldGrayscale, matchPrecision));
     }
 
     public <TComponent extends WebComponent> TComponent byAttributeContaining(Class<TComponent> componentClass, String attributeName, String value) {
@@ -104,6 +106,10 @@ public class ComponentCreateService extends WebService {
 
     public <TComponent extends WebComponent> List<TComponent> allByImage(Class<TComponent> componentClass, Base64Encodable encodedImage) {
         return allBy(componentClass, new ImageBase64FindStrategy(encodedImage));
+    }
+
+    public <TComponent extends WebComponent> List<TComponent> allByImage(Class<TComponent> componentClass, Base64Encodable encodedImage, boolean shouldGrayscale, double matchPrecision) {
+        return allBy(componentClass, new ImageBase64FindStrategy(encodedImage, shouldGrayscale, matchPrecision));
     }
 
     public <TComponent extends WebComponent> List<TComponent> allByAttributeContaining(Class<TComponent> componentClass, String attributeName, String value) {

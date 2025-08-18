@@ -30,7 +30,7 @@ public class ActionImage extends WebComponent {
 
         var encodedImage = findStrategy.getEncodedImage();
 
-        var location = OpenCvService.getLocation(encodedImage, true);
+        var location = OpenCvService.getLocation(encodedImage);
         return new Point((int)location.x + encodedImage.getXOffset(), (int)location.y + encodedImage.getYOffset());
     }
 
