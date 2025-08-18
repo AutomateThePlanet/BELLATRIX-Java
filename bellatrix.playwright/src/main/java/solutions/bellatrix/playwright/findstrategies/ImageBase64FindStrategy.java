@@ -16,14 +16,11 @@ package solutions.bellatrix.playwright.findstrategies;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import lombok.Getter;
-import solutions.bellatrix.core.utilities.SingletonFactory;
 import solutions.bellatrix.core.utilities.parsing.TypeParser;
 import solutions.bellatrix.playwright.components.common.webelement.WebElement;
-import solutions.bellatrix.playwright.services.JavaScriptService;
 import solutions.bellatrix.plugins.opencv.Base64Encodable;
 import solutions.bellatrix.plugins.opencv.OpenCvService;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,7 +34,7 @@ public class ImageBase64FindStrategy extends FindStrategy {
 
     @Override
     public WebElement convert(Page page) {
-        var location = OpenCvService.getLocation(encodedImage, false);
+        var location = OpenCvService.getLocation(encodedImage);
 
         var foundLocators = findElementsOn(location, page);
 
@@ -48,7 +45,7 @@ public class ImageBase64FindStrategy extends FindStrategy {
 
     @Override
     public WebElement convert(WebElement webElement) {
-        var location = OpenCvService.getLocation(encodedImage, false);
+        var location = OpenCvService.getLocation(encodedImage);
 
         var foundLocators = findElementsOn(location, webElement.page());
 
