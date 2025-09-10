@@ -110,6 +110,10 @@
     "shopUrl": "http://demos.bellatrix.solutions/cart/",
     "accountUrl": "http://demos.bellatrix.solutions/account/"
   },
+  "openCvServiceSettings": {
+    "shouldGrayscale": true,
+    "defaultMatchThreshold": "0.9"
+  },
   "testPagesSettings": {
     "anchorLocalPage": "testpages/anchor/anchor.html",
     "buttonLocalPage": "testpages/button/button.html",

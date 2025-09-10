@@ -23,6 +23,7 @@ public class LeftNavigationTests extends ServiceNowBaseTest {
     @Test
     public void optionVisible_when_authorizedUserSearchInLeftNavigation() {
         serviceNowPage.loginSection().login();
+        serviceNowPage.clickMenuItem(ServiceNowMenuItems.All);
 
         serviceNowPage.filterDataInLeftNavigationPane(ProjectLeftNavigationItem.INCIDENTS);
 
@@ -32,6 +33,8 @@ public class LeftNavigationTests extends ServiceNowBaseTest {
     @Test
     public void correctPageOpen_when_selectOptionInLeftNavigation() {
         serviceNowPage.loginSection().login();
+        serviceNowPage.clickMenuItem(ServiceNowMenuItems.All);
+
         serviceNowPage.openFromLeftNavigation(ProjectLeftNavigationItem.SELF_SERVICE, ProjectLeftNavigationItem.INCIDENTS);
         serviceNowPage.switchToLastTab();
 

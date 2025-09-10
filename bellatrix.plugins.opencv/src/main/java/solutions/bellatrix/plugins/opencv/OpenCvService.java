@@ -8,6 +8,8 @@ import org.opencv.core.Point;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 import plugins.screenshots.ScreenshotPlugin;
+import solutions.bellatrix.core.configuration.ConfigurationService;
+import solutions.bellatrix.core.utilities.Log;
 import solutions.bellatrix.core.utilities.SingletonFactory;
 
 import javax.imageio.ImageIO;
@@ -39,16 +41,24 @@ public class OpenCvService {
         return scaleX;
     }
 
+    public static Point getLocation(Base64Encodable encodedImage) {
+        OpenCvServiceSettings openCvServiceSettings = ConfigurationService.get(OpenCvServiceSettings.class);
+        if (openCvServiceSettings == null) {
+            openCvServiceSettings = new OpenCvServiceSettings();
+        }
+
+        var precisionThreshold = openCvServiceSettings.getDefaultMatchThreshold();
+        var shouldGrayscale = openCvServiceSettings.isShouldGrayscale();
+        return getLocation(encodedImage, shouldGrayscale, precisionThreshold);
+    }
     /**
      * @return the coordinates of the image found on the screen
      */
-    public static Point getLocation(Base64Encodable encodedImage, boolean shouldGrayScale) {
+    public static Point getLocation(Base64Encodable encodedImage, boolean shouldGrayScale, double precisionThreshold) {
         var screenshotPlugin = SingletonFactory.getInstance(ScreenshotPlugin.class);
-
+        Log.info("Locating image using precision: %s; Should Grayscale = %s".formatted(precisionThreshold, shouldGrayScale));
         if (screenshotPlugin == null) {
-            throw new IllegalArgumentException("It seems that the screenshot plugin isn't registered by the 'ScreenshotPlugin.class' key inside SingletonFactory's map or isn't registered at all!\n" +
-                    "Check the BaseTest class of your project where the plugins are registered. Register the specific screenshot plugin implementation as the base ScreenshotPlugin.class.\n" +
-                    "for example: addPluginAs(ScreenshotPlugin.class, WebScreenshotPlugin.class);");
+            throw new IllegalArgumentException("Screenshot plugin not registered!");
         }
 
         var screenshot = screenshotPlugin.takeScreenshot();
@@ -57,13 +67,17 @@ public class OpenCvService {
 
         Mat result = loadImages(encodedImage, screenshot, shouldGrayScale);
 
-        return getMatchLocation(encodedImage, result);
+        return getMatchLocation(encodedImage, result, precisionThreshold);
     }
 
-    private static Point getMatchLocation(Base64Encodable encodedImage, Mat result) {
+    private static Point getMatchLocation(Base64Encodable encodedImage, Mat result, double precisionThreshold) {
         BufferedImage bufferedImage;
-
         Core.MinMaxLocResult mmr = Core.minMaxLoc(result);
+        if (mmr.maxVal < precisionThreshold) {
+            throw new RuntimeException("Match not found above threshold. Closest match at: %s".formatted(mmr.maxVal));
+        }
+        Log.info("Image located with precision: %s".formatted(mmr.maxVal));
+
         Point matchLoc = mmr.maxLoc;
 
         if (encodedImage.getXOffset() == 0 && encodedImage.getYOffset() == 0) {
@@ -73,12 +87,16 @@ public class OpenCvService {
                 throw new RuntimeException(e);
             }
 
-            double[] imageCenterCoordinates = {matchLoc.x / getJavaMonitorScaling() + (double)(bufferedImage.getWidth() / 2), matchLoc.y / getJavaMonitorScaling() + (double)(bufferedImage.getHeight() / 2)};
+            double[] imageCenterCoordinates = {
+                    matchLoc.x / getJavaMonitorScaling() + (double)(bufferedImage.getWidth() / 2),
+                    matchLoc.y / getJavaMonitorScaling() + (double)(bufferedImage.getHeight() / 2)
+            };
             matchLoc.set(imageCenterCoordinates);
         }
 
         return matchLoc;
     }
+
 
     private static BufferedImage getImageWidthHeight(Base64Encodable encodedImage) throws IOException {
         String cleanBase64 = removePrefixFromBase64(encodedImage);
