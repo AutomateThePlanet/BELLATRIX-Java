@@ -11,6 +11,7 @@ import solutions.bellatrix.data.http.configuration.HttpSettings;
 import solutions.bellatrix.data.http.infrastructure.HTTPMethod;
 import solutions.bellatrix.data.http.infrastructure.HttpHeader;
 import solutions.bellatrix.data.http.infrastructure.QueryParameter;
+import solutions.bellatrix.core.utilities.SecretsResolver;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -77,9 +78,8 @@ public class HttpContext {
             specBuilder.setBody(requestBody);
         }
 
-        if (!queryParameters.isEmpty()) {
-            specBuilder.addQueryParams(getRequestQueryParameters());
-        }
+        // Always add query parameters (including authentication parameters)
+        specBuilder.addQueryParams(getRequestQueryParameters());
 
         specBuilder.addHeaders(getRequestHeaders());
 
@@ -136,7 +136,8 @@ public class HttpContext {
             if (insertionOrder.equals("start")) {
                 for (var key : option.keySet()) {
                     if (!key.equals("type") && !key.equals("insertionOrder")) {
-                        queryParams.put(key, option.get(key).toString());
+                        String value = SecretsResolver.getSecret(option.get(key).toString());
+                        queryParams.put(key, value);
                     }
                 }
                 for (QueryParameter queryParameter : queryParameters) {
@@ -148,7 +149,8 @@ public class HttpContext {
                 }
                 for (var key : option.keySet()) {
                     if (!key.equals("type") && !key.equals("insertionOrder")) {
-                        queryParams.put(key, option.get(key).toString());
+                        String value = SecretsResolver.getSecret(option.get(key).toString());
+                        queryParams.put(key, value);
                     }
                 }
 
