@@ -21,6 +21,7 @@
     </parent>
 
     <artifactId>bellatrix.core</artifactId>
+    <version>1.0</version>
 
     <properties>
         <selenium.version>4.27.0</selenium.version>
