@@ -57,21 +57,6 @@ public class MainContentSection extends WebSection {
         return getActiveScreen().createByXPath(Anchor.class, ".//h2[text()='No records to display.']");
     }
 
-
-//
-//    public WorkOrdersFilterComponent getWorkOrderFilter() {
-//        return getActiveScreen().createByXPath(WorkOrdersFilterComponent.class, ".//now-record-list-panel");
-//    }
-//
-//    public Button preChecklistButton() {
-//        return getActiveScreen().
-//                createByCss(Button.class, "#item-card_base_container_8");
-//    }
-
-
-
-
-
     public Button getEssentialsSectionTilesText(String value) {
         var xpath = String.format(".//h4[text()= '%s']", value);
         return getActiveScreen()

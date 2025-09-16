@@ -144,7 +144,6 @@ public class BaseUIBPage<MapT extends Map, AssertsT extends Asserts<MapT>> exten
                             var choice = ((UiBuilderRecordChoice)component);
                             choice.dropdownButton().click();
                             choice.getOptionByText(field.get(model).toString()).click();
-//                           choice.getOptionByText(field.get(model).toString());
                         } else {
                             component.getShadowRoot().createByCss(TextInput.class,"input" ).getWrappedElement().sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.BACK_SPACE, field.get(model).toString(), Keys.ENTER);
                         }
@@ -160,49 +159,6 @@ public class BaseUIBPage<MapT extends Map, AssertsT extends Asserts<MapT>> exten
                     throw new RuntimeException("Failed to read field value for label: %s".formatted(elementLabel), e);
                 }
             }
-
-//            if (field.isAnnotationPresent(UibComponent.class) && field.isAnnotationPresent(FieldLabel.class)) {
-//                var componentClass = field.getDeclaredAnnotation(UibComponent.class).value();
-//                var elementLabel = field.getDeclaredAnnotation(FieldLabel.class).value();
-//
-//                try {
-//                    var foundComponentWrappers = container.createAllByXPath(componentClass, String.format(".//*[contains(name(),'sn-record-') and descendant::*[text()='%s']]", elementLabel)).stream().findAny();
-//                    if (foundComponentWrappers.isPresent()) {
-//
-//                        var component = foundComponentWrappers.get();
-//                        Method setTextMethod = getSetTextMethod(componentClass);
-//                        Object setTextValue = null;
-//                        try {
-//                            setTextValue = field.get(model);
-//                            setTextMethod.invoke(component, setTextValue);
-//                        } catch (Exception e) {
-//                            throw new RuntimeException("Fill Form failed with Error.", e);
-//                        }
-//                    }
-//
-//                }
-//                catch (IllegalArgumentException | NotFoundException iae) {
-//                    Log.info("Form Field with label: '%s' Not found".formatted(elementLabel));
-//                }
-//                catch (Exception e) {
-//                    throw new RuntimeException("Failed to read field value for label: %s".formatted(elementLabel), e);
-//                }
-//            }
-
-
-//            // Refactor after read and Assert are working as expected
-//            var componentClass = field.getDeclaredAnnotation(UibComponent.class).value();
-//            var elementId = field.getDeclaredAnnotation(Id.class).value();
-//            var component = formComponent.createByXPath(componentClass, String.format(".//*[@id='%s']", elementId));
-//
-//            Method setTextMethod = getSetTextMethod(componentClass);
-//            Object setTextValue = null;
-//            try {
-//                setTextValue = field.get(model);
-//                setTextMethod.invoke(component, setTextValue);
-//            } catch (Exception e) {
-//                throw new RuntimeException("Fill Form failed with Error.", e);
-//            }
         }
     }
 

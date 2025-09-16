@@ -107,6 +107,3 @@ public class UibTableViewTests extends ServiceNowBaseTest {
         allWorkPage.openRecordFromDataGrid("column_name", "column_value");
     }
 }
-
-
-
