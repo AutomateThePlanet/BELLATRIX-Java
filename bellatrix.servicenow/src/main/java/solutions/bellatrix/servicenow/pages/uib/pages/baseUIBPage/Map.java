@@ -18,21 +18,10 @@ public class Map extends PageMap {
         return customUiMainMacroponent().createByCss(Button.class,"div > div.controls.info > now-button-iconic");
     }
 
-
-
-
-
-
-
-
-
     public Button tabWithShadowDom(String tabName) {
         var xpathLocator = String.format("//div[contains(@class, 'tabset-wrapper')]/descendant::span[@class='now-tab-label'][text()='%s']/ancestor::button[@role='tab']".formatted(tabName));
         return customUiMainMacroponent().createByXPath(Button.class, xpathLocator);
     }
-
-
-
 
     protected ShadowRoot recordInputWithShadowDom(String label) {
         var xpathLocator = String.format("//now-record-typeahead[@name='%s']", label);
@@ -108,6 +97,4 @@ public class Map extends PageMap {
     public TextArea textAreaField(String textAreaName) {
         return textAreaWithShadowDom(textAreaName).createByXPath(TextArea.class, "//textarea");
     }
-
-
 }
