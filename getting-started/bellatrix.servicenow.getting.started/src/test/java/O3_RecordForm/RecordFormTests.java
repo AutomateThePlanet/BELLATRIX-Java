@@ -21,13 +21,13 @@ public class RecordFormTests extends ServiceNowBaseTest {
     @Test
     public void openRecordFormBySysId () {
         serviceNowPage.loginSection().login();
-        var recordUrl =BaseInstancesUrlGeneration.getSnRecordBaseUrl(ProjectTables.INCIDENT_TABLE,"57af7aec73d423002728660c4cf6a71c");
+        var recordUrl =BaseInstancesUrlGeneration.getSnRecordBaseUrl(ProjectTables.INCIDENT_TABLE,"record_sys_id");
         serviceNowPage.navigateToPage(recordUrl);
 
         var recordPage = new IncidentRecordPage();
         serviceNowPage.switchToInnerFrame();
         recordPage.asserts().assertRecordMainHeader("Incident");
-        serviceNowPage.browser().assertLandedOnPage(BaseInstancesUrlGeneration.getSnRecordBaseUrl(ProjectTables.INCIDENT_TABLE, "57af7aec73d423002728660c4cf6a71c"));
+        serviceNowPage.browser().assertLandedOnPage(BaseInstancesUrlGeneration.getSnRecordBaseUrl(ProjectTables.INCIDENT_TABLE, "record_sys_id"));
     }
 
     @Test

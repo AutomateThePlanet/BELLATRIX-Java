@@ -7,9 +7,8 @@ import solutions.bellatrix.web.components.contracts.ComponentDisabled;
 import solutions.bellatrix.web.components.contracts.ComponentText;
 
 public class RecordTextArea extends UIBDefaultComponent implements ComponentDisabled, ComponentText {
-
-    protected TextArea textInput() {
-        return this.createByCss(TextArea.class, "textarea");
+    public UIBDefaultComponent textInput() {
+        return this.createByCss(UIBDefaultComponent.class, "textarea");
     }
 
     @Override

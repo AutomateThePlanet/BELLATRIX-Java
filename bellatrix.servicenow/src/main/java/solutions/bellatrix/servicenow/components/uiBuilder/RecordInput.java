@@ -7,9 +7,8 @@ import solutions.bellatrix.web.components.contracts.ComponentDisabled;
 import solutions.bellatrix.web.components.contracts.ComponentText;
 
 public class RecordInput extends UIBDefaultComponent implements ComponentDisabled, ComponentText {
-
-    protected TextInput textInput() {
-        return create().byCss(TextInput.class, "input");
+    public UIBDefaultComponent textInput() {
+        return create().byCss(UIBDefaultComponent.class, "input");
     }
 
     @Override
