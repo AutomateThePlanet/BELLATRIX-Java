@@ -14,5 +14,4 @@ public class Map extends solutions.bellatrix.servicenow.pages.uib.pages.uibTable
         gridComponent.setModelColumns(ManagerWorkModel.class);
         return gridComponent;
     }
-
 }

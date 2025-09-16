@@ -14,5 +14,4 @@ public class BaseWorkspacePage<MapT extends Map, AssertsT extends Asserts<MapT>>
         Log.info("Navigating to URL: %s".formatted(getUrl()));
         app().navigate().to(getUrl());
     }
-
 }

@@ -31,5 +31,4 @@ public class Map extends solutions.bellatrix.servicenow.pages.uib.pages.baseUIBP
     public Div getModalPopup() {
         return polarisMainMacroponent().createByXPath(Div.class, ".//now-modal");
     }
-//}
 }

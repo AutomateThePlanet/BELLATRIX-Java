@@ -141,5 +141,4 @@ public class Map extends solutions.bellatrix.servicenow.pages.uib.pages.baseUIBP
         return popoverPanel()
                 .createByXPath(Button.class, "//now-button/descendant::button/descendant::span[contains(text(),'%s')]".formatted(text));
     }
-
 }
