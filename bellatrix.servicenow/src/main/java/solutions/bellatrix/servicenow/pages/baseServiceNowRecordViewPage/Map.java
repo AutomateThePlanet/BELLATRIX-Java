@@ -274,7 +274,7 @@ public class Map extends PageMap {
     }
 
     private WebComponent polarisMainMacroponent() {
-        return create().byXPath(WebComponent.class, "//*[contains(name(),'macroponent')]").toShadowRootToBeAttached();
+        return create().byXPath(WebComponent.class, "//*[contains(name(),'macroponent')]").getShadowRoot();
     }
 
     public Frame polarisMainPageFrame() {

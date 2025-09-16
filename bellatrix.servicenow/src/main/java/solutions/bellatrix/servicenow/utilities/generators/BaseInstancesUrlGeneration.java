@@ -17,7 +17,7 @@ public class BaseInstancesUrlGeneration {
     }
 
     public static String getLoginUrl() {
-        return getBaseUrl() + "loginSection";
+        return getBaseUrl() + "login";
     }
 
     public static <Table extends ServiceNowTable> String getSnTableViewBaseUrl(Table table) {
