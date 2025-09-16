@@ -2,7 +2,6 @@ package solutions.bellatrix.servicenow.components.uiBuilder;
 
 import org.openqa.selenium.ElementNotInteractableException;
 import solutions.bellatrix.servicenow.components.enums.UibComponentType;
-import solutions.bellatrix.web.components.TextInput;
 import solutions.bellatrix.web.components.contracts.ComponentDisabled;
 import solutions.bellatrix.web.components.contracts.ComponentText;
 
