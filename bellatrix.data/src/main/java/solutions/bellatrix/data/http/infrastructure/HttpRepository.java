@@ -99,7 +99,14 @@ public abstract class HttpRepository<THttpEntity extends HttpEntity> implements 
 
         DELETING_ENTITY.broadcast(new EntityDeletedEventArgs(entity));
 
-        sendRequest(requestContext);
+        // For delete operations, we don't need to parse the response as JSON
+        // Just send the request and check the status code
+        Response response = sendRequest(requestContext);
+        
+        // Check if the delete was successful (200-299 status codes)
+        if (response.getStatusCode() < 200 || response.getStatusCode() >= 300) {
+            throw new RuntimeException("Delete operation failed with status code: " + response.getStatusCode());
+        }
 
         ENTITY_DELETED.broadcast(new EntityDeletedEventArgs(entity));
     }
