@@ -1,7 +1,6 @@
 package solutions.bellatrix.servicenow.pages.uib.pages.uibRecordViewPage;
 
 import solutions.bellatrix.core.utilities.Log;
-import solutions.bellatrix.servicenow.pages.uib.pages.uibTableViewPage.UibTableViewPage;
 import solutions.bellatrix.web.components.shadowdom.ShadowRoot;
 
 import java.util.List;

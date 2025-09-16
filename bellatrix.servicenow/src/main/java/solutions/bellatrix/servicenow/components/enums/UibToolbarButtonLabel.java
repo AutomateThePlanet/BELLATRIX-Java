@@ -8,12 +8,7 @@ public enum UibToolbarButtonLabel {
     LIST("List"),
     TEAMS("Teams"),
     SCHEDULES("Schedules"),
-    DASHBOARD("Dashboard"),
-    WORK_ORDER_DASHBOARD("Work Order Dashboard"),
-    ASSET_DASHBOARD("Asset Dashboard"),
-    PLANNING_AND_SCHEDULING("Planning and Scheduling"),
-    PARTS_AND_INVENTORY("Parts and Inventory"),
-    RECEIPTS("Receipts");
+    DASHBOARD("Dashboard");
 
     private final String value;
 

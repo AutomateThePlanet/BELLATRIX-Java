@@ -1,9 +1,7 @@
 package solutions.bellatrix.servicenow.components.uiBuilder;
 
-import org.openqa.selenium.ElementNotInteractableException;
 import solutions.bellatrix.servicenow.components.enums.UibComponentType;
 import solutions.bellatrix.web.components.Button;
-import solutions.bellatrix.web.components.WebComponent;
 import solutions.bellatrix.web.components.contracts.ComponentDisabled;
 import solutions.bellatrix.web.components.contracts.ComponentText;
 import solutions.bellatrix.web.components.shadowdom.ShadowRoot;
