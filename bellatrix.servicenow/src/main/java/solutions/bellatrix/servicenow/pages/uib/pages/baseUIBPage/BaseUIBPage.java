@@ -17,7 +17,6 @@ import solutions.bellatrix.servicenow.pages.uib.sections.leftSidebarSection.Left
 import solutions.bellatrix.servicenow.pages.uib.sections.mainContentSection.MainContentSection;
 import solutions.bellatrix.servicenow.pages.uib.sections.menuHeader.MenuHeaderSection;
 import solutions.bellatrix.servicenow.pages.uib.sections.tabsSection.TabsSection;
-import solutions.bellatrix.web.components.Div;
 import solutions.bellatrix.web.components.TextInput;
 import solutions.bellatrix.web.components.WebComponent;
 import solutions.bellatrix.web.components.shadowdom.ShadowRoot;
