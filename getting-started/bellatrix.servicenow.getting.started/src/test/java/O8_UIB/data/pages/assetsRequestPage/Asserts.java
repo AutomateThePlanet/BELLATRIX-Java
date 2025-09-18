@@ -1,10 +1,10 @@
-package O8_UIB.data.pages.allWorkPage;
+package O8_UIB.data.pages.assetsRequestPage;
 
 import org.junit.jupiter.api.Assertions;
 
 public class Asserts extends solutions.bellatrix.servicenow.pages.uib.pages.uibTableViewPage.Asserts<Map> {
     public void assertPopupHeading() {
-        var expectedHeading = "expected_heading";
+        var expectedHeading = "Edit List";
         var actualHeading = map().popupHeading().getText();
 
         Assertions.assertEquals(expectedHeading, actualHeading, "The PopUp Heading is not as expected. ");

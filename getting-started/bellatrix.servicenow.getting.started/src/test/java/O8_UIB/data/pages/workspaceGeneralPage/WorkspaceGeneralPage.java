@@ -10,7 +10,12 @@ import java.util.List;
 public class WorkspaceGeneralPage extends BaseUIBPage<Map, Asserts> {
     public void assertSidebarButtons() {
         var expectedButtons = new ArrayList<String>(List.of(
-            LeftSidebarSection.MenuItems.DASHBOARD.getId()
+            LeftSidebarSection.MenuItems.HOME.getId(),
+            LeftSidebarSection.MenuItems.INVENTORY.getId(),
+            LeftSidebarSection.MenuItems.ASSET_ESTATE.getId(),
+            LeftSidebarSection.MenuItems.MODEL_MANAGEMENT.getId(),
+            LeftSidebarSection.MenuItems.CONTRACT_MANAGEMENT.getId(),
+            LeftSidebarSection.MenuItems.ASSET_OPERATIONS.getId()
         ));
 
         var sidebarButtons = sidebar.getMenuItems().stream().map(m-> m.getWrappedElement().getAttribute("id")).toList();
@@ -20,7 +25,7 @@ public class WorkspaceGeneralPage extends BaseUIBPage<Map, Asserts> {
 
     public void assertTabButtons() {
         var expectedTabs = new ArrayList<String>(List.of(
-            "Home"
+            "Hardware asset overview"
         ));
 
         var tabsButtons = tabs.getAllTabs().stream().map(m-> m.getText()).toList();

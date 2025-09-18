@@ -1,109 +1,100 @@
 package O8_UIB.uibTableView;
 
-import O8_UIB.data.pages.allWorkPage.AllWorkPage;
-import O8_UIB.data.pages.managerDashboardPage.ManagerDashboardPage;
+import O8_UIB.data.pages.assetsRequestPage.AssetsRequestsPage;
+import O8_UIB.data.pages.assetsDashboardPage.AssetsDashboardPage;
+import O8_UIB.data.pages.requestPage.RequestPage;
 import O8_UIB.data.pages.workspaceGeneralPage.WorkspaceGeneralPage;
 import org.junit.jupiter.api.Test;
 import solutions.bellatrix.servicenow.baseTest.ServiceNowBaseTest;
 import solutions.bellatrix.servicenow.infrastructure.enums.ServiceNowWorkspaces;
-import solutions.bellatrix.servicenow.pages.uib.sections.leftSidebarSection.LeftSidebarSection;
 
 public class UibTableViewTests extends ServiceNowBaseTest {
     protected WorkspaceGeneralPage workspaceGeneralPage;
-    protected ManagerDashboardPage managerDashboardPage;
-    protected AllWorkPage allWorkPage;
+    protected AssetsDashboardPage assetsDashboardPage;
+    protected AssetsRequestsPage assetsRequestsPage;
+    protected RequestPage requestPage;
 
     @Override
     protected void beforeEach() throws Exception {
         super.beforeEach();
         workspaceGeneralPage = app().createPage(WorkspaceGeneralPage.class);
-        managerDashboardPage = app().createPage(ManagerDashboardPage.class);
-        allWorkPage = app().createPage(AllWorkPage.class);
+        assetsDashboardPage = app().createPage(AssetsDashboardPage.class);
+        assetsRequestsPage = app().createPage(AssetsRequestsPage.class);
+        requestPage = app().createPage(RequestPage.class);
     }
 
     @Test
     public void workSpaceTableViewSettings_refreshIconTest(){
         serviceNowPage.loginSection().login();
-        serviceNowPage.openWorkspace(ServiceNowWorkspaces.CUSTOM_WORKSPACE_NAME);
+        serviceNowPage.openWorkspace(ServiceNowWorkspaces.ASSET_WORKSPACE);
 
-        workspaceGeneralPage.sidebar.getMenuItem(LeftSidebarSection.MenuItems.DASHBOARD).click();
+        assetsDashboardPage.mainContent.getNowScoreButton("Asset requests").click();
 
-        managerDashboardPage.mainContent.getNowCardButton("card_button_name").click();
+        assetsRequestsPage.map().refreshIcon().click();
 
-        allWorkPage.map().refreshIcon().click();
-
-        allWorkPage.asserts().assertMainHeading("expected_main_heading");
+        assetsRequestsPage.asserts().assertMainHeading("Asset requests");
     }
 
     @Test
     public void workSpaceTableViewSettings_editColumnsOpenPopupTest() {
         serviceNowPage.loginSection().login();
-        serviceNowPage.openWorkspace(ServiceNowWorkspaces.CUSTOM_WORKSPACE_NAME);
+        serviceNowPage.openWorkspace(ServiceNowWorkspaces.ASSET_WORKSPACE);
 
-        workspaceGeneralPage.sidebar.getMenuItem(LeftSidebarSection.MenuItems.DASHBOARD).click();
+        assetsDashboardPage.mainContent.getNowScoreButton("Asset requests").click();
 
-        managerDashboardPage.mainContent.getNowCardButton("card_button_name").click();
+        assetsRequestsPage.map().listActionsIcon().click();
+        assetsRequestsPage.map().editColumnsButton().click();
 
-        allWorkPage.map().listActionsIcon().click();
-        allWorkPage.map().editColumnsButton().click();
-
-        allWorkPage.asserts().assertPopupHeading();
+        assetsRequestsPage.asserts().assertPopupHeading();
     }
 
     @Test
     public void workSpaceTableViewSettings_editColumnsClosePopupTest() {
         serviceNowPage.loginSection().login();
-        serviceNowPage.openWorkspace(ServiceNowWorkspaces.CUSTOM_WORKSPACE_NAME);
+        serviceNowPage.openWorkspace(ServiceNowWorkspaces.ASSET_WORKSPACE);
 
-        workspaceGeneralPage.sidebar.getMenuItem(LeftSidebarSection.MenuItems.DASHBOARD).click();
+        assetsDashboardPage.mainContent.getNowScoreButton("Asset requests").click();
 
-        managerDashboardPage.mainContent.getNowCardButton("card_button_name").click();
+        assetsRequestsPage.map().listActionsIcon().click();
+        assetsRequestsPage.map().editColumnsButton().click();
+        assetsRequestsPage.map().closeDialogueOnEditList().click();
 
-        allWorkPage.map().listActionsIcon().click();
-        allWorkPage.map().editColumnsButton().click();
-        allWorkPage.map().closeDialogueOnEditList().click();
-
-        allWorkPage.asserts().assertMainHeading("expected_main_heading");
+        assetsRequestsPage.asserts().assertMainHeading("Asset requests");
     }
 
     @Test
     public void workSpaceTableViewSettings_editColumnsPopupSelectColumnTest() {
         serviceNowPage.loginSection().login();
-        serviceNowPage.openWorkspace(ServiceNowWorkspaces.CUSTOM_WORKSPACE_NAME);
+        serviceNowPage.openWorkspace(ServiceNowWorkspaces.ASSET_WORKSPACE);
 
-        workspaceGeneralPage.sidebar.getMenuItem(LeftSidebarSection.MenuItems.DASHBOARD).click();
+        assetsDashboardPage.mainContent.getNowScoreButton("Asset requests").click();
 
-        managerDashboardPage.mainContent.getNowCardButton("card_button_name").click();
+        assetsRequestsPage.addAnyColumnByListAction("Active","active" );
 
-        allWorkPage.addAnyColumnByListAction("column_name","column_locator" );
-
-        allWorkPage.asserts().assertEditColumnIsChecked("column_locator");
+        assetsRequestsPage.asserts().assertEditColumnIsChecked("active");
     }
 
     @Test
     public void workSpaceTableViewSettings_editColumnsPopupDeselectColumnTest() {
         serviceNowPage.loginSection().login();
-        serviceNowPage.openWorkspace(ServiceNowWorkspaces.CUSTOM_WORKSPACE_NAME);
+        serviceNowPage.openWorkspace(ServiceNowWorkspaces.ASSET_WORKSPACE);
 
-        workspaceGeneralPage.sidebar.getMenuItem(LeftSidebarSection.MenuItems.DASHBOARD).click();
+        assetsDashboardPage.mainContent.getNowScoreButton("Asset requests").click();
 
-        managerDashboardPage.mainContent.getNowCardButton("card_button_name").click();
+        assetsRequestsPage.removeAnyColumnByListAction("Active","active" );
 
-        allWorkPage.removeAnyColumnByListAction("column_name","column_locator" );
-
-        allWorkPage.asserts().assertEditColumnNotChecked("column_locator");
+        assetsRequestsPage.asserts().assertEditColumnNotChecked("active");
     }
 
     @Test
     public void openRecordByColumnValue() {
         serviceNowPage.loginSection().login();
-        serviceNowPage.openWorkspace(ServiceNowWorkspaces.CUSTOM_WORKSPACE_NAME);
+        serviceNowPage.openWorkspace(ServiceNowWorkspaces.ASSET_WORKSPACE);
 
-        workspaceGeneralPage.sidebar.getMenuItem(LeftSidebarSection.MenuItems.DASHBOARD).click();
+        assetsDashboardPage.mainContent.getNowScoreButton("Asset requests").click();
 
-        managerDashboardPage.mainContent.getNowCardButton("card_button_name").click();
-
-        allWorkPage.filterByColumnValue("column_name", "column_value");
-        allWorkPage.openRecordFromDataGrid("column_name", "column_value");
+        assetsRequestsPage.filterByColumnValue("Number", "RITM0010004");
+        assetsRequestsPage.openRecordFromDataGrid("Number", "RITM0010004");
+        requestPage.asserts().assertRecordHeading("RITM0010004");
     }
 }

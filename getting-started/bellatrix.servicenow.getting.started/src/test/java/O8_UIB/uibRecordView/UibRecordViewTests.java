@@ -1,76 +1,79 @@
 package O8_UIB.uibRecordView;
 
-import O8_UIB.data.models.TemplateModel;
-import O8_UIB.data.pages.allWorkPage.AllWorkPage;
-import O8_UIB.data.pages.managerDashboardPage.ManagerDashboardPage;
-import O8_UIB.data.pages.entityPage.EntityPage;
+import O8_UIB.data.entities.CatalogItem;
+import O8_UIB.data.entities.CatalogItemRepository;
+import O8_UIB.data.models.RequestItemModel;
+import O8_UIB.data.pages.assetsRequestPage.AssetsRequestsPage;
+import O8_UIB.data.pages.assetsDashboardPage.AssetsDashboardPage;
+import O8_UIB.data.pages.requestPage.RequestPage;
 import O8_UIB.data.pages.workspaceGeneralPage.WorkspaceGeneralPage;
+import O8_UIB.data.user.User;
+import O8_UIB.data.user.UserRepository;
 import org.junit.jupiter.api.Test;
+import solutions.bellatrix.core.configuration.ConfigurationService;
+import solutions.bellatrix.data.http.infrastructure.QueryParameter;
 import solutions.bellatrix.servicenow.baseTest.ServiceNowBaseTest;
+import solutions.bellatrix.servicenow.infrastructure.configuration.ServiceNowProjectSettings;
 import solutions.bellatrix.servicenow.infrastructure.enums.ServiceNowWorkspaces;
-import solutions.bellatrix.servicenow.pages.uib.sections.leftSidebarSection.LeftSidebarSection;
+
+import java.util.List;
 
 public class UibRecordViewTests extends ServiceNowBaseTest {
     protected WorkspaceGeneralPage workspaceGeneralPage;
-    protected ManagerDashboardPage managerDashboardPage;
-    protected AllWorkPage allWorkPage;
+    protected AssetsDashboardPage assetsDashboardPage;
+    protected AssetsRequestsPage assetsRequestsPage;
+    protected RequestPage requestPage;
+    User currentUser;
+    CatalogItem catalogItemRegistered;
 
     @Override
     protected void beforeEach() throws Exception {
         super.beforeEach();
         workspaceGeneralPage = app().createPage(WorkspaceGeneralPage.class);
-        managerDashboardPage = app().createPage(ManagerDashboardPage.class);
-        allWorkPage = app().createPage(AllWorkPage.class);
+        assetsDashboardPage = app().createPage(AssetsDashboardPage.class);
+        assetsRequestsPage = app().createPage(AssetsRequestsPage.class);
+        requestPage = app().createPage(RequestPage.class);
+
+        UserRepository userRepository = new UserRepository();
+        currentUser = userRepository.getEntitiesByParameters(List.of(new QueryParameter("user_name", ConfigurationService.get(ServiceNowProjectSettings.class).getUserName()))).get(0);
+
+        CatalogItemRepository catalogItemRepository = new CatalogItemRepository();
+
+        catalogItemRegistered = catalogItemRepository.getEntitiesByParameters(List.of(new QueryParameter("name", "Apple%20Watch"))).get(0);
     }
 
     @Test
     public void openRecordForm() {
         serviceNowPage.loginSection().login();
-        serviceNowPage.openWorkspace(ServiceNowWorkspaces.CUSTOM_WORKSPACE_NAME);
+        serviceNowPage.openWorkspace(ServiceNowWorkspaces.ASSET_WORKSPACE);
 
-        workspaceGeneralPage.sidebar.getMenuItem(LeftSidebarSection.MenuItems.DASHBOARD).click();
+        assetsDashboardPage.mainContent.getNowScoreButton("Asset requests").click();
 
-        managerDashboardPage.mainContent.getNowCardButton("card_button_name").click();
+        assetsRequestsPage.openRecordByColumnValue("Number", "RITM0010004");
 
-        allWorkPage.openRecordByColumnValue("column_name", "column_value");
-
-        var entityPage = new EntityPage();
-
-        var expectedFormData = TemplateModel.builder()
-                .number("actual_number")
-                .assetLocation("asset_location_choice")
-                .asset("asset_id")
-                .workType("work_type_id")
-                .assignedTo("assigned_user_id")
-                .priority("priority_choice")
-                .assignmentGroup("assignment_group_id")
+        var expectedFormData = RequestItemModel.builder()
+                .number("RITM0010004")
+                .item(catalogItemRegistered.getSysId())
+                .openedBy(currentUser.getSysId())
                 .build();
 
-         entityPage.assertTemplateForm(expectedFormData);
+         requestPage.assertTemplateForm(expectedFormData);
     }
 
     @Test
     public void fillRecordForm() {
         serviceNowPage.loginSection().login();
-        serviceNowPage.openWorkspace(ServiceNowWorkspaces.CUSTOM_WORKSPACE_NAME);
+        serviceNowPage.openWorkspace(ServiceNowWorkspaces.ASSET_WORKSPACE);
+        assetsDashboardPage.mainContent.getNowScoreButton("Asset requests").click();
 
-        workspaceGeneralPage.sidebar.getMenuItem(LeftSidebarSection.MenuItems.DASHBOARD).click();
-
-        managerDashboardPage.mainContent.getNowCardButton("card_button_name").click();
-
-        var entityPage = new EntityPage();
-
-        entityPage.mainContent.getButtonByText("New").click();
-
-        var newFormData = TemplateModel.builder()
-                .assetLocation("asset_location_choice")
-                .asset("asset")
-                .workType("work_type_id")
-                .assignedTo("assigned_user_id")
-                .priority("priority_choice")
-                .assignmentGroup("assignment_group_id")
+        var newFormData = RequestItemModel.builder()
+                .item("Acrobat")
                 .build();
 
-        entityPage.fillTemplateForm(newFormData);
+        requestPage.mainContent.getButtonByText("New").click();
+
+        requestPage.fillTemplateForm(newFormData);
+
+        requestPage.map().recordSaveButton().click();
     }
 }

@@ -19,7 +19,12 @@ public class LeftSidebarSection extends WebSection {
     public enum MenuItems {
         DASHBOARD("dashboard"),
         LIST("list"),
-        HOME("dashboard-btn");
+        HOME("home"),
+        INVENTORY("inventory"),
+        ASSET_ESTATE("assetestate"),
+        MODEL_MANAGEMENT("modelmanagement"),
+        CONTRACT_MANAGEMENT("contractmanagement"),
+        ASSET_OPERATIONS("assetoperations");
 
         @Getter
         @Setter

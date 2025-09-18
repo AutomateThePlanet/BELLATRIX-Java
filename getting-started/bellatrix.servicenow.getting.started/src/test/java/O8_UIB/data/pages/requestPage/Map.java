@@ -1,6 +1,7 @@
-package O8_UIB.data.pages.entityPage;
+package O8_UIB.data.pages.requestPage;
 
 import O8_UIB.data.models.WorkGridModel;
+import solutions.bellatrix.web.components.Button;
 import solutions.bellatrix.web.components.Div;
 import solutions.bellatrix.web.components.advanced.grid.Grid;
 import solutions.bellatrix.web.components.shadowdom.ShadowRoot;
@@ -21,7 +22,7 @@ public class Map extends solutions.bellatrix.servicenow.pages.uib.pages.uibRecor
     }
 
     public Div getTemplateForm() {
-        return getFormSectionByName("Clinical Work Order");
+        return getFormSectionByName("Requested Item");
     }
 
     public Div getLeftSection() {
@@ -42,5 +43,11 @@ public class Map extends solutions.bellatrix.servicenow.pages.uib.pages.uibRecor
 
     public Div getAlertNotification() {
         return polarisMainMacroponent().createAllByXPath(Div.class, ".//now-alert").stream().findFirst().orElse(null);
+    }
+
+    @Override
+    public Button recordSaveButton() {
+        var xpathLocator = "./descendant::*[contains(name(),'now-button')]/descendant::button[@data-ariadescribedby='Save']";
+        return getActiveScreen().createByXPath(Button.class, xpathLocator);
     }
 }

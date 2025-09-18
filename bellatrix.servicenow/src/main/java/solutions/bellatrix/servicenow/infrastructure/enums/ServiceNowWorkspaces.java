@@ -4,6 +4,7 @@ import lombok.Getter;
 
 @Getter
 public enum ServiceNowWorkspaces {
+    ASSET_WORKSPACE("Asset Workspace"),
     CUSTOM_WORKSPACE_NAME("Custom workspace name");
 
     private final String value;

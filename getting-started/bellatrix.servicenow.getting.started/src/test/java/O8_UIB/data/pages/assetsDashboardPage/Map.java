@@ -1,4 +1,4 @@
-package O8_UIB.data.pages.managerDashboardPage;
+package O8_UIB.data.pages.assetsDashboardPage;
 
 import solutions.bellatrix.web.components.Div;
 

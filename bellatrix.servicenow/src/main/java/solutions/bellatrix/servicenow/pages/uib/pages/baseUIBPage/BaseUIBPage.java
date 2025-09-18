@@ -3,9 +3,11 @@ package solutions.bellatrix.servicenow.pages.uib.pages.baseUIBPage;
 import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.NotFoundException;
+import org.openqa.selenium.interactions.Actions;
 import solutions.bellatrix.core.utilities.InstanceFactory;
 import solutions.bellatrix.core.utilities.Log;
 import solutions.bellatrix.servicenow.components.models.ServiceNowForm;
+import solutions.bellatrix.servicenow.components.uiBuilder.RecordCheckbox;
 import solutions.bellatrix.servicenow.components.uiBuilder.UIBDefaultComponent;
 import solutions.bellatrix.servicenow.components.uiBuilder.UiBuilderRecordChoice;
 import solutions.bellatrix.servicenow.models.annotations.snFieldAnnotations.FieldLabel;
@@ -15,6 +17,7 @@ import solutions.bellatrix.servicenow.pages.uib.sections.leftSidebarSection.Left
 import solutions.bellatrix.servicenow.pages.uib.sections.mainContentSection.MainContentSection;
 import solutions.bellatrix.servicenow.pages.uib.sections.menuHeader.MenuHeaderSection;
 import solutions.bellatrix.servicenow.pages.uib.sections.tabsSection.TabsSection;
+import solutions.bellatrix.web.components.Div;
 import solutions.bellatrix.web.components.TextInput;
 import solutions.bellatrix.web.components.WebComponent;
 import solutions.bellatrix.web.components.shadowdom.ShadowRoot;
@@ -22,6 +25,7 @@ import solutions.bellatrix.web.pages.WebPage;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -73,13 +77,15 @@ public class BaseUIBPage<MapT extends Map, AssertsT extends Asserts<MapT>> exten
                 var componentClass = field.getDeclaredAnnotation(UibComponent.class).value();
                 var elementLabel = field.getDeclaredAnnotation(FieldLabel.class).value();
                 try {
-                    var foundComponentWrappers = container.createAllByXPath(componentClass, String.format(".//*[contains(name(),'sn-record-') and descendant::*[text()='%s']]", elementLabel)).stream().findAny();
+                    var foundComponentWrappers = container.createAllByXPath(componentClass, String.format("./descendant::*[(contains(name(),'sn-record-') or contains(name(),'now-record-')) and @context='form' and descendant::*[text()='%s']]", elementLabel)).stream().findAny();
 
                     if (foundComponentWrappers.isPresent()) {
                         var component = foundComponentWrappers.get();
                         String actualValue;
                         if (componentClass.getName().contains("Reference")) {
                             actualValue = component.getValue();
+                        } else if (componentClass.getName().contains("Checkbox")) {
+                            actualValue = component.createByXPath(RecordCheckbox.class, "./descendant::now-checkbox").getValue();
                         } else {
                             actualValue = component.getShadowRoot().createByCss(TextInput.class,"input" ).getValue();
                         }
@@ -138,8 +144,18 @@ public class BaseUIBPage<MapT extends Map, AssertsT extends Asserts<MapT>> exten
                     if (foundComponentWrappers.isPresent()) {
                         var component = foundComponentWrappers.get();
                         if (componentClass.getName().contains("Reference")) {
-                              component.getWrappedElement().sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.BACK_SPACE, field.get(model).toString(), Keys.ENTER);
-                         } else if (componentClass.getName().contains("Choice")){
+                            var value = field.get(model).toString();
+
+                            Actions actions = new Actions(browser().getWrappedDriver());
+
+                            actions.sendKeys(component.getWrappedElement(), value)
+                                    .pause(Duration.ofMillis(500))
+                                    .sendKeys(Keys.ARROW_DOWN)
+                                    .pause(Duration.ofMillis(500))
+                                    .sendKeys(Keys.ENTER)
+                                    .perform();
+
+                        } else if (componentClass.getName().contains("Choice")){
 
                             var choice = ((UiBuilderRecordChoice)component);
                             choice.dropdownButton().click();

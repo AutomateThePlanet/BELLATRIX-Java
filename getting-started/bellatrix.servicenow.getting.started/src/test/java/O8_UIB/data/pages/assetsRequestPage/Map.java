@@ -1,4 +1,4 @@
-package O8_UIB.data.pages.allWorkPage;
+package O8_UIB.data.pages.assetsRequestPage;
 
 import O8_UIB.data.models.ManagerWorkModel;
 import solutions.bellatrix.web.components.advanced.grid.Grid;
