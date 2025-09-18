@@ -2,14 +2,12 @@ package solutions.bellatrix.servicenow.components.uiBuilder;
 
 import org.openqa.selenium.ElementNotInteractableException;
 import solutions.bellatrix.servicenow.components.enums.UibComponentType;
-import solutions.bellatrix.web.components.TextArea;
 import solutions.bellatrix.web.components.contracts.ComponentDisabled;
 import solutions.bellatrix.web.components.contracts.ComponentText;
 
 public class RecordTextArea extends UIBDefaultComponent implements ComponentDisabled, ComponentText {
-
-    protected TextArea textInput() {
-        return this.createByCss(TextArea.class, "textarea");
+    public UIBDefaultComponent textInput() {
+        return this.createByCss(UIBDefaultComponent.class, "textarea");
     }
 
     @Override

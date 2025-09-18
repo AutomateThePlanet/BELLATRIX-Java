@@ -55,7 +55,6 @@ public class DataCreationTests extends ServiceNowBaseTest {
         var entityFromAPI = incidentRepository.getById(incident);
 
         Assertions.assertEquals(updatedIncident.getShortDescription(), entityFromAPI.getShortDescription());
-
     }
 
     @Test

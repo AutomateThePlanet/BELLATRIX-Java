@@ -1,9 +1,9 @@
 package solutions.bellatrix.servicenow.components.uiBuilder;
+import solutions.bellatrix.servicenow.components.enums.UibComponentType;
 import solutions.bellatrix.web.components.*;
 import solutions.bellatrix.web.components.contracts.ComponentDisabled;
 
-public class RecordCheckbox extends WebComponent implements ComponentDisabled {
-
+public class RecordCheckbox extends UIBDefaultComponent implements ComponentDisabled {
     protected CheckBox checkbox() {
         return this.createByCss(CheckBox.class, "input[type='checkbox']");
     }
@@ -13,8 +13,17 @@ public class RecordCheckbox extends WebComponent implements ComponentDisabled {
     }
 
     @Override
+    public void setText(String text) {
+    }
+
+    @Override
     public boolean isDisabled() {
         return getAttribute("readonly") != null || checkbox().isDisabled() || getAttribute("disabled") != null;
+    }
+
+    @Override
+    public UibComponentType componentType() {
+        return null;
     }
 
     public void check() {
@@ -39,5 +48,10 @@ public class RecordCheckbox extends WebComponent implements ComponentDisabled {
 
     public void assertIsUnchecked() {
         checkbox().validateIsUnchecked();
+    }
+
+    @Override
+    public String getText() {
+        return "";
     }
 }

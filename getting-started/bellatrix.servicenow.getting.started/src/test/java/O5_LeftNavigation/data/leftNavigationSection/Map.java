@@ -11,7 +11,7 @@ import java.util.List;
 
 public class Map extends solutions.bellatrix.servicenow.pages.baseServiceNowRecordViewPage.Map {
     WebComponent polarisMenu() {
-        return create().byXPath(ShadowRoot.class, "//*[contains(name(),'macroponent')]").shadowRootCreateByCss(WebComponent.class, "sn-polaris-layout").toShadowRootToBeAttached().shadowRootCreateByCss(ShadowRoot.class, "sn-polaris-header").toShadowRootToBeAttached().shadowRootCreateByCss(WebComponent.class, "sn-polaris-menu").toShadowRootToBeAttached();
+        return create().byXPath(ShadowRoot.class, "//*[contains(name(),'macroponent')]").shadowRootCreateByCss(WebComponent.class, "sn-polaris-layout").getShadowRoot().shadowRootCreateByCss(ShadowRoot.class, "sn-polaris-header").getShadowRoot().shadowRootCreateByCss(WebComponent.class, "sn-polaris-menu").getShadowRoot();
     }
 
     public List<List<String>> getCollapsiblePaths(){

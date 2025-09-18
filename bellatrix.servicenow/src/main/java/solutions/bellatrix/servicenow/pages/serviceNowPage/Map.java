@@ -196,7 +196,7 @@ public class Map extends PageMap {
     }
 
     public ShadowRoot polarisHeader() {
-        return polarisLayout().shadowRootCreateByCss(ShadowRoot.class, "sn-polaris-header").toShadowRootToBeAttached();
+        return polarisLayout().shadowRootCreateByCss(ShadowRoot.class, "sn-polaris-header").getShadowRoot();
     }
 
     public Div polarisHeaderElement(){
@@ -208,19 +208,19 @@ public class Map extends PageMap {
     }
 
     public WebComponent polarisLayout() {
-        return polarisMainMacroponent().shadowRootCreateByCss(WebComponent.class, "sn-polaris-layout").toShadowRootToBeAttached();
+        return polarisMainMacroponent().shadowRootCreateByCss(WebComponent.class, "sn-polaris-layout").getShadowRoot();
     }
 
     WebComponent polarisMenu() {
-        return polarisHeader().shadowRootCreateByCss(WebComponent.class, "sn-polaris-menu").toShadowRootToBeAttached();
+        return polarisHeader().shadowRootCreateByCss(WebComponent.class, "sn-polaris-menu").getShadowRoot();
     }
 
     public WebComponent contextualMenu() {
-        return polarisHeader().shadowRootCreateByCss(WebComponent.class, "sn-contextual-menu").toShadowRootToBeAttached();
+        return polarisHeader().shadowRootCreateByCss(WebComponent.class, "sn-contextual-menu").getShadowRoot();
     }
 
     WebComponent polarisMenuShadowTest() {
-        return create().byCss(WebComponent.class, "macroponent-f51912f4c700201072b211d4d8c26010").toShadowRootToBeAttached();
+        return create().byCss(WebComponent.class, "macroponent-f51912f4c700201072b211d4d8c26010").getShadowRoot();
     }
 
     private WebComponent polarisMenuCollapsibleList() {
