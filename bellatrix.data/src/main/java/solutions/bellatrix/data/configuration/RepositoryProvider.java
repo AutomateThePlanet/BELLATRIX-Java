@@ -8,16 +8,16 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
-public enum RepositoryFactory {
+public enum RepositoryProvider {
     INSTANCE;
 
     private final Map<Class<? extends Entity>, Class<? extends Repository>> repositories = new ConcurrentHashMap<>();
 
-    public <T extends Entity> void registerRepository(Class<T> entityClass, Class<? extends Repository<T>> repositoryClass) {
+    public <T extends Entity> void register(Class<T> entityClass, Class<? extends Repository<T>> repositoryClass) {
         repositories.put(entityClass, repositoryClass);
     }
 
-    public <T extends Entity> Repository<T> getRepository(Class<T> entityClass) {
+    public <T extends Entity> Repository<T> get(Class<T> entityClass) {
         var repositoryClassType = repositories.get(entityClass);
 
         if (Objects.isNull(repositoryClassType)) {

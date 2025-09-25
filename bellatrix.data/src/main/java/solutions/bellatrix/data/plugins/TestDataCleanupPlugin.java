@@ -18,7 +18,7 @@ import solutions.bellatrix.core.plugins.Plugin;
 import solutions.bellatrix.core.plugins.TestResult;
 import solutions.bellatrix.core.plugins.TimeRecord;
 import solutions.bellatrix.core.utilities.Log;
-import solutions.bellatrix.data.configuration.RepositoryFactory;
+import solutions.bellatrix.data.configuration.RepositoryProvider;
 import solutions.bellatrix.data.contracts.Repository;
 import solutions.bellatrix.data.http.infrastructure.Entity;
 import solutions.bellatrix.data.http.infrastructure.HttpEntity;
@@ -264,8 +264,8 @@ public class TestDataCleanupPlugin extends Plugin {
      */
     @SuppressWarnings("unchecked")
     private Repository<?> getRepository(Class<? extends Entity<?, ?>> entityClass) {
-        return REPOSITORY_CACHE.computeIfAbsent(entityClass, 
-            clazz -> RepositoryFactory.INSTANCE.getRepository(clazz));
+        return REPOSITORY_CACHE.computeIfAbsent(entityClass,
+                RepositoryProvider.INSTANCE::get);
     }
     
     /**

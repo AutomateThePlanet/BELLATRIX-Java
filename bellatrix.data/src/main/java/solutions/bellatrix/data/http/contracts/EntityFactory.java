@@ -7,8 +7,8 @@ public interface EntityFactory<T extends Entity> {
     
     T buildDefault();
     
-    default T createWithDependencies() {
+    default T buildDefaultWithDependencies() {
         T entity = buildDefault();
-        return DependencyResolver.resolveDependencies(entity);
+        return DependencyResolver.buildDependencies(entity);
     }
 }

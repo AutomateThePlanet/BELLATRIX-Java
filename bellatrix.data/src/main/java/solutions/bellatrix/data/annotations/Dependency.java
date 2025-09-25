@@ -25,7 +25,7 @@ public @interface Dependency {
      * Optional: Custom factory method name to use for creating the dependency.
      * If not specified, the default factory method will be used.
      */
-    String factoryMethod() default "createDefault";
+    String factoryMethod() default "buildDefault";
     
     /**
      * Optional: Whether to create the dependency even if the field is not null.

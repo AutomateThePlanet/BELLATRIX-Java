@@ -1,13 +1,17 @@
 package solutions.bellatrix.data.http.infrastructure;
 
+import solutions.bellatrix.core.utilities.Log;
 import solutions.bellatrix.data.annotations.Dependency;
-import solutions.bellatrix.data.configuration.RepositoryFactory;
+import solutions.bellatrix.data.configuration.RepositoryProvider;
 import solutions.bellatrix.data.contracts.Repository;
 import solutions.bellatrix.data.http.contracts.EntityFactory;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Utility class for automatically resolving entity dependencies.
@@ -18,7 +22,9 @@ import java.util.*;
 public class DependencyResolver {
     
     // Track entities being resolved to prevent circular dependencies
-    private static final Set<Class<?>> resolvingEntities = new HashSet<>();
+    private static final Set<Class<?>> buildingEntities = new HashSet<>();
+    private static final Set<Class<?>> creatingEntities = new HashSet<>();
+    private static final Set<Class<?>> deletingEntities = new HashSet<>();
     
     /**
      * Resolves all dependencies for the given entity by creating
@@ -30,16 +36,32 @@ public class DependencyResolver {
      * @param <T> The entity type
      * @return The entity with all dependencies resolved
      */
-    public static <T> T resolveDependencies(T entity) {
+    public static <T> T buildDependencies(T entity) {
         if (entity == null) {
             return null;
         }
         
         // Clear the resolving set for each top-level call
-        resolvingEntities.clear();
-        return resolveDependenciesRecursive(entity);
+        buildingEntities.clear();
+        return buildDependenciesRecursive(entity);
     }
-    
+
+    public static <T> T createDependencies(T entity) {
+        if (entity == null) {
+            return null;
+        }
+
+        // Clear the resolving set for each top-level call
+        creatingEntities.clear();
+        return createDependenciesRecursive(entity);
+    }
+
+    public static <T> void deleteDependencies(T entity) {
+        if (entity == null) return;
+        deletingEntities.clear();
+        deleteDependenciesRecursive(entity);
+    }
+
     /**
      * Recursively resolves dependencies for an entity, ensuring that
      * dependencies are created in the correct order (bottom-up).
@@ -48,20 +70,21 @@ public class DependencyResolver {
      * @param <T> The entity type
      * @return The entity with all dependencies resolved
      */
-    private static <T> T resolveDependenciesRecursive(T entity) {
+    private static <T> T buildDependenciesRecursive(T entity) {
         if (entity == null) {
             return null;
         }
-        
+
         Class<?> entityClass = entity.getClass();
-        
+        Log.info("Building dependencies for entity: " + entityClass.getSimpleName());
+
         // Check for circular dependency
-        if (resolvingEntities.contains(entityClass)) {
+        if (buildingEntities.contains(entityClass)) {
             throw new RuntimeException("Circular dependency detected for entity: " + entityClass.getSimpleName());
         }
         
         // Add to resolving set
-        resolvingEntities.add(entityClass);
+        buildingEntities.add(entityClass);
         
         try {
             // Get all fields with @Dependency annotations
@@ -69,13 +92,75 @@ public class DependencyResolver {
             
             // Resolve each dependency field
             for (Field field : dependencyFields) {
-                resolveFieldDependencyRecursive(entity, field);
+                buildFieldDependencyRecursive(entity, field);
             }
             
             return entity;
         } finally {
             // Remove from resolving set
-            resolvingEntities.remove(entityClass);
+            buildingEntities.remove(entityClass);
+        }
+    }
+
+    private static <T> T createDependenciesRecursive(T entity) {
+        if (entity == null) {
+            return null;
+        }
+
+        Class<?> entityClass = entity.getClass();
+
+        // Check for circular dependency
+        if (creatingEntities.contains(entityClass)) {
+            throw new RuntimeException("Circular dependency detected for entity: " + entityClass.getSimpleName());
+        }
+
+        // Add to resolving set
+        creatingEntities.add(entityClass);
+
+        try {
+            // Get all fields with @Dependency annotations
+            List<Field> dependencyFields = getDependencyFields(entityClass);
+
+            // Resolve each dependency field
+            for (Field field : dependencyFields) {
+                createFieldDependencyRecursive(entity, field);
+            }
+
+            return entity;
+        } finally {
+            // Remove from resolving set
+            creatingEntities.remove(entityClass);
+        }
+    }
+
+    private static <T> T deleteDependenciesRecursive(T entity) {
+        if (entity == null) {
+            return null;
+        }
+
+        Class<?> entityClass = entity.getClass();
+
+        // Check for circular dependency
+        if (deletingEntities.contains(entityClass)) {
+            throw new RuntimeException("Circular dependency detected for entity: " + entityClass.getSimpleName());
+        }
+
+        // Add to resolving set
+        deletingEntities.add(entityClass);
+
+        try {
+            // Get all fields with @Dependency annotations
+            List<Field> dependencyFields = getDependencyFields(entityClass);
+
+            // Resolve each dependency field
+            for (Field field : dependencyFields) {
+                deleteFieldDependencyRecursive(entity, field);
+            }
+
+            return entity;
+        } finally {
+            // Remove from resolving set
+            deletingEntities.remove(entityClass);
         }
     }
     
@@ -106,7 +191,7 @@ public class DependencyResolver {
      * @param entity The parent entity
      * @param field The field that requires dependency resolution
      */
-    private static void resolveFieldDependencyRecursive(Object entity, Field field) {
+    private static void buildFieldDependencyRecursive(Object entity, Field field) {
         try {
             field.setAccessible(true);
             Dependency dependencyAnnotation = field.getAnnotation(Dependency.class);
@@ -116,29 +201,103 @@ public class DependencyResolver {
             if (currentValue != null && !dependencyAnnotation.forceCreate()) {
                 return;
             }
-            
+
+            Log.info("Building dependency for field '" + field.getName() + "' of type '" + dependencyAnnotation.entityType().getSimpleName() + "'.");
             // Create the dependency entity using the factory
-            Object dependencyEntity = createDependencyEntity(dependencyAnnotation);
+            Object dependencyEntity = buildDependencyEntity(dependencyAnnotation);
             
             // Recursively resolve dependencies for the dependency entity
             // This ensures that all dependencies are resolved bottom-up
-            dependencyEntity = resolveDependenciesRecursive(dependencyEntity);
-            
-            // Get the repository directly using the entity type from the annotation
-            @SuppressWarnings("unchecked")
-            Repository<Entity> repository = (Repository<Entity>) RepositoryFactory.INSTANCE.getRepository((Class<? extends Entity>) dependencyAnnotation.entityType());
-            
-            // Create the fully resolved entity in the repository (this will set the ID)
-            Entity createdEntity = repository.create((Entity) dependencyEntity);
-            
-            // Extract the ID from the created entity
-            String entityId = extractEntityId(createdEntity);
-            
+            dependencyEntity = buildDependenciesRecursive(dependencyEntity);
+//
+//            // Get the factory directly using the entity type from the annotation
+//            @SuppressWarnings("unchecked")
+//            EntityFactory<Entity> factory = (EntityFactory<Entity>) FactoryProvider.INSTANCE.get((Class<? extends Entity>) dependencyAnnotation.entityType());
+//
+//            // Create the fully resolved entity in the factory (this will set the ID)
+//            Entity builtEntity = factory.buildDefault();
+
             // Set the ID in the field
-            field.set(entity, entityId);
-            
+            Log.info("Setting dependency field '" + field.getName() + "' with ID from built entity.");
+
+            if(trySetViaSetter(entity, field, dependencyEntity)) {
+                Log.info("Set the dependency field '" + field.getName() + "' via setter.");
+            } else {
+                field.set(entity, dependencyEntity);
+                Log.info("Set the dependency field '" + field.getName() + "' directly.");
+            }
+
         } catch (Exception e) {
             throw new RuntimeException("Failed to resolve dependency for field: " + field.getName(), e);
+        }
+    }
+
+    private static void createFieldDependencyRecursive(Object entity, Field field) {
+        try {
+            field.setAccessible(true);
+            Dependency dependencyAnnotation = field.getAnnotation(Dependency.class);
+            Entity currentValue = (Entity)field.get(entity);
+
+            // Skip if field already has a value and forceCreate is false
+            if (currentValue != null && !dependencyAnnotation.forceCreate() && currentValue.getIdentifier() != null) {
+                return;
+            }
+
+            // Create the dependency entity using the repository
+            Object builtDependencyEntity = currentValue == null ? buildDependencyEntity(dependencyAnnotation) : currentValue;
+
+            // Recursively resolve dependencies for the dependency entity
+            // This ensures that all dependencies are resolved bottom-up
+            builtDependencyEntity = createDependenciesRecursive(builtDependencyEntity);
+
+            // Get the repository directly using the entity type from the annotation
+            @SuppressWarnings("unchecked")
+            Repository<Entity> repository = (Repository<Entity>) RepositoryProvider.INSTANCE.get((Class<? extends Entity>) dependencyAnnotation.entityType());
+
+            Log.info("Creating dependency entity for field '" + field.getName() + "' of type '" + dependencyAnnotation.entityType().getSimpleName() + "'.");
+            Entity createdEntity = repository.create((Entity) builtDependencyEntity);
+            ((Entity) builtDependencyEntity).setIdentifier((String)createdEntity.getIdentifier());
+
+            if (trySetViaSetter(entity, field, builtDependencyEntity)) {
+                Log.info("Set the dependency field '" + field.getName() + "' via setter.");
+            } else {
+                field.set(entity, builtDependencyEntity);
+                Log.info("Set the dependency field '" + field.getName() + "' directly.");
+            }
+
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to resolve dependency for field: " + field.getName(), e);
+        }
+    }
+
+    private static void deleteFieldDependencyRecursive(Object entity, Field field) {
+        try {
+            field.setAccessible(true);
+            Dependency dependencyAnnotation = field.getAnnotation(Dependency.class);
+            Entity currentValue = (Entity)field.get(entity);
+
+            // Skip if field already has a value and forceCreate is false
+            if (currentValue == null || currentValue.getIdentifier() == null) {
+                return;
+            }
+
+            // Create the dependency entity using the repository
+            Object builtDependencyEntity = currentValue == null ? buildDependencyEntity(dependencyAnnotation) : currentValue;
+
+            // Get the repository directly using the entity type from the annotation
+            @SuppressWarnings("unchecked")
+            Repository<Entity> repository = (Repository<Entity>) RepositoryProvider.INSTANCE.get((Class<? extends Entity>) dependencyAnnotation.entityType());
+
+            Log.info("Deleting dependency entity for field '" + field.getName() + "' of type '" + dependencyAnnotation.entityType().getSimpleName() + "'.");
+            repository.delete((Entity) builtDependencyEntity);
+
+            // Recursively resolve dependencies for the dependency entity
+            // This ensures that all dependencies are resolved bottom-up
+            deleteDependenciesRecursive(builtDependencyEntity);
+
+
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to delete dependency for field: " + field.getName(), e);
         }
     }
     
@@ -148,7 +307,7 @@ public class DependencyResolver {
      * @param dependencyAnnotation The dependency annotation containing creation info
      * @return The created dependency entity
      */
-    private static Object createDependencyEntity(Dependency dependencyAnnotation) {
+    private static Object buildDependencyEntity(Dependency dependencyAnnotation) {
         try {
             // Find the factory for the entity type
             EntityFactory<?> factory = findFactoryForEntity(dependencyAnnotation.entityType());
@@ -205,5 +364,46 @@ public class DependencyResolver {
         } catch (Exception e) {
             throw new RuntimeException("Failed to extract ID from entity: " + entity.getClass().getSimpleName(), e);
         }
+    }
+
+    private static boolean trySetViaSetter(Object target, Field field, Object value) {
+        Class<?> clazz = target.getClass();
+        Class<?> fieldType = field.getType();
+        List<String> candidates = new ArrayList<>();
+
+        String fieldName = field.getName();
+        String cap = Character.toUpperCase(fieldName.charAt(0)) + fieldName.substring(1);
+
+        // Conventional JavaBean setter
+        candidates.add("set" + cap);
+
+        // Boolean field named like "isActive" → setter "setActive"
+        if ((fieldType == boolean.class || fieldType == Boolean.class)
+                && fieldName.startsWith("is")
+                && fieldName.length() > 2
+                && Character.isUpperCase(fieldName.charAt(2))) {
+            candidates.add("set" + fieldName.substring(2));
+        }
+
+        // Fluent/Lombok-style setter (e.g., ".name(value)")
+        candidates.add(fieldName);
+
+        // Try to find a compatible method (single parameter assignable from value)
+        for (String name : candidates) {
+            for (Method m : clazz.getMethods()) { // includes inherited public methods
+                if (!m.getName().equals(name) || m.getParameterCount() != 1) continue;
+                Class<?> paramType = m.getParameterTypes()[0];
+                if (value == null ? !paramType.isPrimitive() : paramType.isAssignableFrom(value.getClass())) {
+                    try {
+                        if (!m.canAccess(target)) m.setAccessible(true);
+                        m.invoke(target, value);
+                        return true;
+                    } catch (ReflectiveOperationException ignore) {
+                        // try next candidate
+                    }
+                }
+            }
+        }
+        return false;
     }
 }

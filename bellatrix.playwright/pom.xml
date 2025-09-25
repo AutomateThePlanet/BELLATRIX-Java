@@ -24,11 +24,6 @@
             <version>1.49.0</version>
         </dependency>
         <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <version>5.10.0</version>
-        </dependency>
-        <dependency>
             <groupId>solutions.bellatrix</groupId>
             <artifactId>bellatrix.core</artifactId>
             <version>1.0</version>
@@ -51,16 +46,6 @@
             <artifactId>bellatrix.plugins.opencv</artifactId>
             <version>1.0</version>
             <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.18.30</version>
-        </dependency>
-        <dependency>
-            <groupId>com.microsoft.playwright</groupId>
-            <artifactId>playwright</artifactId>
-            <version>1.44.0</version>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
