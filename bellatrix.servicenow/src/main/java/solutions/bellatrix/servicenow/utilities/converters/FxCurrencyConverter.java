@@ -1,15 +1,10 @@
 package solutions.bellatrix.servicenow.utilities.converters;
 
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParseException;
-import com.google.gson.JsonPrimitive;
-import com.google.gson.JsonSerializationContext;
-import com.google.gson.JsonSerializer;
-import solutions.bellatrix.data.configuration.RepositoryFactory;
+import com.google.gson.*;
+import solutions.bellatrix.data.configuration.RepositoryProvider;
 import solutions.bellatrix.servicenow.utilities.setupData.FxCurrency2Instance;
 import solutions.bellatrix.servicenow.utilities.setupData.FxCurrency2InstanceRepository;
+
 import java.lang.reflect.Type;
 
 public class FxCurrencyConverter implements JsonSerializer<FxCurrency2Instance>, JsonDeserializer<FxCurrency2Instance> {
@@ -31,7 +26,7 @@ public class FxCurrencyConverter implements JsonSerializer<FxCurrency2Instance>,
         if (elementAsString == null || elementAsString.isEmpty()) {
             return null;
         }
-        RepositoryFactory.INSTANCE.registerRepository(FxCurrency2Instance.class, FxCurrency2InstanceRepository.class);
+        RepositoryProvider.INSTANCE.register(FxCurrency2Instance.class, FxCurrency2InstanceRepository.class);
         var repository = new FxCurrency2InstanceRepository();
         return FxCurrency2Instance.builder().sysId(elementAsString).build().get();
     }

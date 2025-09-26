@@ -20,4 +20,9 @@ public class Artist extends HttpEntity<String, Artist> {
     public String getIdentifier() {
         return id;
     }
+
+    @Override
+    public void setIdentifier(String id) {
+        this.id = id;
+    }
 }

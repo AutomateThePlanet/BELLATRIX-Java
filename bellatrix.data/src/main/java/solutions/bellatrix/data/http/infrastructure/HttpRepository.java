@@ -58,8 +58,9 @@ public abstract class HttpRepository<THttpEntity extends HttpEntity> implements 
 
     @Override
     public THttpEntity create(THttpEntity entity) {
+        THttpEntity finalEntity = entity;
         updateRequestContext(requestContext -> {
-            requestContext.addRequestBody((objectConverter.toString(entity)));
+            requestContext.addRequestBody((objectConverter.toString(finalEntity)));
             requestContext.addRequestMethod(POST);
         });
 
@@ -69,7 +70,7 @@ public abstract class HttpRepository<THttpEntity extends HttpEntity> implements 
         var record = (THttpEntity)deserializeInternal(response, DeserializationMode.SINGLE);
 
         ENTITY_CREATED.broadcast(new EntityCreatedEventArgs(record));
-
+        entity = record;
         return record;
     }
 
