@@ -53,7 +53,7 @@ public class TableViewTests extends ServiceNowBaseTest {
 
         serviceNowTableViewPage.open(ProjectTables.INCIDENT_TABLE);
 
-        serviceNowTableViewPage.assertTableColumnContains("Number", "INC0010009");
+        serviceNowTableViewPage.assertTableColumnContains("Number", "target_record_value");
     }
 
     @Test
@@ -61,7 +61,7 @@ public class TableViewTests extends ServiceNowBaseTest {
         serviceNowPage.loginSection().login();
 
         serviceNowTableViewPage.open(ProjectTables.INCIDENT_TABLE);
-        serviceNowTableViewPage.searchBy("Number", "INC0010009");
+        serviceNowTableViewPage.searchBy("Number", "target_record_value");
 
         serviceNowTableViewPage.asserts().assertTableRowsAre(1);
     }
