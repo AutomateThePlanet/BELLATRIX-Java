@@ -41,4 +41,14 @@ public class FxCurrency2Instance extends ServiceNowEntity<FxCurrency2Instance> {
     public String toString() {
         return this.amount.toString();
     }
+
+    @Override
+    public String getIdentifier() {
+        return this.getSysId();
+    }
+
+    @Override
+    public void setIdentifier(String id) {
+        this.setSysId(id);
+    }
 }

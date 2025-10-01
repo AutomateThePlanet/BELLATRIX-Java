@@ -50,6 +50,17 @@ public enum HttpStatusCode {
             }
         }
 
-        throw new IllegalArgumentException("Not found");
+        // If the status code is not found in the enum, return a generic status code
+        // based on the status code range
+        if (statusCode >= 200 && statusCode < 300) {
+            return OK; // Return OK for any 2xx success code
+        } else if (statusCode >= 400 && statusCode < 500) {
+            return BAD_REQUEST; // Return BAD_REQUEST for any 4xx client error
+        } else if (statusCode >= 500 && statusCode < 600) {
+            return INTERNAL_SERVER_ERROR; // Return INTERNAL_SERVER_ERROR for any 5xx server error
+        } else {
+            // For other status codes (1xx, 3xx, etc.), return OK as default
+            return OK;
+        }
     }
 }

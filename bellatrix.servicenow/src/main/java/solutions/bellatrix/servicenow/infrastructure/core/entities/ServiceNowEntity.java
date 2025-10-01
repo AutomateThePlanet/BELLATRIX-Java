@@ -41,4 +41,9 @@ public abstract class ServiceNowEntity<TEntity extends ServiceNowEntity> extends
     public String getIdentifier() {
         return sysId;
     }
+
+    @Override
+    public void setIdentifier(String id) {
+        this.sysId = id;
+    }
 }
