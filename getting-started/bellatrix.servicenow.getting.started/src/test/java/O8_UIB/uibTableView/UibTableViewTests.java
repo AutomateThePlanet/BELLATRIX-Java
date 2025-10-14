@@ -13,6 +13,7 @@ public class UibTableViewTests extends ServiceNowBaseTest {
     protected AssetsDashboardPage assetsDashboardPage;
     protected AssetsRequestsPage assetsRequestsPage;
     protected RequestPage requestPage;
+    String expectedIncidentNumber;
 
     @Override
     protected void beforeEach() throws Exception {
@@ -21,6 +22,7 @@ public class UibTableViewTests extends ServiceNowBaseTest {
         assetsDashboardPage = app().createPage(AssetsDashboardPage.class);
         assetsRequestsPage = app().createPage(AssetsRequestsPage.class);
         requestPage = app().createPage(RequestPage.class);
+        expectedIncidentNumber = "RITM0010004";
     }
 
     @Test
@@ -93,8 +95,8 @@ public class UibTableViewTests extends ServiceNowBaseTest {
 
         assetsDashboardPage.mainContent.getNowScoreButton("Asset requests").click();
 
-        assetsRequestsPage.filterByColumnValue("Number", "RITM0010004");
-        assetsRequestsPage.openRecordFromDataGrid("Number", "RITM0010004");
-        requestPage.asserts().assertRecordHeading("RITM0010004");
+        assetsRequestsPage.filterByColumnValue("Number", expectedIncidentNumber);
+        assetsRequestsPage.openRecordFromDataGrid("Number", expectedIncidentNumber);
+        requestPage.asserts().assertRecordHeading(expectedIncidentNumber);
     }
 }

@@ -7,7 +7,7 @@ import solutions.bellatrix.web.components.advanced.grid.Grid;
 import solutions.bellatrix.web.components.shadowdom.ShadowRoot;
 
 public class Map extends solutions.bellatrix.servicenow.pages.uib.pages.uibRecordViewPage.Map {
-    public Grid workkDataGrid() {
+    public Grid workDataGrid() {
         var gridComponent = getActiveScreen()
                 .createByCss(ShadowRoot.class, "now-grid")
                 .createByCss(Grid.class, "table");

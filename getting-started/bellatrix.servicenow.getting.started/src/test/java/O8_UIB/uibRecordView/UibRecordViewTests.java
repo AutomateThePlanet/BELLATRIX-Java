@@ -25,6 +25,7 @@ public class UibRecordViewTests extends ServiceNowBaseTest {
     protected RequestPage requestPage;
     User currentUser;
     CatalogItem catalogItemRegistered;
+    String  expectedIncidentNumber;
 
     @Override
     protected void beforeEach() throws Exception {
@@ -40,6 +41,7 @@ public class UibRecordViewTests extends ServiceNowBaseTest {
         CatalogItemRepository catalogItemRepository = new CatalogItemRepository();
 
         catalogItemRegistered = catalogItemRepository.getEntitiesByParameters(List.of(new QueryParameter("name", "Apple%20Watch"))).get(0);
+        expectedIncidentNumber = "RITM0010004";
     }
 
     @Test
@@ -49,10 +51,10 @@ public class UibRecordViewTests extends ServiceNowBaseTest {
 
         assetsDashboardPage.mainContent.getNowScoreButton("Asset requests").click();
 
-        assetsRequestsPage.openRecordByColumnValue("Number", "RITM0010004");
+        assetsRequestsPage.openRecordByColumnValue("Number", expectedIncidentNumber);
 
         var expectedFormData = RequestItemModel.builder()
-                .number("RITM0010004")
+                .number(expectedIncidentNumber)
                 .item(catalogItemRegistered.getSysId())
                 .openedBy(currentUser.getSysId())
                 .build();
