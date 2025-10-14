@@ -6,11 +6,11 @@ import solutions.bellatrix.web.components.WebComponent;
 
 public class UiBuilderMultiRecordInput extends UiBuilderRecordInput {
     protected WebComponent customUiRecordTypeheadMultiple() {
-        return this.shadowRootCreateByCss(WebComponent.class, "now-record-typeahead-multiple").toShadowRootToBeAttached();
+        return this.shadowRootCreateByCss(WebComponent.class, "now-record-typeahead-multiple").getShadowRoot();
     }
 
     protected WebComponent customUiTypeheadMulti() {
-        return customUiRecordTypeheadMultiple().shadowRootCreateByCss(WebComponent.class, "now-typeahead-multi").toShadowRootToBeAttached();
+        return customUiRecordTypeheadMultiple().shadowRootCreateByCss(WebComponent.class, "now-typeahead-multi").getShadowRoot();
     }
 
     @Override

@@ -23,6 +23,15 @@ public abstract class UIBDefaultComponent extends SnComponent implements Compone
     public final static EventListener<ComponentActionEventArgs> SETTING_VALUE = new EventListener<>();
     public final static EventListener<ComponentActionEventArgs> VALUE_SET = new EventListener<>();
 
+    public String getValue() {
+        return this.defaultGetValue();
+    }
+
+    public UIBDefaultComponent textInput() {
+        var shadow = create().by(ShadowRoot.class, this.getFindStrategy()).getShadowRoot();
+         return shadow.createByXPath(UIBDefaultComponent.class, ".//input");
+    }
+
     protected String formControlXpathLocator() {
         return ".//*[contains(concat(' ',normalize-space(@class),' '),' form-control ')]";
     }

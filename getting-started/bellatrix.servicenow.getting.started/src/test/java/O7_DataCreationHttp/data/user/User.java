@@ -9,9 +9,13 @@ import solutions.bellatrix.servicenow.models.annotations.TableTarget;
 
 @Data
 @SuperBuilder
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode()
 @TableTarget ("sys_user")
 public class User extends ServiceNowEntity<User> {
     @SerializedName("user_name")
     String userName;
+    @SerializedName("first_name")
+    String firstName;
+    @SerializedName("last_name")
+    String lastName;
 }

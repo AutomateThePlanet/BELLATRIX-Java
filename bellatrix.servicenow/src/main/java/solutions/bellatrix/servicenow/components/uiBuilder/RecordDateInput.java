@@ -29,7 +29,7 @@ public class RecordDateInput extends UIBDefaultComponent implements ComponentDis
 
     //calendar pop up
     protected ShadowRoot customUiDropDownSeismicHoist() {
-        return create().byCss(ShadowRoot.class, "seismic-hoist").toShadowRootToBeAttached();
+        return create().byCss(ShadowRoot.class, "seismic-hoist").getShadowRoot();
     }
 
     protected Button calendarPopUpOkayButton() {
