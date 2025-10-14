@@ -1,88 +1,82 @@
 package O7_DataCreationHttp;
 
-import O4_TableView.data.ProjectTables;
+import O7_DataCreationHttp.data.BaseServiceNowDataTest;
+import O7_DataCreationHttp.data.ProjectTables;
 import O7_DataCreationHttp.data.incident.Incident;
 import O7_DataCreationHttp.data.incident.IncidentRepository;
-import O7_DataCreationHttp.data.user.User;
-import O7_DataCreationHttp.data.user.UserRepository;
+import O7_DataCreationHttp.data.incident.IncidentRepositoryFactory;
+import O7_DataCreationHttp.data.user.UserRepositoryFactory;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import solutions.bellatrix.core.configuration.ConfigurationService;
-import solutions.bellatrix.core.utilities.TimestampBuilder;
-import solutions.bellatrix.data.http.infrastructure.QueryParameter;
-import solutions.bellatrix.servicenow.baseTest.ServiceNowBaseTest;
-import solutions.bellatrix.servicenow.infrastructure.configuration.ServiceNowProjectSettings;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
-public class DataCreationTests extends ServiceNowBaseTest {
-    User currentUser;
+public class DataCreationTests extends BaseServiceNowDataTest {
+    protected IncidentRepositoryFactory incidentFactory;
+    protected UserRepositoryFactory userFactory;
 
     @Override
     protected void beforeEach() throws Exception {
         super.beforeEach();
-        UserRepository userRepository = new UserRepository();
-        currentUser = userRepository.getEntitiesByParameters(List.of(new QueryParameter("user_name", ConfigurationService.get(ServiceNowProjectSettings.class).getUserName()))).get(0);
+
+        incidentFactory = new IncidentRepositoryFactory();
+        userFactory = new UserRepositoryFactory();
+
+        registerRepositoriesAndFactories();
     }
 
     @Test
-    public void createEntity() {
-        IncidentRepository incidentRepository = new IncidentRepository();
+    public void createEntityWithDependencyDefaultTest() {
+        // Build incident with dependencies using factory
+        Incident incident = incidentFactory.buildDefault();
+        incident.createWithDependencies();
 
-        Incident incident = incidentRepository.create(Incident.builder()
-                .caller(currentUser.getSysId())
-                .shortDescription(String.format("Incident Report %s", TimestampBuilder.buildUniqueTextByPrefix("au")))
-                .build());
+        Assertions.assertNotNull(incident.getSysId());
+        Assertions.assertNotNull(incident.getCaller().getSysId());
 
-        var entityCreated = incidentRepository.getById(incident);
-
-        Assertions.assertEquals(incident.getCaller(), entityCreated.getCaller());
+        incident.deleteDependenciesAndSelf();
     }
 
     @Test
-    public void updateEntity() {
-        IncidentRepository incidentRepository = new IncidentRepository();
+    public void createEntityWithDependencyCustomizedTest() throws NoSuchFieldException, IllegalAccessException, InvocationTargetException, NoSuchMethodException, InstantiationException {
+        String expectedIncidentDescription = "Custom Description " + System.currentTimeMillis();
+        String expectedUserName = "Custom User "+ System.currentTimeMillis();
 
-        Incident incident = incidentRepository.create(Incident.builder()
-                .caller(currentUser.getSysId())
-                .shortDescription(String.format("Incident Report %s", TimestampBuilder.buildUniqueTextByPrefix("au")))
-                .build());
+        // Build incident with dependencies using factory
+        Incident incident = incidentFactory.buildDefaultWithDependencies();
 
+        incident.setShortDescription(expectedIncidentDescription);
+        incident.getCaller().setUserName(expectedUserName);
 
-        var updatedIncident = Incident.builder().sysId(incident.getSysId()).shortDescription("Description updated").build();
-        incidentRepository.update(updatedIncident);
+        incident.createWithDependencies();
 
-        var entityFromAPI = incidentRepository.getById(incident);
+        Incident defaultIncident = incidentFactory.buildDefault();
+        defaultIncident.setIdentifier(incident.getSysId());
 
-        Assertions.assertEquals(updatedIncident.getShortDescription(), entityFromAPI.getShortDescription());
+        var entityFromAPI = defaultIncident.getWithDependencies();
+
+        Assertions.assertEquals(entityFromAPI.getShortDescription(), expectedIncidentDescription);
+        Assertions.assertEquals(entityFromAPI.getCaller().getUserName(), expectedUserName);
+
+        incident.deleteDependenciesAndSelf();
     }
 
     @Test
-    public void deleteEntity() {
+    public void deleteEntity() throws NoSuchFieldException, InvocationTargetException, IllegalAccessException, NoSuchMethodException, InstantiationException {
+        // Build incident with dependencies using factory
         IncidentRepository incidentRepository = new IncidentRepository();
 
-        Incident incident = incidentRepository.create(Incident.builder()
-                .caller(currentUser.getSysId())
-                .shortDescription(String.format("Incident Report %s", TimestampBuilder.buildUniqueTextByPrefix("au")))
-                .build());
+        Incident incident = incidentFactory.buildDefault();
+        incident.createWithDependencies();
 
-        incidentRepository.delete(incident);
+        List<Incident> incidents = incidentRepository.getAll().stream().filter(i -> i.getSysId().equals(incident.getSysId())).toList();
+        Assertions.assertTrue(incidents.size()==1);
 
-        incidentRepository.validateEntityDoesNotExist(incident);
-    }
+        incident.deleteDependenciesAndSelf();
 
-    @Test
-    public void getEntity() {
-        IncidentRepository incidentRepository = new IncidentRepository();
-
-        Incident incident = incidentRepository.create(Incident.builder()
-                .caller(currentUser.getSysId())
-                .shortDescription(String.format("Incident Report %s", TimestampBuilder.buildUniqueTextByPrefix("au")))
-                .build());
-
-        var incidentRegistered = incidentRepository.getById(incident);
-
-        Assertions.assertEquals(incident.getShortDescription(), incidentRegistered.getShortDescription());
+        incidents = incidentRepository.getAll().stream().filter(i -> i.getSysId().equals(incident.getSysId())).toList();
+        Assertions.assertFalse(incidents.size()==1);
     }
 
     @Test
@@ -94,5 +88,30 @@ public class DataCreationTests extends ServiceNowBaseTest {
         List<Incident> incidents = incidentRepository.getAll();
 
         Assertions.assertEquals(serviceNowTableViewPage.map().totalRowsInfo().getText(), String.valueOf(incidents.size()));
+    }
+
+    @Test
+    public void updateEntityWithDependencyCustomizedTest() throws NoSuchFieldException, IllegalAccessException, InvocationTargetException, NoSuchMethodException, InstantiationException {
+        // Build incident with dependencies using factory
+        Incident incident = incidentFactory.buildDefaultWithDependencies();
+        incident.createWithDependencies();
+
+        String expectedIncidentDescription = "Custom Description " + System.currentTimeMillis();
+        String expectedUserName = "Custom User "+ System.currentTimeMillis();
+
+        incident.setShortDescription(expectedIncidentDescription);
+        incident.getCaller().setUserName(expectedUserName);
+
+        incident.updateWithDependencies();
+
+        Incident defaultIncident = incidentFactory.buildDefault();
+        defaultIncident.setIdentifier(incident.getSysId());
+
+        var entityFromAPI = defaultIncident.getWithDependencies();
+
+        Assertions.assertEquals(entityFromAPI.getShortDescription(), expectedIncidentDescription);
+        Assertions.assertEquals(entityFromAPI.getCaller().getUserName(), expectedUserName);
+
+        incident.deleteDependenciesAndSelf();
     }
 }

@@ -5,6 +5,6 @@ import solutions.bellatrix.servicenow.infrastructure.core.repositories.TableApiR
 
 public class IncidentRepository extends TableApiRepository<Incident> {
     public IncidentRepository() {
-        super(Incident.class, ProjectTables.INCIDENT_TABLE);
+        super(Incident.class);
     }
 }
