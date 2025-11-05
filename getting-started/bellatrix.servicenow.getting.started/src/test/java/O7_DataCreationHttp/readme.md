@@ -1,4 +1,4 @@
-# Prerequisites for Using Bellatrix Data API with Service Now Applications
+# Prerequisites for Using Bellatrix Data API with ServiceNow Applications
 
 This guide outlines the necessary steps to integrate Bellatrix Data API features with Service Now applications.
 
@@ -10,14 +10,22 @@ Create an Entity class that extends `ServiceNowEntity`.
 ```java
 @Data
 @SuperBuilder
+@NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @TableTarget("incident")
-public class Incident extends ServiceNowEntity<Incident> {
-    @SerializedName("caller_id")
-    String caller;
-    
+public class Incident extends ServiceNowEntity <Incident>{
+    @Dependency(entityType = User.class)
+    @Getter
+    private transient User caller;
+
     @SerializedName("short_description")
     String shortDescription;
+
+    @SerializedName("number")
+    String number;
+
+    @SerializedName("caller_id")
+    String idCaller;
 }
 ```
 
@@ -32,7 +40,7 @@ ServiceNow Table: table endpoint for the Entity members
 ```java
 public class IncidentRepository extends TableApiRepository<Incident> {
     public IncidentRepository() {
-        super(Incident.class, "incident");
+        super(Incident.class);
     }
 }
 ```

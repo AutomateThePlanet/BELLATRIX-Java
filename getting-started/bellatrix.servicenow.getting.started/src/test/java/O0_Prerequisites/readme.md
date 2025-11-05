@@ -59,7 +59,7 @@
 - **Credentials Options:**
 
   **Option 4.1: Hardcoded Credentials**
-    ```jjsonlines
+    ```jsonlines
     "userName": "user",
     "password": "pass"
     ```

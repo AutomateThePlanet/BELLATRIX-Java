@@ -21,7 +21,7 @@ public class UiBuilderGrid extends WebComponent implements ComponentDisabled, Co
     }
 
     protected WebComponent customUiDropDownSeismicHoist() {
-        return create().byCss(WebComponent.class, "seismic-hoist").toShadowRootToBeAttached();
+        return create().byCss(WebComponent.class, "seismic-hoist").getShadowRoot();
     }
 
     protected Button calendarPopUpOkayButton() {

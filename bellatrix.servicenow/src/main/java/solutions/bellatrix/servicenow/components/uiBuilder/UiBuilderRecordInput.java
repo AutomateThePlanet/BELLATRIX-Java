@@ -8,11 +8,11 @@ import solutions.bellatrix.web.services.ComponentCreateService;
 
 public class UiBuilderRecordInput extends WebComponent implements ComponentDisabled, ComponentText {
     protected WebComponent customUiRecordTypehead() {
-        return this.shadowRootCreateByCss(WebComponent.class, "now-record-typeahead").toShadowRootToBeAttached();
+        return this.shadowRootCreateByCss(WebComponent.class, "now-record-typeahead").getShadowRoot();
     }
 
     protected WebComponent customUiTypehead() {
-        return customUiRecordTypehead().shadowRootCreateByCss(WebComponent.class, "now-typeahead").toShadowRootToBeAttached();
+        return customUiRecordTypehead().shadowRootCreateByCss(WebComponent.class, "now-typeahead").getShadowRoot();
     }
 
     protected Button recordInputDropDownByLabel() {
@@ -24,7 +24,7 @@ public class UiBuilderRecordInput extends WebComponent implements ComponentDisab
     }
 
     protected WebComponent customUiDropDownSeismicHoist() {
-        return create().byCss(WebComponent.class, "seismic-hoist").toShadowRootToBeAttached();
+        return create().byCss(WebComponent.class, "seismic-hoist").getShadowRoot();
     }
 
     protected Button recordDropDownOptionByLabelAndOptionNumber(int optionNumber) {

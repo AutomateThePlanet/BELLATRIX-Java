@@ -10,7 +10,7 @@ import solutions.bellatrix.web.services.ComponentCreateService;
 public class RecordReference extends UIBDefaultComponent implements ComponentDisabled, ComponentText {
 
     protected WebComponent recordTypehead() {
-        return this.create().byCss(WebComponent.class, "now-record-typeahead").toShadowRootToBeAttached();
+        return this.create().byCss(WebComponent.class, "now-record-typeahead").getShadowRoot();
     }
 
     protected Button referenceButton() {

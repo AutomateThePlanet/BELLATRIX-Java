@@ -16,7 +16,7 @@ import solutions.bellatrix.web.services.ComponentCreateService;
 public class RecordDateTimeInput extends UIBDefaultComponent implements ComponentDisabled, ComponentText {
 
     protected ShadowRoot customUiDropDownSeismicHoist() {
-        return create().byCss(ShadowRoot.class, "seismic-hoist").toShadowRootToBeAttached();
+        return create().byCss(ShadowRoot.class, "seismic-hoist").getShadowRoot();
     }
 
     protected ShadowRoot customUiNowDateTimeInputByLabel() {

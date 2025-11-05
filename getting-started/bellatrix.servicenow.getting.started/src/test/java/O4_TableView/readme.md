@@ -1,46 +1,42 @@
-# Record Form Tests Prerequisites
+# Table View Tests Prerequisites
 
 ## Prerequisites
 
 ### 1. Update Project Tables Enum
 
-**File:** `O3_RecordForm/data/ProjectTables.java`
+**File:** `O4_TableView/data/ProjectTables.java`
 
 Add an enum with the correct target table to access the necessary test data.
 
-### 2. Update Table References in Tests
+### 2. Update Test Configuration
 
-In the tests, change `ProjectTables.INCIDENT_TABLE` with the actual table name.
-
-### 3. Update Record System ID
-
-In the tests with the specific record from the actual table:
-- Change the target `sysId` with the actual `sysId` of the record
-
-### 4. Update Form Locator
-
-**File:** `O3_RecordForm/data/recordPage/Map.java`
-
-Change the value of `xpathLocator` for the `mainForm()` method to correspond to the locator of the form element on the target page.
-
-### 5. RecordFormSubTabsTests Configuration
-
-For `RecordFormSubTabsTests`, update the following:
+In the tests, update the following parameters:
 
 #### Table Reference
 - Change `ProjectTables.INCIDENT_TABLE` with the actual table
 
-#### Expected Tabs
+#### Column Configuration
+- Change the `"expectedColumns"` with the actual data columns for the actual table
+
+#### Tab Configuration
 - Change `"expectedTabs"` values with the actual tabs for the actual table
-
-#### Tab Selection
 - Change `tabByLabel("Child Incidents")` with the actual tab to be tested
-
-#### Tab Columns
 - Change the `"expectedTabColumns"` with the actual data columns for the selected tab
+
+### 3. Record Search Tests Configuration
+
+For the following specific tests:
+- `confirmRecordExistByValueAndColumnName()`
+- `correctRecordsSelected_when_searchByValueInColumn()`
+
+#### Updates Required:
+- Change with the actual column name for the target table
+- Change with the actual value of the respective record in that column
 
 ## Implementation Notes
 
-> **Important:** Ensure all references to table names, system IDs, and form elements are updated to match your target ServiceNow instance configuration.
+> **Important:** Ensure all tabl+e references, column names, and test data values match your target ServiceNow instance configuration.
 
-> **Testing:** Verify that the updated locators and table references work correctly with your specific ServiceNow setup before running the full test suite.
+> **Data Validation:** Verify that the expected columns and tabs exist in your ServiceNow table before running the tests.
+
+> **Search Functionality:** Make sure the column names and values used in search tests correspond to actual data in your ServiceNow instance.

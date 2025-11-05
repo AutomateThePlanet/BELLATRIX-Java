@@ -10,23 +10,23 @@ import solutions.bellatrix.web.components.contracts.ComponentText;
 
 public class RecordChoice extends UIBDefaultComponent implements ComponentDisabled, ComponentText {
 
-    protected WebComponent dropdown() {
+    public WebComponent dropdown() {
         return this.createByXPath(WebComponent.class, ".//now-select");
     }
 
-    protected Button dropdownButton() {
+    public Button dropdownButton() {
         return dropdown().createByCss(Button.class, "button");
     }
 
-    protected List<Button> getDropdownOptions() {
+    public List<Button> getDropdownOptions() {
         return getDropDownWrapper().createAllByCss(Button.class, "div[role='option']");
     }
 
-    protected Button getOptionByIndex(int index) {
+    public Button getOptionByIndex(int index) {
         return getDropdownOptions().get(index);
     }
 
-    protected Button getOptionByText(String text) {
+    public Button getOptionByText(String text) {
         var optionFound = getDropdownOptions().stream().filter(x -> x.getText().equals(text)).findFirst();
         if (optionFound.isEmpty()) {
             throw new RuntimeException("Option with text %s not found.".formatted(text));

@@ -102,7 +102,7 @@ public class ServiceNowPage extends WebPage<Map, Asserts> {
             .createAllByCss(Button.class, "a.nested-item.item-label.keyboard-navigatable");
         boolean itemFound = false;
         for (var item : workspaceItems) {
-            if (item.getText().contains(workspace.getValue())) {
+            if (item.getText().equals(workspace.getValue())) {
                 item.click();
                 itemFound = true;
                 break;
@@ -573,7 +573,7 @@ public class ServiceNowPage extends WebPage<Map, Asserts> {
 
     public Boolean validateMenuItemPinned(ServiceNowMenuItems item) {
         var isPinned = false;
-        var pinnedItems = map().polarisHeader().shadowRootCreateAllByCss(Button.class, "div.tab.name.shown");
+        var pinnedItems = map().polarisHeader().shadowRootCreateAllByCss(Button.class, "div.tab-name.shown");
         var itemList = pinnedItems.stream().filter(x -> x.getText().contains(item.getValue())).toList();
         browser().waitForAjax();
         return !itemList.isEmpty();

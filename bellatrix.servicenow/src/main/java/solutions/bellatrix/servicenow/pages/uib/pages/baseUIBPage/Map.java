@@ -1,15 +1,26 @@
-package solutions.bellatrix.servicenow.pages.baseUiBuilderPage;
+package solutions.bellatrix.servicenow.pages.uib.pages.baseUIBPage;
 
 import solutions.bellatrix.web.components.Button;
 import solutions.bellatrix.web.components.TextArea;
 import solutions.bellatrix.web.components.TextInput;
 import solutions.bellatrix.web.components.shadowdom.ShadowRoot;
 import solutions.bellatrix.web.pages.PageMap;
+
 import java.util.List;
 
 public class Map extends PageMap {
-    protected ShadowRoot customUiMainMacroponent() {
-        return create().byXPath(ShadowRoot.class, "//*[contains(name(),'macroponent')]").toShadowRootToBeAttached();
+    public ShadowRoot customUiMainMacroponent() {
+        return create().byXPath(ShadowRoot.class, "//*[contains(name(),'macroponent')]").getShadowRoot();
+    }
+
+    public Button closePopUp()
+    {
+        return customUiMainMacroponent().createByCss(Button.class,"div > div.controls.info > now-button-iconic");
+    }
+
+    public Button tabWithShadowDom(String tabName) {
+        var xpathLocator = String.format("//div[contains(@class, 'tabset-wrapper')]/descendant::span[@class='now-tab-label'][text()='%s']/ancestor::button[@role='tab']".formatted(tabName));
+        return customUiMainMacroponent().createByXPath(Button.class, xpathLocator);
     }
 
     protected ShadowRoot recordInputWithShadowDom(String label) {
@@ -38,7 +49,7 @@ public class Map extends PageMap {
     }
 
     protected ShadowRoot customUiDropDownSeismicHoist() {
-        return create().byCss(ShadowRoot.class, "seismic-hoist").toShadowRootToBeAttached();
+        return create().byCss(ShadowRoot.class, "seismic-hoist").getShadowRoot();
     }
 
     public Button pickOptionByNumber(int optionNumber) {
@@ -74,6 +85,7 @@ public class Map extends PageMap {
     public TextInput recordInputField(String inputName) {
         return recordInputWithShadowDom(inputName).createByXPath(TextInput.class, "//input");
     }
+
     public TextInput multiRecordInputField(String inputName) {
         return recordMultiInputWithShadowDom(inputName).createByXPath(TextInput.class, "//input");
     }
