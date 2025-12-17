@@ -347,7 +347,7 @@ public class BrowserService extends WebService {
 
     public void injectNotificationToast(String message, long timeoutMillis, ToastNotificationType type) {
         String escapedMessage = StringEscapeUtils.escapeEcmaScript(message);
-        Log.info(type.name() + " " + escapedMessage);
+        Log.info("[" + type.name() + "] " + escapedMessage);
         String executionScript = """
                 window.$bellatrixToastContainer = !window.$bellatrixToastContainer ? Object.assign(document.createElement('div'), {id: 'bellatrixToastContainer', style: 'position: fixed; top: 0; height: 100vh; padding-bottom: 20px; display: flex; pointer-events: none; z-index: 2147483646; justify-content: flex-end; flex-direction: column; overflow: hidden;'}) : window.$bellatrixToastContainer;
                 let $message = '""" + escapedMessage + """
