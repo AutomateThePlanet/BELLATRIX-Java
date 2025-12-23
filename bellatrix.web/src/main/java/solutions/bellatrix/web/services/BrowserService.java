@@ -37,8 +37,6 @@ import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.logging.Level;
 
@@ -225,53 +223,13 @@ public class BrowserService extends WebService {
     public void waitForAjax() {
         long ajaxTimeout = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getWaitForAjaxTimeout();
         long sleepInterval = ConfigurationService.get(WebSettings.class).getTimeoutSettings().getSleepInterval();
-        AtomicInteger ajaxConnections = new AtomicInteger();
         try {
-            Wait.retry(() -> {
-                        var numberOfAjaxConnections = getJavascriptExecutor().executeScript("return !isNaN(window.$openHTTPs) ? window.$openHTTPs : null");
-                        if (Objects.nonNull(numberOfAjaxConnections)) {
-                            ajaxConnections.set(Integer.parseInt(numberOfAjaxConnections.toString()));
-                            if (ajaxConnections.get() > 0) {
-                                String message = "Waiting for %s Ajax Connections...".formatted(ajaxConnections);
-                                injectInfoNotificationToast(message);
-                                Log.info(message);
-                                throw new TimeoutException(message);
-                            }
-                        } else {
-                            monkeyPatchXMLHttpRequest();
-                        }
-                    },
-                    Duration.ofSeconds(ajaxTimeout),
-                    Duration.ofSeconds(sleepInterval),
-                    true,
-                    TimeoutException.class);
+            waitForXhrIdle(Duration.ofSeconds(ajaxTimeout), Duration.ofSeconds(sleepInterval));
         }
         catch (Exception e) {
-            var message = "Timed out waiting for %s Ajax connections.".formatted(ajaxConnections.get());
+            var message = "Timed out waiting for Async requests. Continuing...";
             Log.error(message);
             injectErrorNotificationToast(message);
-        }
-    }
-
-    private void monkeyPatchXMLHttpRequest() {
-        var numberOfAjaxConnections = getJavascriptExecutor().executeScript(("return !isNaN(window.$openHTTPs) ? window.$openHTTPs : null"));
-
-        if (Objects.isNull(numberOfAjaxConnections)) {
-            var script = "(function() {" +
-                            "const oldOpen = XMLHttpRequest.prototype.open;" +
-                            "window.$openHTTPs = 0;" +
-                            "XMLHttpRequest.prototype.open = function() {" +
-                                "window.$openHTTPs++;" +
-                                "this.addEventListener('readystatechange', function() {" +
-                                    "if(this.readyState == 4) {" +
-                                        "window.$openHTTPs--;" +
-                                    "}" +
-                                "}, false);" +
-                                "return oldOpen.call(this, ...arguments);" +
-                            "}" +
-                        "})();";
-
-            getJavascriptExecutor().executeScript(script);
         }
     }
 
@@ -559,4 +517,41 @@ public class BrowserService extends WebService {
             return "";
         }
     }
+
+    public void waitForXhrIdle(Duration idleGap,
+                                      Duration timeout) {
+
+        JavascriptExecutor js = this.getJavascriptExecutor();
+        long start = System.nanoTime();
+        long deadline = start + timeout.toNanos();
+        long gapMs   = idleGap.toMillis();
+
+        while (System.nanoTime() < deadline) {
+            try {
+                Long active = (Long) js.executeScript(XHR_ACTIVE_JS, gapMs);
+                if (active == 0) {
+                    logElapsed(start);
+                    return;
+                }
+                Thread.sleep(40);
+            } catch (Exception e) {
+                // ignore and retry until timeout
+            }
+        }
+        logElapsed(start);
+//        Log.error("Timed-out waiting for XHR idle");
+    }
+
+    private void logElapsed(long startNano) {
+        long ms = (System.nanoTime() - startNano) / 1_000_000;
+        Log.info("[Browser Wait] Waited %d ms for pending XHRs %n", ms);
+    }
+
+    private final String XHR_ACTIVE_JS =
+            "const now = performance.now();" +
+                    "return performance.getEntriesByType('resource')" +
+                    "        .filter(e => e.initiatorType === 'xmlhttprequest' || e.initiatorType === 'fetch')" +
+                    "        .filter(e => !e.responseEnd || e.responseEnd > now - arguments[0])" + // still running
+                    "        .length;";
+
 }
